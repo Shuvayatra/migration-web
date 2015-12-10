@@ -40,4 +40,45 @@ class TagService
     {
         return $this->tag->getAll($limit);
     }
+
+    /**
+     * @param $id
+     * @return Tag
+     */
+    public function find($id)
+    {
+        try {
+            return $this->tag->find($id);
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function update($data)
+    {
+        return $this->tag->update($data);
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function delete($id)
+    {
+        return $this->tag->delete($id);
+    }
+
+    /**
+     * @return array
+     */
+    public function getList()
+    {
+        return $this->tag->getAll()->lists('title', 'id');
+    }
 }

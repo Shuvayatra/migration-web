@@ -1,3 +1,6 @@
+<?php
+$tagService = app('App\Nrna\Services\TagService');
+$tags       = $tagService->getList(); ?>
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
     {!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
@@ -19,5 +22,13 @@
     <div class="col-sm-6">
         {!! Form::select('metadata[stage]', config('stage'), null, ['class' => 'form-control']) !!}
         {!! $errors->first('metadata.stage', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('stage') ? 'has-error' : ''}}">
+    {!! Form::label('tag', 'Tags: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('tag[]', $tags, null, ['class' => 'form-control','multiple'=>'']) !!}
+        {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

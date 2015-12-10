@@ -1,18 +1,18 @@
 <?php
-namespace App\Nrna\Repositories\Tag;
+namespace App\Nrna\Repositories\Country;
 
 
 /**
- * Class TagRepositoryInterface
- * @package App\Nrna\Repository\Tag
+ * Class CountryRepositoryInterface
+ * @package App\Nrna\Repository\Country
  */
-interface TagRepositoryInterface
+interface CountryRepositoryInterface
 {
 
     /**
-     * Save Tag
+     * Save Country
      * @param $data
-     * @return Tag
+     * @return Country
      */
     public function save($data);
 
@@ -20,11 +20,11 @@ interface TagRepositoryInterface
      * @param $limit
      * @return Collection
      */
-    public function getAll($limit = null);
+    public function getAll($limit);
 
     /**
      * @param $id
-     * @return Tag
+     * @return Country
      */
     public function find($id);
 

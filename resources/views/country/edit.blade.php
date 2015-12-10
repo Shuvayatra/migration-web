@@ -1,13 +1,14 @@
 @extends('layouts.master')
 
 @section('content')
-
     <h1>Edit Country</h1>
     <hr/>
     {!! Form::model($country, [
         'method' => 'PATCH',
         'route' => ['country.update', $country->id],
-        'class' => 'form-horizontal'
+        'class' => 'form-horizontal',
+        'novalidate' => 'novalidate',
+        'files' => true
     ]) !!}
     @include('country.form')
     <div class="form-group">

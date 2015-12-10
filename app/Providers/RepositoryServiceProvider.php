@@ -28,5 +28,9 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Tag\TagRepository'
         );
 
+        $this->app->bind(
+            'App\Nrna\Repositories\Country\CountryRepositoryInterface',
+            'App\Nrna\Repositories\Country\CountryRepository'
+        );
     }
 }

@@ -4,7 +4,11 @@
 
     <h1>Create New Country</h1>
     <hr/>
-    {!! Form::open(['route' => 'country.store', 'class' => 'form-horizontal']) !!}
+    {!! Form::open(['route' => 'country.store',
+                    'class' => 'form-horizontal',
+                    'novalidate' => 'novalidate',
+                    'files' => true ])
+    !!}
     @include('country.form')
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-3">

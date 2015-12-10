@@ -12,7 +12,6 @@ class CreateCountryTable extends Migration
      */
     public function up()
     {
-
         Schema::create(
             'country',
             function (Blueprint $table) {
@@ -20,6 +19,7 @@ class CreateCountryTable extends Migration
                 $table->string('name');
                 $table->string('code', 10);
                 $table->text('image');
+                $table->text('description');
 
                 $table->timestamps();
             }

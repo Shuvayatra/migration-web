@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Tag;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\TagService;
-use Illuminate\Http\Request;
 use App\Http\Requests\TagRequest;
 use Session;
 
@@ -50,7 +49,7 @@ class TagController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created tag in database.
      *
      * @param TagRequest $request
      * @return Response
@@ -58,21 +57,25 @@ class TagController extends Controller
     public function store(TagRequest $request)
     {
         if ($this->tag->save($request->all())) {
-            return redirect()->route('tag.index')->withSuccess('Tag saved successfully.');
+            return redirect()->route('tag.index')->with('success', 'Tag saved successfully.');
         };
 
-        return redirect('tag')->withError('There is some problem saving tag.');
+        return redirect('tag')->with('error', 'There is some problem saving tag.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified tag.
      *
      * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = $this->tag->find($id);
+
+        if (is_null($tag)) {
+            return redirect()->route('tag.index')->with('error', 'Tag not found.');
+        }
 
         return view('tag.show', compact('tag'));
     }
@@ -85,7 +88,10 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = $this->tag->find($id);
+        if (is_null($tag)) {
+            return redirect()->route('tag.index')->with('error', 'Tag not found.');
+        }
 
         return view('tag.edit', compact('tag'));
     }
@@ -99,12 +105,15 @@ class TagController extends Controller
      */
     public function update($id, TagRequest $request)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->update($request->all());
+        $tag = $this->tag->find($id);
+        if (is_null($tag)) {
+            return redirect()->route('tag.index')->with('error', 'Tag not found.');
+        }
+        if ($this->tag->update($request->all())) {
+            return redirect('tag')->with('success', 'Tag successfully updated!');
+        }
 
-        Session::flash('flash_message', 'Tag successfully updated!');
-
-        return redirect('tag');
+        return redirect('tag')->with('error', 'Problem updating Tag!');
     }
 
     /**
@@ -115,11 +124,11 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        Tag::destroy($id);
+        if ($this->tag->delete($id)) {
+            return redirect('tag')->with('success', 'Tag successfully deleted!');
+        }
 
-        Session::flash('flash_message', 'Tag successfully deleted!');
-
-        return redirect('tag');
+        return redirect('tag')->with('error', 'Error deleting Tag !');
     }
 
 }

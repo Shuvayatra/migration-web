@@ -4,17 +4,25 @@ namespace App\Http\Controllers\Country;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Nrna\Models\Country;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Nrna\Services\CountryService;
+use App\Http\Requests\CountryRequest;
 use Session;
 
 class CountryController extends Controller
 {
-    function __construct()
+    /**
+     * @var CountryService
+     */
+    private $country;
+
+    /**
+     * constructor
+     * @param CountryService $country
+     */
+    function __construct(CountryService $country)
     {
         $this->middleware('auth');
+        $this->country = $country;
     }
 
 
@@ -25,7 +33,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::paginate(15);
+        $countries = $this->country->all();
 
         return view('country.index', compact('countries'));
     }
@@ -41,30 +49,33 @@ class CountryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created.
      *
+     * @param CountryRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CountryRequest $request)
     {
-        $this->validate($request, ['name' => 'required', 'code' => 'required', 'image' => 'required',]);
+        if ($this->country->save($request->all())) {
+            return redirect()->route('country.index')->with('success', 'Country saved successfully.');
+        };
 
-        Country::create($request->all());
-
-        Session::flash('flash_message', 'Country successfully added!');
-
-        return redirect('country');
+        return redirect('country')->with('error', 'There is some problem saving country.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified country.
      *
      * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        $country = Country::findOrFail($id);
+        $country = $this->country->find($id);
+
+        if (is_null($country)) {
+            return redirect()->route('country.index')->with('error', 'Country not found.');
+        }
 
         return view('country.show', compact('country'));
     }
@@ -77,7 +88,10 @@ class CountryController extends Controller
      */
     public function edit($id)
     {
-        $country = Country::findOrFail($id);
+        $country = $this->country->find($id);
+        if (is_null($country)) {
+            return redirect()->route('country.index')->with('error', 'Country not found.');
+        }
 
         return view('country.edit', compact('country'));
     }
@@ -85,19 +99,21 @@ class CountryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int           $id
+     * @param CountryRequest $request
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update($id, CountryRequest $request)
     {
-        $this->validate($request, ['name' => 'required', 'code' => 'required', 'image' => 'required',]);
+        $country = $this->country->find($id);
+        if (is_null($country)) {
+            return redirect()->route('country.index')->with('error', 'Country not found.');
+        }
+        if ($this->country->update($id, $request->all())) {
+            return redirect('country')->with('success', 'Country successfully updated!');
+        }
 
-        $country = Country::findOrFail($id);
-        $country->update($request->all());
-
-        Session::flash('flash_message', 'Country successfully updated!');
-
-        return redirect('country');
+        return redirect('country')->with('error', 'Problem updating Country!');
     }
 
     /**
@@ -108,11 +124,11 @@ class CountryController extends Controller
      */
     public function destroy($id)
     {
-        Country::destroy($id);
+        if ($this->country->delete($id)) {
+            return redirect('country')->with('success', 'Country successfully deleted!');
+        }
 
-        Session::flash('flash_message', 'Country successfully deleted!');
-
-        return redirect('country');
+        return redirect('country')->with('error', 'Error deleting Country !');
     }
 
 }

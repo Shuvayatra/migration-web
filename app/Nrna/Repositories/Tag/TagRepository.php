@@ -35,10 +35,10 @@ class TagRepository implements TagRepositoryInterface
     }
 
     /**
-     * @param $limit
+     * @param null $limit
      * @return Collection
      */
-    public function getAll($limit)
+    public function getAll($limit = null)
     {
         if (is_null($limit)) {
             return $this->tag->all();
@@ -46,4 +46,40 @@ class TagRepository implements TagRepositoryInterface
 
         return $this->tag->paginate();
     }
+
+    /**
+     * @param $id
+     * @return Tag
+     */
+    public function find($id)
+    {
+        return $this->tag->findOrFail($id);
+    }
+
+    /**
+     * @param $data
+     * @return bool|int
+     */
+    public function update($data)
+    {
+        return $this->tag->update($data);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getList()
+    {
+        return $this->tag->list('title', 'id')->all();
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function delete($id)
+    {
+        return $this->tag->destroy($id);
+    }
+
 }
