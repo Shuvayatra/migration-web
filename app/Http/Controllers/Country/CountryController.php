@@ -12,6 +12,11 @@ use Session;
 
 class CountryController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -20,9 +25,9 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countrys = Country::paginate(15);
+        $countries = Country::paginate(15);
 
-        return view('country.index', compact('tags'));
+        return view('country.index', compact('countries'));
     }
 
     /**
@@ -42,72 +47,72 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required', 'code' => 'required', 'image' => 'required', ]);
+        $this->validate($request, ['name' => 'required', 'code' => 'required', 'image' => 'required',]);
 
         Country::create($request->all());
 
-        Session::flash('flash_message', 'Tag successfully added!');
+        Session::flash('flash_message', 'Country successfully added!');
 
-        return redirect('tag');
+        return redirect('country');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
         $country = Country::findOrFail($id);
 
-        return view('country.show', compact('tag'));
+        return view('country.show', compact('country'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
         $country = Country::findOrFail($id);
 
-        return view('country.edit', compact('tag'));
+        return view('country.edit', compact('country'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id, Request $request)
     {
-        $this->validate($request, ['name' => 'required', 'code' => 'required', 'image' => 'required', ]);
+        $this->validate($request, ['name' => 'required', 'code' => 'required', 'image' => 'required',]);
 
         $country = Country::findOrFail($id);
         $country->update($request->all());
 
-        Session::flash('flash_message', 'Tag successfully updated!');
+        Session::flash('flash_message', 'Country successfully updated!');
 
-        return redirect('tag');
+        return redirect('country');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
         Country::destroy($id);
 
-        Session::flash('flash_message', 'Tag successfully deleted!');
+        Session::flash('flash_message', 'Country successfully deleted!');
 
-        return redirect('tag');
+        return redirect('country');
     }
 
 }

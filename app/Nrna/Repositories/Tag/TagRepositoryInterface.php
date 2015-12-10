@@ -17,7 +17,8 @@ interface TagRepositoryInterface
     public function save($data);
 
     /**
+     * @param $limit
      * @return Collection
      */
-    public function getAll();
+    public function getAll($limit);
 }

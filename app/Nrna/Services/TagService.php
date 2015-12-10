@@ -31,4 +31,13 @@ class TagService
     {
         return $this->tag->save($data);
     }
+
+    /**
+     * @param int $limit
+     * @return \App\Nrna\Repositories\Tag\Collection
+     */
+    public function all($limit = 15)
+    {
+        return $this->tag->getAll($limit);
+    }
 }

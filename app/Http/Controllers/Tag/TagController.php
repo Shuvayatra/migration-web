@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Tag;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Nrna\Models\Tag;
 use App\Nrna\Services\TagService;
 use Illuminate\Http\Request;
 use App\Http\Requests\TagRequest;
-use Carbon\Carbon;
 use Session;
 
 class TagController extends Controller
@@ -25,6 +22,7 @@ class TagController extends Controller
      */
     function __construct(TagService $tag)
     {
+        $this->middleware('auth');
         $this->tag = $tag;
     }
 
@@ -36,7 +34,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::paginate(15);
+        $tags = $this->tag->all();
 
         return view('tag.index', compact('tags'));
     }
@@ -59,18 +57,17 @@ class TagController extends Controller
      */
     public function store(TagRequest $request)
     {
+        if ($this->tag->save($request->all())) {
+            return redirect()->route('tag.index')->withSuccess('Tag saved successfully.');
+        };
 
-       $this->tag->save($request->all());
-
-        Session::flash('flash_message', 'Tag successfully added!');
-
-        return redirect('tag');
+        return redirect('tag')->withError('There is some problem saving tag.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -83,7 +80,7 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -96,10 +93,11 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int       $id
+     * @param TagRequest $request
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update($id, TagRequest $request)
     {
         $tag = Tag::findOrFail($id);
         $tag->update($request->all());
@@ -112,7 +110,7 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)

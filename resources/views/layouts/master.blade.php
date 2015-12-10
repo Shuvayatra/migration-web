@@ -32,6 +32,7 @@
                 @if (!Auth::guest())
                     <li><a href="#">{{ Auth::user()->name }}</a></li>
                     <li><a href="{{route('tag.index')}}">Tags</a></li>
+                    <li><a href="{{route('country.index')}}">Country</a></li>
                     <li><a href="{{route('question.index')}}">Questions</a></li>
                     <li><a href="{{route('post.index')}}">Posts</a></li>
                     <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
@@ -50,6 +51,12 @@
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
+    @endif
+    @if (\Session::has('success')){
+        <div class="alert alert-success">{{Session::get('success')}}</div>
+    @endif
+    @if (\Session::has('error')){
+        <div class="alert alert-danger">{{Session::get('error')}}</div>
     @endif
     @yield('content')
 </div>

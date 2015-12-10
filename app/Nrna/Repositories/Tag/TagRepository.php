@@ -35,10 +35,15 @@ class TagRepository implements TagRepositoryInterface
     }
 
     /**
+     * @param $limit
      * @return Collection
      */
-    public function getAll()
+    public function getAll($limit)
     {
-        // TODO: Implement getAll() method.
+        if (is_null($limit)) {
+            return $this->tag->all();
+        }
+
+        return $this->tag->paginate();
     }
 }

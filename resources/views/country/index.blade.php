@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Tags <a href="{{ route('tag.create') }}" class="btn btn-primary pull-right btn-sm">Add New Tag</a></h1>
+    <h1>Country <a href="{{ route('country.create') }}" class="btn btn-primary pull-right btn-sm">Add New Country</a></h1>
     <div class="table">
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -12,18 +12,18 @@
             </thead>
             <tbody>
             {{-- */$x=0;/* --}}
-            @foreach($tags as $item)
+            @foreach($countries as $item)
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/tag', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->code }}</td><td>{{ $item->image }}</td>
+                    <td><a href="{{ url('/country', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->code }}</td><td>{{ $item->image }}</td>
                     <td>
-                        <a href="{{ route('tag.edit', $item->id) }}">
+                        <a href="{{ route('country.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
                         </a> /
                         {!! Form::open([
                             'method'=>'DELETE',
-                            'route' => ['tag.destroy', $item->id],
+                            'route' => ['country.destroy', $item->id],
                             'style' => 'display:inline'
                         ]) !!}
                             {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
@@ -33,7 +33,7 @@
             @endforeach
             </tbody>
         </table>
-        <div class="pagination"> {!! $tags->render() !!} </div>
+        <div class="pagination"> {!! $countries->render() !!} </div>
     </div>
 
 @endsection

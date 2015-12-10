@@ -1,13 +1,12 @@
 @extends('layouts.master')
 
 @section('content')
-
     <h1>Tags <a href="{{ route('tag.create') }}" class="btn btn-primary pull-right btn-sm">Add New Tag</a></h1>
     <div class="table">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>S.No</th><th>Name</th><th>Code</th><th>Image</th><th>Actions</th>
+                    <th>S.No</th><th>Name</th><th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -16,7 +15,8 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/tag', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->code }}</td><td>{{ $item->image }}</td>
+                    <td><a href="{{ url('/tag', $item->id) }}">{{ $item->title }}</a></td>
+
                     <td>
                         <a href="{{ route('tag.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
