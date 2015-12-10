@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a05a40e09ba734943be31ce204a74103",
-    "content-hash": "86d2d0a12f515085f035fe4debd2f0d8",
+    "hash": "89337988932a978c5b4b6fcbcb9fecf5",
+    "content-hash": "66af5e6313630604673dba203d6d4241",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -116,6 +116,57 @@
                 "utils"
             ],
             "time": "2015-07-23 00:54:12"
+        },
+        {
+            "name": "dimsav/laravel-translatable",
+            "version": "v5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimsav/laravel-translatable.git",
+                "reference": "222d8ab86c7529e644bd819930e22ad9dd0527b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimsav/laravel-translatable/zipball/222d8ab86c7529e644bd819930e22ad9dd0527b1",
+                "reference": "222d8ab86c7529e644bd819930e22ad9dd0527b1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dimsav\\Translatable\\": "src/Translatable/"
+                },
+                "classmap": [
+                    "tests"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dimitrios Savvopoulos",
+                    "email": "ds@dimsav.com",
+                    "homepage": "http://dimsav.com"
+                }
+            ],
+            "description": "A Laravel package for multilingual models",
+            "keywords": [
+                "database",
+                "language",
+                "laravel",
+                "translation"
+            ],
+            "time": "2015-11-15 20:32:59"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -793,102 +844,6 @@
                 "php"
             ],
             "time": "2015-12-04 15:28:43"
-        },
-        {
-            "name": "njasm/laravel5-soundcloud",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/njasm/laravel5-soundcloud.git",
-                "reference": "4183f48cd2c85dcc4c2b8d86b55f7fced2e49f16"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/njasm/laravel5-soundcloud/zipball/4183f48cd2c85dcc4c2b8d86b55f7fced2e49f16",
-                "reference": "4183f48cd2c85dcc4c2b8d86b55f7fced2e49f16",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "5.1.*",
-                "njasm/soundcloud": "~2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Njasm\\Laravel\\Soundcloud\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nelson João Morais",
-                    "email": "njmorais@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Soundcloud API Service Provider For Laravel 5",
-            "homepage": "http://github.com/njasm/laravel5-soundcloud",
-            "keywords": [
-                "api",
-                "laravel",
-                "soundcloud",
-                "webservice",
-                "webservices"
-            ],
-            "time": "2015-10-14 13:28:17"
-        },
-        {
-            "name": "njasm/soundcloud",
-            "version": "2.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/njasm/soundcloud.git",
-                "reference": "f76b0c5b86e1d2535ed0efc3a67e9d776a92233c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/njasm/soundcloud/zipball/f76b0c5b86e1d2535ed0efc3a67e9d776a92233c",
-                "reference": "f76b0c5b86e1d2535ed0efc3a67e9d776a92233c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.4.*@dev",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Njasm\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nelson João Morais",
-                    "email": "njmorais@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Soundcloud API Wrapper written in PHP with OAuth 2.0 support",
-            "homepage": "http://github.com/njasm/soundcloud",
-            "keywords": [
-                "api",
-                "soundcloud",
-                "webservice",
-                "webservices"
-            ],
-            "time": "2015-11-20 23:28:02"
         },
         {
             "name": "paragonie/random_compat",
@@ -1972,6 +1927,50 @@
     ],
     "packages-dev": [
         {
+            "name": "appzcoder/crud-generator",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/appzcoder/crud-generator.git",
+                "reference": "c3ac70b551ab8c19535fb258ef667a55a59966c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/appzcoder/crud-generator/zipball/c3ac70b551ab8c19535fb258ef667a55a59966c3",
+                "reference": "c3ac70b551ab8c19535fb258ef667a55a59966c3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.1.*",
+                "laravelcollective/html": "5.1.*",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Appzcoder\\CrudGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sohel Amin",
+                    "email": "sohelamincse@gmail.com",
+                    "homepage": "http://www.appzcoder.com"
+                }
+            ],
+            "description": "Laravel 5 CRUD Generator",
+            "keywords": [
+                "crud",
+                "crud generator",
+                "laravel"
+            ],
+            "time": "2015-12-02 17:43:40"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
             "source": {
@@ -2121,6 +2120,143 @@
                 "test"
             ],
             "time": "2015-05-11 14:41:42"
+        },
+        {
+            "name": "laracasts/generators",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/Laravel-5-Generators-Extended.git",
+                "reference": "eb58b86f49d69eff4db4cc6f2ec94480a57c4358"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/Laravel-5-Generators-Extended/zipball/eb58b86f49d69eff4db4cc6f2ec94480a57c4358",
+                "reference": "eb58b86f49d69eff4db4cc6f2ec94480a57c4358",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laracasts\\Generators\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Extend Laravel 5's generators.",
+            "keywords": [
+                "generators",
+                "laravel"
+            ],
+            "time": "2015-08-19 14:29:06"
+        },
+        {
+            "name": "laralib/l5scaffold",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laralib/l5scaffold.git",
+                "reference": "893d7c3531449c17fa48e9d1974f449d7947c8eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laralib/l5scaffold/zipball/893d7c3531449c17fa48e9d1974f449d7947c8eb",
+                "reference": "893d7c3531449c17fa48e9d1974f449d7947c8eb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laralib\\L5scaffold\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fernando Brito",
+                    "email": "fernandobritofl@gmail.com"
+                }
+            ],
+            "description": "Extend Laravel 5's generators scaffold.",
+            "keywords": [
+                "generators",
+                "laravel",
+                "laravel5",
+                "scaffold"
+            ],
+            "time": "2015-10-02 22:23:19"
+        },
+        {
+            "name": "laravelcollective/html",
+            "version": "v5.1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "f62269629b2a1093039733517bd7e75b3f98dffb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/f62269629b2a1093039733517bd7e75b3f98dffb",
+                "reference": "f62269629b2a1093039733517bd7e75b3f98dffb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "5.1.*",
+                "illuminate/routing": "5.1.*",
+                "illuminate/session": "5.1.*",
+                "illuminate/support": "5.1.*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                },
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                }
+            ],
+            "time": "2015-11-28 08:27:09"
         },
         {
             "name": "mockery/mockery",
@@ -2842,23 +2978,23 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "2b0112e42c338afa9ad9dfeb94d66f6d84c2f828"
+                "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/2b0112e42c338afa9ad9dfeb94d66f6d84c2f828",
-                "reference": "2b0112e42c338afa9ad9dfeb94d66f6d84c2f828",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/13edfd8706462032c2f52b4b862974dd46b71c9e",
+                "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5"
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "extra": {
@@ -2890,7 +3026,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-06 07:21:36"
+            "time": "2015-12-08 07:14:41"
         },
         {
             "name": "sebastian/environment",
@@ -3199,9 +3335,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "njasm/laravel5-soundcloud": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
