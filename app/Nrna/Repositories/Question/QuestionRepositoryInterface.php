@@ -1,18 +1,18 @@
 <?php
-namespace App\Nrna\Repositories\Country;
+namespace App\Nrna\Repositories\Question;
 
 
 /**
- * Class CountryRepositoryInterface
- * @package App\Nrna\Repository\Country
+ * Class QuestionRepositoryInterface
+ * @package App\Nrna\Repository\Question
  */
-interface CountryRepositoryInterface
+interface QuestionRepositoryInterface
 {
 
     /**
-     * Save Country
+     * Save Question
      * @param $data
-     * @return Country
+     * @return Question
      */
     public function save($data);
 
@@ -24,7 +24,7 @@ interface CountryRepositoryInterface
 
     /**
      * @param $id
-     * @return Country
+     * @return Question
      */
     public function find($id);
 
@@ -39,4 +39,9 @@ interface CountryRepositoryInterface
      * @return int
      */
     public function delete($id);
+
+    /**
+     * @return array
+     */
+    public function lists();
 }

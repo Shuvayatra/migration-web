@@ -3,5 +3,5 @@
 return [
     'text'  => 'Text',
     'audio' => 'Audio',
-    'video' => 'video',
+    'video' => 'Video',
 ];

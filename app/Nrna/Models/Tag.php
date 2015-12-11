@@ -21,4 +21,20 @@ class Tag extends Model
      */
     protected $fillable = ['title'];
 
+    /**
+     * The question that belong to the tag.
+     */
+    public function questions()
+    {
+        return $this->belongsToMany('App\Nrna\Models\Question');
+    }
+
+    /**
+     * The post that belong to the tag.
+     */
+    public function posts()
+    {
+        return $this->belongsToMany('App\Nrna\Models\Post');
+    }
+
 }

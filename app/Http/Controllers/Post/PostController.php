@@ -4,17 +4,25 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Nrna\Models\Post;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Nrna\Services\PostService;
+use App\Http\Requests\PostRequest;
 use Session;
 
 class PostController extends Controller
 {
-    function __construct()
+    /**
+     * @var PostService
+     */
+    private $post;
+
+    /**
+     * constructor
+     * @param PostService $post
+     */
+    function __construct(PostService $post)
     {
         $this->middleware('auth');
+        $this->post = $post;
     }
 
 
@@ -25,9 +33,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(15);
+        $posts = $this->post->all();
 
-        return view('post.post.index', compact('posts'));
+        return view('post.index', compact('posts'));
     }
 
     /**
@@ -37,36 +45,39 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.post.create');
+        return view('post.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created.
      *
+     * @param PostRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $this->validate($request, ['title' => 'required',]);
+        if ($this->post->save($request->all())) {
+            return redirect()->route('post.index')->with('success', 'Post saved successfully.');
+        };
 
-        Post::create($request->all());
-
-        Session::flash('flash_message', 'Post successfully added!');
-
-        return redirect('post');
+        return redirect('post')->with('error', 'There is some problem saving post.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified post.
      *
      * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->post->find($id);
 
-        return view('post.post.show', compact('post'));
+        if (is_null($post)) {
+            return redirect()->route('post.index')->with('error', 'Post not found.');
+        }
+
+        return view('post.show', compact('post'));
     }
 
     /**
@@ -77,27 +88,32 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->post->find($id);
+        if (is_null($post)) {
+            return redirect()->route('post.index')->with('error', 'Post not found.');
+        }
 
-        return view('post.post.edit', compact('post'));
+        return view('post.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int        $id
+     * @param PostRequest $request
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update($id, PostRequest $request)
     {
-        $this->validate($request, ['title' => 'required',]);
+        $post = $this->post->find($id);
+        if (is_null($post)) {
+            return redirect()->route('post.index')->with('error', 'Post not found.');
+        }
+        if ($this->post->update($id, $request->all())) {
+            return redirect('post')->with('success', 'Post successfully updated!');
+        }
 
-        $post = Post::findOrFail($id);
-        $post->update($request->all());
-
-        Session::flash('flash_message', 'Post successfully updated!');
-
-        return redirect('post');
+        return redirect('post')->with('error', 'Problem updating Post!');
     }
 
     /**
@@ -108,11 +124,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        Post::destroy($id);
+        if ($this->post->delete($id)) {
+            return redirect('post')->with('success', 'Post successfully deleted!');
+        }
 
-        Session::flash('flash_message', 'Post successfully deleted!');
-
-        return redirect('post');
+        return redirect('post')->with('error', 'Error deleting Post !');
     }
 
 }

@@ -1,18 +1,18 @@
 <?php
-namespace App\Nrna\Repositories\Country;
+namespace App\Nrna\Repositories\Post;
 
 
 /**
- * Class CountryRepositoryInterface
- * @package App\Nrna\Repository\Country
+ * Class PostRepositoryInterface
+ * @package App\Nrna\Repository\Post
  */
-interface CountryRepositoryInterface
+interface PostRepositoryInterface
 {
 
     /**
-     * Save Country
+     * Save Post
      * @param $data
-     * @return Country
+     * @return Post
      */
     public function save($data);
 
@@ -20,11 +20,11 @@ interface CountryRepositoryInterface
      * @param $limit
      * @return Collection
      */
-    public function getAll($limit = null);
+    public function getAll($limit);
 
     /**
      * @param $id
-     * @return Country
+     * @return Post
      */
     public function find($id);
 

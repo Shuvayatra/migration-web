@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>Tag</h1>
+    <h1>Country</h1>
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $tag->id }}</td> <td> {{ $tag->name }} </td><td> {{ $tag->code }} </td><td> {{ $tag->image }} </td>
+                    <td>{{ $country->id }}</td> <td> {{ $country->name }} </td><td> {{ $country->code }} </td><td> {{ $country->image }} </td>
                 </tr>
             </tbody>    
         </table>

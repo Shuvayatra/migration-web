@@ -24,7 +24,7 @@ class PostRequest extends Request
     public function rules()
     {
         return [
-            //
+            'metadata.title' => 'required',
         ];
     }
 }

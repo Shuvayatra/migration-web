@@ -32,5 +32,13 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Country\CountryRepositoryInterface',
             'App\Nrna\Repositories\Country\CountryRepository'
         );
+        $this->app->bind(
+            'App\Nrna\Repositories\Question\QuestionRepositoryInterface',
+            'App\Nrna\Repositories\Question\QuestionRepository'
+        );
+        $this->app->bind(
+            'App\Nrna\Repositories\Post\PostRepositoryInterface',
+            'App\Nrna\Repositories\Post\PostRepository'
+        );
     }
 }

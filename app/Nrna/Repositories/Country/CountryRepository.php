@@ -38,7 +38,7 @@ class CountryRepository implements CountryRepositoryInterface
      * @param $limit
      * @return Collection
      */
-    public function getAll($limit)
+    public function getAll($limit = null)
     {
         if (is_null($limit)) {
             return $this->country->all();

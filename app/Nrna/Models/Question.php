@@ -28,6 +28,22 @@ class Question extends Model
     protected $fillable = ['metadata'];
 
     /**
+     * The tag that belongs to question.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany('App\Nrna\Models\Tag');
+    }
+
+    /**
+     * The post that belongs to question.
+     */
+    public function posts()
+    {
+        return $this->belongsToMany('App\Nrna\Models\Post');
+    }
+
+    /**
      * Boot the  model
      * Attach event listener to add user creating a model
      *

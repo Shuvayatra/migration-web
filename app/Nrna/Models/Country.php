@@ -21,4 +21,13 @@ class Country extends Model
      */
     protected $fillable = ['name', 'code', 'image', 'description'];
 
+    /**
+     * posts belongs to country
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->belongsToMany('App\Nrna\Models\PostS');
+    }
+
 }

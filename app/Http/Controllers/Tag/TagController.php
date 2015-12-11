@@ -109,7 +109,7 @@ class TagController extends Controller
         if (is_null($tag)) {
             return redirect()->route('tag.index')->with('error', 'Tag not found.');
         }
-        if ($this->tag->update($request->all())) {
+        if ($tag->update($request->all())) {
             return redirect('tag')->with('success', 'Tag successfully updated!');
         }
 

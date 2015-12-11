@@ -7,7 +7,10 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>S.No</th><th>Title</th><th>Description</th><th>Source</th><th>Actions</th>
+                    <th>S.No</th>
+                    <th>Title</th>
+                    <th>Source</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -16,7 +19,8 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/post', $item->id) }}">{{ $item->title }}</a></td><td>{{ $item->description }}</td><td>{{ $item->source }}</td>
+                    <td><a href="{{ url('/post', $item->id) }}">{{ $item->metadata->title }}</a> <span class="label label-info pull-right">{{$item->metadata->type}}</span></td>
+                    <td>{{ $item->metadata->source }}</td>
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>

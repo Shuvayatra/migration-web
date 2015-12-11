@@ -92,24 +92,21 @@ class CountryService
      */
     public function update($id, $formData)
     {
-        $formData = array_except($formData, ['_token', '_method']);
-        $country  = $this->find($id);
+        $country = $this->find($id);
         if (isset($formData['image'])) {
             $this->file->delete(sprintf('%s/%s', $this->uploadPath, $country->image));
             $formData['image'] = $this->upload($formData['image']);
         }
 
-        return $this->country->update($formData);
+        return $country->update($formData);
     }
 
     /**
      * @param $id
      * @return int
      */
-    public
-    function delete(
-        $id
-    ) {
+    public function delete($id)
+    {
         return $this->country->delete($id);
     }
 
@@ -117,10 +114,8 @@ class CountryService
      * @param UploadedFile $file
      * @return string
      */
-    public
-    function upload(
-        UploadedFile $file
-    ) {
+    public function upload(UploadedFile $file)
+    {
         $fileName    = $file->getClientOriginalName();
         $file_type   = $file->getClientOriginalExtension();
         $newFileName = sprintf("%s.%s", sha1($fileName . time()), $file_type);
@@ -129,5 +124,13 @@ class CountryService
         }
 
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getList()
+    {
+        return $this->country->getAll()->lists('name', 'id');
     }
 }

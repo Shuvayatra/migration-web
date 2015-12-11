@@ -8,10 +8,12 @@
     {!! Form::model($post, [
         'method' => 'PATCH',
         'route' => ['post.update', $post->id],
-        'class' => 'form-horizontal'
+        'class' => 'form-horizontal',
+        'novalidate' => 'novalidate',
+        'files' => true
     ]) !!}
 
-    @include('post.post.form')
+    @include('post.form')
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-3">
             {!! Form::submit('Update', ['class' => 'btn btn-primary form-control']) !!}

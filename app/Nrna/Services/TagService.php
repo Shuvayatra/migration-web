@@ -60,7 +60,7 @@ class TagService
      * @param $data
      * @return bool
      */
-    public function update($data)
+    public function update($id, $data)
     {
         return $this->tag->update($data);
     }

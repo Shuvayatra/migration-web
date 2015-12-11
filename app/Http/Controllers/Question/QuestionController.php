@@ -4,18 +4,25 @@ namespace App\Http\Controllers\Question;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Nrna\Services\QuestionService;
 use App\Http\Requests\QuestionRequest;
-use App\Nrna\Models\Question;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Session;
 
 class QuestionController extends Controller
 {
-    function __construct()
+    /**
+     * @var QuestionService
+     */
+    private $question;
+
+    /**
+     * constructor
+     * @param QuestionService $question
+     */
+    function __construct(QuestionService $question)
     {
         $this->middleware('auth');
+        $this->question = $question;
     }
 
 
@@ -26,7 +33,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::paginate(15);
+        $questions = $this->question->all();
 
         return view('question.index', compact('questions'));
     }
@@ -42,29 +49,33 @@ class QuestionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created.
      *
      * @param QuestionRequest $request
      * @return Response
      */
     public function store(QuestionRequest $request)
     {
-        Question::create($request->all());
+        if ($this->question->save($request->all())) {
+            return redirect()->route('question.index')->with('success', 'Question saved successfully.');
+        };
 
-        Session::flash('flash_message', 'Question successfully added!');
-
-        return redirect('question');
+        return redirect('question')->with('error', 'There is some problem saving question.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified question.
      *
      * @param  int $id
      * @return Response
      */
     public function show($id)
     {
-        $question = Question::findOrFail($id);
+        $question = $this->question->find($id);
+
+        if (is_null($question)) {
+            return redirect()->route('question.index')->with('error', 'Question not found.');
+        }
 
         return view('question.show', compact('question'));
     }
@@ -77,7 +88,10 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        $question = Question::findOrFail($id);
+        $question = $this->question->find($id);
+        if (is_null($question)) {
+            return redirect()->route('question.index')->with('error', 'Question not found.');
+        }
 
         return view('question.edit', compact('question'));
     }
@@ -91,12 +105,15 @@ class QuestionController extends Controller
      */
     public function update($id, QuestionRequest $request)
     {
-        $question = Question::findOrFail($id);
-        $question->update($request->all());
+        $question = $this->question->find($id);
+        if (is_null($question)) {
+            return redirect()->route('question.index')->with('error', 'Question not found.');
+        }
+        if ($this->question->update($id, $request->all())) {
+            return redirect('question')->with('success', 'Question successfully updated!');
+        }
 
-        Session::flash('flash_message', 'Question successfully updated!');
-
-        return redirect('question');
+        return redirect('question')->with('error', 'Problem updating Question!');
     }
 
     /**
@@ -107,11 +124,11 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        Question::destroy($id);
+        if ($this->question->delete($id)) {
+            return redirect('question')->with('success', 'Question successfully deleted!');
+        }
 
-        Session::flash('flash_message', 'Question successfully deleted!');
-
-        return redirect('question');
+        return redirect('question')->with('error', 'Error deleting Question !');
     }
 
 }

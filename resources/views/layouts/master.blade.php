@@ -30,12 +30,13 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 @if (!Auth::guest())
-                    <li><a href="#">{{ Auth::user()->name }}</a></li>
                     <li><a href="{{route('tag.index')}}">Tags</a></li>
                     <li><a href="{{route('country.index')}}">Country</a></li>
                     <li><a href="{{route('question.index')}}">Questions</a></li>
                     <li><a href="{{route('post.index')}}">Posts</a></li>
+                    <li><a href="javascript:void();">Welcome  {{ Auth::user()->email }}</a></li>
                     <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+
                 @endif
             </ul>
         </div>
