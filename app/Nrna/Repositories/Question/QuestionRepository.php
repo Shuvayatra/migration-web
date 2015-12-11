@@ -83,4 +83,13 @@ class QuestionRepository implements QuestionRepositoryInterface
     {
         return $this->question->selectRaw("id,metadata->>'title' as title")->lists('title', 'id');
     }
+
+    /**
+     * get latest question with tags
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function latest()
+    {
+        return $this->question->with('tags')->get();
+    }
 }

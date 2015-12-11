@@ -1,6 +1,7 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\Question;
 use App\Nrna\Repositories\Question\QuestionRepositoryInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -99,6 +100,38 @@ class QuestionService
     public function getList()
     {
         return $this->question->lists();
+    }
+
+    /**
+     * @return array
+     */
+    public function latest()
+    {
+        $questionArray = [];
+        $questions     = $this->question->latest();
+        foreach ($questions as $question) {
+            $questionArray[] = $this->buildQuestion($question);
+        }
+
+        return $questionArray;
+    }
+
+    /**
+     * @param Question $question
+     * @return array
+     */
+    public function buildQuestion(Question $question)
+    {
+        $questionArray['id']         = $question->id;
+        $questionArray['created_at'] = $question->created_at->timestamp;
+        $questionArray['updated_at'] = $question->updated_at->timestamp;
+        $tags                        = [];
+        foreach ($question->tags as $tag) {
+            $tags[] = $tag->title;
+        }
+        $questionArray['tags'] = $tags;
+
+        return array_merge($questionArray, (array) $question->metadata);
     }
 
 }

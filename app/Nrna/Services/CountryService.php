@@ -1,6 +1,7 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\Country;
 use App\Nrna\Repositories\Country\CountryRepositoryInterface;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class CountryService
     {
         $this->country    = $country;
         $this->storage    = $storage;
-        $this->uploadPath = public_path('uploads/country');
+        $this->uploadPath = public_path(Country::UPLOAD_PATH);
         $this->file       = $file;
     }
 

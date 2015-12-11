@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response as IlluminateResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiBaseController
@@ -12,7 +13,7 @@ class ApiBaseController extends Controller
     /**
      * @var int Status Code.
      */
-    protected $statusCode = 200;
+    protected $statusCode = Response::HTTP_OK;
 
     /**
      * Getter method to return stored status code.
@@ -102,7 +103,7 @@ class ApiBaseController extends Controller
      */
     public function respond($data, $headers = [])
     {
-        return Response::json($data, $this->getStatusCode(), $headers);
+        return response()->json($data, $this->getStatusCode(), $headers);
     }
 
     /**

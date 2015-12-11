@@ -4,6 +4,11 @@ namespace App\Nrna\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed id
+ * @property mixed created_at
+ * @property mixed updated_at
+ */
 class Post extends Model
 {
 

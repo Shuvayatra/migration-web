@@ -22,6 +22,22 @@ class Country extends Model
     protected $fillable = ['name', 'code', 'image', 'description'];
 
     /**
+     * upload path for country
+     */
+    const UPLOAD_PATH = 'uploads/country';
+
+    /**
+     * Get question Title
+     *
+     * @return string
+     */
+    public function getFilePathAttribute()
+    {
+        return public_path(sprintf('%s/%s', Self::UPLOAD_PATH, $this->image));
+    }
+
+
+    /**
      * posts belongs to country
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

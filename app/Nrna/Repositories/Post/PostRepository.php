@@ -73,4 +73,12 @@ class PostRepository implements PostRepositoryInterface
     {
         return $this->post->destroy($id);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function latest()
+    {
+        return $this->post->with('tags', 'questions', 'countries')->get();
+    }
 }

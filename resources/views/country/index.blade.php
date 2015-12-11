@@ -16,7 +16,7 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/country', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->code }}</td><td>{{ $item->image }}</td>
+                    <td><a href="{{ url('/country', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->code }}</td><td>{{ $item->filePath }}</td>
                     <td>
                         <a href="{{ route('country.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>

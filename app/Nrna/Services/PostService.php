@@ -1,6 +1,7 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
 
 /**
@@ -92,6 +93,44 @@ class PostService
     public function delete($id)
     {
         return $this->post->delete($id);
+    }
+
+    /**
+     * @return array
+     */
+    public function latest()
+    {
+        $postArray = [];
+        $posts     = $this->post->latest();
+        foreach ($posts as $post) {
+            $postArray[] = $this->buildPost($post);
+        }
+
+        return $postArray;
+    }
+
+    /**
+     * @param Post $post
+     * @return array
+     */
+    public function buildPost(Post $post)
+    {
+        $postArray['id']         = $post->id;
+        $postArray['created_at'] = $post->created_at->timestamp;
+        $postArray['updated_at'] = $post->updated_at->timestamp;
+        $tags                    = [];
+        foreach ($post->tags as $tag) {
+            $tags[] = $tag->title;
+        }
+        $postArray['tags'] = $tags;
+
+        $questions = [];
+        foreach ($post->questions as $question) {
+            $questions[] = $question->id;
+        }
+        $postArray['question_ids'] = $questions;
+
+        return array_merge($postArray, (array) $post->metadata);
     }
 
 }
