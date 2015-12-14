@@ -32,12 +32,13 @@ $questions = $questionService->getList();
 <div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
     {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::select('metadata[type]',[''=>'']+config('post_type'),null, ['class' => 'form-control']) !!}
+        {!! Form::select('metadata[type]',[''=>'']+config('post_type'),null, ['class' =>
+        'form-control','id'=>'post_type']) !!}
         {!! $errors->first('metadata.type', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('content') ? 'has-error' : ''}}">
+<div style="display: none" class="form-group content-type  type-text {{ $errors->has('content') ? 'has-error' : ''}}">
     {!! Form::label('content', 'Content: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
         {!! Form::textArea('metadata[data][content]',null, ['class' => 'form-control']) !!}
@@ -45,7 +46,8 @@ $questions = $questionService->getList();
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('media_url') ? 'has-error' : ''}}">
+<div style="display: none"
+     class="form-group content-type  type-video {{ $errors->has('media_url') ? 'has-error' : ''}}">
     {!! Form::label('media_url', 'Media Url: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
         {!! Form::text('metadata[data][media_url]',null, ['class' => 'form-control']) !!}
@@ -53,7 +55,7 @@ $questions = $questionService->getList();
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('audio') ? 'has-error' : ''}}">
+<div style="display: none" class="form-group content-type type-audio {{ $errors->has('audio') ? 'has-error' : ''}}">
     {!! Form::label('audio', 'Audio: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
         {!! Form::file('metadata[data][audio]', ['class'=>'form-control required' , 'id' => 'file'])!!}
