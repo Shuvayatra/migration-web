@@ -48,7 +48,7 @@ class ApiService
         try {
             $data['posts']     = $this->post->latest();
             $data['questions'] = $this->question->latest();
-            //$data['countries'] = $this->country->all()->toArray();
+            $data['countries'] = $this->country->latest();
 
             return $data;
         } catch (\Exception $e) {

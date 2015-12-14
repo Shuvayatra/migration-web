@@ -134,4 +134,14 @@ class CountryService
     {
         return $this->country->getAll()->lists('name', 'id');
     }
+
+    /**
+     * @return array
+     */
+    public function latest()
+    {
+        $countries = $this->country->getAll()->toArray();
+
+        return $countries;
+    }
 }
