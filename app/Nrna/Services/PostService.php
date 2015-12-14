@@ -3,6 +3,7 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class PostService
@@ -16,12 +17,18 @@ class PostService
     private $post;
 
     /**
+     * @var string
+     */
+    private $uploadPath;
+
+    /**
      * constructor
      * @param PostRepositoryInterface $post
      */
     function __construct(PostRepositoryInterface $post)
     {
-        $this->post = $post;
+        $this->uploadPath = public_path(Post::UPLOAD_PATH);
+        $this->post       = $post;
     }
 
     /**
@@ -30,6 +37,9 @@ class PostService
      */
     public function save($formData)
     {
+        if ($formData['metadata']['type'] === 'audio') {
+            $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
+        }
         if ($post = $this->post->save($formData)) {
             $post->tags()->sync($formData['tag']);
             $post->countries()->sync($formData['country']);
@@ -93,6 +103,22 @@ class PostService
     public function delete($id)
     {
         return $this->post->delete($id);
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function upload(UploadedFile $file)
+    {
+        $fileName    = $file->getClientOriginalName();
+        $file_type   = $file->getClientOriginalExtension();
+        $newFileName = sprintf("%s.%s", sha1($fileName . time()), $file_type);
+        if ($file->move($this->uploadPath, $newFileName)) {
+            return $newFileName;
+        }
+
+        return null;
     }
 
     /**

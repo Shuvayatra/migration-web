@@ -25,3 +25,5 @@ $router->resource('question', 'Question\\QuestionController');
 $router->resource('tag', 'Tag\\TagController');
 $router->get('/home',['as' => 'home', 'uses' => 'Post\PostController@index']);
 $router->resource('country', 'Country\\CountryController');
+
+$router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
