@@ -13,6 +13,11 @@ class Post extends Model
 {
 
     /**
+     * upload path for country
+     */
+    const UPLOAD_PATH = 'uploads/audio';
+
+    /**
      * The database table used by the model.
      *
      * @var string
@@ -53,6 +58,24 @@ class Post extends Model
     public function questions()
     {
         return $this->belongsToMany('App\Nrna\Models\Question');
+    }
+
+
+    /**
+     * Convert json metadata to array
+     *
+     * @param $metaData
+     * @return array
+     */
+    public function getMetadataAttribute($metaData)
+    {
+        $metaData = json_decode($metaData);
+        if (isset($metaData->data->audio)) {
+
+            $metaData->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metaData->data->audio);
+        }
+
+        return $metaData;
     }
 
     /**

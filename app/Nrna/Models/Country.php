@@ -27,23 +27,22 @@ class Country extends Model
     const UPLOAD_PATH = 'uploads/country';
 
     /**
-     * Get question Title
+     * Get Country image
      *
      * @return string
      */
-    public function getFilePathAttribute()
+    public function getImageAttribute($image)
     {
-        return public_path(sprintf('%s/%s', Self::UPLOAD_PATH, $this->image));
+        return sprintf('%s/%s', url(Self::UPLOAD_PATH), $image);
     }
-
-
+    
     /**
      * posts belongs to country
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function posts()
     {
-        return $this->belongsToMany('App\Nrna\Models\PostS');
+        return $this->belongsToMany('App\Nrna\Models\Post');
     }
 
 }
