@@ -52,8 +52,6 @@ class ApiService
 
             return $data;
         } catch (\Exception $e) {
-            dd($e);
-
             return false;
         }
 

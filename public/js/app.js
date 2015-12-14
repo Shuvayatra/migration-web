@@ -15,4 +15,12 @@ $(function () {
         content_css: "css/content.css",
         toolbar: "insertfile undo redo | styleselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image |  media fullpage | forecolor backcolor",
     });
+    $('.type-text').hide();
+    $('.type-audio').hide();
+    $('.type-video').hide();
+    $(document).on('change', '#post_type', function () {
+        $('.content-type').hide();
+        var field = $(this).val();
+        $('.type-' + field).show();
+    });
 });

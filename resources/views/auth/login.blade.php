@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-3">
-                <input class="btn btn-primary form-control" type="submit" value="Create">
+                <input class="btn btn-primary form-control" type="submit" value="Login">
             </div>
         </div>
     </form>
