@@ -10,14 +10,18 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+// Authentication routes...
+$router->get('/', 'Auth\AuthController@getLogin');
+$router->get('/auth/login', 'Auth\AuthController@getLogin');
+$router->post('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
+$router->get('auth/logout', 'Auth\AuthController@getLogout');
 
-Route::get('/', function () {
-    $trackPath = '/home/manoj/annie-hi.mp3';
-    $params = array('track[name]' => 'Cool remix');
-    dd(Soundcloud::getAuthUrl());
-    $response = Soundcloud::upload($trackPath, $params);
-    dd($response->getHeaders());
-    dd(Soundcloud::getAuthUrl());
-    exit;
-    return view('welcome');
-});
+// Registration routes...
+$router->get('auth/register', 'Auth\AuthController@getRegister');
+$router->post('auth/register', 'Auth\AuthController@postRegister');
+
+$router->resource('post', 'Post\\PostController');
+$router->resource('question', 'Question\\QuestionController');
+$router->resource('tag', 'Tag\\TagController');
+$router->get('/home',['as' => 'home', 'uses' => 'Post\PostController@index']);
+$router->resource('country', 'Country\\CountryController');

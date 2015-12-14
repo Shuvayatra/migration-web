@@ -1,5 +1,57 @@
 <?php
 
+$providers      = [
+
+    /*
+     * Laravel Framework Service Providers...
+     */
+    Illuminate\Foundation\Providers\ArtisanServiceProvider::class,
+    Illuminate\Auth\AuthServiceProvider::class,
+    Illuminate\Broadcasting\BroadcastServiceProvider::class,
+    Illuminate\Bus\BusServiceProvider::class,
+    Illuminate\Cache\CacheServiceProvider::class,
+    Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+    Illuminate\Routing\ControllerServiceProvider::class,
+    Illuminate\Cookie\CookieServiceProvider::class,
+    Illuminate\Database\DatabaseServiceProvider::class,
+    Illuminate\Encryption\EncryptionServiceProvider::class,
+    Illuminate\Filesystem\FilesystemServiceProvider::class,
+    Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+    Illuminate\Hashing\HashServiceProvider::class,
+    Illuminate\Mail\MailServiceProvider::class,
+    Illuminate\Pagination\PaginationServiceProvider::class,
+    Illuminate\Pipeline\PipelineServiceProvider::class,
+    Illuminate\Queue\QueueServiceProvider::class,
+    Illuminate\Redis\RedisServiceProvider::class,
+    Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+    Illuminate\Session\SessionServiceProvider::class,
+    Illuminate\Translation\TranslationServiceProvider::class,
+    Illuminate\Validation\ValidationServiceProvider::class,
+    Illuminate\View\ViewServiceProvider::class,
+    /*
+     * Application Service Providers...
+     */
+    App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
+    App\Providers\RepositoryServiceProvider::class,
+    Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
+    Collective\Html\HtmlServiceProvider::class,
+
+];
+$localProviders = [
+    /*
+    * Service Providers for development
+    */
+    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+    'Barryvdh\Debugbar\ServiceProvider',
+];
+
+if (env('APP_ENV') == "local") {
+    $providers = array_merge($providers, $localProviders);
+}
+
 return [
 
     /*
@@ -13,8 +65,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
-
+    'debug'           => env('APP_DEBUG', false),
     /*
     |--------------------------------------------------------------------------
     | Application URL
@@ -26,8 +77,7 @@ return [
     |
     */
 
-    'url' => 'http://localhost',
-
+    'url'             => 'http://localhost',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -39,8 +89,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    'timezone'        => 'UTC',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -52,8 +101,7 @@ return [
     |
     */
 
-    'locale' => 'en',
-
+    'locale'          => 'en',
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -66,7 +114,6 @@ return [
     */
 
     'fallback_locale' => 'en',
-
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
@@ -78,10 +125,8 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'SomeRandomString'),
-
-    'cipher' => 'AES-256-CBC',
-
+    'key'             => env('APP_KEY', 'SomeRandomString'),
+    'cipher'          => 'AES-256-CBC',
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration
@@ -95,8 +140,7 @@ return [
     |
     */
 
-    'log' => 'single',
-
+    'log'             => 'single',
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -108,46 +152,7 @@ return [
     |
     */
 
-    'providers' => [
-
-        /*
-         * Laravel Framework Service Providers...
-         */
-        Illuminate\Foundation\Providers\ArtisanServiceProvider::class,
-        Illuminate\Auth\AuthServiceProvider::class,
-        Illuminate\Broadcasting\BroadcastServiceProvider::class,
-        Illuminate\Bus\BusServiceProvider::class,
-        Illuminate\Cache\CacheServiceProvider::class,
-        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-        Illuminate\Routing\ControllerServiceProvider::class,
-        Illuminate\Cookie\CookieServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Encryption\EncryptionServiceProvider::class,
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
-        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
-        Illuminate\Hashing\HashServiceProvider::class,
-        Illuminate\Mail\MailServiceProvider::class,
-        Illuminate\Pagination\PaginationServiceProvider::class,
-        Illuminate\Pipeline\PipelineServiceProvider::class,
-        Illuminate\Queue\QueueServiceProvider::class,
-        Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,
-
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        Njasm\Laravel\Soundcloud\SoundcloudProvider::class,
-
-    ],
-
+    'providers'       => $providers,
     /*
     |--------------------------------------------------------------------------
     | Class Aliases
@@ -159,7 +164,7 @@ return [
     |
     */
 
-    'aliases' => [
+    'aliases'         => [
 
         'App'       => Illuminate\Support\Facades\App::class,
         'Artisan'   => Illuminate\Support\Facades\Artisan::class,
@@ -194,8 +199,9 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-        'Soundcloud' => Njasm\Laravel\Soundcloud\Facades\Soundcloud::class,
-
+        'Form'      => Collective\Html\FormFacade::class,
+        'HTML'      => Collective\Html\HtmlFacade::class,
+        'Helpers'   => App\Nrna\Libraries\Helpers::class
     ],
 
 ];
