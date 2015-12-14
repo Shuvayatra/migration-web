@@ -37,7 +37,7 @@ $tags = $tagService->getList(); ?>
     {!! Form::label('tag', 'Tags: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
         {!! Form::select('tag[]', $tags, isset($question)?$question->tags->lists('id')->toArray():null, ['class' =>
-        'form-control','multiple'=>'']) !!}
+        'form-control','multiple'=>'','id'=>'tags']) !!}
         {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
