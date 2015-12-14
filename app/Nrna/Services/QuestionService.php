@@ -3,6 +3,7 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\Question;
 use App\Nrna\Repositories\Question\QuestionRepositoryInterface;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -17,14 +18,26 @@ class QuestionService
      * @var QuestionRepositoryInterface
      */
     private $question;
+    /**
+     * @var TagService
+     */
+    private $tag;
+    /**
+     * @var DatabaseManager
+     */
+    private $database;
 
     /**
      * constructor
      * @param QuestionRepositoryInterface $question
+     * @param TagService                  $tag
+     * @param DatabaseManager             $database
      */
-    function __construct(QuestionRepositoryInterface $question)
+    function __construct(QuestionRepositoryInterface $question, TagService $tag, DatabaseManager $database)
     {
         $this->question = $question;
+        $this->tag      = $tag;
+        $this->database = $database;
     }
 
     /**
@@ -33,11 +46,21 @@ class QuestionService
      */
     public function save($formData)
     {
-        if ($question = $this->question->save($formData)) {
-            $question->tags()->sync($formData['tag']);
+        $this->database->beginTransaction();
+        try {
+            if ($question = $this->question->save($formData)) {
+                $tags = $this->tag->createOrGet($formData['tag']);
+                $question->tags()->sync($tags);
+                $this->database->commit();
 
-            return $question;
+                return $question;
+            }
+        } catch (\Exception $e) {
+            $this->database->rollback();
+
+            return false;
         }
+        $this->database->rollback();
 
         return false;
     }
@@ -74,13 +97,22 @@ class QuestionService
      */
     public function update($id, $formData)
     {
-        $question = $this->find($id);
+        $this->database->beginTransaction();
+        try {
+            $question = $this->find($id);
+            if ($question->update($formData)) {
+                $tags = $this->tag->createOrGet($formData['tag']);
+                $question->tags()->sync($tags);
+                $this->database->commit();
 
-        if ($question->update($formData)) {
-            $question->tags()->sync($formData['tag']);
+                return $question;
+            }
+        } catch (\Exception $e) {
+            $this->database->rollback();
 
-            return $question;
+            return false;
         }
+        $this->database->rollback();
 
         return false;
     }

@@ -81,4 +81,22 @@ class TagService
     {
         return $this->tag->getAll()->lists('title', 'id');
     }
+
+    /**
+     * creates tag id doesn't exists in database
+     *
+     * @return array
+     * param $tags
+     */
+    public function createOrGet($tags)
+    {
+        foreach ($tags as $index => $tag) {
+            if (is_null($this->find($tag))) {
+                $tagObj       = $this->save(['title' => $tag]);
+                $tags[$index] = $tagObj->id;
+            }
+        }
+
+        return $tags;
+    }
 }

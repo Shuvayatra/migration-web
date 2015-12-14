@@ -1,5 +1,6 @@
 $(function () {
     $('select').select2({placeholder: "Select", allowClear: true, theme: "classic"});
+    $('#tags').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true})
     tinymce.init({
         selector: "textarea",
         theme: "modern",
@@ -15,9 +16,6 @@ $(function () {
         content_css: "css/content.css",
         toolbar: "insertfile undo redo | styleselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image |  media fullpage | forecolor backcolor",
     });
-    $('.type-text').hide();
-    $('.type-audio').hide();
-    $('.type-video').hide();
     $(document).on('change', '#post_type', function () {
         $('.content-type').hide();
         var field = $(this).val();

@@ -3,6 +3,7 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
+use Illuminate\Database\DatabaseManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -20,15 +21,27 @@ class PostService
      * @var string
      */
     private $uploadPath;
+    /**
+     * @var TagService
+     */
+    private $tag;
+    /**
+     * @var DatabaseManager
+     */
+    private $database;
 
     /**
      * constructor
      * @param PostRepositoryInterface $post
+     * @param TagService              $tag
+     * @param DatabaseManager         $database
      */
-    function __construct(PostRepositoryInterface $post)
+    function __construct(PostRepositoryInterface $post, TagService $tag, DatabaseManager $database)
     {
         $this->uploadPath = public_path(Post::UPLOAD_PATH);
         $this->post       = $post;
+        $this->tag        = $tag;
+        $this->database   = $database;
     }
 
     /**
@@ -37,16 +50,24 @@ class PostService
      */
     public function save($formData)
     {
-        if ($formData['metadata']['type'] === 'audio') {
-            $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
-        }
-        if ($post = $this->post->save($formData)) {
-            $post->tags()->sync($formData['tag']);
-            $post->countries()->sync($formData['country']);
-            $post->questions()->sync($formData['question']);
+        $this->database->beginTransaction();
+        try {
+            if ($formData['metadata']['type'] === 'audio') {
+                $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
+            }
+            if ($post = $this->post->save($formData)) {
+                $tags = $this->tag->createOrGet($formData['tag']);
+                $post->tags()->sync($tags);
+                $post->countries()->sync($formData['country']);
+                $post->questions()->sync($formData['question']);
+                $this->database->commit();
 
-            return $post;
+                return $post;
+            }
+        } catch (\Exception $e) {
+            $this->database->rollback();
         }
+        $this->database->rollback();
 
         return false;
     }
@@ -86,7 +107,8 @@ class PostService
         $post = $this->find($id);
 
         if ($post->update($formData)) {
-            $post->tags()->sync($formData['tag']);
+            $tags = $this->tag->createOrGet($formData['tag']);
+            $post->tags()->sync($tags);
             $post->countries()->sync($formData['country']);
             $post->questions()->sync($formData['question']);
 
