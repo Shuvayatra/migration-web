@@ -29,13 +29,26 @@ class Country extends Model
     /**
      * Get Country image
      *
+     * @param $image
      * @return string
      */
     public function getImageAttribute($image)
     {
         return sprintf('%s/%s', url(Self::UPLOAD_PATH), $image);
     }
-    
+
+    /**
+     * Get Country image name
+     *
+     * @return string
+     */
+    public function getImageNameAttribute()
+    {
+        $array = explode('/', $this->image);
+
+        return end($array);
+    }
+
     /**
      * posts belongs to country
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

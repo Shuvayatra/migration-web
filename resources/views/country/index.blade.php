@@ -16,7 +16,8 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/country', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->code }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->code }}</td>
                     <td><a target="_blank" href="{{ $item->image }}">check</a></td>
                     <td>
                         <a href="{{ route('country.edit', $item->id) }}">

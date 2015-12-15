@@ -70,6 +70,7 @@
 <!-- Scripts -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
+<link href="{{asset('css/style.css')}}" rel="stylesheet"/>
 @yield('script')
 </body>
 </html>
