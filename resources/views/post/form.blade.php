@@ -38,8 +38,7 @@ $questions = $questionService->getList();
     </div>
 </div>
 
-<div style="display: @if(isset($post) && $post->metadata->type === 'content') "
-     block" @else "none" @endif" class="form-group content-type  type-text {{ $errors->has('content') ? 'has-error' : ''}}">
+<div style="display:@if(isset($post) && $post->metadata->type === 'text') block @else none @endif" class="form-group content-type  type-text {{ $errors->has('content') ? 'has-error' : ''}}">
 {!! Form::label('content', 'Content: ', ['class' => 'col-sm-3 control-label']) !!}
 <div class="col-sm-6">
     {!! Form::textArea('metadata[data][content]',null, ['class' => 'form-control']) !!}
@@ -47,8 +46,7 @@ $questions = $questionService->getList();
 </div>
 </div>
 
-<div style="display: @if(isset($post) && $post->metadata->type === 'video') "
-     block" @else "none" @endif" class="form-group content-type  type-video {{ $errors->has('media_url') ? 'has-error' : ''}}">
+<div style="display: @if(isset($post) && $post->metadata->type === 'video') block @else none @endif" class="form-group content-type  type-video {{ $errors->has('media_url') ? 'has-error' : ''}}">
 {!! Form::label('media_url', 'Media Url: ', ['class' => 'col-sm-3 control-label']) !!}
 <div class="col-sm-6">
     {!! Form::text('metadata[data][media_url]',null, ['class' => 'form-control']) !!}
@@ -56,8 +54,7 @@ $questions = $questionService->getList();
 </div>
 </div>
 
-<div style="display: @if(isset($post) && $post->metadata->type === 'audio') "
-     block" @else "none" @endif" class="form-group content-type type-audio {{ $errors->has('audio') ? 'has-error' : ''}}">
+<div style="display: @if(isset($post) && $post->metadata->type === 'audio')block @else none @endif" class="form-group content-type type-audio {{ $errors->has('audio') ? 'has-error' : ''}}">
 {!! Form::label('audio', 'Audio: ', ['class' => 'col-sm-3 control-label']) !!}
 <div class="col-sm-6">
     {!! Form::file('metadata[data][audio]', ['class'=>'form-control required' , 'id' => 'file'])!!}
