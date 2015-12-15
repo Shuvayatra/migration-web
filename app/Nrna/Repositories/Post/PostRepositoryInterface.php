@@ -38,7 +38,6 @@ interface PostRepositoryInterface
      *
      * @param $filter
      * @return Collection
-     * @internal param $data
      */
     public function latest($filter);
 

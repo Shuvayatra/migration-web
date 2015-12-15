@@ -41,10 +41,10 @@ class PostRepository implements PostRepositoryInterface
     public function getAll($limit = null)
     {
         if (is_null($limit)) {
-            return $this->post->all();
+            return $this->post->orderBy('id', 'DESC')->all();
         }
 
-        return $this->post->paginate();
+        return $this->post->orderBy('id', 'DESC')->paginate();
     }
 
     /**
