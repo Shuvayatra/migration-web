@@ -23,6 +23,9 @@
         {!! Form::file('image', ['class'=>'form-control required' , 'id' => 'file'])!!}
         {!! $errors->first('image', '<p class="help-block">:message</p>') !!}
     </div>
+    @if(isset($country))
+        <a target="_blank" href="{{$country->image}}">check</a>
+    @endif
 </div>
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     {!! Form::label('description', 'Description: ', ['class' => 'col-sm-3 control-label']) !!}

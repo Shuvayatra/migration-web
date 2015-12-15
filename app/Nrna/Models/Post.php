@@ -60,7 +60,6 @@ class Post extends Model
         return $this->belongsToMany('App\Nrna\Models\Question');
     }
 
-
     /**
      * Convert json metadata to array
      *
@@ -76,6 +75,22 @@ class Post extends Model
         }
 
         return $metaData;
+    }
+
+    /**
+     * get audio name
+     *
+     * @return array
+     */
+    public function getAudioNameAttribute()
+    {
+        if (isset($this->metadata->data->audio)) {
+            $array = explode('/', $this->metadata->data->audio);
+
+            return end($array);
+        }
+
+        return '';
     }
 
     /**

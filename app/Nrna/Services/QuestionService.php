@@ -46,16 +46,23 @@ class QuestionService
      */
     public function save($formData)
     {
+        $tags = [];
+        if (isset($formData['tag'])) {
+            $tags = $this->tag->createOrGet($formData['tag']);
+        }
         $this->database->beginTransaction();
         try {
-            if ($question = $this->question->save($formData)) {
-                $tags = $this->tag->createOrGet($formData['tag']);
-                $question->tags()->sync($tags);
-                $this->database->commit();
-
-                return $question;
+            $question = $this->question->save($formData);
+            if (!$question) {
+                return false;
             }
+            $question->tags()->sync($tags);
+            $this->database->commit();
+
+            return $question;
+
         } catch (\Exception $e) {
+            dd($e);
             $this->database->rollback();
 
             return false;
@@ -97,17 +104,23 @@ class QuestionService
      */
     public function update($id, $formData)
     {
+        $tags = [];
+        if (isset($formData['tag'])) {
+            $tags = $this->tag->createOrGet($formData['tag']);
+        }
         $this->database->beginTransaction();
         try {
             $question = $this->find($id);
-            if ($question->update($formData)) {
-                $tags = $this->tag->createOrGet($formData['tag']);
-                $question->tags()->sync($tags);
-                $this->database->commit();
-
-                return $question;
+            if (!$question->update($formData)) {
+                return false;
             }
+
+            $question->tags()->sync($tags);
+            $this->database->commit();
+
+            return $question;
         } catch (\Exception $e) {
+            dd($e);
             $this->database->rollback();
 
             return false;
@@ -164,6 +177,18 @@ class QuestionService
         $questionArray['tags'] = $tags;
 
         return array_merge($questionArray, (array) $question->metadata);
+    }
+
+    /**
+     * @param $formData
+     * @param $question
+     */
+    protected function updateRelation($formData, $question)
+    {
+        if (isset($formData['tag'])) {
+            $tags = $this->tag->createOrGet($formData['tag']);
+            $question->tags()->sync($tags);
+        }
     }
 
 }

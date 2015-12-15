@@ -95,7 +95,7 @@ class CountryService
     {
         $country = $this->find($id);
         if (isset($formData['image'])) {
-            $this->file->delete(sprintf('%s/%s', $this->uploadPath, $country->image));
+            $this->file->delete(sprintf('%s/%s', $this->uploadPath, $country->imageName));
             $formData['image'] = $this->upload($formData['image']);
         }
 
@@ -108,6 +108,9 @@ class CountryService
      */
     public function delete($id)
     {
+        $country = $this->find($id);
+        $this->file->delete(sprintf('%s/%s', $this->uploadPath, $country->imageName));
+
         return $this->country->delete($id);
     }
 

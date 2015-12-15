@@ -18,7 +18,7 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/question', $item->id) }}"> {{ $item->metadata->title }}</a>
+                    <td>{{ $item->metadata->title }}
                         <span class="label label-default pull-right">{{$item->metadata->language}}</span></td>
                     <td>{{ $item->metadata->stage }}</td>
                     <td>

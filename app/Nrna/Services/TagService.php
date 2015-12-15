@@ -85,8 +85,8 @@ class TagService
     /**
      * creates tag id doesn't exists in database
      *
-     * @return array
-     * param $tags
+     * @param $tags
+     * @return array param $tags
      */
     public function createOrGet($tags)
     {

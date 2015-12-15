@@ -5,6 +5,7 @@ use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
 use Illuminate\Database\DatabaseManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Class PostService
@@ -29,19 +30,25 @@ class PostService
      * @var DatabaseManager
      */
     private $database;
+    /**
+     * @var Filesystem
+     */
+    private $file;
 
     /**
      * constructor
      * @param PostRepositoryInterface $post
      * @param TagService              $tag
      * @param DatabaseManager         $database
+     * @param Filesystem              $file
      */
-    function __construct(PostRepositoryInterface $post, TagService $tag, DatabaseManager $database)
+    function __construct(PostRepositoryInterface $post, TagService $tag, DatabaseManager $database, Filesystem $file)
     {
         $this->uploadPath = public_path(Post::UPLOAD_PATH);
         $this->post       = $post;
         $this->tag        = $tag;
         $this->database   = $database;
+        $this->file       = $file;
     }
 
     /**
@@ -50,20 +57,26 @@ class PostService
      */
     public function save($formData)
     {
+        $tags = [];
+
+        if (isset($formData['tag'])) {
+            $tags = $this->tag->createOrGet($formData['tag']);
+        }
         $this->database->beginTransaction();
         try {
             if ($formData['metadata']['type'] === 'audio') {
                 $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
             }
-            if ($post = $this->post->save($formData)) {
-                $tags = $this->tag->createOrGet($formData['tag']);
-                $post->tags()->sync($tags);
-                $post->countries()->sync($formData['country']);
-                $post->questions()->sync($formData['question']);
-                $this->database->commit();
-
-                return $post;
+            $post = $this->post->save($formData);
+            if (!$post) {
+                return false;
             }
+            $this->updateRelations($formData, $post);
+            $post->tags()->sync($tags);
+            $this->database->commit();
+
+            return $post;
+
         } catch (\Exception $e) {
             $this->database->rollback();
         }
@@ -104,27 +117,50 @@ class PostService
      */
     public function update($id, $formData)
     {
-        $post = $this->find($id);
-
-        if ($post->update($formData)) {
+        $tags = [];
+        if (isset($formData['tag'])) {
             $tags = $this->tag->createOrGet($formData['tag']);
+        }
+        $this->database->beginTransaction();
+        try {
+            $post = $this->find($id);
+            if ($formData['metadata']['type'] === 'audio' && isset($formData['metadata']['data']['audio'])) {
+                $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
+                $this->file->delete(sprintf('%s/%s', $this->uploadPath, $post->audioName));
+            }
+
+            if (!$post->update($formData)) {
+                return false;
+            }
+            $this->updateRelations($formData, $post);
             $post->tags()->sync($tags);
-            $post->countries()->sync($formData['country']);
-            $post->questions()->sync($formData['question']);
+            $this->database->commit();
 
             return $post;
+        } catch (\Exception $e) {
+            $this->database->rollback();
+
+            return false;
         }
+        $this->database->rollback();
 
         return false;
     }
 
     /**
      * @param $id
-     * @return int
+     * @return bool
      */
     public function delete($id)
     {
-        return $this->post->delete($id);
+        $post = $this->find($id);
+        if ($this->post->delete($id)) {
+            $this->file->delete(sprintf('%s/%s', $this->uploadPath, $post->audioName));
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -179,6 +215,20 @@ class PostService
         $postArray['question_ids'] = $questions;
 
         return array_merge($postArray, (array) $post->metadata);
+    }
+
+    /**
+     * @param $formData
+     * @param $post
+     */
+    protected function updateRelations($formData, $post)
+    {
+        if (isset($formData['country'])) {
+            $post->countries()->sync($formData['country']);
+        }
+        if (isset($formData['question'])) {
+            $post->questions()->sync($formData['question']);
+        }
     }
 
 }

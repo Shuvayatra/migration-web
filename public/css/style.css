@@ -1,0 +1,7 @@
+html, body {
+    height: 100%;
+}
+
+.select2-search__field {
+    width: 300px !important;
+}
