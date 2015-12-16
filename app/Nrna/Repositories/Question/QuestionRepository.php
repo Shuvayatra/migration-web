@@ -90,6 +90,15 @@ class QuestionRepository implements QuestionRepositoryInterface
      */
     public function latest($filter)
     {
-        return $this->question->with('tags')->get();
+        $filter = array_only($filter, ['updated_at']);
+        $query  = $this->question->with('tags')->where(
+            function ($q) use ($filter) {
+                foreach ($filter as $key => $value) {
+                    $q->where($key, '>', $value);
+                }
+            }
+        );
+
+        return $query->get();
     }
 }

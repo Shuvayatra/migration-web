@@ -154,7 +154,10 @@ class QuestionService
     public function latest($filter)
     {
         $questionArray = [];
-        $questions     = $this->question->latest($filter);
+        if (isset($filter['last_updated'])) {
+            $filter['updated_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
+        }
+        $questions = $this->question->latest($filter);
         foreach ($questions as $question) {
             $questionArray[] = $this->buildQuestion($question);
         }
