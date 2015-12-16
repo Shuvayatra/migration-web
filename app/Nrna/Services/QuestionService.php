@@ -148,12 +148,13 @@ class QuestionService
     }
 
     /**
+     * @param $filter
      * @return array
      */
-    public function latest()
+    public function latest($filter)
     {
         $questionArray = [];
-        $questions     = $this->question->latest();
+        $questions     = $this->question->latest($filter);
         foreach ($questions as $question) {
             $questionArray[] = $this->buildQuestion($question);
         }

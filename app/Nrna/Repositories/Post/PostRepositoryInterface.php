@@ -35,6 +35,14 @@ interface PostRepositoryInterface
     public function update($data);
 
     /**
+     *
+     * @param $filter
+     * @return Collection
+     * @internal param $data
+     */
+    public function latest($filter);
+
+    /**
      * @param $id
      * @return int
      */

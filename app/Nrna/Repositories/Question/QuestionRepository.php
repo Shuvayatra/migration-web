@@ -88,7 +88,7 @@ class QuestionRepository implements QuestionRepositoryInterface
      * get latest question with tags
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function latest()
+    public function latest($filter)
     {
         return $this->question->with('tags')->get();
     }

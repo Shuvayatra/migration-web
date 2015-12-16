@@ -9,6 +9,7 @@
                 <tr>
                     <th>S.No</th>
                     <th>Title</th>
+                    <th>Stage</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -18,12 +19,13 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td>{{ $item->metadata->title }}
+                    <td><a href="{{route('post.show',$item->id)}}">{{ $item->metadata->title }}</a>
                         <span class="label label-info pull-right">{{$item->metadata->type}}</span>
                         @if(isset($item->metadata->data->audio))
                             <a target="_blank" class="pull-right" href="{{$item->metadata->data->audio}}">play</a>
                         @endif
                     </td>
+                    <td>{{$item->metadata->stage}}</td>
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>

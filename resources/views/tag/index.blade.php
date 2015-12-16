@@ -15,7 +15,7 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/tag', $item->id) }}">{{ $item->title }}</a></td>
+                    <td>{{ $item->title }}</td>
 
                     <td>
                         <a href="{{ route('tag.edit', $item->id) }}">

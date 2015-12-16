@@ -2,5 +2,5 @@
 
 return [
     'en'=>'English',
-    'np'=>'Nepali',
+    'ne'=>'Nepali',
 ];
