@@ -1,5 +1,5 @@
 <?php
-
+use App\Nrna\Libraries\MP3File;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -23,7 +23,7 @@ $router->post('auth/register', 'Auth\AuthController@postRegister');
 $router->resource('post', 'Post\\PostController');
 $router->resource('question', 'Question\\QuestionController');
 $router->resource('tag', 'Tag\\TagController');
-$router->get('/home',['as' => 'home', 'uses' => 'Post\PostController@index']);
+$router->get('/home', ['as' => 'home', 'uses' => 'Post\PostController@index']);
 $router->resource('country', 'Country\\CountryController');
 
 $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

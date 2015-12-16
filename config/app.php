@@ -38,6 +38,7 @@ $providers      = [
     App\Providers\RepositoryServiceProvider::class,
     Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
     Collective\Html\HtmlServiceProvider::class,
+    Alaouy\Youtube\YoutubeServiceProvider::class,
 
 ];
 $localProviders = [

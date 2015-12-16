@@ -74,6 +74,8 @@ class Post extends Model
             $metaData->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metaData->data->audio);
         }
 
+        $metaData->source = urldecode($metaData->source);
+
         return $metaData;
     }
 
@@ -91,6 +93,16 @@ class Post extends Model
         }
 
         return '';
+    }
+
+    /**
+     * get audio name
+     *
+     * @return array
+     */
+    public function getAudioPathAttribute()
+    {
+        return sprintf('%s/%s', public_path(Self::UPLOAD_PATH), $this->audioName);
     }
 
     /**

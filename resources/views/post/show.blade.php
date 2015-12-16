@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong>{{$post->metadata->title}} </strong>
+                    <strong>{{$post->metadata->title}}</strong>
                     <span class="pull pull-right"><a href="{{route('post.edit',$post->id)}}">Edit</a></span>
                 </div>
                 <div class="panel-body">
@@ -17,7 +17,15 @@
                         @foreach($post->metadata as $title=>$metadata)
                         <tr>
                             <th class="head">{{ucfirst($title)}}</th>
-                            <td>@if(!is_object($metadata)) {{$metadata }} @else @foreach($metadata as $key=>$value) {!!$value!!} <br> @endforeach @endif</td>
+                            <td>@if(!is_object($metadata)) {{$metadata }}
+                                @else
+                                    @foreach($metadata as $key=>$value)
+                                        @if($value != '')
+                                         {!!$value!!} <br>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                         <tr><th>Tags</th>

@@ -3,8 +3,8 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
-use Carbon\Carbon;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Contracts\Logging\Log;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Filesystem\Filesystem;
 
@@ -35,6 +35,18 @@ class PostService
      * @var Filesystem
      */
     private $file;
+    /**
+     * @var YoutubeService
+     */
+    private $youtube;
+    /**
+     * @var AudioService
+     */
+    private $audio;
+    /**
+     * @var Log
+     */
+    private $logger;
 
     /**
      * constructor
@@ -42,14 +54,27 @@ class PostService
      * @param TagService              $tag
      * @param DatabaseManager         $database
      * @param Filesystem              $file
+     * @param YoutubeService          $youtube
+     * @param AudioService            $audio
+     * @param Log                     $logger
      */
-    function __construct(PostRepositoryInterface $post, TagService $tag, DatabaseManager $database, Filesystem $file)
-    {
+    function __construct(
+        PostRepositoryInterface $post,
+        TagService $tag,
+        DatabaseManager $database,
+        Filesystem $file,
+        YoutubeService $youtube,
+        AudioService $audio,
+        Log $logger
+    ) {
         $this->uploadPath = public_path(Post::UPLOAD_PATH);
         $this->post       = $post;
         $this->tag        = $tag;
         $this->database   = $database;
         $this->file       = $file;
+        $this->youtube    = $youtube;
+        $this->audio      = $audio;
+        $this->logger     = $logger;
     }
 
     /**
@@ -66,8 +91,15 @@ class PostService
         $this->database->beginTransaction();
         try {
             if ($formData['metadata']['type'] === 'audio') {
-                $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
+                $formData['metadata']['data']['audio']    = $this->upload($formData['metadata']['data']['audio']);
+                $formData['metadata']['data']['duration'] = $this->audio->getDuration(
+                    $this->getAudioFilePath($formData['metadata']['data']['audio'])
+                );
             }
+            if ($formData['metadata']['type'] === 'video') {
+                $formData = $this->getVideoData($formData);
+            }
+
             $post = $this->post->save($formData);
             if (!$post) {
                 return false;
@@ -79,6 +111,7 @@ class PostService
             return $post;
 
         } catch (\Exception $e) {
+            $this->logger->error($e);
             $this->database->rollback();
         }
         $this->database->rollback();
@@ -126,8 +159,15 @@ class PostService
         try {
             $post = $this->find($id);
             if ($formData['metadata']['type'] === 'audio' && isset($formData['metadata']['data']['audio'])) {
-                $formData['metadata']['data']['audio'] = $this->upload($formData['metadata']['data']['audio']);
-                $this->file->delete(sprintf('%s/%s', $this->uploadPath, $post->audioName));
+                $formData['metadata']['data']['audio']    = $this->upload($formData['metadata']['data']['audio']);
+                $formData['metadata']['data']['duration'] = $this->audio->getDuration(
+                    $this->getAudioFilePath($formData['metadata']['data']['audio'])
+                );
+                $this->file->delete($post->audioPath);
+            }
+
+            if ($formData['metadata']['type'] === 'video') {
+                $formData = $this->getVideoData($formData);
             }
 
             if (!$post->update($formData)) {
@@ -156,7 +196,7 @@ class PostService
     {
         $post = $this->find($id);
         if ($this->post->delete($id)) {
-            $this->file->delete(sprintf('%s/%s', $this->uploadPath, $post->audioName));
+            $this->file->delete($post->audioPath);
 
             return true;
         }
@@ -234,6 +274,29 @@ class PostService
         if (isset($formData['question'])) {
             $post->questions()->sync($formData['question']);
         }
+    }
+
+    /**
+     * @param $formData
+     * @return mixed
+     */
+    protected function getVideoData($formData)
+    {
+        $videoInformation             = $this->youtube->getVideoInfo(
+            $formData['metadata']['data']['media_url']
+        );
+        $formData['metadata']['data'] = array_merge($formData['metadata']['data'], $videoInformation);
+
+        return $formData;
+    }
+
+    /**
+     * @param $fileName
+     * @return string
+     */
+    protected function getAudioFilePath($fileName)
+    {
+        return sprintf('%s/%s', $this->uploadPath, $fileName);
     }
 
 }
