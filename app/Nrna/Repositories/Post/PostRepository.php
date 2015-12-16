@@ -53,7 +53,7 @@ class PostRepository implements PostRepositoryInterface
      */
     public function find($id)
     {
-        return $this->post->findOrFail($id);
+        return $this->post->with('tags', 'questions', 'countries')->findOrFail($id);
     }
 
     /**
@@ -74,11 +74,22 @@ class PostRepository implements PostRepositoryInterface
         return $this->post->destroy($id);
     }
 
+
     /**
+     * @param $filter
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function latest()
+    public function latest($filter)
     {
-        return $this->post->with('tags', 'questions', 'countries')->get();
+        $filter = array_only($filter, ['updated_at']);
+        $query  = $this->post->with('tags', 'questions', 'countries')->where(
+            function ($q) use ($filter) {
+                foreach ($filter as $key => $value) {
+                    $q->where($key, '>', $value);
+                }
+            }
+        );
+
+        return $query->get();
     }
 }

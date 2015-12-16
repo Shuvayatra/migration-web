@@ -3,6 +3,7 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\DatabaseManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Filesystem\Filesystem;
@@ -180,12 +181,16 @@ class PostService
     }
 
     /**
+     * @param $filter
      * @return array
      */
-    public function latest()
+    public function latest($filter)
     {
         $postArray = [];
-        $posts     = $this->post->latest();
+        if (isset($filter['last_updated'])) {
+            $filter['updated_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
+        }
+        $posts = $this->post->latest($filter);
         foreach ($posts as $post) {
             $postArray[] = $this->buildPost($post);
         }

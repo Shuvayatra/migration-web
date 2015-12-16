@@ -201,7 +201,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Collective\Html\FormFacade::class,
         'HTML'      => Collective\Html\HtmlFacade::class,
-        'Helpers'   => App\Nrna\Libraries\Helpers::class
+        'Helpers'   => App\Nrna\Libraries\Helpers::class,
+        'Carbon'    => Carbon\Carbon::class
     ],
 
 ];

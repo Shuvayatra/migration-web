@@ -1,13 +1,6 @@
 <?php
 namespace App\Nrna\Services;
 
-use App\Nrna\Repositories\Country\CountryRepositoryInterface;
-use Illuminate\Contracts\Filesystem\Factory as Storage;
-use Illuminate\Http\Request;
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 
 /**
  * Class ApiService
@@ -42,12 +35,14 @@ class ApiService
 
     /**
      * gets latest posts,country,question
+     * @param array $filter
+     * @return array|bool
      */
-    public function latest()
+    public function latest($filter = [])
     {
         try {
-            $data['posts']     = $this->post->latest();
-            $data['questions'] = $this->question->latest();
+            $data['posts']     = $this->post->latest($filter);
+            $data['questions'] = $this->question->latest($filter);
             $data['countries'] = $this->country->latest();
 
             return $data;

@@ -44,4 +44,10 @@ interface QuestionRepositoryInterface
      * @return array
      */
     public function lists();
+
+    /**
+     * @param $filter
+     * @return Collection
+     */
+    public function latest($filter);
 }
