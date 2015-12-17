@@ -26,7 +26,7 @@ class CountryRequest extends Request
         $rules = [
             'name'  => 'required',
             'code'  => 'required',
-            'image' => 'required|mimes:png'
+            'image' => 'required|mimes:png,jpeg,png,bmp,gif,jpg'
         ];
 
         if ($this->isMethod('PATCH')) {

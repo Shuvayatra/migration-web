@@ -143,8 +143,15 @@ class CountryService
      */
     public function latest()
     {
-        $countries = $this->country->getAll()->toArray();
+        $data      = [];
+        $countries = $this->country->getAll();
+        foreach ($countries as $country) {
+            $countryArray               = $country->toArray();
+            $countryArray['created_at'] = $country->created_at->timestamp;
+            $countryArray['updated_at'] = $country->updated_at->timestamp;
+            $data []                    = $countryArray;
+        }
 
-        return $countries;
+        return $data;
     }
 }
