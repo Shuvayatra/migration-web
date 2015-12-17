@@ -259,7 +259,7 @@ class PostService
         }
         $postArray['question_ids'] = $questions;
 
-        return array_merge($postArray, (array) $post->metadata);
+        return array_merge($postArray, (array) $post->apiMetadata);
     }
 
     /**

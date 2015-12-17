@@ -80,6 +80,31 @@ class Post extends Model
     }
 
     /**
+     * Convert json metadata to array
+     *
+     * @param $metaData
+     * @return array
+     */
+    public function getApiMetadataAttribute()
+    {
+        $metadata = json_decode(json_encode($this->metadata), true);
+
+        if ($metadata['type'] == 'text') {
+            $metadata['data'] = array_only($metadata['data'], ['content']);
+        }
+        if ($metadata['type'] == 'video') {
+            $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
+        }
+
+        if ($metadata['type'] == 'audio') {
+            $metadata['data']['media_url'] = $metadata['data']['audio'];
+            $metadata['data']              = array_only($metadata['data'], ['media_url', 'duration']);
+        }
+
+        return $metadata;
+    }
+
+    /**
      * get audio name
      *
      * @return array
@@ -87,7 +112,7 @@ class Post extends Model
     public function getAudioNameAttribute()
     {
         if (isset($this->metadata->data->audio)) {
-            $array = explode('/', $this->metadata->data->audio);
+            $array = explode(' / ', $this->metadata->data->audio);
 
             return end($array);
         }
@@ -102,7 +127,7 @@ class Post extends Model
      */
     public function getAudioPathAttribute()
     {
-        return sprintf('%s/%s', public_path(Self::UPLOAD_PATH), $this->audioName);
+        return sprintf(' % s /%s', public_path(Self::UPLOAD_PATH), $this->audioName);
     }
 
     /**
