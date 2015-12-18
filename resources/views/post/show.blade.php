@@ -28,6 +28,16 @@
                             </td>
                         </tr>
                     @endforeach
+                        <tr>
+                            <th>Created At</th>
+                            <td>{{$post->created_at}}</td>
+                        </tr>
+                        @if($post->created_at->timestamp != $post->updated_at->timestamp)
+                        <tr>
+                            <th>Updated At</th>
+                            <td>{{$post->updated_at}}</td>
+                        </tr>
+                        @endif
                         <tr><th>Tags</th>
                             <td><ul>
                                 @foreach($post->tags as $tag)
