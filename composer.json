@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "dimsav/laravel-translatable": "^5.4",
         "rap2hpoutre/laravel-log-viewer": "0.1.*",
-        "alaouy/youtube": "dev-master"
+        "alaouy/youtube": "dev-master",
+        "chrisbjr/api-guard": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
