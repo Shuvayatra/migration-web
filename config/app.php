@@ -39,6 +39,7 @@ $providers      = [
     Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
     Collective\Html\HtmlServiceProvider::class,
     Alaouy\Youtube\YoutubeServiceProvider::class,
+    Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
 
 ];
 $localProviders = [
