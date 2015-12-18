@@ -20,16 +20,18 @@ class YoutubeService
         $result              = [];
         $result['duration']  = '';
         $result['thumbnail'] = '';
+        $key                 = trim($key);
         try {
             if (filter_var($key, FILTER_VALIDATE_URL)) {
                 $array = explode('=', $key);
                 $key   = end($array);
             }
+
             $video = \Youtube::getVideoInfo($key);
             $start = new \DateTime('@0'); // Unix epoch
             $start->add(new \DateInterval($video->contentDetails->duration));
             $result['duration']  = $start->format('H:i:s');
-            $result['thumbnail'] = $video->snippet->thumbnails->standard->url;
+            $result['thumbnail'] = isset($video->snippet->thumbnails->standard->url) ? $video->snippet->thumbnails->standard->url : $video->snippet->thumbnails->high->url;
         } catch (\Exception $e) {
             return $result;
         }
