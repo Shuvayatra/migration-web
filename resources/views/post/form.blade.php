@@ -86,7 +86,7 @@ $questions = $questionService->getList();
 <div class="form-group {{ $errors->has('stage') ? 'has-error' : ''}}">
     {!! Form::label('stage', 'Stage: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::select('metadata[stage]', config('stage'), null, ['class' => 'form-control']) !!}
+        {!! Form::select('metadata[stage][]', config('stage'), null, ['class' => 'form-control','multiple'=>true]) !!}
         {!! $errors->first('metadata.stage', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

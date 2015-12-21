@@ -17,13 +17,14 @@
                         @foreach($post->metadata as $title=>$metadata)
                         <tr>
                             <th class="head">{{ucfirst($title)}}</th>
-                            <td>@if(!is_object($metadata)) {{$metadata }}
-                                @else
+                            <td>@if(is_object($metadata) || is_array($metadata))
                                     @foreach($metadata as $key=>$value)
                                         @if($value != '')
-                                         {!!$value!!} <br>
+                                            {!!$value!!} <br>
                                         @endif
                                     @endforeach
+                                @else
+                                    {{$metadata }}
                                 @endif
                             </td>
                         </tr>
