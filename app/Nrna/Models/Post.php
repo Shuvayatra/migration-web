@@ -89,6 +89,9 @@ class Post extends Model
     {
         $metadata = json_decode(json_encode($this->metadata), true);
 
+        if (!is_array($metadata['stage'])) {
+            $metadata['stage'] = (array) $metadata['stage'];
+        }
         if ($metadata['type'] == 'text') {
             $metadata['data'] = array_only($metadata['data'], ['content']);
         }

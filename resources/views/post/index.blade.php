@@ -25,7 +25,18 @@
                             <a target="_blank" class="pull-right" href="{{$item->metadata->data->audio}}">play</a>
                         @endif
                     </td>
-                    <td>{{$item->metadata->stage}}</td>
+                    <td>
+                        @if(is_array($item->metadata->stage))
+                            @foreach($item->metadata->stage as $key=>$value)
+                                @if($value != '')
+                                    {!!$value!!} <br>
+                                @endif
+                            @endforeach
+                        @else
+                            {{$item->metadata->stage}}
+                        @endif
+
+                    </td>
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>

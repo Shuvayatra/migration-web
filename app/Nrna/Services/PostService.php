@@ -257,7 +257,12 @@ class PostService
         foreach ($post->questions as $question) {
             $questions[] = $question->id;
         }
-        $postArray['question_ids'] = $questions;
+
+        $countries = [];
+        foreach ($post->countries as $country) {
+            $countries[] = $country->id;
+        }
+        $postArray['country_ids'] = $countries;
 
         return array_merge($postArray, (array) $post->apiMetadata);
     }
