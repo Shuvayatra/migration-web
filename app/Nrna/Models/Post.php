@@ -115,8 +115,8 @@ class Post extends Model
     public function getAudioNameAttribute()
     {
         if (isset($this->metadata->data->audio)) {
-            $array = explode(' / ', $this->metadata->data->audio);
-
+            $array = explode("/", $this->metadata->data->audio);
+            
             return end($array);
         }
 

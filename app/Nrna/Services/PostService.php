@@ -164,6 +164,9 @@ class PostService
                     $this->getAudioFilePath($formData['metadata']['data']['audio'])
                 );
                 $this->file->delete($post->audioPath);
+            } else {
+                $formData['metadata']['data']['audio']    = $post->audioName;
+                $formData['metadata']['data']['duration'] = $post->metadata->data->duration;
             }
 
             if ($formData['metadata']['type'] === 'video') {
