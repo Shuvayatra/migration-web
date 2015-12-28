@@ -21,4 +21,8 @@ $(function () {
         var field = $(this).val();
         $('.type-' + field).show();
     });
+    $(document).on('click', '.delete', function (e) {
+        e.preventDefault();
+        $(this).parent().remove();
+    });
 });

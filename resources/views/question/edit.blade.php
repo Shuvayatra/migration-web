@@ -4,11 +4,10 @@
 
     <h1>Edit Question</h1>
     <hr/>
-
     {!! Form::model($question, [
         'method' => 'PATCH',
         'route' => ['question.update', $question->id],
-        'class' => 'form-horizontal'
+        'class' => 'form-horizontal question-form'
     ]) !!}
      @include('question.form')
     <div class="form-group">

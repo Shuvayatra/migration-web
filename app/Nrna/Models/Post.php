@@ -61,6 +61,14 @@ class Post extends Model
     }
 
     /**
+     * The answers that belongs to post.
+     */
+    public function answers()
+    {
+        return $this->belongsToMany('App\Nrna\Models\Answer');
+    }
+
+    /**
      * Convert json metadata to array
      *
      * @param $metaData
@@ -116,7 +124,7 @@ class Post extends Model
     {
         if (isset($this->metadata->data->audio)) {
             $array = explode("/", $this->metadata->data->audio);
-            
+
             return end($array);
         }
 

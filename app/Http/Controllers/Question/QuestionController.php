@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Question;
 
-use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\QuestionService;
 use App\Http\Requests\QuestionRequest;
@@ -129,6 +129,20 @@ class QuestionController extends Controller
         }
 
         return redirect('question')->with('error', 'Error deleting Question !');
+    }
+
+    /**
+     * @param Requests $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function questionAnswers(Request $request)
+    {
+        if (!$request->has('question')) {
+            return response('error');
+        }
+        $question = $this->question->find($request->get('question'));
+
+        return view('question.partials.answers', compact('question'));
     }
 
 }

@@ -1,18 +1,18 @@
 <?php
-namespace App\Nrna\Repositories\Question;
+namespace App\Nrna\Repositories\Answer;
 
 
 /**
- * Class QuestionRepositoryInterface
- * @package App\Nrna\Repository\Question
+ * Class AnswerRepositoryInterface
+ * @package App\Nrna\Repository\Answer
  */
-interface QuestionRepositoryInterface
+interface AnswerRepositoryInterface
 {
 
     /**
-     * Save Question
+     * Save Answer
      * @param $data
-     * @return Question
+     * @return Answer
      */
     public function save($data);
 
@@ -24,7 +24,7 @@ interface QuestionRepositoryInterface
 
     /**
      * @param $id
-     * @return Question
+     * @return Answer
      */
     public function find($id);
 
@@ -41,19 +41,9 @@ interface QuestionRepositoryInterface
     public function delete($id);
 
     /**
-     * @return array
-     */
-    public function lists();
-
-    /**
+     * get latest answer
      * @param $filter
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function latest($filter);
-
-    /**
-     * @param $criteria
-     * @return Collection
-     */
-    public function findByKey($criteria);
 }

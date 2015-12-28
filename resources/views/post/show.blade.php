@@ -55,7 +55,15 @@
                                 @endforeach
                                 </ul>
                             </td>
-                            </tr>
+                        </tr>
+                        <tr><th>Answers</th>
+                            <td><ul>
+                                    @foreach($post->answers as $answer)
+                                        <li>{{$answer->title}}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                        </tr>
                         <tr><th>Country</th>
                             <td><ul>
                                 @foreach($post->countries as $country)

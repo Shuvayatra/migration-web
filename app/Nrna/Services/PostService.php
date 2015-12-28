@@ -158,16 +158,18 @@ class PostService
         $this->database->beginTransaction();
         try {
             $post = $this->find($id);
+            if ($formData['metadata']['type'] === 'audio') {
+                $formData['metadata']['data']['audio']    = $post->audioName;
+                $formData['metadata']['data']['duration'] = $post->metadata->data->duration;
+            }
             if ($formData['metadata']['type'] === 'audio' && isset($formData['metadata']['data']['audio'])) {
                 $formData['metadata']['data']['audio']    = $this->upload($formData['metadata']['data']['audio']);
                 $formData['metadata']['data']['duration'] = $this->audio->getDuration(
                     $this->getAudioFilePath($formData['metadata']['data']['audio'])
                 );
                 $this->file->delete($post->audioPath);
-            } else {
-                $formData['metadata']['data']['audio']    = $post->audioName;
-                $formData['metadata']['data']['duration'] = $post->metadata->data->duration;
             }
+
 
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
@@ -182,6 +184,7 @@ class PostService
 
             return $post;
         } catch (\Exception $e) {
+            $this->logger->error($e);
             $this->database->rollback();
 
             return false;
@@ -230,10 +233,7 @@ class PostService
     public function latest($filter)
     {
         $postArray = [];
-        if (isset($filter['last_updated'])) {
-            $filter['updated_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
-        }
-        $posts = $this->post->latest($filter);
+        $posts     = $this->post->latest($filter);
         foreach ($posts as $post) {
             $postArray[] = $this->buildPost($post);
         }
@@ -247,27 +247,16 @@ class PostService
      */
     public function buildPost(Post $post)
     {
-        $postArray['id']         = $post->id;
-        $postArray['created_at'] = $post->created_at->timestamp;
-        $postArray['updated_at'] = $post->updated_at->timestamp;
-        $tags                    = [];
-        foreach ($post->tags as $tag) {
-            $tags[] = $tag->title;
-        }
-        $postArray['tags'] = $tags;
+        $postArray['id']           = $post->id;
+        $postArray                 = array_merge($postArray, (array) $post->apiMetadata);
+        $postArray['tags']         = $post->tags->lists('title')->toArray();
+        $postArray['question_ids'] = $post->questions->lists('id')->toArray();
+        $postArray['country_ids']  = $post->countries->lists('id')->toArray();
+        $postArray['answer_ids']   = $post->answers->lists('id')->toArray();
+        $postArray['created_at']   = $post->created_at->timestamp;
+        $postArray['updated_at']   = $post->updated_at->timestamp;
 
-        $questions = [];
-        foreach ($post->questions as $question) {
-            $questions[] = $question->id;
-        }
-
-        $countries = [];
-        foreach ($post->countries as $country) {
-            $countries[] = $country->id;
-        }
-        $postArray['country_ids'] = $countries;
-
-        return array_merge($postArray, (array) $post->apiMetadata);
+        return $postArray;
     }
 
     /**
@@ -280,7 +269,10 @@ class PostService
             $post->countries()->sync($formData['country']);
         }
         if (isset($formData['question'])) {
-            $post->questions()->sync($formData['question']);
+            $questions = $this->getQuestionsData($formData['question']);
+            $answers   = $this->getAnswerData($formData['question']);
+            $post->questions()->sync($questions);
+            $post->answers()->sync($answers);
         }
     }
 
@@ -305,6 +297,38 @@ class PostService
     protected function getAudioFilePath($fileName)
     {
         return sprintf('%s/%s', $this->uploadPath, $fileName);
+    }
+
+    /**
+     * @param $questions
+     * @return array
+     */
+    protected function getQuestionsData($questions)
+    {
+        $questionArray = [];
+        foreach ($questions as $question => $answer) {
+            if (!is_array($answer)) {
+                $questionArray [] = $answer;
+            }
+        }
+
+        return $questionArray;
+    }
+
+    /**
+     * @param $questions
+     * @return array
+     */
+    protected function getAnswerData($questions)
+    {
+        $answerArray = [];
+        foreach ($questions as $question => $answer) {
+            if (is_array($answer)) {
+                $answerArray [] = array_keys($answer['answer']);
+            }
+        }
+
+        return array_flatten($answerArray);
     }
 
 }
