@@ -1,5 +1,6 @@
 <?php
 use App\Nrna\Libraries\MP3File;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -25,5 +26,12 @@ $router->resource('question', 'Question\\QuestionController');
 $router->resource('tag', 'Tag\\TagController');
 $router->get('/home', ['as' => 'home', 'uses' => 'Post\PostController@index']);
 $router->resource('country', 'Country\\CountryController');
+$router->resource('answer', 'Answer\\AnswerController');
 
 $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+//ajax
+$router->get(
+    'ajax/question/answers',
+    ['as' => 'ajax.question.answers', 'uses' => 'Question\QuestionController@questionAnswers']
+);

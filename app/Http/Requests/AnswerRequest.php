@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class PostRequest extends Request
+class AnswerRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,6 @@ class PostRequest extends Request
      */
     public function rules()
     {
-        return [
-            'metadata.title' => 'required',
-            'metadata.stage' => 'required',
-            'metadata.type'  => 'required',
-        ];
+        return ['title' => 'required', 'question_id' => 'required'];
     }
 }

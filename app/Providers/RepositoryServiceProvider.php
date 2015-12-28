@@ -40,5 +40,9 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Post\PostRepositoryInterface',
             'App\Nrna\Repositories\Post\PostRepository'
         );
+        $this->app->bind(
+            'App\Nrna\Repositories\Answer\AnswerRepositoryInterface',
+            'App\Nrna\Repositories\Answer\AnswerRepository'
+        );
     }
 }

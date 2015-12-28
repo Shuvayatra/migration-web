@@ -15,7 +15,7 @@
             </thead>
             <tbody>
             {{-- */$x=0;/* --}}
-            @foreach($posts as $item)
+            @forelse($posts as $item)
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
@@ -26,15 +26,7 @@
                         @endif
                     </td>
                     <td>
-                        @if(is_array($item->metadata->stage))
-                            @foreach($item->metadata->stage as $key=>$value)
-                                @if($value != '')
-                                    {!!$value!!} <br>
-                                @endif
-                            @endforeach
-                        @else
-                            {{$item->metadata->stage}}
-                        @endif
+
 
                     </td>
                     <td>
@@ -50,7 +42,9 @@
                         {!! Form::close() !!}
                     </td>
                 </tr>
-            @endforeach
+                @empty
+                    <tr><td colspan="4" align="center"> No Posts Available.</td></tr>
+            @endforelse
             </tbody>
         </table>
         <div class="pagination"> {!! $posts->render() !!} </div>

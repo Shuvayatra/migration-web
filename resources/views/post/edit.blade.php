@@ -8,7 +8,7 @@
     {!! Form::model($post, [
         'method' => 'PATCH',
         'route' => ['post.update', $post->id],
-        'class' => 'form-horizontal',
+        'class' => 'form-horizontal post-form',
         'novalidate' => 'novalidate',
         'files' => true
     ]) !!}

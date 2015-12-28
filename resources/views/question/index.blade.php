@@ -14,11 +14,11 @@
             </thead>
             <tbody>
             {{-- */$x=0;/* --}}
-            @foreach($questions as $item)
+            @forelse($questions as $item)
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td>{{ $item->metadata->title }}
+                    <td><a href="{{route('question.show',$item->id)}}">{{ $item->metadata->title }} </a>
                         <span class="label label-default pull-right">{{$item->metadata->language}}</span></td>
                     <td>{{ $item->metadata->stage }}</td>
                     <td>
@@ -34,7 +34,11 @@
                         {!! Form::close() !!}
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="4" align="center"> No question available.</td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
         <div class="pagination"> {!! $questions->render() !!} </div>

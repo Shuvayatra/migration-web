@@ -41,10 +41,10 @@ class QuestionRepository implements QuestionRepositoryInterface
     public function getAll($limit = null)
     {
         if (is_null($limit)) {
-            return $this->question->all();
+            return $this->question->orderBy('id', 'DESC')->all();
         }
 
-        return $this->question->paginate();
+        return $this->question->orderBy('id', 'DESC')->paginate();
     }
 
     /**
@@ -86,6 +86,7 @@ class QuestionRepository implements QuestionRepositoryInterface
 
     /**
      * get latest question with tags
+     * @param $filter
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function latest($filter)
@@ -100,5 +101,20 @@ class QuestionRepository implements QuestionRepositoryInterface
         );
 
         return $query->get();
+    }
+
+
+    /**
+     * find in query with key and value eg [id=>[1,2]]
+     *
+     * @param array $criteria
+     * @return Collection
+     */
+    public function findByKey($criteria)
+    {
+        $key    = key($criteria);
+        $values = $criteria[$key];
+
+        return $this->question->whereIn($key, $values)->get();
     }
 }

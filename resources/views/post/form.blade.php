@@ -1,11 +1,6 @@
 @section('css')
     <link href="{{asset('css/select2.min.css')}}" rel="stylesheet"/>
 @endsection
-@section('script')
-    <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/select2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
-@endsection
 <?php
 $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
@@ -17,7 +12,7 @@ $questions = $questionService->getList();
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
     {!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::text('metadata[title]', null, ['class' => 'form-control']) !!}
+        {!! Form::text('metadata[title]', null, ['class' => 'form-control required']) !!}
         {!! $errors->first('metadata.title', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -33,7 +28,7 @@ $questions = $questionService->getList();
     {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
         {!! Form::select('metadata[type]',[''=>'']+config('post_type'),null, ['class' =>
-        'form-control','id'=>'post_type']) !!}
+        'form-control required','id'=>'post_type']) !!}
         {!! $errors->first('metadata.type', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -86,7 +81,8 @@ $questions = $questionService->getList();
 <div class="form-group {{ $errors->has('stage') ? 'has-error' : ''}}">
     {!! Form::label('stage', 'Stage: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::select('metadata[stage][]', config('stage'), null, ['class' => 'form-control','multiple'=>true]) !!}
+        {!! Form::select('metadata[stage][]', config('stage'), null, ['class' => 'form-control
+        required','multiple'=>true]) !!}
         {!! $errors->first('metadata.stage', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -111,9 +107,57 @@ $questions = $questionService->getList();
 <div class="form-group {{ $errors->has('question') ? 'has-error' : ''}}">
     {!! Form::label('question', 'Question: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::select('question[]', $questions, isset($post)?$post->questions->lists('id')->toArray():null, ['class'
-        =>
-        'form-control','multiple'=>'']) !!}
+        {!! Form::select('question_select',[''=>''] + $questions->toArray(),null, ['class'=>'form-control
+        select-questions']) !!}
         {!! $errors->first('question', '<p class="help-block">:message</p>') !!}
+        <span class="help-block">selecting question will show answer below.</span>
     </div>
 </div>
+
+@if(old('question'))
+    <?php
+    $questions = empty(old('question')) ? [$post->questions] : old('question');
+    $j = 0;
+    ?>
+    @foreach($questions as $question => $answer)
+        @include('question.partials.answers')
+    @endforeach
+@endif
+@if(isset($post))
+    <?php
+    $questions = $post->questions;
+    $j = 0;
+    ?>
+    @foreach($questions as $question)
+        @include('question.partials.answers')
+    @endforeach
+@endif
+
+<div id="question_answers"></div>
+
+@section('script')
+    <script type="text/javascript" src="{{asset('js/jquery.validate.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
+    <script>
+        $(function () {
+            $('.post-form').validate();
+            $(".select-questions").on("change", function (e) {
+                var questions = $(this).val();
+                var url = '{{route('ajax.question.answers')}}'
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: {'question': questions},
+                    success: function (data) {
+                        $('#question_answers').append(data);
+                    },
+                    error: function () {
+                        alert('oops error loading answers.')
+                    }
+                });
+            });
+        });
+    </script>
+@endsection

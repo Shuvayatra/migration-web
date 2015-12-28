@@ -1,11 +1,11 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\Answer;
 use App\Nrna\Models\Question;
 use App\Nrna\Repositories\Question\QuestionRepositoryInterface;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Contracts\Logging\Log;
 
 
 /**
@@ -26,18 +26,24 @@ class QuestionService
      * @var DatabaseManager
      */
     private $database;
+    /**
+     * @var Log
+     */
+    private $logger;
 
     /**
      * constructor
      * @param QuestionRepositoryInterface $question
      * @param TagService                  $tag
      * @param DatabaseManager             $database
+     * @param Log                         $logger
      */
-    function __construct(QuestionRepositoryInterface $question, TagService $tag, DatabaseManager $database)
+    function __construct(QuestionRepositoryInterface $question, TagService $tag, DatabaseManager $database, Log $logger)
     {
         $this->question = $question;
         $this->tag      = $tag;
         $this->database = $database;
+        $this->logger   = $logger;
     }
 
     /**
@@ -56,13 +62,16 @@ class QuestionService
             if (!$question) {
                 return false;
             }
+
+            $this->saveAnswers($formData, $question);
+
             $question->tags()->sync($tags);
             $this->database->commit();
 
             return $question;
 
         } catch (\Exception $e) {
-            dd($e);
+            $this->logger->error($e);
             $this->database->rollback();
 
             return false;
@@ -116,6 +125,7 @@ class QuestionService
             }
 
             $question->tags()->sync($tags);
+            $this->saveAnswers($formData, $question);
             $this->database->commit();
 
             return $question;
@@ -154,10 +164,7 @@ class QuestionService
     public function latest($filter)
     {
         $questionArray = [];
-        if (isset($filter['last_updated'])) {
-            $filter['updated_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
-        }
-        $questions = $this->question->latest($filter);
+        $questions     = $this->question->latest($filter);
         foreach ($questions as $question) {
             $questionArray[] = $this->buildQuestion($question);
         }
@@ -166,33 +173,45 @@ class QuestionService
     }
 
     /**
+     * question format for api
      * @param Question $question
      * @return array
      */
     public function buildQuestion(Question $question)
     {
         $questionArray['id']         = $question->id;
+        $questionArray               = array_merge($questionArray, (array) $question->metadata);
+        $questionArray['tags']       = $question->tags->lists('id')->toArray();
         $questionArray['created_at'] = $question->created_at->timestamp;
         $questionArray['updated_at'] = $question->updated_at->timestamp;
-        $tags                        = [];
-        foreach ($question->tags as $tag) {
-            $tags[] = $tag->title;
-        }
-        $questionArray['tags'] = $tags;
 
-        return array_merge($questionArray, (array) $question->metadata);
+        return $questionArray;
     }
 
     /**
+     * save answers
      * @param $formData
      * @param $question
      */
-    protected function updateRelation($formData, $question)
+    protected function saveAnswers($formData, $question)
     {
-        if (isset($formData['tag'])) {
-            $tags = $this->tag->createOrGet($formData['tag']);
-            $question->tags()->sync($tags);
+        if (isset($formData['answer'])) {
+            $answers = [];
+            foreach ($formData['answer'] as $answer) {
+                $answers [] = new Answer($answer);
+            }
+            $question->answers()->saveMany($answers);
         }
+    }
+
+    /**
+     * find question by answers ids
+     * @param $ids
+     * @return Collection
+     */
+    public function findByIds($ids)
+    {
+        return $this->question->findByKey(['id' => $ids]);
     }
 
 }

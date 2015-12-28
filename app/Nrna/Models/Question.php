@@ -44,6 +44,14 @@ class Question extends Model
     }
 
     /**
+     * Get the answers for the question.
+     */
+    public function answers()
+    {
+        return $this->hasMany('App\Nrna\Models\Answer');
+    }
+
+    /**
      * Boot the  model
      * Attach event listener to add user creating a model
      *
