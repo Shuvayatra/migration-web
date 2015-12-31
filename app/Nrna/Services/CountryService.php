@@ -4,10 +4,8 @@ namespace App\Nrna\Services;
 use App\Nrna\Models\Country;
 use App\Nrna\Repositories\Country\CountryRepositoryInterface;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
-use Illuminate\Http\Request;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 
 /**
  * Class CountryService
@@ -38,7 +36,7 @@ class CountryService
      * @param Storage                    $storage
      * @param Filesystem                 $file
      */
-    function __construct(CountryRepositoryInterface $country, Storage $storage, Filesystem $file)
+    public function __construct(CountryRepositoryInterface $country, Storage $storage, Filesystem $file)
     {
         $this->country    = $country;
         $this->storage    = $storage;
@@ -61,9 +59,8 @@ class CountryService
         return $this->country->save($formData);
     }
 
-
     /**
-     * @param int $limit
+     * @param  int        $limit
      * @return Collection
      */
     public function all($limit = 15)
@@ -115,14 +112,14 @@ class CountryService
     }
 
     /**
-     * @param UploadedFile $file
+     * @param  UploadedFile $file
      * @return string
      */
     public function upload(UploadedFile $file)
     {
         $fileName    = $file->getClientOriginalName();
         $file_type   = $file->getClientOriginalExtension();
-        $newFileName = sprintf("%s.%s", sha1($fileName . time()), $file_type);
+        $newFileName = sprintf("%s.%s", sha1($fileName.time()), $file_type);
         if ($file->move($this->uploadPath, $newFileName)) {
             return $newFileName;
         }

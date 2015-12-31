@@ -18,11 +18,10 @@ class PostRepository implements PostRepositoryInterface
      * constructor
      * @param Post $post
      */
-    function __construct(Post $post)
+    public function __construct(Post $post)
     {
         $this->post = $post;
     }
-
 
     /**
      * Save Post
@@ -35,7 +34,7 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param null $limit
+     * @param  null                                              $limit
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAll($limit = null)
@@ -74,7 +73,6 @@ class PostRepository implements PostRepositoryInterface
         return $this->post->destroy($id);
     }
 
-
     /**
      * @param $filter
      * @return \Illuminate\Database\Eloquent\Collection|static[]
@@ -91,5 +89,23 @@ class PostRepository implements PostRepositoryInterface
         );
 
         return $query->get();
+    }
+
+    /**
+     * @param $filter
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function deleted($filter)
+    {
+        $filter = array_only($filter, ['deleted_at']);
+        $query  = $this->post->onlyTrashed()->where(
+            function ($q) use ($filter) {
+                foreach ($filter as $key => $value) {
+                    $q->where($key, '>', $value);
+                }
+            }
+        );
+
+        return $query->get(['id', 'deleted_at']);
     }
 }

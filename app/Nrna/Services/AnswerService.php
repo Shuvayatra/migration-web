@@ -19,7 +19,7 @@ class AnswerService
      * constructor
      * @param AnswerRepositoryInterface $answer
      */
-    function __construct(AnswerRepositoryInterface $answer)
+    public function __construct(AnswerRepositoryInterface $answer)
     {
         $this->answer = $answer;
     }
@@ -34,7 +34,7 @@ class AnswerService
     }
 
     /**
-     * @param int $limit
+     * @param  int                                      $limit
      * @return \App\Nrna\Repositories\Answer\Collection
      */
     public function all($limit = 15)
@@ -83,7 +83,7 @@ class AnswerService
 
     /**
      * answer response format for api
-     * @param Answer $answer
+     * @param  Answer $answer
      * @return array
      */
     public function buildAnswer(Answer $answer)
@@ -97,4 +97,15 @@ class AnswerService
         return $answerArray;
     }
 
+    /**
+     * gets deleted answers
+     * @param $filter
+     * @return array
+     */
+    public function deleted($filter)
+    {
+        $posts = $this->answer->deleted($filter);
+
+        return $posts;
+    }
 }

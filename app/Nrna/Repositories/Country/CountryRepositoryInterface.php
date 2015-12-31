@@ -1,14 +1,12 @@
 <?php
 namespace App\Nrna\Repositories\Country;
 
-
 /**
  * Class CountryRepositoryInterface
  * @package App\Nrna\Repository\Country
  */
 interface CountryRepositoryInterface
 {
-
     /**
      * Save Country
      * @param $data

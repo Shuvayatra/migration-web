@@ -7,7 +7,7 @@ use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use EllipseSynergie\ApiResponse\Laravel\Response;
 use Illuminate\Http\Request;
 
-class LatestController extends ApiGuardController
+class ApiController extends ApiGuardController
 {
     /**
      * @var ApiService
@@ -15,7 +15,7 @@ class LatestController extends ApiGuardController
     private $api;
 
     protected $apiMethods = [
-        'index' => [
+        'getDeleted' => [
             'keyAuthentication' => false,
         ],
     ];
@@ -37,9 +37,9 @@ class LatestController extends ApiGuardController
      * @param  Request $request
      * @return json
      */
-    public function index(Request $request)
+    public function getDeleted(Request $request)
     {
-        $data = $this->api->latest($request->all());
+        $data = $this->api->deleted($request->all());
         if (!$data) {
             return $this->response->errorInternalError();
         }

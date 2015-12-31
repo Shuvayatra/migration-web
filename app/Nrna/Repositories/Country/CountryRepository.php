@@ -18,11 +18,10 @@ class CountryRepository implements CountryRepositoryInterface
      * constructor
      * @param Country $country
      */
-    function __construct(Country $country)
+    public function __construct(Country $country)
     {
         $this->country = $country;
     }
-
 
     /**
      * Save Country

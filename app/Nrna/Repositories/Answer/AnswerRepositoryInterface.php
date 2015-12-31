@@ -1,14 +1,12 @@
 <?php
 namespace App\Nrna\Repositories\Answer;
 
-
 /**
  * Class AnswerRepositoryInterface
  * @package App\Nrna\Repository\Answer
  */
 interface AnswerRepositoryInterface
 {
-
     /**
      * Save Answer
      * @param $data
@@ -46,4 +44,12 @@ interface AnswerRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function latest($filter);
+
+    /**
+     * gets deleted questions
+     *
+     * @param $filter
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function deleted($filter);
 }

@@ -2,5 +2,5 @@
 
 function _t($object, $key)
 {
-    return "" ;
+    return "";
 }

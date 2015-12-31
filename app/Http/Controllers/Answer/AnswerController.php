@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Answer;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Nrna\Models\Answer;
 use App\Nrna\Services\AnswerService;
 use Illuminate\Http\Request;
@@ -19,16 +17,15 @@ class AnswerController extends Controller
     /**
      * @param AnswerService $answer
      */
-    function __construct(AnswerService $answer)
+    public function __construct(AnswerService $answer)
     {
         $this->answer = $answer;
     }
 
-
     /**
      * Show the form for editing the specified answer.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function edit($id)
@@ -44,8 +41,8 @@ class AnswerController extends Controller
     /**
      * Update the specified answer in storage.
      *
-     * @param  int    $id
-     * @param Request $request
+     * @param  int      $id
+     * @param  Request  $request
      * @return Response
      */
     public function update($id, Request $request)
@@ -65,7 +62,7 @@ class AnswerController extends Controller
     /**
      * Remove the specified answer from storage.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function destroy($id)
@@ -76,5 +73,4 @@ class AnswerController extends Controller
 
         return redirect()->back()->with('success', 'Answer successfully deleted!');
     }
-
 }

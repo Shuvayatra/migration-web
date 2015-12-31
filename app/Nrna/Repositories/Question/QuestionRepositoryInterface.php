@@ -1,14 +1,12 @@
 <?php
 namespace App\Nrna\Repositories\Question;
 
-
 /**
  * Class QuestionRepositoryInterface
  * @package App\Nrna\Repository\Question
  */
 interface QuestionRepositoryInterface
 {
-
     /**
      * Save Question
      * @param $data
@@ -56,4 +54,12 @@ interface QuestionRepositoryInterface
      * @return Collection
      */
     public function findByKey($criteria);
+
+    /**
+     * gets deleted questions
+     *
+     * @param $filter
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function deleted($filter);
 }

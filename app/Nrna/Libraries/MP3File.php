@@ -126,8 +126,8 @@ class MP3File
             '2.5' => [11025, 12000, 8000],
         ];
         static $samples = [
-            1 => [1 => 384, 2 => 1152, 3 => 1152,], //MPEGv1,     Layers 1,2,3
-            2 => [1 => 384, 2 => 1152, 3 => 576,], //MPEGv2/2.5, Layers 1,2,3
+            1 => [1 => 384, 2 => 1152, 3 => 1152], //MPEGv1,     Layers 1,2,3
+            2 => [1 => 384, 2 => 1152, 3 => 576], //MPEGv2/2.5, Layers 1,2,3
         ];
         //$b0=ord($fourbytes[0]);//will always be 0xff
         $b1 = ord($fourbytes[1]);
@@ -179,8 +179,9 @@ class MP3File
     {
         if ($layer == 1) {
             return intval(((12 * $bitrate * 1000 / $sample_rate) + $padding_bit) * 4);
-        } else //layer 2, 3
-        {
+        } else {
+            //layer 2, 3
+
             return intval(((144 * $bitrate * 1000) / $sample_rate) + $padding_bit);
         }
     }

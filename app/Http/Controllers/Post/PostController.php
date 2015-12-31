@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Post;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\PostService;
 use App\Http\Requests\PostRequest;
-use Session;
 
 class PostController extends Controller
 {
@@ -19,12 +17,11 @@ class PostController extends Controller
      * constructor
      * @param PostService $post
      */
-    function __construct(PostService $post)
+    public function __construct(PostService $post)
     {
         $this->middleware('auth');
         $this->post = $post;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -51,7 +48,7 @@ class PostController extends Controller
     /**
      * Store a newly created.
      *
-     * @param PostRequest $request
+     * @param  PostRequest $request
      * @return Response
      */
     public function store(PostRequest $request)
@@ -66,7 +63,7 @@ class PostController extends Controller
     /**
      * Display the specified post.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function show($id)
@@ -83,7 +80,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function edit($id)
@@ -99,8 +96,8 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int        $id
-     * @param PostRequest $request
+     * @param  int         $id
+     * @param  PostRequest $request
      * @return Response
      */
     public function update($id, PostRequest $request)
@@ -119,7 +116,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function destroy($id)
@@ -130,5 +127,4 @@ class PostController extends Controller
 
         return redirect('post')->with('error', 'Error deleting Post !');
     }
-
 }

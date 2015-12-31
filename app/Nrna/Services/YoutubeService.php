@@ -3,14 +3,12 @@ namespace App\Nrna\Services;
 
 use Alaouy\Youtube\Youtube;
 
-
 /**
  * Class YoutubeService
  * @package App\Nrna\Services
  */
 class YoutubeService
 {
-
     /**
      * @param $key
      * @return array
@@ -38,5 +36,4 @@ class YoutubeService
 
         return $result;
     }
-
 }

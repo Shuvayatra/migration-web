@@ -18,11 +18,10 @@ class TagRepository implements TagRepositoryInterface
      * constructor
      * @param Tag $tag
      */
-    function __construct(Tag $tag)
+    public function __construct(Tag $tag)
     {
         $this->tag = $tag;
     }
-
 
     /**
      * Save Tag
@@ -35,7 +34,7 @@ class TagRepository implements TagRepositoryInterface
     }
 
     /**
-     * @param null $limit
+     * @param  null       $limit
      * @return Collection
      */
     public function getAll($limit = null)
@@ -81,5 +80,4 @@ class TagRepository implements TagRepositoryInterface
     {
         return $this->tag->destroy($id);
     }
-
 }

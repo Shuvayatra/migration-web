@@ -30,7 +30,7 @@ class ApiBaseController extends Controller
      * It is returning current object
      * for chaining purposes.
      *
-     * @param mixed $statusCode
+     * @param  mixed   $statusCode
      * @return current object.
      */
     public function setStatusCode($statusCode)
@@ -43,7 +43,7 @@ class ApiBaseController extends Controller
     /**
      * Function to return an unauthorized response.
      *
-     * @param string $message
+     * @param  string $message
      * @return mixed
      */
     public function respondUnauthorizedError($message = 'Unauthorized!')
@@ -53,7 +53,7 @@ class ApiBaseController extends Controller
 
     /**
      * Function to return forbidden error response.
-     * @param string $message
+     * @param  string $message
      * @return mixed
      */
     public function respondForbiddenError($message = 'Forbidden!')
@@ -64,7 +64,7 @@ class ApiBaseController extends Controller
     /**
      * Function to return a Not Found response.
      *
-     * @param string $message
+     * @param  string $message
      * @return mixed
      */
     public function respondNotFound($message = 'Not Found')
@@ -75,7 +75,7 @@ class ApiBaseController extends Controller
     /**
      * Function to return an internal error response.
      *
-     * @param string $message
+     * @param  string $message
      * @return mixed
      */
     public function respondInternalError($message = 'Internal Error!')
@@ -86,7 +86,7 @@ class ApiBaseController extends Controller
     /**
      * Function to return a service unavailable response.
      *
-     * @param string $message
+     * @param  string $message
      * @return mixed
      */
     public function respondServiceUnavailable($message = "Service Unavailable!")
@@ -97,8 +97,8 @@ class ApiBaseController extends Controller
     /**
      * Function to return a generic response.
      *
-     * @param       $data    Data to be used in response.
-     * @param array $headers Headers to b used in response.
+     * @param        $data    Data to be used in response.
+     * @param  array $headers Headers to b used in response.
      * @return mixed Return the response.
      */
     public function respond($data, $headers = [])
@@ -118,8 +118,8 @@ class ApiBaseController extends Controller
             [
                 'error' => [
                     'message'     => $message,
-                    'status_code' => $this->getStatusCode()
-                ]
+                    'status_code' => $this->getStatusCode(),
+                ],
             ]
         );
     }
@@ -133,7 +133,7 @@ class ApiBaseController extends Controller
         return $this->setStatusCode(IlluminateResponse::HTTP_CREATED)
                     ->respond(
                         [
-                            'message' => $message
+                            'message' => $message,
                         ]
                     );
     }
@@ -147,7 +147,7 @@ class ApiBaseController extends Controller
         return $this->setStatusCode(IlluminateResponse::HTTP_UNPROCESSABLE_ENTITY)
                     ->respond(
                         [
-                            'message' => $message
+                            'message' => $message,
                         ]
                     );
     }

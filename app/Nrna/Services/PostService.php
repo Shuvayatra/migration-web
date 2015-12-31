@@ -58,7 +58,7 @@ class PostService
      * @param AudioService            $audio
      * @param Log                     $logger
      */
-    function __construct(
+    public function __construct(
         PostRepositoryInterface $post,
         TagService $tag,
         DatabaseManager $database,
@@ -109,7 +109,6 @@ class PostService
             $this->database->commit();
 
             return $post;
-
         } catch (\Exception $e) {
             $this->logger->error($e);
             $this->database->rollback();
@@ -119,9 +118,8 @@ class PostService
         return false;
     }
 
-
     /**
-     * @param int $limit
+     * @param  int        $limit
      * @return Collection
      */
     public function all($limit = 15)
@@ -170,7 +168,6 @@ class PostService
                 $this->file->delete($post->audioPath);
             }
 
-
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
             }
@@ -211,14 +208,14 @@ class PostService
     }
 
     /**
-     * @param UploadedFile $file
+     * @param  UploadedFile $file
      * @return string
      */
     public function upload(UploadedFile $file)
     {
         $fileName    = $file->getClientOriginalName();
         $file_type   = $file->getClientOriginalExtension();
-        $newFileName = sprintf("%s.%s", sha1($fileName . time()), $file_type);
+        $newFileName = sprintf("%s.%s", sha1($fileName.time()), $file_type);
         if ($file->move($this->uploadPath, $newFileName)) {
             return $newFileName;
         }
@@ -242,7 +239,7 @@ class PostService
     }
 
     /**
-     * @param Post $post
+     * @param  Post  $post
      * @return array
      */
     public function buildPost(Post $post)
@@ -331,4 +328,15 @@ class PostService
         return array_flatten($answerArray);
     }
 
+    /**
+     * gets deleted posts
+     * @param $filter
+     * @return array
+     */
+    public function deleted($filter)
+    {
+        $posts = $this->post->deleted($filter);
+
+        return $posts;
+    }
 }

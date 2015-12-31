@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-
     /**
      * The database table used by the model.
      *
@@ -36,5 +35,4 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Nrna\Models\Post');
     }
-
 }
