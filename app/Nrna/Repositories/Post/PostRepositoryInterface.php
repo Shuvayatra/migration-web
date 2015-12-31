@@ -1,14 +1,12 @@
 <?php
 namespace App\Nrna\Repositories\Post;
 
-
 /**
  * Class PostRepositoryInterface
  * @package App\Nrna\Repository\Post
  */
 interface PostRepositoryInterface
 {
-
     /**
      * Save Post
      * @param $data
@@ -46,4 +44,10 @@ interface PostRepositoryInterface
      * @return int
      */
     public function delete($id);
+
+    /**
+     * @param $filter
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function deleted($filter);
 }

@@ -18,11 +18,10 @@ class AnswerRepository implements AnswerRepositoryInterface
      * constructor
      * @param Answer $answer
      */
-    function __construct(Answer $answer)
+    public function __construct(Answer $answer)
     {
         $this->answer = $answer;
     }
-
 
     /**
      * Save Answer
@@ -35,7 +34,7 @@ class AnswerRepository implements AnswerRepositoryInterface
     }
 
     /**
-     * @param null $limit
+     * @param  null       $limit
      * @return Collection
      */
     public function getAll($limit = null)
@@ -93,4 +92,23 @@ class AnswerRepository implements AnswerRepositoryInterface
         return $query->get();
     }
 
+    /**
+     * gets deleted answers
+     *
+     * @param $filter
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function deleted($filter)
+    {
+        $filter = array_only($filter, ['deleted_at']);
+        $query  = $this->answer->onlyTrashed()->where(
+            function ($q) use ($filter) {
+                foreach ($filter as $key => $value) {
+                    $q->where($key, '>', $value);
+                }
+            }
+        );
+
+        return $query->get(['id', 'deleted_at']);
+    }
 }

@@ -7,7 +7,6 @@ use App\Nrna\Repositories\Question\QuestionRepositoryInterface;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Contracts\Logging\Log;
 
-
 /**
  * Class QuestionService
  * @package App\Nrna\Services
@@ -38,7 +37,7 @@ class QuestionService
      * @param DatabaseManager             $database
      * @param Log                         $logger
      */
-    function __construct(QuestionRepositoryInterface $question, TagService $tag, DatabaseManager $database, Log $logger)
+    public function __construct(QuestionRepositoryInterface $question, TagService $tag, DatabaseManager $database, Log $logger)
     {
         $this->question = $question;
         $this->tag      = $tag;
@@ -69,7 +68,6 @@ class QuestionService
             $this->database->commit();
 
             return $question;
-
         } catch (\Exception $e) {
             $this->logger->error($e);
             $this->database->rollback();
@@ -81,9 +79,8 @@ class QuestionService
         return false;
     }
 
-
     /**
-     * @param int $limit
+     * @param  int        $limit
      * @return Collection
      */
     public function all($limit = 15)
@@ -174,7 +171,7 @@ class QuestionService
 
     /**
      * question format for api
-     * @param Question $question
+     * @param  Question $question
      * @return array
      */
     public function buildQuestion(Question $question)
@@ -214,4 +211,15 @@ class QuestionService
         return $this->question->findByKey(['id' => $ids]);
     }
 
+    /**
+     * gets deleted questions
+     * @param $filter
+     * @return array
+     */
+    public function deleted($filter)
+    {
+        $posts = $this->question->deleted($filter);
+
+        return $posts;
+    }
 }

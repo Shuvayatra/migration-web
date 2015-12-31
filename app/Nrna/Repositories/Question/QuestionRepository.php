@@ -18,11 +18,10 @@ class QuestionRepository implements QuestionRepositoryInterface
      * constructor
      * @param Question $question
      */
-    function __construct(Question $question)
+    public function __construct(Question $question)
     {
         $this->question = $question;
     }
-
 
     /**
      * Save Question
@@ -35,7 +34,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     }
 
     /**
-     * @param null $limit
+     * @param  null                                              $limit
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAll($limit = null)
@@ -103,11 +102,10 @@ class QuestionRepository implements QuestionRepositoryInterface
         return $query->get();
     }
 
-
     /**
      * find in query with key and value eg [id=>[1,2]]
      *
-     * @param array $criteria
+     * @param  array      $criteria
      * @return Collection
      */
     public function findByKey($criteria)
@@ -116,5 +114,25 @@ class QuestionRepository implements QuestionRepositoryInterface
         $values = $criteria[$key];
 
         return $this->question->whereIn($key, $values)->get();
+    }
+
+    /**
+     * gets deleted questions
+     *
+     * @param $filter
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function deleted($filter)
+    {
+        $filter = array_only($filter, ['deleted_at']);
+        $query  = $this->question->onlyTrashed()->where(
+            function ($q) use ($filter) {
+                foreach ($filter as $key => $value) {
+                    $q->where($key, '>', $value);
+                }
+            }
+        );
+
+        return $query->get(['id', 'deleted_at']);
     }
 }

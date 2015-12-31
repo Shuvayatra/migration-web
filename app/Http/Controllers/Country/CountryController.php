@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Country;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\CountryService;
 use App\Http\Requests\CountryRequest;
-use Session;
 
 class CountryController extends Controller
 {
@@ -19,12 +17,11 @@ class CountryController extends Controller
      * constructor
      * @param CountryService $country
      */
-    function __construct(CountryService $country)
+    public function __construct(CountryService $country)
     {
         $this->middleware('auth');
         $this->country = $country;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -51,7 +48,7 @@ class CountryController extends Controller
     /**
      * Store a newly created.
      *
-     * @param CountryRequest $request
+     * @param  CountryRequest $request
      * @return Response
      */
     public function store(CountryRequest $request)
@@ -66,7 +63,7 @@ class CountryController extends Controller
     /**
      * Display the specified country.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function show($id)
@@ -83,7 +80,7 @@ class CountryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function edit($id)
@@ -99,8 +96,8 @@ class CountryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int           $id
-     * @param CountryRequest $request
+     * @param  int            $id
+     * @param  CountryRequest $request
      * @return Response
      */
     public function update($id, CountryRequest $request)
@@ -119,7 +116,7 @@ class CountryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function destroy($id)
@@ -130,5 +127,4 @@ class CountryController extends Controller
 
         return redirect('country')->with('error', 'Error deleting Country !');
     }
-
 }

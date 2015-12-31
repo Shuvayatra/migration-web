@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\QuestionService;
 use App\Http\Requests\QuestionRequest;
-use Session;
 
 class QuestionController extends Controller
 {
@@ -19,12 +18,11 @@ class QuestionController extends Controller
      * constructor
      * @param QuestionService $question
      */
-    function __construct(QuestionService $question)
+    public function __construct(QuestionService $question)
     {
         $this->middleware('auth');
         $this->question = $question;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -51,7 +49,7 @@ class QuestionController extends Controller
     /**
      * Store a newly created.
      *
-     * @param QuestionRequest $request
+     * @param  QuestionRequest $request
      * @return Response
      */
     public function store(QuestionRequest $request)
@@ -66,7 +64,7 @@ class QuestionController extends Controller
     /**
      * Display the specified question.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function show($id)
@@ -83,7 +81,7 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function edit($id)
@@ -99,8 +97,8 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int            $id
-     * @param QuestionRequest $request
+     * @param  int             $id
+     * @param  QuestionRequest $request
      * @return Response
      */
     public function update($id, QuestionRequest $request)
@@ -119,7 +117,7 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function destroy($id)
@@ -132,7 +130,7 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param Requests $request
+     * @param  Requests                                                 $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function questionAnswers(Request $request)
@@ -144,5 +142,4 @@ class QuestionController extends Controller
 
         return view('question.partials.answers', compact('question'));
     }
-
 }

@@ -4,10 +4,18 @@ namespace App\Nrna\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
+    use SoftDeletes;
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
     /**
      * The database table used by the model.
      *
@@ -52,6 +60,14 @@ class Question extends Model
     }
 
     /**
+     * @return timestamp
+     */
+    public function getDeletedAtAttribute()
+    {
+        return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
+    }
+
+    /**
      * Boot the  model
      * Attach event listener to add user creating a model
      *
@@ -68,6 +84,10 @@ class Question extends Model
                 return true;
             }
         );
+        static::deleting(
+            function ($question) {
+                $question->answers()->delete();
+            }
+        );
     }
-
 }

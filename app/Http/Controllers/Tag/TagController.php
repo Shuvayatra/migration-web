@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Tag;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\TagService;
 use App\Http\Requests\TagRequest;
-use Session;
 
 class TagController extends Controller
 {
@@ -19,12 +17,11 @@ class TagController extends Controller
      * constructor
      * @param TagService $tag
      */
-    function __construct(TagService $tag)
+    public function __construct(TagService $tag)
     {
         $this->middleware('auth');
         $this->tag = $tag;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -51,7 +48,7 @@ class TagController extends Controller
     /**
      * Store a newly created tag in database.
      *
-     * @param TagRequest $request
+     * @param  TagRequest $request
      * @return Response
      */
     public function store(TagRequest $request)
@@ -66,7 +63,7 @@ class TagController extends Controller
     /**
      * Display the specified tag.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function show($id)
@@ -83,7 +80,7 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function edit($id)
@@ -99,8 +96,8 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int       $id
-     * @param TagRequest $request
+     * @param  int        $id
+     * @param  TagRequest $request
      * @return Response
      */
     public function update($id, TagRequest $request)
@@ -119,7 +116,7 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int      $id
      * @return Response
      */
     public function destroy($id)
@@ -130,5 +127,4 @@ class TagController extends Controller
 
         return redirect('tag')->with('error', 'Error deleting Tag !');
     }
-
 }

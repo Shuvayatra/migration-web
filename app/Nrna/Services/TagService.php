@@ -18,7 +18,7 @@ class TagService
      * constructor
      * @param TagRepositoryInterface $tag
      */
-    function __construct(TagRepositoryInterface $tag)
+    public function __construct(TagRepositoryInterface $tag)
     {
         $this->tag = $tag;
     }
@@ -33,7 +33,7 @@ class TagService
     }
 
     /**
-     * @param int $limit
+     * @param  int                                   $limit
      * @return \App\Nrna\Repositories\Tag\Collection
      */
     public function all($limit = 15)

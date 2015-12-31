@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 
 class CountryRequest extends Request
 {
@@ -26,7 +25,7 @@ class CountryRequest extends Request
         $rules = [
             'name'  => 'required',
             'code'  => 'required',
-            'image' => 'required|mimes:png,jpeg,png,bmp,gif,jpg'
+            'image' => 'required|mimes:png,jpeg,png,bmp,gif,jpg',
         ];
 
         if ($this->isMethod('PATCH')) {

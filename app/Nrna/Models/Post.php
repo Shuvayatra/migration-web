@@ -3,6 +3,7 @@
 namespace App\Nrna\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed id
@@ -11,6 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Post extends Model
 {
+    use SoftDeletes;
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * upload path for country
@@ -78,13 +87,20 @@ class Post extends Model
     {
         $metaData = json_decode($metaData);
         if (isset($metaData->data->audio)) {
-
             $metaData->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metaData->data->audio);
         }
 
         $metaData->source = urldecode($metaData->source);
 
         return $metaData;
+    }
+
+    /**
+     * @return timestamp
+     */
+    public function getDeletedAtAttribute()
+    {
+        return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
     }
 
     /**
@@ -159,5 +175,4 @@ class Post extends Model
             }
         );
     }
-
 }
