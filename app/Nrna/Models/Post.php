@@ -89,7 +89,7 @@ class Post extends Model
         if (isset($metaData->data->audio)) {
             $metaData->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metaData->data->audio);
         }
-
+        $metaData->stage  = (array) $metaData->stage;
         $metaData->source = urldecode($metaData->source);
 
         return $metaData;

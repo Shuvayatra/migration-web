@@ -56,4 +56,28 @@ class Country extends Model
     {
         return $this->belongsToMany('App\Nrna\Models\Post');
     }
+
+    /**
+     * Get the updates for the country.
+     */
+    public function updates()
+    {
+        return $this->hasMany('App\Nrna\Models\Update');
+    }
+
+    /**
+     * Boot the  model
+     * Attach event listener to add user creating a model
+     *
+     * @return void|bool
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(
+            function ($country) {
+                $country->updates()->delete();
+            }
+        );
+    }
 }

@@ -25,19 +25,25 @@ class ApiService
      * @var AnswerService
      */
     private $answer;
+    /**
+     * @var CountryUpdateService
+     */
+    private $update;
 
     /**
-     * @param PostService     $post
-     * @param QuestionService $question
-     * @param CountryService  $country
-     * @param AnswerService   $answer
-     * @param Log             $logger
+     * @param PostService          $post
+     * @param QuestionService      $question
+     * @param CountryService       $country
+     * @param AnswerService        $answer
+     * @param CountryUpdateService $update
+     * @param Log                  $logger
      */
     public function __construct(
         PostService $post,
         QuestionService $question,
         CountryService $country,
         AnswerService $answer,
+        CountryUpdateService $update,
         Log $logger
     ) {
         $this->post     = $post;
@@ -45,11 +51,12 @@ class ApiService
         $this->question = $question;
         $this->answer   = $answer;
         $this->logger   = $logger;
+        $this->update   = $update;
     }
 
     /**
      * gets latest posts,country,question
-     * @param  array      $filter
+     * @param  array $filter
      * @return array|bool
      */
     public function latest($filter = [])
@@ -62,6 +69,7 @@ class ApiService
             $data['questions'] = $this->question->latest($filter);
             $data['countries'] = $this->country->latest();
             $data['answers']   = $this->answer->latest($filter);
+            $data['updates']   = $this->update->latest($filter);
 
             return $data;
         } catch (\Exception $e) {
@@ -75,7 +83,7 @@ class ApiService
 
     /**
      * gets deleted posts,question,answers
-     * @param  array      $filter
+     * @param  array $filter
      * @return array|bool
      */
     public function deleted($filter = [])
@@ -87,6 +95,7 @@ class ApiService
             $data['posts']     = $this->post->deleted($filter);
             $data['questions'] = $this->question->deleted($filter);
             $data['answers']   = $this->answer->deleted($filter);
+            $data['updates']   = $this->update->deleted($filter);
 
             return $data;
         } catch (\Exception $e) {

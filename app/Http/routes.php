@@ -26,6 +26,7 @@ $router->resource('tag', 'Tag\\TagController');
 $router->get('/home', ['as' => 'home', 'uses' => 'Post\PostController@index']);
 $router->resource('country', 'Country\\CountryController');
 $router->resource('answer', 'Answer\\AnswerController');
+$router->resource('update', 'Country\\UpdateController');
 
 $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
@@ -34,3 +35,5 @@ $router->get(
     'ajax/question/answers',
     ['as' => 'ajax.question.answers', 'uses' => 'Question\QuestionController@questionAnswers']
 );
+
+
