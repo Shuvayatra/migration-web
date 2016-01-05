@@ -21,13 +21,11 @@
                     <td>{{ $x }}</td>
                     <td><a href="{{route('post.show',$item->id)}}">{{ $item->metadata->title }}</a>
                         <span class="label label-info pull-right">{{$item->metadata->type}}</span>
-                        @if(isset($item->metadata->data->audio))
-                            <a target="_blank" class="pull-right" href="{{$item->metadata->data->audio}}">play</a>
-                        @endif
                     </td>
                     <td>
-
-
+                        @foreach($item->metadata->stage as $stage)
+                        {{ $stage }}<br>
+                        @endforeach
                     </td>
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">

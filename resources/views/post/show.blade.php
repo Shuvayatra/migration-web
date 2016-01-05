@@ -28,7 +28,16 @@
                                 @endif
                             </td>
                         </tr>
+
                     @endforeach
+                        @if($post->metadata->type=='audio')
+                            <tr><td>
+                                </td>
+                                <td><audio controls>
+                                        <source src="{{$post->metadata->data->audio}}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio></td></tr>
+                        @endif
                         <tr>
                             <th>Created At</th>
                             <td>{{$post->created_at}}</td>
@@ -51,7 +60,7 @@
                         <tr><th>Questions</th>
                             <td><ul>
                                 @foreach($post->questions as $question)
-                                    <li>{{$question->metadata->title}}</li>
+                                    <li><a href="{{route('question.edit',$question->id)}}">{{$question->metadata->title}}</a></li>
                                 @endforeach
                                 </ul>
                             </td>
@@ -59,7 +68,7 @@
                         <tr><th>Answers</th>
                             <td><ul>
                                     @foreach($post->answers as $answer)
-                                        <li>{{$answer->title}}</li>
+                                        <li><a href="{{route('answer.edit',$answer->id)}}">{{$answer->title}}</a></li>
                                     @endforeach
                                 </ul>
                             </td>
@@ -67,7 +76,7 @@
                         <tr><th>Country</th>
                             <td><ul>
                                 @foreach($post->countries as $country)
-                                    <li>{{$country->name}}</li>
+                                    <li><a href="{{route('country.edit',$country->id)}}">{{$country->name}}</a></li>
                                 @endforeach
                                 </ul>
                             </td>

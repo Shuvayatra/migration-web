@@ -32,7 +32,7 @@ class AnswerController extends Controller
     {
         $answer = $this->answer->find($id);
         if (!$answer) {
-            return redirect()->back()->with('error', 'Question not found.');
+            return redirect()->back()->with('error', 'Answer not found.');
         }
 
         return view('answer.edit', compact('answer'));
