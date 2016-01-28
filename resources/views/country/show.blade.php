@@ -27,6 +27,18 @@
                             <td><a target="_blank" href="{{$country->image}}"> <img width="200px" height="100px" src="{{$country->image}}"/></a></td>
                         </tr>
                         <tr>
+                            <th>Description</th>
+                            <td>{!!$country->description!!}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact</th>
+                            <td>{!!$country->contact!!}</td>
+                        </tr>
+                        <tr>
+                            <th>Do and Dont</th>
+                            <td>{!!$country->do_and_dont!!}</td>
+                        </tr>
+                        <tr>
                             <th>Created At</th>
                             <td>{{$country->created_at}}</td>
                         </tr>

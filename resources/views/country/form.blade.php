@@ -34,3 +34,17 @@
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{ $errors->has('contact') ? 'has-error' : ''}}">
+    {!! Form::label('contact', 'Contacts: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::textArea('contact',null, ['class'=>'form-control'])!!}
+        {!! $errors->first('contact', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+<div class="form-group {{ $errors->has('do_and_dont') ? 'has-error' : ''}}">
+    {!! Form::label('do_and_dont', 'Do and Dont: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::textArea('do_and_dont',null, ['class'=>'form-control required'])!!}
+        {!! $errors->first('do_and_dont', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>

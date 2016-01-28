@@ -18,7 +18,7 @@ class Country extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'code', 'image', 'description'];
+    protected $fillable = ['name', 'code', 'image', 'description','contact','do_and_dont'];
 
     /**
      * upload path for country

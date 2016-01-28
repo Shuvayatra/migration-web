@@ -77,23 +77,33 @@ class Post extends Model
         return $this->belongsToMany('App\Nrna\Models\Answer');
     }
 
+
     /**
      * Convert json metadata to array
      *
      * @param $metaData
      * @return array
      */
-    public function getMetadataAttribute($metaData)
+    public function getMetadataWithPathAttribute()
     {
-        $metaData = json_decode($metaData);
-        if (isset($metaData->data->audio)) {
-            $metaData->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metaData->data->audio);
-        }
-        $metaData->stage  = (array) $metaData->stage;
-        $metaData->source = urldecode($metaData->source);
+        $metadata = $this->metadata;
 
-        return $metaData;
+        if (isset($metadata->data->audio)) {
+            $metadata->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metadata->data->audio);
+
+            if (isset($metadata->data->thumbnail)) {
+                $metadata->data->thumbnail = sprintf('%s/%s', url(Self::UPLOAD_PATH), $metadata->data->thumbnail);
+            } else {
+                $metadata->data->thumbnail = '';
+            }
+
+        }
+        $metadata->stage  = (array) $metadata->stage;
+        $metadata->source = urldecode($metadata->source);
+
+        return $metadata;
     }
+
 
     /**
      * @return timestamp
@@ -111,7 +121,7 @@ class Post extends Model
      */
     public function getApiMetadataAttribute()
     {
-        $metadata = json_decode(json_encode($this->metadata), true);
+        $metadata = json_decode(json_encode($this->metadataWithPath), true);
 
         if (!is_array($metadata['stage'])) {
             $metadata['stage'] = (array) $metadata['stage'];
@@ -125,7 +135,7 @@ class Post extends Model
 
         if ($metadata['type'] == 'audio') {
             $metadata['data']['media_url'] = $metadata['data']['audio'];
-            $metadata['data']              = array_only($metadata['data'], ['media_url', 'duration']);
+            $metadata['data']              = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
 
         return $metadata;
