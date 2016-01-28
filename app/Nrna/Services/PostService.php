@@ -91,10 +91,7 @@ class PostService
         $this->database->beginTransaction();
         try {
             if ($formData['metadata']['type'] === 'audio') {
-                $formData['metadata']['data']['audio']    = $this->upload($formData['metadata']['data']['audio']);
-                $formData['metadata']['data']['duration'] = $this->audio->getDuration(
-                    $this->getAudioFilePath($formData['metadata']['data']['audio'])
-                );
+                $formData = $this->formatTypeAudioCreate($formData);
             }
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
@@ -119,7 +116,7 @@ class PostService
     }
 
     /**
-     * @param  int        $limit
+     * @param  int $limit
      * @return Collection
      */
     public function all($limit = 15)
@@ -157,15 +154,7 @@ class PostService
         try {
             $post = $this->find($id);
             if ($formData['metadata']['type'] === 'audio') {
-                $formData['metadata']['data']['audio']    = $post->audioName;
-                $formData['metadata']['data']['duration'] = $post->metadata->data->duration;
-            }
-            if ($formData['metadata']['type'] === 'audio' && isset($formData['metadata']['data']['audio'])) {
-                $formData['metadata']['data']['audio']    = $this->upload($formData['metadata']['data']['audio']);
-                $formData['metadata']['data']['duration'] = $this->audio->getDuration(
-                    $this->getAudioFilePath($formData['metadata']['data']['audio'])
-                );
-                $this->file->delete($post->audioPath);
+                $formData = $this->formatTypeAudioUpdate($post, $formData);
             }
 
             if ($formData['metadata']['type'] === 'video') {
@@ -215,7 +204,7 @@ class PostService
     {
         $fileName    = $file->getClientOriginalName();
         $file_type   = $file->getClientOriginalExtension();
-        $newFileName = sprintf("%s.%s", sha1($fileName.time()), $file_type);
+        $newFileName = sprintf("%s.%s", sha1($fileName . time()), $file_type);
         if ($file->move($this->uploadPath, $newFileName)) {
             return $newFileName;
         }
@@ -239,7 +228,7 @@ class PostService
     }
 
     /**
-     * @param  Post  $post
+     * @param  Post $post
      * @return array
      */
     public function buildPost(Post $post)
@@ -338,5 +327,53 @@ class PostService
         $posts = $this->post->deleted($filter);
 
         return $posts;
+    }
+
+    /**
+     * @param $formData
+     * @return mixed
+     */
+    protected function formatTypeAudioCreate($formData)
+    {
+        $data['audio']     = '';
+        $data['duration']  = '';
+        $data['thumbnail'] = '';
+        if (isset($formData['metadata']['data']['audio'])) {
+            $data['audio']    = $this->upload($formData['metadata']['data']['audio']);
+            $data['duration'] = $this->audio->getDuration(
+                $this->getAudioFilePath($data['audio'])
+            );
+        }
+        if (isset($formData['metadata']['data']['thumbnail'])) {
+            $data['thumbnail'] = $this->upload($formData['metadata']['data']['thumbnail']);
+        }
+        $formData['metadata']['data'] = $data;
+
+        return $formData;
+    }
+
+    /**
+     * @param $post
+     * @param $formData
+     * @return mixed
+     */
+    protected function formatTypeAudioUpdate($post, $formData)
+    {
+        $data = (array) $post->metadata->data;
+
+        if (isset($formData['metadata']['data']['audio'])) {
+            $data['audio']    = $this->upload($formData['metadata']['data']['audio']);
+            $data['duration'] = $this->audio->getDuration(
+                $this->getAudioFilePath($data['audio'])
+            );
+            $this->file->delete($post->audioPath);
+        }
+        if (isset($formData['metadata']['data']['thumbnail'])) {
+            $data['thumbnail'] = $this->upload($formData['metadata']['data']['thumbnail']);
+        }
+
+        $formData['metadata']['data'] = $data;
+
+        return $formData;
     }
 }

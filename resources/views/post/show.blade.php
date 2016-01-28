@@ -14,6 +14,7 @@
                 <div class="panel-body">
                     <table class="table table-striped table-bordered table-hover">
                         <tbody>
+
                         @foreach($post->metadata as $title=>$metadata)
                         <tr>
                             <th class="head">{{ucfirst($title)}}</th>
@@ -30,11 +31,12 @@
                         </tr>
 
                     @endforeach
+
                         @if($post->metadata->type=='audio')
                             <tr><td>
                                 </td>
                                 <td><audio controls>
-                                        <source src="{{$post->metadata->data->audio}}" type="audio/mpeg">
+                                        <source src="{{$post->metadataWithPath->data->audio}}" type="audio/mpeg">
                                         Your browser does not support the audio element.
                                     </audio></td></tr>
                         @endif
