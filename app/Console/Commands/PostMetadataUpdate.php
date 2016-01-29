@@ -70,7 +70,9 @@ class PostMetadataUpdate extends Command
      */
     protected function applyRules(array $metadata)
     {
-        $this->addAudioThumbnail($metadata);
+        $this->stageToArray($metadata);
+
+        //$this->addAudioThumbnail($metadata);
 
         return $metadata;
     }
@@ -82,5 +84,14 @@ class PostMetadataUpdate extends Command
     protected function addAudioThumbnail(&$metadata)
     {
         $metadata['data']['thumbnail'] = '';
+    }
+
+    /**
+     * add thumbnail to metadata
+     * @param $metadata
+     */
+    protected function stageToArray(&$metadata)
+    {
+        $metadata['stage'] = (array)$metadata['stage'];
     }
 }
