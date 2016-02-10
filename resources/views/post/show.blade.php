@@ -20,7 +20,7 @@
                             <th class="head">{{ucfirst($title)}}</th>
                             <td>@if(is_object($metadata) || is_array($metadata))
                                     @foreach($metadata as $key=>$value)
-                                        @if($value != '')
+                                        @if($value != '' && !is_array($value))
                                             {!!$value!!} <br>
                                         @endif
                                     @endforeach
@@ -31,7 +31,19 @@
                         </tr>
 
                     @endforeach
-
+                        @if($post->metadata->type=='text')
+                            <tr><th>Files</th>
+                                <td>
+                                    <ul>
+                                        @foreach($post->metadataWithPath->data->file as $file)
+                                            <li>{{$file->description}}  </li>
+                                            <a target="_blank" href="{{$file->file_name}}">link</a>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endif
+                        <tr>
                         @if($post->metadata->type=='audio')
                             <tr><td>
                                 </td>

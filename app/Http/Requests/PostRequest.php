@@ -26,6 +26,7 @@ class PostRequest extends Request
             'metadata.title' => 'required',
             'metadata.stage' => 'required',
             'metadata.type'  => 'required',
+            'metadata.data.file.*.file_name' => 'sometimes|mimes:pdf,doc,docx',
         ];
     }
 }

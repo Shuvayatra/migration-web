@@ -9,3 +9,24 @@
         </div>
 
 </script>
+
+<script id="type_text_file_field" type="x-tmpl-mustache">
+<div class="type-text-file-fields">
+    <div class="form-group">
+        {!! Form::label('file', 'File: ', ['class' => 'col-sm-3 control-label']) !!}
+        <div class="col-sm-6">
+            {!! Form::file('metadata[data][file][@{{count}}][file_name]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
+            <p class="help-block">pdf,docs files only.</p>
+            {!! $errors->first('audio', '<p class="help-block">:message</p>') !!}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
+        <div class="col-sm-6">
+            {!! Form::text('metadata[data][file][@{{count}}][title]', null, ['class' => 'form-control']) !!}
+            {!! $errors->first('metadata.data.file', '<p class="help-block">:message</p>') !!}
+        </div>
+    </div>
+</div>
+</script>

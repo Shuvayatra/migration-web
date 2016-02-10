@@ -37,7 +37,7 @@ $tags = $tagService->getList(); ?>
     </div>
 </div>
 <div class="form-group {{ $errors->has('metadata.answer') ? 'has-error' : ''}}">
-    {!! Form::label('answer', 'Description*: ', ['class' => 'col-sm-3 control-label']) !!}
+    {!! Form::label('answer', 'Answer*: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
         {!! Form::textarea('metadata[answer]', null, ['class' => 'form-control']) !!}
         {!! $errors->first('metadata.answer', '<p class="help-block">:message</p>') !!}
