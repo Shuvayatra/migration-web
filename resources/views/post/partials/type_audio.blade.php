@@ -8,6 +8,13 @@
         <div><a target="_blank" href="{{$post->metadataWithPath->data->audio}}">check</a></div>
     @endif
 </div>
+<div class="form-group {{ $errors->has('metadata.data.audio_url') ? 'has-error' : ''}}">
+    {!! Form::label('url', 'URL: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::text('metadata[data][audio_url]', null, ['class' => 'form-control']) !!}
+        {!! $errors->first('metadata.data.audio_url', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 <div class="form-group {{ $errors->has('thumbnail') ? 'has-error' : ''}}">
     {!! Form::label('thumbnail', 'Audio Image: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">

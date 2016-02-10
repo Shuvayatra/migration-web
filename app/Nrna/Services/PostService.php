@@ -99,7 +99,6 @@ class PostService
         try {
             if ($formData['metadata']['type'] === 'text') {
                 $formData = $this->formatTypeTextCreate($formData);
-                //$formData = $this->formatTypeAudioCreate($formData);
             }
             if ($formData['metadata']['type'] === 'audio') {
                 $formData = $this->formatTypeAudioCreate($formData);
@@ -351,7 +350,12 @@ class PostService
     {
         $data['audio']     = '';
         $data['duration']  = '';
+        $data['audio_url'] = '';
         $data['thumbnail'] = '';
+        if (!is_null($formData['metadata']['data']['audio_url'])) {
+            $data['audio']     = $formData['metadata']['data']['audio_url'];
+            $data['audio_url'] = $formData['metadata']['data']['audio_url'];
+        }
         if (isset($formData['metadata']['data']['audio'])) {
             $data['audio']    = $this->upload($formData['metadata']['data']['audio']);
             $data['duration'] = $this->audio->getDuration(
@@ -375,6 +379,10 @@ class PostService
     {
         $data = (array) $post->metadata->data;
 
+        if (!is_null($formData['metadata']['data']['audio_url'])) {
+            $data['audio']     = $formData['metadata']['data']['audio_url'];
+            $data['audio_url'] = $formData['metadata']['data']['audio_url'];
+        }
         if (isset($formData['metadata']['data']['audio'])) {
             $data['audio']    = $this->upload($formData['metadata']['data']['audio']);
             $data['duration'] = $this->audio->getDuration(

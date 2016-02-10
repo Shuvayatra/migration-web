@@ -88,9 +88,9 @@ class Post extends Model
     {
         $metadata = $this->metadata;
         if ($metadata->type == "text") {
-            try{
+            try {
                 $metadata->data->file = $this->formatFile($this->metadata->data->file);
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 dd($e);
             }
 
@@ -143,7 +143,11 @@ class Post extends Model
 
         if ($metadata['type'] == 'audio') {
             $metadata['data']['media_url'] = $metadata['data']['audio'];
-            $metadata['data']              = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
+
+            if (isset($metadata['data']['audio_url']) && $metadata['data']['audio_url'] != "") {
+                $metadata['data']['media_url'] = $this->metadata->data->audio_url;
+            }
+            $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
 
         return $metadata;
@@ -168,12 +172,12 @@ class Post extends Model
     public function formatFile($files)
     {
         $returnArray = [];
-        if(empty($files)){
+        if (empty($files)) {
             return $returnArray;
         }
         foreach ($files as $file) {
             $file->file_name = sprintf('%s/%s', url(Self::UPLOAD_PATH), $file->file_name);
-            $returnArray []    = $file;
+            $returnArray []  = $file;
         }
 
         return $returnArray;
