@@ -70,13 +70,21 @@ class PostMetadataUpdate extends Command
      */
     protected function applyRules(array $metadata)
     {
-        $this->stageToArray($metadata);
-
-        //$this->addAudioThumbnail($metadata);
+        $this->addFileFieldArray($metadata);
 
         return $metadata;
     }
 
+    /**
+     * add thumbnail to metadata
+     * @param $metadata
+     */
+    protected function addFileFieldArray(&$metadata)
+    {
+        if($metadata['type']=="text"){
+            $metadata['data']['file'] = [];
+        }
+    }
     /**
      * add thumbnail to metadata
      * @param $metadata

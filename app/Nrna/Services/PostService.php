@@ -47,6 +47,10 @@ class PostService
      * @var Log
      */
     private $logger;
+    /**
+     * @var ImageService
+     */
+    private $image;
 
     /**
      * constructor
@@ -57,6 +61,7 @@ class PostService
      * @param YoutubeService          $youtube
      * @param AudioService            $audio
      * @param Log                     $logger
+     * @param ImageService            $image
      */
     public function __construct(
         PostRepositoryInterface $post,
@@ -65,7 +70,8 @@ class PostService
         Filesystem $file,
         YoutubeService $youtube,
         AudioService $audio,
-        Log $logger
+        Log $logger,
+        ImageService $image
     ) {
         $this->uploadPath = public_path(Post::UPLOAD_PATH);
         $this->post       = $post;
@@ -75,6 +81,7 @@ class PostService
         $this->youtube    = $youtube;
         $this->audio      = $audio;
         $this->logger     = $logger;
+        $this->image      = $image;
     }
 
     /**
@@ -90,6 +97,10 @@ class PostService
         }
         $this->database->beginTransaction();
         try {
+            if ($formData['metadata']['type'] === 'text') {
+                $formData = $this->formatTypeTextCreate($formData);
+                //$formData = $this->formatTypeAudioCreate($formData);
+            }
             if ($formData['metadata']['type'] === 'audio') {
                 $formData = $this->formatTypeAudioCreate($formData);
             }
@@ -153,6 +164,9 @@ class PostService
         $this->database->beginTransaction();
         try {
             $post = $this->find($id);
+            if ($formData['metadata']['type'] === 'text') {
+                $formData = $this->formatTypeTextUpdate($post, $formData);
+            }
             if ($formData['metadata']['type'] === 'audio') {
                 $formData = $this->formatTypeAudioUpdate($post, $formData);
             }
@@ -376,4 +390,50 @@ class PostService
 
         return $formData;
     }
+
+    /**
+     * @param $formData
+     * @return mixed
+     */
+    protected function formatTypeTextCreate($formData)
+    {
+        $data['content'] = $formData['metadata']['data']['content'];
+        $data['file']    = [];
+        if (isset($formData['metadata']['data']['file'][0])) {
+            foreach ($formData['metadata']['data']['file'] as $fileData) {
+                $fileInfo['file_name']   = $this->upload($fileData['file_name']);
+                $fileInfo['description'] = $fileData['description'];
+                $data['file'][]          = $fileInfo;
+            }
+        }
+
+        $formData['metadata']['data'] = $data;
+
+        return $formData;
+    }
+
+    /**
+     * @param $post
+     * @param $formData
+     * @return mixed
+     */
+    protected function formatTypeTextUpdate($post, $formData)
+    {
+        $data    = json_decode(json_encode($post->metadata->data), true);
+        $fileNew = [];
+        foreach ($formData['metadata']['data']['file'] as $key => $fileData) {
+            $fileInfo['file_name'] = $data['file'][$key]['file_name'];
+
+            if (isset($fileData['file_name'])) {
+                $fileInfo['file_name'] = $this->upload($fileData['file_name']);
+            }
+            $fileInfo['description'] = $fileData['description'];
+            $fileNew[]               = $fileInfo;
+        }
+        $data['file']                 = $fileNew;
+        $formData['metadata']['data'] = $data;
+
+        return $formData;
+    }
+
 }
