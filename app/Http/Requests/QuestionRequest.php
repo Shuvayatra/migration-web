@@ -24,6 +24,7 @@ class QuestionRequest extends Request
     {
         return [
             'metadata.title' => 'required',
+            'metadata.answer' => 'required',
         ];
     }
 }

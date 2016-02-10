@@ -15,7 +15,7 @@ class PostMetadataUpdate extends Command
      *
      * @var string
      */
-    protected $name = 'metadata:post';
+    protected $name = 'nrna:post_update';
 
     /**
      * The console command description.
