@@ -24,7 +24,7 @@
                                             @endif
                                         @endforeach
                                     @else
-                                        {{$metadata }}
+                                        {!!$metadata !!}
                                     @endif
                                 </td>
                             </tr>
