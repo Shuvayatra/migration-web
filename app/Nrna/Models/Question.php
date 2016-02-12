@@ -59,12 +59,53 @@ class Question extends Model
         return $this->hasMany('App\Nrna\Models\Answer');
     }
 
+    public function subquestions()
+    {
+        return $this->hasMany('App\Nrna\Models\Question', 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo('App\Nrna\Models\Question', 'parent_id');
+    }
+
     /**
      * @return timestamp
      */
     public function getDeletedAtAttribute()
     {
         return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
+    }
+
+    /**
+     * Convert json metadata to array
+     *
+     * @param $metaData
+     * @return array
+     */
+    public function getMetadataAttribute($metaData)
+    {
+        $metaData = json_decode($metaData);
+        if (!$this->isParent()) {
+            $metaData->language = $this->parent->metadata->language;
+            $metaData->stage    = $this->parent->metadata->stage;
+        }
+
+        return $metaData;
+    }
+
+    public function isParent()
+    {
+        return ($this->parent_id == 0);
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeParentOnly($query)
+    {
+        return $query->where('parent_id', '0');
     }
 
     /**

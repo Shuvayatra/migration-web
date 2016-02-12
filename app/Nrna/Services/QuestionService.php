@@ -37,8 +37,12 @@ class QuestionService
      * @param DatabaseManager             $database
      * @param Log                         $logger
      */
-    public function __construct(QuestionRepositoryInterface $question, TagService $tag, DatabaseManager $database, Log $logger)
-    {
+    public function __construct(
+        QuestionRepositoryInterface $question,
+        TagService $tag,
+        DatabaseManager $database,
+        Log $logger
+    ) {
         $this->question = $question;
         $this->tag      = $tag;
         $this->database = $database;
@@ -63,6 +67,7 @@ class QuestionService
             }
 
             $this->saveAnswers($formData, $question);
+            $this->saveSubQuestions($formData, $question);
 
             $question->tags()->sync($tags);
             $this->database->commit();
@@ -80,12 +85,21 @@ class QuestionService
     }
 
     /**
-     * @param  int        $limit
+     * @param  int $limit
      * @return Collection
      */
     public function all($limit = 15)
     {
         return $this->question->getAll($limit);
+    }
+
+    /**
+     * @param  int $limit
+     * @return Collection
+     */
+    public function allParents($limit = 15)
+    {
+        return $this->question->getAllParents($limit);
     }
 
     /**
@@ -123,6 +137,7 @@ class QuestionService
 
             $question->tags()->sync($tags);
             $this->saveAnswers($formData, $question);
+            $this->saveSubQuestions($formData, $question);
             $this->database->commit();
 
             return $question;
@@ -198,6 +213,22 @@ class QuestionService
                 $answers [] = new Answer($answer);
             }
             $question->answers()->saveMany($answers);
+        }
+    }
+
+    /**
+     * save subQuestions
+     * @param $formData
+     * @param $question
+     */
+    protected function saveSubQuestions($formData, $question)
+    {
+        if (isset($formData['subquestion'])) {
+            $subquestions = [];
+            foreach ($formData['subquestion'] as $subquestion) {
+                $subquestions [] = new Question($subquestion);
+            }
+            $question->subquestions()->saveMany($subquestions);
         }
     }
 

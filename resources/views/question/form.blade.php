@@ -43,8 +43,36 @@ $tags = $tagService->getList(); ?>
         {!! $errors->first('metadata.answer', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-
 <hr>
+
+<div class="sub-questions">
+    <button type="button" class="btn btn-default add-new-subquestions" id="add_new_sub_question">Add Sub Question
+    </button>
+    @if(isset($question))
+        <div class="form-group">
+            {!! Form::label('sub_question', 'Sub Questions:', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                <ul>
+                    @foreach($question->subquestions as $question)
+                        <li>{{$question->metadata->title}}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+    <div class="sub-question-items">
+        @if(old('subquestion'))
+            <?php
+            $subquestions = empty(old('subquestion')) ? [] : old('subquestion');
+            $k = 0;
+            ?>
+            @foreach($subquestions as $key => $subquestion)
+
+                <?php $k ++;?>
+            @endforeach
+        @endif
+    </div>
+</div>
 
 
 <div class="answer">
@@ -99,7 +127,30 @@ $tags = $tagService->getList(); ?>
                 Mustache.parse(template);
                 var rendered = Mustache.render(template, {count: j});
                 $('.answer .answer-item:last-child').append(rendered);
+
             });
         });
+    </script>
+    <script>
+        $(function () {
+            var k = {{$k or 0}};
+            $('.add-new-subquestions').on('click', function (e) {
+                e.preventDefault();
+                k += 1;
+                var template = $('#question_block').html();
+                Mustache.parse(template);
+                var rendered = Mustache.render(template, {count: k});
+                tinymce.init
+                $('.sub-questions .sub-question-items:last-child').append(rendered);
+
+                loadTinyMCEEditor()
+            });
+        });
+        function loadTinyMCEEditor() {
+            tinyMCE.init({
+                selector: "textarea"
+            });
+            tinyMCE.execCommand('mceAddControl', false, 'myeditor');
+        }
     </script>
 @endsection

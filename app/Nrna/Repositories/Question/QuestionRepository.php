@@ -34,7 +34,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     }
 
     /**
-     * @param  null                                              $limit
+     * @param  null $limit
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAll($limit = null)
@@ -44,6 +44,19 @@ class QuestionRepository implements QuestionRepositoryInterface
         }
 
         return $this->question->orderBy('id', 'DESC')->paginate();
+    }
+
+    /**
+     * @param  null $limit
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getAllParents($limit = null)
+    {
+        if (is_null($limit)) {
+            return $this->question->parentOnly()->orderBy('id', 'DESC')->all();
+        }
+
+        return $this->question->parentOnly()->orderBy('id', 'DESC')->paginate();
     }
 
     /**
@@ -105,7 +118,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     /**
      * find in query with key and value eg [id=>[1,2]]
      *
-     * @param  array      $criteria
+     * @param  array $criteria
      * @return Collection
      */
     public function findByKey($criteria)

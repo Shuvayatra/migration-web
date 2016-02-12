@@ -1,3 +1,4 @@
+
 <script id="answer_field" type="x-tmpl-mustache">
     <div class="form-group">
             {!! Form::label('answer', 'Answer: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -7,6 +8,7 @@
             </div>
             <div class="delete delete-answer-field btn btn-danger">X</div>
         </div>
+
 
 </script>
 
@@ -29,4 +31,26 @@
         </div>
     </div>
 </div>
+
+</script>
+
+
+<script id="question_block" type="x-tmpl-mustache">
+    <div>
+        <hr>
+        <div class="form-group">
+            {!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                {!! Form::text('subquestion[@{{count}}][metadata][title]', null, ['class' => 'form-control required']) !!}
+                {!! $errors->first('metadata.title', '<p class="help-block">:message</p>') !!}
+            </div>
+        </div>
+        <div class="form-group">
+            {!! Form::label('answer', 'Answer*: ', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                {!! Form::textarea('subquestion[@{{count}}][metadata][answer]', null, ['class' => 'myeditor form-control']) !!}
+                {!! $errors->first('metadata.answer', '<p class="help-block">:message</p>') !!}
+            </div>
+        </div>
+    </div>
 </script>

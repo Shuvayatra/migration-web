@@ -47,6 +47,29 @@
                                 </ul>
                             </td>
                         </tr>
+
+                        <tr><th>Sub Questions</th>
+                            <td><ul>
+                                    @foreach($question->subquestions as $question)
+                                        <li>{{$question->metadata->title}}
+                                            <br>
+                                            {!!$question->metadata->answer!!}
+                                            <br>
+                                            <a href="{{ route('question.edit', $question->id) }}">
+                                                <button type="submit" class="btn btn-primary btn-xs">Update</button>
+                                            </a> /
+                                            {!! Form::open([
+                                            'method'=>'DELETE',
+                                            'route' => ['question.destroy', $question->id],
+                                            'style' => 'display:inline'
+                                            ]) !!}
+                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
+                                            {!! Form::close() !!}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                        </tr>
                         <tr><th>Answers</th>
                             <td><ul>
                                     @foreach($question->answers as $answer)
