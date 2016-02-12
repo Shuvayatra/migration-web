@@ -31,7 +31,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = $this->question->all();
+        $questions = $this->question->allParents();
 
         return view('question.index', compact('questions'));
     }
@@ -64,7 +64,7 @@ class QuestionController extends Controller
     /**
      * Display the specified question.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -81,7 +81,7 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -117,7 +117,7 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
@@ -130,7 +130,7 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param  Requests                                                 $request
+     * @param  Requests $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function questionAnswers(Request $request)
