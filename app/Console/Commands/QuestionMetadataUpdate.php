@@ -70,7 +70,7 @@ class QuestionMetadataUpdate extends Command
      */
     protected function applyRules(array $metadata)
     {
-        $this->addAnswer($metadata);
+        $this->addWeight($metadata);
 
         return $metadata;
     }
@@ -81,7 +81,16 @@ class QuestionMetadataUpdate extends Command
      */
     protected function addAnswer(&$metadata)
     {
-        $metadata['answer'] = '';
+        $metadata['weight'] = '';
+    }
+
+    /**
+     * add weight to metadata
+     * @param $metadata
+     */
+    protected function addWeight(&$metadata)
+    {
+        $metadata['weight'] = 1;
     }
 
 }

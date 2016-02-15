@@ -108,6 +108,14 @@ $tags = $tagService->getList(); ?>
         @endif
     </div>
 </div>
+<div class="form-group {{ $errors->has('metadata.weight') ? 'has-error' : ''}}">
+    {!! Form::label('weight', 'Weight: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::selectRange('metadata[weight]', 1, 30
+        , null, ['class' => 'form-control']) !!}
+        {!! $errors->first('metadata.weight', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 @include('templates.templates')
 
 @section('script')
