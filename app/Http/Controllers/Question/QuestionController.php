@@ -142,4 +142,18 @@ class QuestionController extends Controller
 
         return view('question.partials.answers', compact('question'));
     }
+
+    /**
+     * @param  Requests $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function questionSubquestions(Request $request)
+    {
+        if (!$request->has('question')) {
+            return response('error');
+        }
+        $question = $this->question->find($request->get('question'));
+
+        return view('question.partials.subquestions', compact('question'));
+    }
 }

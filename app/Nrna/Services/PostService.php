@@ -269,9 +269,9 @@ class PostService
         }
         if (isset($formData['question'])) {
             $questions = $this->getQuestionsData($formData['question']);
-            $answers   = $this->getAnswerData($formData['question']);
+            //$answers   = $this->getAnswerData($formData['question']);
             $post->questions()->sync($questions);
-            $post->answers()->sync($answers);
+            //$post->answers()->sync($answers);
         }
     }
 
@@ -408,10 +408,13 @@ class PostService
         $data['content'] = $formData['metadata']['data']['content'];
         $data['file']    = [];
         if (isset($formData['metadata']['data']['file'][0])) {
+
             foreach ($formData['metadata']['data']['file'] as $fileData) {
-                $fileInfo['file_name']   = $this->upload($fileData['file_name']);
-                $fileInfo['description'] = $fileData['description'];
-                $data['file'][]          = $fileInfo;
+                if (!is_null($fileData['file_name'])) {
+                    $fileInfo['file_name']   = $this->upload($fileData['file_name']);
+                    $fileInfo['description'] = $fileData['description'];
+                    $data['file'][]          = $fileInfo;
+                }
             }
         }
 

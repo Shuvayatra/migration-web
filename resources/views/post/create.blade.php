@@ -5,7 +5,7 @@
     <h1>Create New Post</h1>
     <hr/>
     {!! Form::open(['route' => 'post.store',
-    'class' => 'form-horizontal',
+    'class' => 'form-horizontal post-form',
     'novalidate' => 'novalidate',
     'files' => true]) !!}
         @include('post.form')

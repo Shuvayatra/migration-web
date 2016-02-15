@@ -99,6 +99,10 @@ class QuestionService
      */
     public function allParents($limit = 15)
     {
+        if (is_null($limit)) {
+            return $this->question->getAllParents();
+        }
+
         return $this->question->getAllParents($limit);
     }
 
@@ -170,6 +174,14 @@ class QuestionService
     }
 
     /**
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->question->getAll();
+    }
+
+    /**
      * @param $filter
      * @return array
      */
@@ -193,6 +205,7 @@ class QuestionService
     {
         $questionArray['id']         = $question->id;
         $questionArray               = array_merge($questionArray, (array) $question->metadata);
+        $questionArray['parent']     = $question->parent_id;
         $questionArray['tags']       = $question->tags->lists('id')->toArray();
         $questionArray['created_at'] = $question->created_at->timestamp;
         $questionArray['updated_at'] = $question->updated_at->timestamp;
