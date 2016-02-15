@@ -40,10 +40,10 @@ class QuestionRepository implements QuestionRepositoryInterface
     public function getAll($limit = null)
     {
         if (is_null($limit)) {
-            return $this->question->orderBy('id', 'DESC')->all();
+            return $this->question->with('subquestions')->orderBy('id', 'DESC')->all();
         }
 
-        return $this->question->orderBy('id', 'DESC')->paginate();
+        return $this->question->with('subquestions')->orderBy('id', 'DESC')->paginate();
     }
 
     /**
@@ -93,7 +93,7 @@ class QuestionRepository implements QuestionRepositoryInterface
      */
     public function lists()
     {
-        return $this->question->selectRaw("id,metadata->>'title' as title")->lists('title', 'id');
+        return $this->question->with('subquestions')->selectRaw("id,metadata->>'title' as title")->lists('title', 'id');
     }
 
     /**

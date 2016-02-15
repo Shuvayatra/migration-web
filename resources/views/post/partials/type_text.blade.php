@@ -14,7 +14,11 @@
         {!! $errors->first('metadata.data.file.0.file_name', '<p class="help-block">:message</p>') !!}
     </div>
     @if(isset($post) && $post->metadata->type == "text" )
-        <div><a target="_blank" href="{{$post->metadataWithPath->data->file[0]->file_name}}">check</a></div>
+        <div>
+            @if(isset($post->metadataWithPath->data->file[0]))
+            <a target="_blank" href="{{$post->metadataWithPath->data->file[0]->file_name}}">check</a>
+            @endif
+        </div>
     @endif
 </div>
 

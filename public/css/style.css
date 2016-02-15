@@ -13,3 +13,11 @@ html, body {
 .question-answers {
     padding-left: 10px;
 }
+
+.question-subquestions {
+    padding-left: 20px;
+}
+.checkbox label{
+    font-weight: bold;
+}
+

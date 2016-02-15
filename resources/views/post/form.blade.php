@@ -7,6 +7,7 @@ $tags = $tagService->getList();
 $countryService = app('App\Nrna\Services\CountryService');
 $countries = $countryService->getList();
 $questionService = app('App\Nrna\Services\QuestionService');
+$questionCollection = $questionService->allParents();
 $questions = $questionService->getList();
 ?>
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
@@ -47,7 +48,8 @@ $questions = $questionService->getList();
     </div>
 </div>
 
-<div class="content-type type-audio" style="display: @if(isset($post) && $post->metadata->type === 'audio'|| old('metadata.type') =="audio")block @else none @endif">
+<div class="content-type type-audio"
+     style="display: @if(isset($post) && $post->metadata->type === 'audio'|| old('metadata.type') =="audio")block @else none @endif">
     @include('post.partials.type_audio')
 </div>
 <div class="form-group {{ $errors->has('source') ? 'has-error' : ''}}">
@@ -91,36 +93,42 @@ $questions = $questionService->getList();
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('question') ? 'has-error' : ''}}">
-    {!! Form::label('question', 'Question: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::select('question_select',[''=>''] + $questions->toArray(),null, ['class'=>'form-control
-        select-questions']) !!}
-        {!! $errors->first('question', '<p class="help-block">:message</p>') !!}
-        <span class="help-block">selecting question will show answer below.</span>
+<div class="form-group">
+    <label for="questions" class="col-sm-3 control-label">Questions</label>
+
+    <div class="col-sm-9">
+        {{-- */$x=0;/* --}}
+        @foreach($questionCollection as $questionObj)
+            {{-- */$x++;/* --}}
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="checkbox">
+                        <label><input @if(isset($post) && in_array($questionObj->id,$post->questions->lists('id')->toArray()))
+                                checked @endif name="question[]" type="checkbox"
+                                value="{{$questionObj->id}}">Q{{$x}}. {{$questionObj->metadata->title}}</label>
+                    </div>
+                    <div style="display: @if(isset($post) && in_array($questionObj->id,$post->questions->lists('id')->toArray()))
+                            block @else none @endif" class="question-subquestions">
+                        {{-- */$y=0;/* --}}
+                        @foreach($questionObj->subquestions as $subquestion)
+                            {{-- */$y++;/* --}}
+                            <div class="checkbox">
+                                <label><input type="checkbox"
+                                              name="question[]"
+                                    @if(isset($post) && in_array($subquestion->id,$post->questions->lists('id')->toArray()))
+                                              checked @endif
+                                              value="{{$subquestion->id}}">Q{{$x}}.{{$y}} {{$subquestion->metadata->title}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-sm-4 pull-left show-subquestions"><a>sub questions({{count($questionObj->subquestions)}}
+                        )</a></div>
+            </div>
+        @endforeach
     </div>
 </div>
-
-@if(old('question'))
-    <?php
-    $questions = empty(old('question')) ? [$post->questions] : old('question');
-    $j = 0;
-    ?>
-    @foreach($questions as $question => $answer)
-        @include('question.partials.answers')
-    @endforeach
-@endif
-@if(isset($post))
-    <?php
-    $questions = $post->questions;
-    $j = 0;
-    ?>
-    @foreach($questions as $question)
-        @include('question.partials.answers')
-    @endforeach
-@endif
-
-<div id="question_answers"></div>
 
 @section('script')
     <script type="text/javascript" src="{{asset('js/jquery.validate.min.js')}}"></script>
@@ -130,6 +138,9 @@ $questions = $questionService->getList();
     <script>
         $(function () {
             $('.post-form').validate();
+            $(".show-subquestions").click(function () {
+                $(this).parent().find(".question-subquestions").fadeToggle();
+            });
             $(".select-questions").on("change", function (e) {
                 var questions = $(this).val();
                 var url = '{{route('ajax.question.answers')}}'
