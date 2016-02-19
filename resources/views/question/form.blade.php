@@ -76,7 +76,7 @@ $tags = $tagService->getList(); ?>
 
 
 <div class="answer">
-    <button type="button" class="btn btn-default add-new-answer" id="add_new_answer">Add Answer</button>
+
     @if(isset($question))
         <div class="form-group">
             {!! Form::label('answer', 'Answers:', ['class' => 'col-sm-3 control-label']) !!}
