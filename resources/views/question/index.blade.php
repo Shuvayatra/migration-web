@@ -9,6 +9,7 @@
                     <th>S.No</th>
                     <th>Question</th>
                     <th>Stage</th>
+                    <th>Info</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -21,6 +22,7 @@
                     <td><a href="{{route('question.show',$item->id)}}">{{ $item->metadata->title }} </a>
                         <span class="label label-default pull-right">{{$item->metadata->language}}</span></td>
                     <td>{{ $item->metadata->stage }}</td>
+                    <td>{{ $item->created_at }},{{ $item->updated_at }}</td>
                     <td>
                         <a href="{{ route('question.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
