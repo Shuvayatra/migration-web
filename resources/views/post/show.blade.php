@@ -48,7 +48,7 @@
                             <tr><td>
                                 </td>
                                 <td><audio controls>
-                                        <source src="{{$post->metadataWithPath->data->audio}}" type="audio/mpeg">
+                                        <source src="{{$post->audioUrl()}}" type="audio/mpeg">
                                         Your browser does not support the audio element.
                                     </audio></td></tr>
                         @endif

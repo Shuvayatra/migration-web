@@ -123,8 +123,7 @@ $questions = $questionService->getList();
                         @endforeach
                     </div>
                 </div>
-                <div class="col-sm-4 pull-left show-subquestions"><a>sub questions({{count($questionObj->subquestions)}}
-                        )</a></div>
+                <div class="col-sm-4 pull-left show-subquestions"><a>sub questions({{count($questionObj->subquestions)}})</a></div>
             </div>
         @endforeach
     </div>

@@ -112,6 +112,15 @@ class Post extends Model
         return $metadata;
     }
 
+    public function audioUrl()
+    {
+        if (isset($this->metadata->data->audio_url) && $this->metadata->data->audio_url != "") {
+            return $this->metadata->data->audio_url;
+        }
+
+        return $this->metadataWithPath->data->audio;
+    }
+
 
     /**
      * @return timestamp

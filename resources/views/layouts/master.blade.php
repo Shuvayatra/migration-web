@@ -76,6 +76,12 @@
 <!-- Scripts -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script >
+    $('form .btn-danger').click(function (e) {
+        return confirm("Are you sure you want to delete ?");
+        e.preventDefault();
+    });
+</script>
 <link href="{{asset('css/style.css')}}" rel="stylesheet"/>
 @yield('script')
 </body>
