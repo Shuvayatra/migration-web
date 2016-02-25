@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Post;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\PostService;
 use App\Http\Requests\PostRequest;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -28,9 +29,9 @@ class PostController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = $this->post->all();
+        $posts = $this->post->all($request->all());
 
         return view('post.index', compact('posts'));
     }

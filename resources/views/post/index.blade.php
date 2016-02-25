@@ -3,6 +3,11 @@
 @section('content')
 
     <h1>Posts <a href="{{ route('post.create') }}" class="btn btn-primary pull-right btn-sm">Add New Post</a></h1>
+    {!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
+    {!! Form::select('stage', config('stage'), Input::get('stage'), ['class' => 'form-control']) !!}
+
+    {!! Form::submit('filter', ['class' => 'btn btn-primary']) !!}
+    {!! Form::close() !!}
     <div class="table">
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -10,6 +15,7 @@
                     <th>S.No</th>
                     <th>Title</th>
                     <th>Stage</th>
+                    <th>Info</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,6 +33,7 @@
                         {{ $stage }}<br>
                         @endforeach
                     </td>
+                    <td>{{ $item->created_at }}<br>{{ $item->updated_at }}</td>
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
@@ -45,7 +52,8 @@
             @endforelse
             </tbody>
         </table>
-        <div class="pagination"> {!! $posts->render() !!} </div>
+        <div class="pagination">{!! $posts->appends($app->request->all())->render() !!}</div>
     </div>
 
 @endsection
+
