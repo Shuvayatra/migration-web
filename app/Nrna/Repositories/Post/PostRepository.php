@@ -49,10 +49,15 @@ class PostRepository implements PostRepositoryInterface
     {
         $query         = $this->post->select('*');
         $from          = "posts ";
-        if(isset($filters['stage'])){
+        if(isset($filters['stage']) && $filters['stage'] != ''){
             $stages =  $filters['stage'];
             $from .= ",json_array_elements(posts.metadata->'stage') stage";
             $query->whereRaw("trim(both '\"' from stage::text) = ?", [$stages]);
+        }
+
+        if(isset($filters['post_type']) && $filters['post_type'] != ''){
+            $post_type =  $filters['post_type'];
+            $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
         }
 
         $query->from($this->db->raw($from));
