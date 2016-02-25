@@ -52,9 +52,7 @@
                             <td><ul>
                                     @foreach($question->subquestions as $question)
                                         <li>{{$question->metadata->title}}
-                                            <br>
                                             {!!$question->metadata->answer!!}
-                                            <br>
                                             <a href="{{ route('question.edit', $question->id) }}">
                                                 <button type="submit" class="btn btn-primary btn-xs">Update</button>
                                             </a> /
@@ -65,6 +63,7 @@
                                             ]) !!}
                                             {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
                                             {!! Form::close() !!}
+                                            <hr style="border-top: 1px solid #DDDDDD">
                                         </li>
                                     @endforeach
                                 </ul>
