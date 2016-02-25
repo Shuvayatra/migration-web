@@ -129,9 +129,9 @@ class PostService
      * @param  int $limit
      * @return Collection
      */
-    public function all($limit = 15)
+    public function all($filter, $limit = 15)
     {
-        return $this->post->getAll($limit);
+        return $this->post->getAll($filter, $limit);
     }
 
     /**

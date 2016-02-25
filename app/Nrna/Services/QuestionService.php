@@ -97,13 +97,13 @@ class QuestionService
      * @param  int $limit
      * @return Collection
      */
-    public function allParents($limit = 15)
+    public function allParents($filter = [], $limit = 15)
     {
         if (is_null($limit)) {
-            return $this->question->getAllParents();
+            return $this->question->getAllParents($filter);
         }
 
-        return $this->question->getAllParents($limit);
+        return $this->question->getAllParents($filter, $limit);
     }
 
     /**

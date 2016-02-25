@@ -50,13 +50,20 @@ class QuestionRepository implements QuestionRepositoryInterface
      * @param  null $limit
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getAllParents($limit = null)
+    public function getAllParents(array $filter, $limit = null)
     {
-        if (is_null($limit)) {
-            return $this->question->parentOnly()->orderBy('id', 'DESC')->all();
+        $query = $this->question->parentOnly()->orderBy('id', 'DESC');
+
+        if (isset($filter['stage'])) {
+            $stage = $filter['stage'];
+            $query->whereRaw("metadata->>'stage' = ?", [$stage]);
         }
 
-        return $this->question->parentOnly()->orderBy('id', 'DESC')->paginate();
+        if (is_null($limit)) {
+            return $query->all();
+        }
+
+        return $query->paginate();
     }
 
     /**

@@ -29,9 +29,9 @@ class QuestionController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $questions = $this->question->allParents();
+        $questions = $this->question->allParents($request->all());
 
         return view('question.index', compact('questions'));
     }

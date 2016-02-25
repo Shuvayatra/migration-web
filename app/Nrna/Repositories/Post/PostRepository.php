@@ -2,6 +2,7 @@
 namespace App\Nrna\Repositories\Post;
 
 use App\Nrna\Models\Post;
+use Illuminate\Database\DatabaseManager;
 
 /**
  * Class PostRepository
@@ -13,14 +14,20 @@ class PostRepository implements PostRepositoryInterface
      * @var Post
      */
     private $post;
+    /**
+     * @var DatabaseManager
+     */
+    private $db;
 
     /**
      * constructor
-     * @param Post $post
+     * @param Post            $post
+     * @param DatabaseManager $db
      */
-    public function __construct(Post $post)
+    public function __construct(Post $post ,  DatabaseManager $db)
     {
         $this->post = $post;
+        $this->db = $db;
     }
 
     /**
@@ -34,16 +41,27 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param  null                                              $limit
+     * @param       $filters
+     * @param  null $limit
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getAll($limit = null)
+    public function getAll($filters, $limit = null)
     {
-        if (is_null($limit)) {
-            return $this->post->orderBy('id', 'DESC')->all();
+        $query         = $this->post->select('*');
+        $from          = "posts ";
+        if(isset($filters['stage'])){
+            $stages =  $filters['stage'];
+            $from .= ",json_array_elements(posts.metadata->'stage') stage";
+            $query->whereRaw("trim(both '\"' from stage::text) = ?", [$stages]);
         }
 
-        return $this->post->orderBy('id', 'DESC')->paginate();
+        $query->from($this->db->raw($from));
+        $query->orderBy('id', 'DESC');
+        if (is_null($limit)) {
+            return $query->all();
+        }
+
+        return $query->paginate();
     }
 
     /**

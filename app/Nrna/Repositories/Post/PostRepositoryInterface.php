@@ -18,7 +18,7 @@ interface PostRepositoryInterface
      * @param $limit
      * @return Collection
      */
-    public function getAll($limit = null);
+    public function getAll($filter,$limit = null);
 
     /**
      * @param $id
