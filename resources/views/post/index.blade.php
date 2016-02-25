@@ -4,7 +4,8 @@
 
     <h1>Posts <a href="{{ route('post.create') }}" class="btn btn-primary pull-right btn-sm">Add New Post</a></h1>
     {!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
-    {!! Form::select('stage', config('stage'), Input::get('stage'), ['class' => 'form-control']) !!}
+    {!! Form::select('stage', config('stage'), Input::get('stage'), ['class' => 'form-control','placeholder'=>'Select Stage']) !!}
+    {!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
 
     {!! Form::submit('filter', ['class' => 'btn btn-primary']) !!}
     {!! Form::close() !!}
@@ -34,6 +35,7 @@
                         @endforeach
                     </td>
                     <td>{{ $item->created_at }}<br>{{ $item->updated_at }}</td>
+
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
