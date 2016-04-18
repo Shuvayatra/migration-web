@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="_token" content="{!! csrf_token() !!}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NRNA App</title>
@@ -30,6 +31,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 @if (!Auth::guest())
+                    <li><a href="{{route('journey.index')}}">Journey</a></li>
                     <li><a href="{{route('tag.index')}}">Tags</a></li>
                     <li><a href="{{route('country.index')}}">Country</a></li>
                     <li><a href="{{route('question.index')}}">Questions</a></li>
@@ -75,6 +77,7 @@
 
 <!-- Scripts -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
+
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script >
     $('form .btn-danger').click(function (e) {

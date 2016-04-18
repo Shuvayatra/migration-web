@@ -40,6 +40,8 @@ $providers      = [
     Collective\Html\HtmlServiceProvider::class,
     Alaouy\Youtube\YoutubeServiceProvider::class,
     Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
+    Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
+    Rutorika\Sortable\SortableServiceProvider::class
 
 ];
 $localProviders = [
