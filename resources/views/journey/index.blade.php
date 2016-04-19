@@ -40,7 +40,6 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('js/jquery.bootstrap-growl.min.js')}}"></script>
     <script src="{{asset('js/jquery-ui-1.10.4.custom.min.js')}}"></script>
     <script src="{{asset('js/sort.js')}}"></script>
 @endsection

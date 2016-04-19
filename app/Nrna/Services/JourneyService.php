@@ -2,8 +2,10 @@
 namespace App\Nrna\Services;
 
 use App\Nrna\Models\Journey;
+use App\Nrna\Models\JourneySubcategory;
 use App\Nrna\Repositories\Journey\JourneyRepositoryInterface;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Filesystem\Filesystem;
 use Mockery\Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -34,6 +36,10 @@ class JourneyService
      * @var FileUpload
      */
     private $fileUpload;
+    /**
+     * @var DatabaseManager
+     */
+    private $db;
 
     /**
      * constructor
@@ -41,18 +47,21 @@ class JourneyService
      * @param Storage                    $storage
      * @param Filesystem                 $file
      * @param FileUpload                 $fileUpload
+     * @param DatabaseManager            $db
      */
     public function __construct(
         JourneyRepositoryInterface $journey,
         Storage $storage,
         Filesystem $file,
-        FileUpload $fileUpload
+        FileUpload $fileUpload,
+        DatabaseManager $db
     ) {
         $this->journey    = $journey;
         $this->storage    = $storage;
         $this->uploadPath = public_path(Journey::UPLOAD_PATH);
         $this->file       = $file;
         $this->fileUpload = $fileUpload;
+        $this->db         = $db;
     }
 
     /**
@@ -61,6 +70,7 @@ class JourneyService
      */
     public function save($formData)
     {
+        $this->db->beginTransaction();
         try {
             if ($featured_image_info = $this->fileUpload->handle($formData['featured_image'], $this->uploadPath)) {
                 $featured_image = $featured_image_info['filename'];
@@ -71,15 +81,22 @@ class JourneyService
             if ($small_menu_image_info = $this->fileUpload->handle($formData['small_menu_image'], $this->uploadPath)) {
                 $small_menu_image = $small_menu_image_info['filename'];
             }
+
+            $formData['featured_image']   = $featured_image;
+            $formData['menu_image']       = $menu_image;
+            $formData['small_menu_image'] = $small_menu_image;
+            $journey                      = $this->journey->save($formData);
+            $this->saveSubcategory($formData, $journey);
+            $this->db->commit();
+
+            return $journey;
         } catch (Exception $e) {
+            $this->db->rollback();
+
             return false;
         }
 
-        $formData['featured_image']   = $featured_image;
-        $formData['menu_image']       = $menu_image;
-        $formData['small_menu_image'] = $small_menu_image;
-
-        return $this->journey->save($formData);
+        return false;
     }
 
     /**
@@ -113,6 +130,7 @@ class JourneyService
      */
     public function update($id, $formData)
     {
+        $this->db->beginTransaction();
         $journey = $this->find($id);
         try {
             if (isset($formData['featured_image'])) {
@@ -133,11 +151,19 @@ class JourneyService
                 );
                 $formData['small_menu_image'] = $small_menu_image_info['filename'];
             }
+            $journey->update($formData);
+            $this->saveSubcategory($formData, $journey);
+            $this->updateSubcategory($formData);
+            $this->db->commit();
+
+            return true;
         } catch (Exception $e) {
+            $this->db->rollback();
+
             return false;
         }
 
-        return $journey->update($formData);
+        return;
     }
 
     /**
@@ -169,5 +195,45 @@ class JourneyService
     public function latest()
     {
         return $this->journey->getAll();
+    }
+
+    /**
+     * @param $id
+     * @return int
+     */
+    public function deleteSubCategory($id)
+    {
+        $journey = JourneySubcategory::find($id);
+
+        return $journey->delete($id);
+    }
+
+    /**
+     * @param $formData
+     * @param $journey
+     */
+    protected function saveSubcategory($formData, $journey)
+    {
+        if (!isset($formData ['subcategory'])) {
+            return;
+        }
+        $subCategories = [];
+        foreach ($formData ['subcategory'] as $subcategory) {
+            $subCategories[] = new JourneySubcategory($subcategory);
+        }
+
+        return $journey->subCategories()->saveMany($subCategories);
+    }
+
+    /**
+     * @param $formData
+     */
+    protected function updateSubcategory($formData)
+    {
+        foreach ($formData ['subcategory_old'] as $key => $subcategory) {
+            $subCategory        = JourneySubcategory::find($key);
+            $subCategory->title = $subcategory['title'];
+            $subCategory->save();
+        }
     }
 }

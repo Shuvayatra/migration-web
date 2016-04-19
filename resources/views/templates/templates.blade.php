@@ -54,3 +54,14 @@
         </div>
     </div>
 </script>
+
+<script id="journey_subcategory_field" type="x-tmpl-mustache">
+    <div class="form-group">
+            {!! Form::label('subcategory', 'Sub category: ', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                {!! Form::text('subcategory[@{{count}}][title]', null, ['class' => 'form-control required']) !!}
+                {!! $errors->first('journey.title', '<p class="help-block">:message</p>') !!}
+            </div>
+            <div class="delete delete-journey-subcategory-field btn btn-danger">X</div>
+        </div>
+</script>

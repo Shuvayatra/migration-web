@@ -32,6 +32,24 @@
                         </tr>
 
                         <tr>
+                            <th>Sub Category</th>
+
+                            <td><table class="table">
+                                    <tbody class="sortable" data-entityname="journey_category">
+                                @foreach($journey->subCategories as $subCategory)
+
+                                        <tr data-itemId="{{{ $subCategory->id }}}">
+                                            <td class="sortable-handle">
+                                                {{$subCategory->title}}
+                                            </td>
+                                        </tr>
+                                @endforeach
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <th>Created At</th>
                             <td>{{$journey->created_at}}</td>
                         </tr>
@@ -51,6 +69,7 @@
     </div>
 @endsection
 
-@section('js')
-
-    @endsection
+@section('script')
+    <script src="{{asset('js/jquery-ui-1.10.4.custom.min.js')}}"></script>
+    <script src="{{asset('js/sort.js')}}"></script>
+@endsection

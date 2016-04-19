@@ -59,4 +59,9 @@ class Journey extends Model
     {
         return sprintf('%s/%s', public_path(self::UPLOAD_PATH), $this->small_menu_image);
     }
+
+    public function subCategories()
+    {
+        return $this->hasMany('App\Nrna\Models\JourneySubcategory')->sorted();
+    }
 }

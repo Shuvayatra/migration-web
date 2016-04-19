@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Journey;
 use App\Http\Controllers\Controller;
 use App\Nrna\Services\JourneyService;
 use App\Http\Requests\JourneyRequest;
+use Illuminate\Http\Request;
 
 class JourneyController extends Controller
 {
@@ -63,7 +64,7 @@ class JourneyController extends Controller
     /**
      * Display the specified journey.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -80,7 +81,7 @@ class JourneyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -116,7 +117,7 @@ class JourneyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
@@ -126,5 +127,20 @@ class JourneyController extends Controller
         }
 
         return redirect('journey')->with('error', 'Error deleting Journey !');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function deleteSubcategory(Request $request)
+    {
+        if ($this->journey->deleteSubcategory($request->id)) {
+            return response()->json('ok');
+        }
+
+        return response()->json('failed');
     }
 }
