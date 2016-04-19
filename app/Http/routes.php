@@ -27,6 +27,7 @@ $router->get('/home', ['as' => 'home', 'uses' => 'Post\PostController@index']);
 $router->resource('country', 'Country\\CountryController');
 $router->resource('answer', 'Answer\\AnswerController');
 $router->resource('update', 'Country\\UpdateController');
+$router->resource('journey', 'Journey\\JourneyController');
 
 $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
@@ -36,4 +37,4 @@ $router->get(
     ['as' => 'ajax.question.answers', 'uses' => 'Question\QuestionController@questionAnswers']
 );
 
-
+$router->post('sort', '\Rutorika\Sortable\SortableController@sort');

@@ -48,5 +48,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\CountryUpdate\UpdateRepositoryInterface',
             'App\Nrna\Repositories\CountryUpdate\UpdateRepository'
         );
+
+        $this->app->bind(
+            'App\Nrna\Repositories\Journey\JourneyRepositoryInterface',
+            'App\Nrna\Repositories\Journey\JourneyRepository'
+        );
+
     }
 }
