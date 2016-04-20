@@ -57,6 +57,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Place\PlaceRepositoryInterface',
             'App\Nrna\Repositories\Place\PlaceRepository'
         );
+        $this->app->bind(
+            'App\Nrna\Repositories\CountryTag\CountryTagRepositoryInterface',
+            'App\Nrna\Repositories\CountryTag\CountryTagRepository'
+        );
+
 
     }
 }
