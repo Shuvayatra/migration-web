@@ -65,3 +65,14 @@
             <div class="delete delete-journey-subcategory-field btn btn-danger">X</div>
         </div>
 </script>
+
+<script id="place_phone_field" type="x-tmpl-mustache">
+    <div class="form-group">
+            {!! Form::label('', '', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                {!! Form::text('metadata[phone][@{{count}}]', null, ['class' => 'form-control required']) !!}
+                {!! $errors->first('place', '<p class="help-block">:message</p>') !!}
+            </div>
+            <div class="delete delete-phone-field btn btn-danger">X</div>
+        </div>
+</script>

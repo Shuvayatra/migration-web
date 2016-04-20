@@ -53,6 +53,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Journey\JourneyRepositoryInterface',
             'App\Nrna\Repositories\Journey\JourneyRepository'
         );
+        $this->app->bind(
+            'App\Nrna\Repositories\Place\PlaceRepositoryInterface',
+            'App\Nrna\Repositories\Place\PlaceRepository'
+        );
 
     }
 }

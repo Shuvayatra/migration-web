@@ -1,6 +1,4 @@
-@section('css')
-    <link href="{{asset('css/select2.min.css')}}" rel="stylesheet"/>
-@endsection
+
 <?php
 $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
@@ -128,7 +126,9 @@ $questions = $questionService->getList();
         @endforeach
     </div>
 </div>
-
+@section('css')
+    <link href="{{asset('css/select2.min.css')}}" rel="stylesheet"/>
+@endsection
 @section('script')
     <script type="text/javascript" src="{{asset('js/jquery.validate.min.js')}}"></script>
     <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>

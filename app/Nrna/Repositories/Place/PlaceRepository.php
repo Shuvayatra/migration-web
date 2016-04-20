@@ -1,36 +1,36 @@
 <?php
-namespace App\Nrna\Repositories\Journey;
+namespace App\Nrna\Repositories\Place;
 
-use App\Nrna\Models\Journey;
+use App\Nrna\Models\Place;
 
 /**
- * Class JourneyRepository
- * @package App\Nrna\Repository\Journey
+ * Class PlaceRepository
+ * @package App\Nrna\Repository\Place
  */
-class JourneyRepository implements JourneyRepositoryInterface
+class PlaceRepository implements PlaceRepositoryInterface
 {
     /**
-     * @var Journey
+     * @var Place
      */
-    private $journey;
+    private $place;
 
     /**
      * constructor
-     * @param Journey $journey
+     * @param Place $place
      */
-    public function __construct(Journey $journey)
+    public function __construct(Place $place)
     {
-        $this->journey = $journey;
+        $this->place = $place;
     }
 
     /**
-     * Save Journey
+     * Save Place
      * @param $data
-     * @return Journey
+     * @return Place
      */
     public function save($data)
     {
-        return $this->journey->create($data);
+        return $this->place->create($data);
     }
 
     /**
@@ -40,19 +40,19 @@ class JourneyRepository implements JourneyRepositoryInterface
     public function getAll($limit = null)
     {
         if (is_null($limit)) {
-            return $this->journey->sorted()->get();
+            return $this->place->all();
         }
 
-        return $this->journey->sorted()->paginate();
+        return $this->place->paginate();
     }
 
     /**
      * @param $id
-     * @return Journey
+     * @return Place
      */
     public function find($id)
     {
-        return $this->journey->findOrFail($id);
+        return $this->place->findOrFail($id);
     }
 
     /**
@@ -61,7 +61,7 @@ class JourneyRepository implements JourneyRepositoryInterface
      */
     public function update($data)
     {
-        return $this->journey->update($data);
+        return $this->place->update($data);
     }
 
     /**
@@ -70,29 +70,29 @@ class JourneyRepository implements JourneyRepositoryInterface
      */
     public function delete($id)
     {
-        return $this->journey->destroy($id);
+        return $this->place->destroy($id);
     }
 
     /**
-     * get list of journey with title and id
+     * get list of place with title and id
      *
      * @return array
      */
 
     public function lists()
     {
-        return $this->journey->lists('title', 'id');
+        return $this->place->lists('title', 'id');
     }
 
     /**
-     * get latest journey
+     * get latest place
      * @param $filter
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function latest($filter)
     {
         $filter = array_only($filter, ['updated_at']);
-        $query  = $this->journey->where(
+        $query  = $this->place->where(
             function ($q) use ($filter) {
                 foreach ($filter as $key => $value) {
                     $q->where($key, '>', $value);
@@ -104,7 +104,7 @@ class JourneyRepository implements JourneyRepositoryInterface
     }
 
     /**
-     * gets deleted journeys
+     * gets deleted places
      *
      * @param $filter
      * @return \Illuminate\Database\Eloquent\Collection|static[]
@@ -112,7 +112,7 @@ class JourneyRepository implements JourneyRepositoryInterface
     public function deleted($filter)
     {
         $filter = array_only($filter, ['deleted_at']);
-        $query  = $this->journey->onlyTrashed()->where(
+        $query  = $this->place->onlyTrashed()->where(
             function ($q) use ($filter) {
                 foreach ($filter as $key => $value) {
                     $q->where($key, '>', $value);

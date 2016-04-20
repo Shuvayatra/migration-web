@@ -18,7 +18,7 @@ class Country extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'code', 'image', 'description','contact','do_and_dont'];
+    protected $fillable = ['name', 'code', 'image', 'description', 'contact', 'do_and_dont'];
 
     /**
      * upload path for country
@@ -63,6 +63,14 @@ class Country extends Model
     public function updates()
     {
         return $this->hasMany('App\Nrna\Models\Update');
+    }
+
+    /**
+     * Get the places for the country.
+     */
+    public function places()
+    {
+        return $this->hasMany('App\Nrna\Models\Place');
     }
 
     /**

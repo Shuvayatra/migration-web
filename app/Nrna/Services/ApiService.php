@@ -29,29 +29,37 @@ class ApiService
      * @var CountryUpdateService
      */
     private $update;
+    /**
+     * @var JourneyService
+     */
+    private $journey;
+    /**
+     * @var PlaceService
+     */
+    private $place;
 
     /**
-     * @param PostService          $post
-     * @param QuestionService      $question
-     * @param CountryService       $country
-     * @param AnswerService        $answer
-     * @param CountryUpdateService $update
-     * @param Log                  $logger
+     * @param PostService    $post
+     * @param CountryService $country
+     * @param AnswerService  $answer
+     * @param JourneyService $journey
+     * @param PlaceService   $place
+     * @param Log            $logger
      */
     public function __construct(
         PostService $post,
-        QuestionService $question,
         CountryService $country,
         AnswerService $answer,
-        CountryUpdateService $update,
+        JourneyService $journey,
+        PlaceService $place,
         Log $logger
     ) {
-        $this->post     = $post;
-        $this->country  = $country;
-        $this->question = $question;
-        $this->answer   = $answer;
-        $this->logger   = $logger;
-        $this->update   = $update;
+        $this->post    = $post;
+        $this->country = $country;
+        $this->answer  = $answer;
+        $this->logger  = $logger;
+        $this->journey = $journey;
+        $this->place   = $place;
     }
 
     /**
@@ -66,10 +74,9 @@ class ApiService
                 $filter['updated_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
             }
             $data['posts']     = $this->post->latest($filter);
-            $data['questions'] = $this->question->latest($filter);
             $data['countries'] = $this->country->latest();
-            $data['answers']   = $this->answer->latest($filter);
-            $data['updates']   = $this->update->latest($filter);
+            $data['journeys']  = $this->journey->latest($filter);
+            $data['places']    = $this->place->latest($filter);
 
             return $data;
         } catch (\Exception $e) {
@@ -92,10 +99,8 @@ class ApiService
             if (isset($filter['last_updated'])) {
                 $filter['deleted_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
             }
-            $data['posts']     = $this->post->deleted($filter);
-            $data['questions'] = $this->question->deleted($filter);
-            $data['answers']   = $this->answer->deleted($filter);
-            $data['updates']   = $this->update->deleted($filter);
+            $data['posts']  = $this->post->deleted($filter);
+            $data['places'] = $this->update->deleted($filter);
 
             return $data;
         } catch (\Exception $e) {

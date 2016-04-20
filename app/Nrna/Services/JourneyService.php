@@ -190,11 +190,37 @@ class JourneyService
     }
 
     /**
+     * @param $filter
      * @return array
      */
-    public function latest()
+    public function latest($filter)
     {
-        return $this->journey->getAll();
+        $journeyArray = [];
+        $journeys     = $this->journey->latest($filter);
+        foreach ($journeys as $journey) {
+            $journeyArray[] = $this->buildJourney($journey);
+        }
+
+        return $journeyArray;
+    }
+
+    /**
+     * @param Journey $journey
+     * @return mixed
+     */
+    public function buildJourney(Journey $journey)
+    {
+        $journeyArray['id']                  = $journey->id;
+        $journeyArray['title']               = $journey->title;
+        $journeyArray['menu_image_link']     = $journey->menu_image_link;
+        $journeyArray['featured_image_link'] = $journey->featured_image_link;
+        $journeyArray['small_image_link']    = $journey->small_menu_image_link;
+        $journeyArray['sub_categories']      = $journey->subCategories()->get(['id', 'title', 'position'])->toArray();
+        $journeyArray['position']            = $journey->position;
+        $journeyArray['created_at']          = $journey->created_at->timestamp;
+        $journeyArray['updated_at']          = $journey->updated_at->timestamp;
+
+        return $journeyArray;
     }
 
     /**

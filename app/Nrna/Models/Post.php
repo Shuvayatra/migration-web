@@ -139,10 +139,7 @@ class Post extends Model
     public function getApiMetadataAttribute()
     {
         $metadata = json_decode(json_encode($this->metadataWithPath), true);
-
-        if (!is_array($metadata['stage'])) {
-            $metadata['stage'] = (array) $metadata['stage'];
-        }
+        
         if ($metadata['type'] == 'text') {
             $metadata['data'] = array_only($metadata['data'], ['content', 'file']);
         }
@@ -158,6 +155,7 @@ class Post extends Model
             }
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
+        unset($metadata['stage']);
 
         return $metadata;
     }

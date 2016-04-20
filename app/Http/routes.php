@@ -39,4 +39,8 @@ $router->get(
 
 $router->post('sort', '\Rutorika\Sortable\SortableController@sort');
 
-$router->post('journey/subcategory/delete',['as'=>'journey.subcategory.delete','uses'=>'Journey\JourneyController@deleteSubcategory']);
+$router->post(
+    'journey/subcategory/delete',
+    ['as' => 'journey.subcategory.delete', 'uses' => 'Journey\JourneyController@deleteSubcategory']
+);
+$router->resource('place', 'Place\\PlaceController');

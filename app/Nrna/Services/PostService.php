@@ -246,14 +246,12 @@ class PostService
      */
     public function buildPost(Post $post)
     {
-        $postArray['id']           = $post->id;
-        $postArray                 = array_merge($postArray, (array) $post->apiMetadata);
-        $postArray['tags']         = $post->tags->lists('title')->toArray();
-        $postArray['question_ids'] = $post->questions->lists('id')->toArray();
-        $postArray['country_ids']  = $post->countries->lists('id')->toArray();
-        $postArray['answer_ids']   = $post->answers->lists('id')->toArray();
-        $postArray['created_at']   = $post->created_at->timestamp;
-        $postArray['updated_at']   = $post->updated_at->timestamp;
+        $postArray['id']          = $post->id;
+        $postArray                = array_merge($postArray, (array) $post->apiMetadata);
+        $postArray['tags']        = $post->tags->lists('title')->toArray();
+        $postArray['country_ids'] = $post->countries->lists('id')->toArray();
+        $postArray['created_at']  = $post->created_at->timestamp;
+        $postArray['updated_at']  = $post->updated_at->timestamp;
 
         return $postArray;
     }

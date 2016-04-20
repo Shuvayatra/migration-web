@@ -19,9 +19,10 @@ class Journey extends Model
     protected $table = 'journeys';
 
     /**
-     * upload path for country
+     * upload path for journey
      */
     const UPLOAD_PATH = 'uploads/journey';
+
 
     /**
      * Attributes that should be mass-assignable.
