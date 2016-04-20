@@ -23,4 +23,12 @@ class CountryTag extends Model
      */
     protected $fillable = ['name', 'status'];
 
+    /**
+     * @return timestamp
+     */
+    public function getDeletedAtAttribute()
+    {
+        return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
+    }
+
 }

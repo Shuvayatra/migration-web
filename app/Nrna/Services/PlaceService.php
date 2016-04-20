@@ -178,4 +178,16 @@ class PlaceService
 
         return $placeArray;
     }
+
+    /**
+     * gets deleted places
+     * @param $filter
+     * @return array
+     */
+    public function deleted($filter)
+    {
+        $posts = $this->place->deleted($filter);
+
+        return $posts;
+    }
 }

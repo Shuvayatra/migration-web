@@ -1,6 +1,7 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\CountryTag;
 use App\Nrna\Repositories\CountryTag\CountryTagRepositoryInterface;
 
 /**
@@ -33,7 +34,7 @@ class CountryTagService
     }
 
     /**
-     * @param  int                                   $limit
+     * @param  int $limit
      * @return \App\Nrna\Repositories\CountryTag\Collection
      */
     public function all($limit = 15)
@@ -99,4 +100,46 @@ class CountryTagService
 
         return $tags;
     }
+
+    /**
+     * @param $filter
+     * @return array
+     */
+    public function latest($filter)
+    {
+        $tagArray = [];
+        $tags     = $this->tag->latest($filter);
+        foreach ($tags as $tag) {
+            $tagArray[] = $this->buildTag($tag);
+        }
+
+        return $tagArray;
+    }
+
+    /**
+     * @param CountryTag $tag
+     * @return array
+     */
+    public function buildTag(CountryTag $tag)
+    {
+        return [
+            'id'         => $tag->id,
+            'title'      => $tag->name,
+            'created_at' => $tag->created_at->timestamp,
+            'updated_at' => $tag->updated_at->timestamp,
+        ];
+    }
+
+    /**
+     * gets deleted places
+     * @param $filter
+     * @return array
+     */
+    public function deleted($filter)
+    {
+        $posts = $this->tag->deleted($filter);
+
+        return $posts;
+    }
+
 }

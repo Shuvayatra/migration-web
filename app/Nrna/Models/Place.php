@@ -47,4 +47,13 @@ class Place extends Model
     {
         return sprintf('%s/%s', public_path(self::UPLOAD_PATH), $this->image);
     }
+
+    /**
+     * @return timestamp
+     */
+    public function getDeletedAtAttribute()
+    {
+        return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
+    }
+
 }
