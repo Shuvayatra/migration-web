@@ -24,7 +24,7 @@ class Post extends Model
     /**
      * upload path for country
      */
-    const UPLOAD_PATH = 'uploads/audio';
+    const UPLOAD_PATH = 'uploads/posts';
 
     /**
      * The database table used by the model.
@@ -43,7 +43,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['metadata'];
+    protected $fillable = ['metadata', 'is_published'];
 
     /**
      * The tag that belongs to post.
@@ -59,6 +59,14 @@ class Post extends Model
     public function countries()
     {
         return $this->belongsToMany('App\Nrna\Models\Country');
+    }
+
+    /**
+     * The country that belongs to post.
+     */
+    public function section_categories()
+    {
+        return $this->belongsToMany(CategoryAttribute::class);
     }
 
     /**
@@ -109,9 +117,12 @@ class Post extends Model
             } else {
                 $metadata->data->thumbnail = '';
             }
-
         }
-        $metadata->stage  = (array) $metadata->stage;
+        if (isset($metadata->featured_image) && $metadata->featured_image != '') {
+            $metadata->featured_image = sprintf('%s/%s', url(self::UPLOAD_PATH), $metadata->featured_image);
+        }
+
+        //$metadata->stage  = (array) $metadata->stage;
         $metadata->source = urldecode($metadata->source);
 
         return $metadata;
@@ -202,7 +213,16 @@ class Post extends Model
      */
     public function getAudioPathAttribute()
     {
-        return sprintf(' % s /%s', public_path(Self::UPLOAD_PATH), $this->audioName);
+        return sprintf('%s/%s', public_path(Self::UPLOAD_PATH), $this->audioName);
+    }
+
+    public function getFeaturedImageLinkAttribute()
+    {
+        if ($this->metadata->featured_image == '') {
+            return null;
+        }
+
+        return sprintf('%s/%s', url(self::UPLOAD_PATH), $this->metadata->featured_image);
     }
 
     /**
@@ -222,5 +242,15 @@ class Post extends Model
                 return true;
             }
         );
+    }
+
+    /**
+     * Scope a query to only include published post.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
     }
 }

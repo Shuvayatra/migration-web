@@ -51,7 +51,6 @@ class PostRepository implements PostRepositoryInterface
         $from  = "posts ";
         if (isset($filters['stage']) && $filters['stage'] != '') {
             $stages = $filters['stage'];
-
             $from .= ",json_array_elements(posts.metadata->'stage') stage";
             $query->whereRaw("trim(both '\"' from stage::text) = ?", [$stages]);
         }
@@ -107,13 +106,15 @@ class PostRepository implements PostRepositoryInterface
     public function latest($filter)
     {
         $filter = array_only($filter, ['updated_at']);
-        $query  = $this->post->with('tags', 'questions', 'countries')->where(
+        $query  = $this->post->with('tags')->where(
             function ($q) use ($filter) {
                 foreach ($filter as $key => $value) {
                     $q->where($key, '>', $value);
                 }
             }
         );
+
+        $query->published();
 
         return $query->get();
     }

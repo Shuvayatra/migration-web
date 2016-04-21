@@ -15,7 +15,7 @@
                     <table class="table table-striped table-bordered table-hover">
                         <tbody>
 
-                        @foreach($post->metadata as $title=>$metadata)
+                        @foreach($post->metadataWithPath as $title=>$metadata)
                         <tr>
                             <th class="head">{{ucfirst($title)}}</th>
                             <td>@if(is_object($metadata) || is_array($metadata))
@@ -25,7 +25,11 @@
                                         @endif
                                     @endforeach
                                 @else
+                                   @if(!filter_var($metadata, FILTER_VALIDATE_URL) === false)
+                                    <img src="{{$metadata}}">
+                                    @else
                                     {!!$metadata !!}
+                                    @endif
                                 @endif
                             </td>
                         </tr>
@@ -70,22 +74,6 @@
                                 </ul>
                             </td>
 
-                        </tr>
-                        <tr><th>Questions</th>
-                            <td><ul>
-                                @foreach($post->questions as $question)
-                                    <li><a href="{{route('question.edit',$question->id)}}">{{$question->metadata->title}}</a></li>
-                                @endforeach
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr><th>Answers</th>
-                            <td><ul>
-                                    @foreach($post->answers as $answer)
-                                        <li><a href="{{route('answer.edit',$answer->id)}}">{{$answer->title}}</a></li>
-                                    @endforeach
-                                </ul>
-                            </td>
                         </tr>
                         <tr><th>Country</th>
                             <td><ul>

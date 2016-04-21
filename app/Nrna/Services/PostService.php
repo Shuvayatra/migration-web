@@ -18,40 +18,44 @@ class PostService
     /**
      * @var PostRepositoryInterface
      */
-    private $post;
+    protected $post;
 
     /**
      * @var string
      */
-    private $uploadPath;
+    protected $uploadPath;
     /**
      * @var TagService
      */
-    private $tag;
+    protected $tag;
     /**
      * @var DatabaseManager
      */
-    private $database;
+    protected $database;
     /**
      * @var Filesystem
      */
-    private $file;
+    protected $file;
     /**
      * @var YoutubeService
      */
-    private $youtube;
+    protected $youtube;
     /**
      * @var AudioService
      */
-    private $audio;
+    protected $audio;
     /**
      * @var Log
      */
-    private $logger;
+    protected $logger;
     /**
      * @var ImageService
      */
-    private $image;
+    protected $image;
+    /**
+     * @var FileUpload
+     */
+    protected $fileUpload;
 
     /**
      * constructor
@@ -62,6 +66,7 @@ class PostService
      * @param YoutubeService          $youtube
      * @param AudioService            $audio
      * @param Log                     $logger
+     * @param FileUpload              $fileUpload
      * @param ImageService            $image
      */
     public function __construct(
@@ -72,6 +77,7 @@ class PostService
         YoutubeService $youtube,
         AudioService $audio,
         Log $logger,
+        FileUpload $fileUpload,
         ImageService $image
     ) {
         $this->uploadPath = public_path(Post::UPLOAD_PATH);
@@ -83,6 +89,7 @@ class PostService
         $this->audio      = $audio;
         $this->logger     = $logger;
         $this->image      = $image;
+        $this->fileUpload = $fileUpload;
     }
 
     /**
@@ -98,6 +105,10 @@ class PostService
         }
         $this->database->beginTransaction();
         try {
+            $formData['is_published'] = isset($formData['is_published']) ? true : false;
+            if (isset($formData['metadata']['data']['phone'])) {
+                $formData['metadata']['data']['phone'] = array_values($formData['metadata']['data']['phone']);
+            }
             if ($formData['metadata']['type'] === 'text') {
                 $formData = $this->formatTypeTextCreate($formData);
             }
@@ -106,6 +117,13 @@ class PostService
             }
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
+            }
+            if (isset($formData['metadata']['featured_image'])) {
+                $featuredInfo                           = $this->fileUpload->handle(
+                    $formData['metadata']['featured_image'],
+                    $this->uploadPath
+                );
+                $formData['metadata']['featured_image'] = $featuredInfo['filename'];
             }
 
             $post = $this->post->save($formData);
@@ -127,6 +145,7 @@ class PostService
     }
 
     /**
+     * @param      $filter
      * @param  int $limit
      * @return Collection
      */
@@ -163,7 +182,12 @@ class PostService
         }
         $this->database->beginTransaction();
         try {
-            $post = $this->find($id);
+            $formData['is_published'] = isset($formData['is_published']) ? true : false;
+            $post                     = $this->find($id);
+            $post->created_at         = $formData['created_at'];
+            if (isset($formData['metadata']['data']['phone'])) {
+                $formData['metadata']['data']['phone'] = array_values($formData['metadata']['data']['phone']);
+            }
             if ($formData['metadata']['type'] === 'text') {
                 $formData = $this->formatTypeTextUpdate($post, $formData);
             }
@@ -173,6 +197,14 @@ class PostService
 
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
+            }
+            if (isset($formData['featured_image'])) {
+
+                $featuredInfo           = $this->fileUpload->handle(
+                    $formData['metadata']['featured_image'],
+                    $this->uploadPath
+                );
+                $data['featured_image'] = $featuredInfo['filename'];
             }
 
             if (!$post->update($formData)) {
@@ -201,9 +233,12 @@ class PostService
     public function delete($id)
     {
         $post = $this->find($id);
-        if ($this->post->delete($id)) {
-            $this->file->delete($post->audioPath);
+        if ($post->metadata->type = 'audio') {
+            $this->file->delete($this->uploadPath . '/' . $post->metadata->data->audio);
+        }
 
+        $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
+        if ($this->post->delete($id)) {
             return true;
         }
 
@@ -247,12 +282,12 @@ class PostService
      */
     public function buildPost(Post $post)
     {
-        $postArray['id']          = $post->id;
-        $postArray                = array_merge($postArray, (array) $post->apiMetadata);
-        $postArray['tags']        = $post->tags->lists('title')->toArray();
-        $postArray['country_ids'] = $post->countries->lists('id')->toArray();
-        $postArray['created_at']  = $post->created_at->timestamp;
-        $postArray['updated_at']  = $post->updated_at->timestamp;
+        $postArray['id']               = $post->id;
+        $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
+        $postArray['tags']             = $post->tags->lists('title')->toArray();
+        $postArray['section_category'] = $post->section_categories->lists('id')->toArray();
+        $postArray['created_at']       = $post->created_at->timestamp;
+        $postArray['updated_at']       = $post->updated_at->timestamp;
 
         return $postArray;
     }
@@ -263,14 +298,8 @@ class PostService
      */
     protected function updateRelations($formData, $post)
     {
-        if (isset($formData['country'])) {
-            $post->countries()->sync($formData['country']);
-        }
-        if (isset($formData['question'])) {
-            $questions = $this->getQuestionsData($formData['question']);
-            //$answers   = $this->getAnswerData($formData['question']);
-            $post->questions()->sync($questions);
-            //$post->answers()->sync($answers);
+        if (isset($formData['category_id'])) {
+            $post->section_categories()->sync($formData['category_id']);
         }
     }
 
@@ -406,9 +435,14 @@ class PostService
     {
         $data['content'] = $formData['metadata']['data']['content'];
         $data['file']    = [];
+
         if (isset($formData['metadata']['data']['file'][0])) {
 
+            $fileInfo['file_name']   = '';
+            $fileInfo['description'] = '';
+            $data['file'][]          = $fileInfo;
             foreach ($formData['metadata']['data']['file'] as $fileData) {
+                unset($data['file'][0]);
                 if (!is_null($fileData['file_name'])) {
                     $fileInfo['file_name']   = $this->upload($fileData['file_name']);
                     $fileInfo['description'] = $fileData['description'];

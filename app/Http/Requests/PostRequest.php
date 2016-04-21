@@ -23,10 +23,17 @@ class PostRequest extends Request
     public function rules()
     {
         return [
-            'metadata.title' => 'required',
-            'metadata.stage' => 'required',
-            'metadata.type'  => 'required',
+            'metadata.title'                 => 'required',
+            'metadata.type'                  => 'required',
             'metadata.data.file.*.file_name' => 'sometimes|mimes:pdf,doc,docx',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'metadata.title.required' => 'Title field is required.',
+            'metadata.type.required'  => 'Post Type field is required.',
         ];
     }
 }

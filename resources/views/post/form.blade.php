@@ -1,13 +1,17 @@
-
 <?php
 $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
-$countryService = app('App\Nrna\Services\CountryService');
-$countries = $countryService->getList();
-$questionService = app('App\Nrna\Services\QuestionService');
-$questionCollection = $questionService->allParents();
-$questions = $questionService->getList();
+$sectionService = app('App\Nrna\Services\SectionService');
+$sections = $sectionService->all();
 ?>
+<div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
+    {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('metadata[type]',[''=>'']+config('post_type'),null, ['class' =>
+        'form-control required','id'=>'post_type']) !!}
+        {!! $errors->first('metadata.type', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
     {!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
@@ -18,20 +22,18 @@ $questions = $questionService->getList();
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     {!! Form::label('description', 'Description: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::textArea  ('metadata[description]', null, ['class' => 'form-control']) !!}
+        {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control']) !!}
         {!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
-    {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
+<div class="form-group {{ $errors->has('metadata.featured_image') ? 'has-error' : ''}}">
+    {!! Form::label('file', 'Featured Image: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::select('metadata[type]',[''=>'']+config('post_type'),null, ['class' =>
-        'form-control required','id'=>'post_type']) !!}
-        {!! $errors->first('metadata.type', '<p class="help-block">:message</p>') !!}
+        {!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
+        {!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-
 <div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text") block @else none @endif"
      class="content-type  type-text">
     @include('post.partials.type_text')
@@ -50,12 +52,9 @@ $questions = $questionService->getList();
      style="display: @if(isset($post) && $post->metadata->type === 'audio'|| old('metadata.type') =="audio")block @else none @endif">
     @include('post.partials.type_audio')
 </div>
-<div class="form-group {{ $errors->has('source') ? 'has-error' : ''}}">
-    {!! Form::label('source', 'Source: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::text('metadata[source]', null, ['class' => 'form-control']) !!}
-        {!! $errors->first('metadata.source', '<p class="help-block">:message</p>') !!}
-    </div>
+<div class="content-type type-place"
+     style="display: @if(isset($post) && $post->metadata->type === 'place'|| old('metadata.type') =="place")block @else none @endif">
+    @include('post.partials.type_place')
 </div>
 <div class="form-group {{ $errors->has('language') ? 'has-error' : ''}}">
     {!! Form::label('language', 'Language: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -64,15 +63,14 @@ $questions = $questionService->getList();
         {!! $errors->first('metadata.language', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-
-<div class="form-group {{ $errors->has('stage') ? 'has-error' : ''}}">
-    {!! Form::label('stage', 'Stage: ', ['class' => 'col-sm-3 control-label']) !!}
+<div class="form-group {{ $errors->has('source') ? 'has-error' : ''}}">
+    {!! Form::label('source', 'Source: ', ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-6">
-        {!! Form::select('metadata[stage][]', config('stage'), null, ['class' => 'form-control
-        required','multiple'=>true]) !!}
-        {!! $errors->first('metadata.stage', '<p class="help-block">:message</p>') !!}
+        {!! Form::text('metadata[source]', null, ['class' => 'form-control']) !!}
+        {!! $errors->first('metadata.source', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
     {!! Form::label('tag', 'Tags: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -82,61 +80,102 @@ $questions = $questionService->getList();
         {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-<div class="form-group {{ $errors->has('country') ? 'has-error' : ''}}">
-    {!! Form::label('country', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::select('country[]', $countries, isset($post)?$post->countries->lists('id')->toArray():null, ['class'=>
-        'form-control','multiple'=>'']) !!}
-        {!! $errors->first('country', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
 
-<div class="form-group">
-    <label for="questions" class="col-sm-3 control-label">Questions</label>
+<hr>
+@foreach($sections as $section)
+    <div class="form-group">
+        <label for="questions" class="col-sm-3 control-label">{{$section->title}}</label>
 
-    <div class="col-sm-9">
-        {{-- */$x=0;/* --}}
-        @foreach($questionCollection as $questionObj)
-            {{-- */$x++;/* --}}
-            <div class="row">
-                <div class="col-sm-8">
-                    <div class="checkbox">
-                        <label><input @if(isset($post) && in_array($questionObj->id,$post->questions->lists('id')->toArray()))
-                                checked @endif name="question[]" type="checkbox"
-                                value="{{$questionObj->id}}">Q{{$x}}. {{$questionObj->metadata->title}}</label>
-                    </div>
-                    <div style="display: @if(isset($post) && in_array($questionObj->id,$post->questions->lists('id')->toArray()))
-                            block @else none @endif" class="question-subquestions">
-                        {{-- */$y=0;/* --}}
-                        @foreach($questionObj->subquestions as $subquestion)
-                            {{-- */$y++;/* --}}
-                            <div class="checkbox">
-                                <label><input type="checkbox"
-                                              name="question[]"
-                                    @if(isset($post) && in_array($subquestion->id,$post->questions->lists('id')->toArray()))
-                                              checked @endif
-                                              value="{{$subquestion->id}}">Q{{$x}}.{{$y}} {{$subquestion->metadata->title}}
-                                </label>
-                            </div>
-                        @endforeach
+        <div class="col-sm-9">
+            {{-- */$x=0;/* --}}
+            @foreach($section->categories as $category)
+                {{-- */$x++;/* --}}
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="checkbox">
+                            <label>
+                                <?php
+                                 $checked = false;
+                                if(isset($post) && in_array($category->id,$post->section_categories->lists('id')->toArray()))
+                                    $checked = true;
+                                 ?>
+                                {!! Form::checkbox('category_id[]', $category->id, $checked) !!}
+                                 {{$category->title}}</label>
+                        </div>
+                        <div class="">
+                            {{-- */$y=0;/* --}}
+                            @foreach($category->subCategories as $subCategory)
+                                {{-- */$y++;/* --}}
+                                <div class="checkbox post-form-subcategory">
+                                    <label>
+                                        <?php
+                                        $checked = false;
+                                        if (isset($post) && in_array(
+                                                        $subCategory->id,
+                                                        $post->section_categories->lists('id')->toArray()
+                                                )
+                                        ) {
+                                            $checked = true;
+                                        }
+                                        ?>
+                                        {!! Form::checkbox('category_id[]', $subCategory->id,$checked) !!}
+                                        {{$subCategory->title}}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-4 pull-left show-subquestions"><a>sub questions({{count($questionObj->subquestions)}})</a></div>
+            @endforeach
+        </div>
+    </div>
+@endforeach
+@if(isset($post))
+    <hr>
+    <div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
+        {!! Form::label('created_at', 'Created At: ', ['class' => 'col-sm-3 control-label']) !!}
+        <div class='input-group date' id='datetimepicker1'>
+            <div class="col-sm-6">
+                {!! Form::text('created_at', null, ['class' => 'form-control']) !!}
+                {!! $errors->first('created_at', '<p class="help-block">:message</p>') !!}
             </div>
-        @endforeach
+            <div class="col-sm-1">
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar "></span>
+              </span>
+            </div>
+        </div>
+    </div>
+@endif
+<div class="form-group {{ $errors->has('is_published') ? 'has-error' : ''}}">
+    {!! Form::label('', '', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        <label class="checkbox">{!! Form::checkbox('is_published', 'is_published') !!} Publish ?</label>
+        {!! $errors->first('is_published', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+@include('templates.templates')
 @section('css')
     <link href="{{asset('css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/bootstrap-datetimepicker.css')}}"
+          rel="stylesheet">
 @endsection
 @section('script')
     <script type="text/javascript" src="{{asset('js/jquery.validate.min.js')}}"></script>
     <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+    <script type="text/javascript"
+            src="{{asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script>
         $(function () {
-            $('.post-form').validate();
+            $('#datetimepicker1').datetimepicker(
+                    {
+                        format: 'YYYY-MM-DD HH:mm:ss'
+                    }
+            );
+            //$('.post-form').validate();
             $(".show-subquestions").click(function () {
                 $(this).parent().find(".question-subquestions").fadeToggle();
             });
@@ -158,3 +197,4 @@ $questions = $questionService->getList();
         });
     </script>
 @endsection
+

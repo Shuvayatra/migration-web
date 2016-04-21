@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'en'=>'English',
     'ne'=>'Nepali',
+    'en'=>'English',
 ];

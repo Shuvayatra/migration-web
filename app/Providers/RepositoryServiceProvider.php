@@ -68,5 +68,15 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\User\UserRepository'
         );
 
+        $this->app->bind(
+            'App\Nrna\Repositories\Section\SectionRepositoryInterface',
+            'App\Nrna\Repositories\Section\SectionRepository'
+        );
+
+        $this->app->bind(
+            'App\Nrna\Repositories\CategoryAttribute\CategoryAttributeRepositoryInterface',
+            'App\Nrna\Repositories\CategoryAttribute\CategoryAttributeRepository'
+        );
+
     }
 }
