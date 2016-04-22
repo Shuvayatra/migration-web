@@ -114,7 +114,6 @@ class ApiService
 
             return $data;
         } catch (\Exception $e) {
-            dd("jdf");
             $this->logger->error($e);
 
             return false;

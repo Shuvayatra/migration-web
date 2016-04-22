@@ -50,4 +50,23 @@ interface PostRepositoryInterface
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function deleted($filter);
+
+    /**
+     * @param $postId
+     * @return mixed
+     */
+    public function getLikes($postId);
+    /**
+     * @param $postId
+     * @return mixed
+     */
+    public function incrementLikes($postId);
+
+    /**
+     * @param $postId
+     * @return mixed
+     */
+    public function decrementLikes($postId);
+
+    public function postExistsCheck($ids);
 }

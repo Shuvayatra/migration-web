@@ -24,10 +24,10 @@ class PostRepository implements PostRepositoryInterface
      * @param Post            $post
      * @param DatabaseManager $db
      */
-    public function __construct(Post $post ,  DatabaseManager $db)
+    public function __construct(Post $post, DatabaseManager $db)
     {
         $this->post = $post;
-        $this->db = $db;
+        $this->db   = $db;
     }
 
     /**
@@ -47,16 +47,16 @@ class PostRepository implements PostRepositoryInterface
      */
     public function getAll($filters, $limit = null)
     {
-        $query         = $this->post->select('*');
-        $from          = "posts ";
-        if(isset($filters['stage']) && $filters['stage'] != ''){
-            $stages =  $filters['stage'];
+        $query = $this->post->select('*');
+        $from  = "posts ";
+        if (isset($filters['stage']) && $filters['stage'] != '') {
+            $stages = $filters['stage'];
             $from .= ",json_array_elements(posts.metadata->'stage') stage";
             $query->whereRaw("trim(both '\"' from stage::text) = ?", [$stages]);
         }
 
-        if(isset($filters['post_type']) && $filters['post_type'] != ''){
-            $post_type =  $filters['post_type'];
+        if (isset($filters['post_type']) && $filters['post_type'] != '') {
+            $post_type = $filters['post_type'];
             $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
         }
 
@@ -75,7 +75,7 @@ class PostRepository implements PostRepositoryInterface
      */
     public function find($id)
     {
-        return $this->post->with('tags', 'questions', 'countries')->findOrFail($id);
+        return $this->post->with('tags', 'questions', 'countries')->find($id);
     }
 
     /**
@@ -130,5 +130,37 @@ class PostRepository implements PostRepositoryInterface
         );
 
         return $query->get(['id', 'deleted_at']);
+    }
+
+    /**
+     * @param $postId
+     * @return mixed
+     */
+    public function getLikes($postId)
+    {
+        return $this->post->where('id', $postId)->first();
+    }
+
+    /**
+     * @param $postId
+     * @return mixed
+     */
+    public function incrementLikes($postId)
+    {
+        return $this->post->where('id', $postId)->increment('likes');
+    }
+
+    /**
+     * @param $postId
+     * @return mixed
+     */
+    public function decrementLikes($postId)
+    {
+        return $this->post->where('id', $postId)->decrement('likes');
+    }
+
+    public function postExistsCheck($ids)
+    {
+        return $this->post->whereIn('id', $ids)->get(['id']);
     }
 }

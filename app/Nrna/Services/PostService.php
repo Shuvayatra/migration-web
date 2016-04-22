@@ -14,6 +14,7 @@ use Illuminate\Filesystem\Filesystem;
  */
 class PostService
 {
+    const LIKE = 'like';
     /**
      * @var PostRepositoryInterface
      */
@@ -443,6 +444,68 @@ class PostService
         $formData['metadata']['data'] = $data;
 
         return $formData;
+    }
+
+    /**
+     * @param $likesData
+     * @return bool
+     */
+    function likes($likesData)
+    {
+        $ids = $this->postIdsExistsCheck($likesData);
+        try {
+            foreach ($likesData as $data) {
+                if ($data['status'] == self::LIKE) {
+                    $this->modifyLikes($data['id'], 'increment');
+                } else {
+                    $this->modifyLikes($data['id'], 'decrement');
+                }
+
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e);
+
+            return false;
+        }
+
+        return $ids;
+    }
+
+
+    /**
+     * Increment or decrement likes
+     * @param $id
+     * @param $status
+     * @return bool|null
+     */
+    protected function modifyLikes($id, $status)
+    {
+        if (!$this->post->find($id)) {
+            return false;
+        }
+        if ($status === 'increment') {
+            $this->post->incrementLikes($id);
+        }
+
+        if ($status === 'decrement' && $this->post->getLikes($id)->likes > 0) {
+            $this->post->decrementLikes($id);
+        }
+
+        return null;
+    }
+
+    /**
+     * Check success and failure ids of post
+     * @param $likesData
+     * @return array
+     */
+    protected function postIdsExistsCheck($likesData)
+    {
+        $ids        = array_column($likesData, 'id');
+        $successIds = array_column($this->post->postExistsCheck($ids)->toArray(), 'id');
+        $failureIds = array_diff($ids, $successIds);
+
+        return ['success' => $successIds, 'failure' => $failureIds];
     }
 
 }

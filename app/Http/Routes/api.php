@@ -14,5 +14,8 @@ $router->group(
         $router->get('latest', 'LatestController@index');
         $router->get('trash', 'ApiController@getDeleted');
         $router->get('country', 'Country\\CountryController@index');
+        $router->post('likes', 'Post\\PostController@likes');
     }
 );
+
+
