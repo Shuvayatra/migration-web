@@ -87,5 +87,13 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\PushNotification\PushNotificationRepository'
         );
 
+        $this->app->bind(
+            'App\Nrna\Repositories\Rss\RssRepositoryInterface',
+            'App\Nrna\Repositories\Rss\RssRepository'
+        );
+        $this->app->bind(
+            'App\Nrna\Repositories\RssNewsFeeds\RssNewsFeedsRepositoryInterface',
+            'App\Nrna\Repositories\RssNewsFeeds\RssNewsFeedsRepository'
+        );
     }
 }

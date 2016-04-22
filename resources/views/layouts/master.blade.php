@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Shuvayatra Web</title>
-
     <!-- Bootstrap -->
     <link href="{{asset("css/vendors.min.css")}}" rel="stylesheet">
         <!-- Custom Theme Style -->

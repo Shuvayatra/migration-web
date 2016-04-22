@@ -24,7 +24,6 @@ $router->post(
     ['as' => 'journey.subcategory.delete', 'uses' => 'Journey\JourneyController@deleteSubcategory']
 );
 
-
 $router->group(
     ['middleware' => 'role:admin'],
     function () use ($router) {
@@ -51,6 +50,11 @@ $router->group(
         $router->resource('section.category', 'CategoryAttribute\\CategoryAttributeController');
         $router->resource('category', 'Category\\CategoryController');
         $router->resource('pushnotification', 'PushNotification\\PushNotificationController');
+        $router->resource('rss', 'Rss\RssController');
+        $router->get('rssnewsfeeds/fetch', [
+            'as'   => 'rssnewsfeeds.fetch',
+            'uses' => 'RssNewsFeeds\RssNewsFeedsController@fetch'
+        ]);
+        $router->resource('rssnewsfeeds', 'RssNewsFeeds\RssNewsFeedsController');
     }
 );
-

@@ -37,6 +37,9 @@
                     <a href="{{route('user.index')}}">Users</a>
                 </li>
 
+                <li><a href="{{route('rss.index')}}">Rss</a></li>
+                <li><a href="{{route('rssnewsfeeds.index')}}">News Feeds</a></li>
+
                 <li>
                     <a href="{{route('apilogs.index')}}">Api Log</a>
                 </li>

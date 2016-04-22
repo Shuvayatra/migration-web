@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\PostMetadataUpdate::class,
         \App\Console\Commands\QuestionMetadataUpdate::class,
         \App\Console\Commands\AclSetup::class,
+        \App\Console\Commands\FetchRssFeeds::class,
     ];
 
     /**
@@ -29,5 +30,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')
                  ->hourly();
+        $schedule->command('nrna:fetchrss')
+                 ->everyMinute();
     }
 }

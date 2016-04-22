@@ -43,8 +43,8 @@ $providers      = [
     Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
     Rutorika\Sortable\SortableServiceProvider::class,
     Zizaco\Entrust\EntrustServiceProvider::class,
-    Baum\Providers\BaumServiceProvider::class
-
+    Baum\Providers\BaumServiceProvider::class,
+    willvincent\Feeds\FeedsServiceProvider::class,
 ];
 $localProviders = [
     /*
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'debug'           => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', false),
     /*
     |--------------------------------------------------------------------------
     | Application URL
@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'url'             => 'http://localhost',
+    'url' => 'http://localhost',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'timezone'        => 'Asia/Kathmandu',
+    'timezone' => 'Asia/Kathmandu',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -107,7 +107,7 @@ return [
     |
     */
 
-    'locale'          => 'en',
+    'locale' => 'en',
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -131,8 +131,8 @@ return [
     |
     */
 
-    'key'             => env('APP_KEY', 'SomeRandomString'),
-    'cipher'          => 'AES-256-CBC',
+    'key'    => env('APP_KEY', 'SomeRandomString'),
+    'cipher' => 'AES-256-CBC',
     /*
     |--------------------------------------------------------------------------
     | Logging Configuration
@@ -146,7 +146,7 @@ return [
     |
     */
 
-    'log'             => 'single',
+    'log' => 'single',
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -158,7 +158,7 @@ return [
     |
     */
 
-    'providers'       => $providers,
+    'providers' => $providers,
     /*
     |--------------------------------------------------------------------------
     | Class Aliases
@@ -170,7 +170,7 @@ return [
     |
     */
 
-    'aliases'         => [
+    'aliases' => [
 
         'App'       => Illuminate\Support\Facades\App::class,
         'Artisan'   => Illuminate\Support\Facades\Artisan::class,
@@ -209,7 +209,8 @@ return [
         'HTML'      => Collective\Html\HtmlFacade::class,
         'Helpers'   => App\Nrna\Libraries\Helpers::class,
         'Carbon'    => Carbon\Carbon::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Feeds'     => willvincent\Feeds\Facades\FeedsFacade::class,
     ],
 
 ];

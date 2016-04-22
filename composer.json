@@ -15,7 +15,8 @@
         "cviebrock/image-validator": "^2.0",
         "rutorika/sortable": "^3.2",
         "zizaco/entrust": "dev-laravel-5",
-        "baum/baum": "~1.1"
+        "baum/baum": "~1.1",
+        "willvincent/feeds": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
