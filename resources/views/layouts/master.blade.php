@@ -36,6 +36,7 @@
                     <li><a href="{{route('country.index')}}">Country</a></li>
                     <li><a href="{{route('question.index')}}">Questions</a></li>
                     <li><a href="{{route('post.index')}}">Posts</a></li>
+                    <li><a href="{{route('apilogs.index')}}">API Log</a></li>
                     <li><a href="javascript:void();">Welcome  {{ Auth::user()->email }}</a></li>
                     <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 

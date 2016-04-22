@@ -28,6 +28,7 @@ class CountryController extends ApiGuardController
     public function __construct(CountryService $country, Response $response)
     {
         parent::__construct();
+        $this->middleware('storeApiLog');
         $this->country  = $country;
         $this->response = $response;
     }

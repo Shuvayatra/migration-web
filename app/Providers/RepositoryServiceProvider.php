@@ -61,7 +61,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\CountryTag\CountryTagRepositoryInterface',
             'App\Nrna\Repositories\CountryTag\CountryTagRepository'
         );
-
+        $this->app->bind(
+            'App\Nrna\Repositories\ApiLog\ApiLogRepositoryInterface',
+            'App\Nrna\Repositories\ApiLog\ApiLogRepository'
+        );
 
     }
 }

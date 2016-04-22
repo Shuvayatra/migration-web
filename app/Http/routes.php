@@ -44,4 +44,6 @@ $router->post(
     ['as' => 'journey.subcategory.delete', 'uses' => 'Journey\JourneyController@deleteSubcategory']
 );
 $router->resource('place', 'Place\\PlaceController');
-Route::resource('countrytag', 'CountryTag\\CountryTagController');
+$router->resource('countrytag', 'CountryTag\\CountryTagController');
+
+$router->resource('apilogs', 'Api\\ApiLog\\ApiLogController');
