@@ -18,9 +18,14 @@ class PostController extends Controller
      * constructor
      * @param PostService $post
      */
-    public function __construct(PostService $post)
+    public function __construct(PostService $post, PostService $post)
     {
         $this->middleware('auth');
+        $postId = \Route::current()->getParameter('post');
+        if ($postId && auth()->user()->id !== $post->find($postId)->user->id) {
+            $this->middleware('permission:manage-all-content', ['only' => ['edit', 'update', 'destroy']]);
+        }
+
         $this->post = $post;
     }
 
@@ -43,6 +48,7 @@ class PostController extends Controller
      */
     public function create()
     {
+
         return view('post.create');
     }
 
@@ -64,7 +70,7 @@ class PostController extends Controller
     /**
      * Display the specified post.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -81,11 +87,15 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
+//        if (!auth()->user()->can('manage-all-content')) {
+//            app()->abort(403);
+//        }
+
         $post = $this->post->find($id);
         if (is_null($post)) {
             return redirect()->route('post.index')->with('error', 'Post not found.');
@@ -117,7 +127,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int      $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)

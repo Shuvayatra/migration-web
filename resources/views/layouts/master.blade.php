@@ -36,8 +36,11 @@
                     <li><a href="{{route('country.index')}}">Country</a></li>
                     <li><a href="{{route('question.index')}}">Questions</a></li>
                     <li><a href="{{route('post.index')}}">Posts</a></li>
-                    <li><a href="{{route('apilogs.index')}}">API Log</a></li>
-                    <li><a href="javascript:void();">Welcome  {{ Auth::user()->email }}</a></li>
+                    <li><a href="{{route('apilogs.index')}}">API Log</a></li>                 
+                    @role('admin')
+                    <li><a href="{{route('user.index')}}">Users</a></li>
+                    @endrole
+                    <li><a href="javascript:void();">Welcome {{ Auth::user()->email }}</a></li>
                     <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 
                 @endif
@@ -81,7 +84,7 @@
 
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/jquery.bootstrap-growl.min.js')}}"></script>
-<script >
+<script>
     $.ajaxSetup({
         headers: {
             'X-CSRF-Token': $('meta[name="_token"]').attr('content')
@@ -91,9 +94,9 @@
     var App = {};
 
     App.notify = {
-        message: function(message, type){
+        message: function (message, type) {
             if ($.isArray(message)) {
-                $.each(message, function(i, item){
+                $.each(message, function (i, item) {
                     App.notify.message(item, type);
                 });
             } else {
@@ -105,20 +108,20 @@
             }
         },
 
-        danger: function(message){
+        danger: function (message) {
             App.notify.message(message, 'danger');
         },
-        success: function(message){
+        success: function (message) {
             App.notify.message(message, 'success');
         },
-        info: function(message){
+        info: function (message) {
             App.notify.message(message, 'info');
         },
-        warning: function(message){
+        warning: function (message) {
             App.notify.message(message, 'warning');
         },
-        validationError: function(errors){
-            $.each(errors, function(i, fieldErrors){
+        validationError: function (errors) {
+            $.each(errors, function (i, fieldErrors) {
                 App.notify.danger(fieldErrors);
             });
         }

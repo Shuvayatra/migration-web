@@ -48,7 +48,6 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\CountryUpdate\UpdateRepositoryInterface',
             'App\Nrna\Repositories\CountryUpdate\UpdateRepository'
         );
-
         $this->app->bind(
             'App\Nrna\Repositories\Journey\JourneyRepositoryInterface',
             'App\Nrna\Repositories\Journey\JourneyRepository'
@@ -63,7 +62,10 @@ class RepositoryServiceProvider extends ServiceProvider
         );
         $this->app->bind(
             'App\Nrna\Repositories\ApiLog\ApiLogRepositoryInterface',
-            'App\Nrna\Repositories\ApiLog\ApiLogRepository'
+            'App\Nrna\Repositories\ApiLog\ApiLogRepository');
+        $this->app->bind(
+            'App\Nrna\Repositories\User\UserRepositoryInterface',
+            'App\Nrna\Repositories\User\UserRepository'
         );
 
     }

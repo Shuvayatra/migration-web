@@ -47,3 +47,4 @@ $router->resource('place', 'Place\\PlaceController');
 $router->resource('countrytag', 'CountryTag\\CountryTagController');
 
 $router->resource('apilogs', 'Api\\ApiLog\\ApiLogController');
+$router->resource('user', 'User\\UserController');

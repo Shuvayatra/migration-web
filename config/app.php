@@ -41,7 +41,8 @@ $providers      = [
     Alaouy\Youtube\YoutubeServiceProvider::class,
     Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
     Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
-    Rutorika\Sortable\SortableServiceProvider::class
+    Rutorika\Sortable\SortableServiceProvider::class,
+    Zizaco\Entrust\EntrustServiceProvider::class
 
 ];
 $localProviders = [
@@ -206,7 +207,8 @@ return [
         'Form'      => Collective\Html\FormFacade::class,
         'HTML'      => Collective\Html\HtmlFacade::class,
         'Helpers'   => App\Nrna\Libraries\Helpers::class,
-        'Carbon'    => Carbon\Carbon::class
+        'Carbon'    => Carbon\Carbon::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class
     ],
 
 ];

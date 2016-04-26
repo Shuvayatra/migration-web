@@ -51,6 +51,7 @@ class PostRepository implements PostRepositoryInterface
         $from  = "posts ";
         if (isset($filters['stage']) && $filters['stage'] != '') {
             $stages = $filters['stage'];
+
             $from .= ",json_array_elements(posts.metadata->'stage') stage";
             $query->whereRaw("trim(both '\"' from stage::text) = ?", [$stages]);
         }
@@ -64,6 +65,9 @@ class PostRepository implements PostRepositoryInterface
         $query->orderBy('id', 'DESC');
         if (is_null($limit)) {
             return $query->all();
+        }
+        if (!\Entrust::can('manage-all-content')) {
+            $query->where('created_by', auth()->user()->id);
         }
 
         return $query->paginate();

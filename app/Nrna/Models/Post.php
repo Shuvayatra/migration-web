@@ -77,6 +77,11 @@ class Post extends Model
         return $this->belongsToMany('App\Nrna\Models\Answer');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
 
     /**
      * Convert json metadata to array
@@ -139,7 +144,7 @@ class Post extends Model
     public function getApiMetadataAttribute()
     {
         $metadata = json_decode(json_encode($this->metadataWithPath), true);
-        
+
         if ($metadata['type'] == 'text') {
             $metadata['data'] = array_only($metadata['data'], ['content', 'file']);
         }

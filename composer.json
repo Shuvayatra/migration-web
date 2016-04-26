@@ -12,7 +12,8 @@
         "alaouy/youtube": "dev-master",
         "chrisbjr/api-guard": "^2.3",
         "cviebrock/image-validator": "^2.0",
-        "rutorika/sortable": "^3.2"
+        "rutorika/sortable": "^3.2",
+        "zizaco/entrust": "dev-laravel-5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
