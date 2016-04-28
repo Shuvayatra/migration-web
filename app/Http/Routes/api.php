@@ -7,9 +7,9 @@
 |
 */
 // Authentication routes...
-
+use App\Http\Middleware\StoreApiLog;
 $router->group(
-    ['namespace' => 'Api', 'prefix' => 'api'],
+    ['namespace' => 'Api', 'middleware' => StoreApiLog::class,'prefix' => 'api'],
     function ($router) {
         $router->get('latest', 'LatestController@index');
         $router->get('trash', 'ApiController@getDeleted');

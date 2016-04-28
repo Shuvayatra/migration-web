@@ -23,7 +23,7 @@ class ApiLogRepository implements ApiLogRepositoryInterface
      */
     public function getList()
     {
-        return $this->apiLog->paginate(15);
+        return $this->apiLog->orderBy('id','desc')->paginate(15);
     }
 
     /**
