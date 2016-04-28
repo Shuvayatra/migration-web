@@ -82,6 +82,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Category\CategoryRepositoryInterface',
             'App\Nrna\Repositories\Category\CategoryRepository'
         );
+        $this->app->bind(
+            'App\Nrna\Repositories\PushNotification\PushNotificationRepositoryInterface',
+            'App\Nrna\Repositories\PushNotification\PushNotificationRepository'
+        );
 
     }
 }

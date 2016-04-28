@@ -28,7 +28,6 @@
     <!-- Bootstrap -->
     @yield('css')
 </head>
-
 <body class="">
 <div class="container body">
     <div class="">

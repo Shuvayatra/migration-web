@@ -36,6 +36,7 @@
                         <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
                     </li>
 
+                    <li><a href="{{route('pushnotification.index')}}">Push Notification</a></li>
                     @endrole
 
                     <li class="">

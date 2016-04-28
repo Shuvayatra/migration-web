@@ -50,6 +50,7 @@ $router->group(
         $router->resource('section', 'Section\\SectionController');
         $router->resource('section.category', 'CategoryAttribute\\CategoryAttributeController');
         $router->resource('category', 'Category\\CategoryController');
+        $router->resource('pushnotification', 'PushNotification\\PushNotificationController');
     }
 );
 

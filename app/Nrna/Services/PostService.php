@@ -319,7 +319,7 @@ class PostService
         $postArray['view_count']       = $post->share_count;
         $postArray['share_count']      = $post->view_count;
         $postArray['tags']             = $post->tags->lists('title')->toArray();
-        $postArray['section_category'] = $post->section_categories->lists('id')->toArray();
+        $postArray['section_category'] = $post->categories->lists('id')->toArray();
         $postArray['created_at']       = $post->created_at->timestamp;
         $postArray['updated_at']       = $post->updated_at->timestamp;
 
@@ -538,7 +538,6 @@ class PostService
         return $ids;
     }
 
-
     /**
      * Increment or decrement likes
      * @param $id
@@ -604,4 +603,11 @@ class PostService
         }
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAllPosts()
+    {
+        return $this->post->getAllPosts();
+    }
 }

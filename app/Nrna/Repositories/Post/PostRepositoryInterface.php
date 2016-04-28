@@ -83,5 +83,14 @@ interface PostRepositoryInterface
      */
     public function decrementLikes($postId);
 
+    /**
+     * @param $ids
+     * @return mixed
+     */
     public function postExistsCheck($ids);
+
+    /**
+     * @return mixed
+     */
+    public function getAllPosts();
 }

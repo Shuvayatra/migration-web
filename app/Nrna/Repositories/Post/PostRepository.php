@@ -229,4 +229,12 @@ class PostRepository implements PostRepositoryInterface
 
         return $post;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getAllPosts()
+    {
+        return $this->post->all();
+    }
 }
