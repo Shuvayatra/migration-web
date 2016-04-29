@@ -3,6 +3,7 @@ $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
+$categories = \App\Nrna\Models\CategoryAttribute::all()->lists('title','id')->toArray();
 ?>
 <div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
     {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -81,55 +82,16 @@ $sections = $sectionService->all();
     </div>
 </div>
 
-<hr>
-@foreach($sections as $section)
-    <div class="form-group">
-        <label for="questions" class="col-sm-3 control-label">{{$section->title}}</label>
-
-        <div class="col-sm-9">
-            {{-- */$x=0;/* --}}
-            @foreach($section->categories as $category)
-                {{-- */$x++;/* --}}
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="checkbox">
-                            <label>
-                                <?php
-                                 $checked = false;
-                                if(isset($post) && in_array($category->id,$post->section_categories->lists('id')->toArray()))
-                                    $checked = true;
-                                 ?>
-                                {!! Form::checkbox('category_id[]', $category->id, $checked) !!}
-                                 {{$category->title}}</label>
-                        </div>
-                        <div class="">
-                            {{-- */$y=0;/* --}}
-                            @foreach($category->subCategories as $subCategory)
-                                {{-- */$y++;/* --}}
-                                <div class="checkbox post-form-subcategory">
-                                    <label>
-                                        <?php
-                                        $checked = false;
-                                        if (isset($post) && in_array(
-                                                        $subCategory->id,
-                                                        $post->section_categories->lists('id')->toArray()
-                                                )
-                                        ) {
-                                            $checked = true;
-                                        }
-                                        ?>
-                                        {!! Form::checkbox('category_id[]', $subCategory->id,$checked) !!}
-                                        {{$subCategory->title}}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
+    {!! Form::label('tag', 'Content Tags: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        {!! Form::select('category_id[]', $categories, isset($post)?$post->section_categories->lists('id')->toArray():null, ['class' =>
+        'form-control','multiple'=>'','id'=>'tags']) !!}
+        {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
     </div>
-@endforeach
+</div>
+
+<hr>
 @if(isset($post))
     <hr>
     <div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
