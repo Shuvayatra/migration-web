@@ -42,7 +42,8 @@ $providers      = [
     Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
     Cviebrock\ImageValidator\ImageValidatorServiceProvider::class,
     Rutorika\Sortable\SortableServiceProvider::class,
-    Zizaco\Entrust\EntrustServiceProvider::class
+    Zizaco\Entrust\EntrustServiceProvider::class,
+    Baum\Providers\BaumServiceProvider::class
 
 ];
 $localProviders = [

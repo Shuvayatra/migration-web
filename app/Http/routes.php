@@ -24,6 +24,7 @@ $router->post(
     ['as' => 'journey.subcategory.delete', 'uses' => 'Journey\JourneyController@deleteSubcategory']
 );
 
+
 $router->group(['middleware' => 'role:admin'], function () use($router) {
     $router->post('sort', '\Rutorika\Sortable\SortableController@sort');
     $router->resource('question', 'Question\\QuestionController');
@@ -46,5 +47,6 @@ $router->group(['middleware' => 'role:admin'], function () use($router) {
     $router->resource('user', 'User\\UserController');
     $router->resource('section', 'Section\\SectionController');
     $router->resource('section.category', 'CategoryAttribute\\CategoryAttributeController');
+    $router->resource('catagory', 'Category\\CatagoryController');
 });
 
