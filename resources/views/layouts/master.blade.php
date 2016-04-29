@@ -11,7 +11,7 @@
     @yield('css')
     <style>
         body {
-        padding-top: 70px;
+            padding-top: 70px;
         }
     </style>
 </head>
@@ -31,15 +31,15 @@
 
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-            @if (!Auth::guest())
+                @if (!Auth::guest())
+                    <li><a href="{{route('post.index')}}">Posts</a></li>
+                    @role('admin')
                     {{--<li><a href="{{route('journey.index')}}">Journey</a></li>--}}
                     <li><a href="{{route('section.index')}}">Sections</a></li>
                     <li><a href="{{route('tag.index')}}">Tags</a></li>
                     {{--<li><a href="{{route('country.index')}}">Country</a></li>--}}
                     {{--<li><a href="{{route('question.index')}}">Questions</a></li>--}}
-                    <li><a href="{{route('post.index')}}">Posts</a></li>
-                    <li><a href="{{route('apilogs.index')}}">API Log</a></li>                 
-                    @role('admin')
+                    <li><a href="{{route('apilogs.index')}}">API Log</a></li>
                     <li><a href="{{route('user.index')}}">Users</a></li>
                     @endrole
                     <li><a href="javascript:void();">Welcome {{ Auth::user()->email }}</a></li>
@@ -54,26 +54,26 @@
 </nav>
 
 <div class="container">
-@if ($errors->any())
+    @if ($errors->any())
         <ul class="alert alert-danger">
-        @foreach ($errors->all() as $error)
+            @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
     @endif
     @if (\Session::has('success'))
-            <div class="alert alert-success fade in">
+        <div class="alert alert-success fade in">
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
             {{Session::get('success')}}
         </div>
-        @endif
+    @endif
     @if (\Session::has('error'))
-            <div class="alert alert-danger fade in">
+        <div class="alert alert-danger fade in">
             <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
             {{Session::get('error')}}
         </div>
-        @endif
-        @yield('content')
+    @endif
+    @yield('content')
 </div>
 
 <hr/>

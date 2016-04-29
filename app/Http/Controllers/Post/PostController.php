@@ -23,7 +23,7 @@ class PostController extends Controller
         $this->middleware('auth');
         $postId = \Route::current()->getParameter('post');
         if ($postId && auth()->user()->id !== $post->find($postId)->user->id) {
-            $this->middleware('permission:manage-all-content', ['only' => ['edit', 'update', 'destroy']]);
+            $this->middleware('permission:manage-all-content');
         }
 
         $this->post = $post;
@@ -48,7 +48,6 @@ class PostController extends Controller
      */
     public function create()
     {
-
         return view('post.create');
     }
 
@@ -92,10 +91,6 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-//        if (!auth()->user()->can('manage-all-content')) {
-//            app()->abort(403);
-//        }
-
         $post = $this->post->find($id);
         if (is_null($post)) {
             return redirect()->route('post.index')->with('error', 'Post not found.');

@@ -22,6 +22,7 @@ class ApiLogController extends Controller
     public function __construct(ApiLogService $apiLogService)
     {
         $this->apiLogService = $apiLogService;
+        $this->middleware('role:admin');
     }
 
     /**
