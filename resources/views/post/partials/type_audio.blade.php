@@ -4,7 +4,7 @@
         {!! Form::file('metadata[data][audio]', ['class'=>'form-control' , 'id' => 'file'])!!}
         {!! $errors->first('audio', '<p class="help-block">:message</p>') !!}
     </div>
-    @if(isset($post->metadata->data->audio ))
+    @if(isset($post->metadata->data->audio) && $post->metadata->data->audio_url =='')
         <div><a target="_blank" href="{{$post->metadataWithPath->data->audio}}">check</a></div>
     @endif
 </div>
