@@ -284,6 +284,7 @@ class PostService
     {
         $postArray['id']               = $post->id;
         $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
+        $postArray['likes_count']       = $post->likes;
         $postArray['tags']             = $post->tags->lists('title')->toArray();
         $postArray['section_category'] = $post->section_categories->lists('id')->toArray();
         $postArray['created_at']       = $post->created_at->timestamp;
