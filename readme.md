@@ -1,27 +1,39 @@
-## Laravel PHP Framework
+# Shuvayatra | शुभयात्रा CMS  
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+## Install
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+Shuvayatra cms can be cloned from github repository and installed. Following the procedure given below:
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+* git clone git@github.com:Shuvayatra/migration-web.git
+* cd shuvayatra
+* install the application dependencies using command: `composer install`
+* copy .env.example to .env and update your the database configurations
+* give write permission to the storage folder using `chmod -R 777 storage`
+* run migration using `php artisan migrate`
+* seed dummy data using `php artisan db:seed`
+* make a directory `uploads` inside `public` and give write permission to it
+* start development server `php artisan serve`
+* access `localhost:8000` from browser
 
-## Official Documentation
+## Framework
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+The application is written in PHP based on the [Laravel](http://laravel.com) framework, current version of Laravel
+used for this project is 5.1.*.
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+## Tools and packages
 
-## Security Vulnerabilities
+This application uses many tools and packages, the packages can
+be seen in the [composer.json](https://github.com/Shuvayatra/migration-web/blob/master/composer.json) file.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Some major PHP packages used are listed below:
 
-### License
+* [zizaco/entrust](https://packagist.org/packages/zizaco/entrust) - for user roles and permission
+* [chrisbjr/api-guard](https://packagist.org/packages/chrisbjr/api-guard) - for authenticating APIs with API keys 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+## Structure
+
+The application is structured in a very simple way in `app\Nrna` folder.
+
+
+
