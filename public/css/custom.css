@@ -807,6 +807,7 @@ h2 {
 .x_panel {
   position: relative;
   width: 100%;
+  min-height: 600px;
   margin-bottom: 10px;
   padding: 10px 17px;
   display: inline-block;
@@ -842,9 +843,7 @@ h2 {
 .x_title h2 small {
   margin-left: 10px;
 }
-.x_title span {
-  color: #BDBDBD;
-}
+
 .x_content {
   padding: 0 5px 6px;
   position: relative;

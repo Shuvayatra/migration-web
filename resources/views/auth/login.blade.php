@@ -2,9 +2,16 @@
 
 @section('content')
 
-    <h1>Login</h1>
+    <h1>Shuvayatra Login</h1>
     <hr/>
 
+    @if ($errors->has())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                {{ $error }}<br>
+            @endforeach
+        </div>
+    @endif
     <form method="POST" action="/login" accept-charset="UTF-8" class="form-horizontal">
         {!! csrf_field() !!}
         <div class="form-group ">

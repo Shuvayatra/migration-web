@@ -5,19 +5,6 @@
         </div>
 
         <div class="clearfix"></div>
-
-        <!-- menu profile quick info -->
-        <div class="profile">
-            <div class="profile_pic">
-                <img src="{{url()}}/images/img.jpg" alt="..." class="img-circle profile_img">
-            </div>
-            <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>{{Auth::user()->email}}</h2>
-            </div>
-        </div>
-        <!-- /menu profile quick info -->
-
         <br />
 
         <!-- sidebar menu -->
@@ -25,7 +12,8 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                    <li><a><i class="fa fa-home"></i> User <span class="fa fa-chevron-down"></span></a>
+                    @role('admin')
+                    <li><a><i class="fa fa-user"></i> User <span class="fa fa-chevron-down"></span></a>
 
                     <ul class="nav child_menu">
                         <li><a href="{{route('user.index')}}">Users</a></li>
@@ -33,6 +21,13 @@
 
                     </ul>
                     </li>
+                    <li><a><i class="fa fa-edit"></i> Sections <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{route('section.index')}}">Section</a></li>
+                            <li><a href="{{route('section.create')}}">Create</a></li>
+                        </ul>
+                    </li>
+                    @endrole
                     <li><a><i class="fa fa-edit"></i> Posts <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{route('post.index')}}">Posts</a></li>
