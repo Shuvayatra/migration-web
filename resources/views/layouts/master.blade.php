@@ -1,138 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta name="_token" content="{!! csrf_token() !!}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NRNA App</title>
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}"/>
-    <script src="{{asset('js/jquery.min.js')}}"></script>
+
+    <title>Shuvayatra Web</title>
+
+    <!-- Bootstrap -->
+    <link href="{{asset("vendors/bootstrap/dist/css/bootstrap.min.css")}}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{asset("vendors/font-awesome/css/font-awesome.min.css")}}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{asset("vendors/iCheck/skins/flat/green.css")}}" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{{asset("vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css")}}" rel="stylesheet">
+    <!-- jVectorMap -->
+    <link href="{{asset('css/maps/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet"/>
+
+    <!-- Custom Theme Style -->
+    <link href="{{asset('css/custom.css')}}" rel="stylesheet">
     @yield('css')
-    <style>
-        body {
-            padding-top: 70px;
-        }
-    </style>
 </head>
-<body>
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{route('home')}}">NRNA App</a>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        @include('layouts.partials.sidebar')
+        @include('layouts.partials.top_menu')
+        <div class="right_col" role="main">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel" style="height:600px;">
+                            <div class="x_title">
+                                @yield('content')
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                @if (!Auth::guest())
-                    <li><a href="{{route('post.index')}}">Posts</a></li>
-                    @role('admin')
-                    {{--<li><a href="{{route('journey.index')}}">Journey</a></li>--}}
-                    <li><a href="{{route('section.index')}}">Sections</a></li>
-                    <li><a href="{{route('tag.index')}}">Tags</a></li>
-                    {{--<li><a href="{{route('country.index')}}">Country</a></li>--}}
-                    {{--<li><a href="{{route('question.index')}}">Questions</a></li>--}}
-                    <li><a href="{{route('apilogs.index')}}">API Log</a></li>
-                    <li><a href="{{route('user.index')}}">Users</a></li>
-                    @endrole
-                    <li><a href="javascript:void();">Welcome {{ Auth::user()->email }}</a></li>
-                    <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
-
-                @endif
-            </ul>
-        </div>
-
+       @include('layouts.partials.footer')
     </div>
-    <!-- /.container-fluid -->
-</nav>
-
-<div class="container">
-    @if ($errors->any())
-        <ul class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
-    @if (\Session::has('success'))
-        <div class="alert alert-success fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-            {{Session::get('success')}}
-        </div>
-    @endif
-    @if (\Session::has('error'))
-        <div class="alert alert-danger fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-            {{Session::get('error')}}
-        </div>
-    @endif
-    @yield('content')
 </div>
 
-<hr/>
-
-<div class="footer">
-</div>
-
-<!-- Scripts -->
-
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<script src="{{asset('js/jquery.bootstrap-growl.min.js')}}"></script>
-<script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-Token': $('meta[name="_token"]').attr('content')
-        }
-    });
-
-    var App = {};
-
-    App.notify = {
-        message: function (message, type) {
-            if ($.isArray(message)) {
-                $.each(message, function (i, item) {
-                    App.notify.message(item, type);
-                });
-            } else {
-                $.bootstrapGrowl(message, {
-                    type: type,
-                    delay: 4000,
-                    width: 'auto'
-                });
-            }
-        },
-
-        danger: function (message) {
-            App.notify.message(message, 'danger');
-        },
-        success: function (message) {
-            App.notify.message(message, 'success');
-        },
-        info: function (message) {
-            App.notify.message(message, 'info');
-        },
-        warning: function (message) {
-            App.notify.message(message, 'warning');
-        },
-        validationError: function (errors) {
-            $.each(errors, function (i, fieldErrors) {
-                App.notify.danger(fieldErrors);
-            });
-        }
-    };
-    $('form .btn-danger').click(function (e) {
-        return confirm("Are you sure you want to delete ?");
-        e.preventDefault();
-    });
-</script>
-<link href="{{asset('css/style.css')}}" rel="stylesheet"/>
+<!-- jQuery -->
+<script src="{{asset("vendors/jquery/dist/jquery.min.js")}}"></script>
+<!-- Bootstrap -->
+<script src="{{asset("vendors/bootstrap/dist/js/bootstrap.min.js")}}"></script>
 @yield('script')
+<!-- Custom Theme Scripts -->
+<script src="{{asset("js/custom.js")}}"></script>
 </body>
 </html>
