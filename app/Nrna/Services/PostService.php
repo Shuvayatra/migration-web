@@ -200,15 +200,15 @@ class PostService
             }
             if (isset($formData['metadata']['featured_image'])) {
                 $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
-                $featuredInfo           = $this->fileUpload->handle(
+                $featuredInfo                           = $this->fileUpload->handle(
                     $formData['metadata']['featured_image'],
                     $this->uploadPath
                 );
                 $formData['metadata']['featured_image'] = $featuredInfo['filename'];
-            }else{
-                $formData['metadata']['featured_image'] = $post->metadata->featured_image;
+            } else {
+                $formData['metadata']['featured_image'] = isset($post->metadata->featured_image)?$post->metadata->featured_image:'';
             }
-            
+
             if (!$post->update($formData)) {
                 return false;
             }
@@ -236,11 +236,13 @@ class PostService
     public function delete($id)
     {
         $post = $this->find($id);
-        if ($post->metadata->type = 'audio') {
+        if ($post->metadata->type = 'audio' && isset($post->metadata->data->audio)) {
             $this->file->delete($this->uploadPath . '/' . $post->metadata->data->audio);
         }
 
-        $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
+        if (isset($post->metadata->featured_image)) {
+            $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
+        }
         if ($this->post->delete($id)) {
             return true;
         }
@@ -287,7 +289,7 @@ class PostService
     {
         $postArray['id']               = $post->id;
         $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
-        $postArray['likes_count']       = $post->likes;
+        $postArray['likes_count']      = $post->likes;
         $postArray['tags']             = $post->tags->lists('title')->toArray();
         $postArray['section_category'] = $post->section_categories->lists('id')->toArray();
         $postArray['created_at']       = $post->created_at->timestamp;
