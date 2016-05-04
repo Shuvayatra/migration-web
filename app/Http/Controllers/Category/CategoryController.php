@@ -2,32 +2,47 @@
 
 namespace App\Http\Controllers\Category;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Category;
+use App\Nrna\Models\Category;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Session;
+use App\Nrna\Services\CategoryService;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
     /**
+     * @var CategoryService
+     */
+    private $category;
+
+    /**
+     * constructor
+     * @param CategoryService $category
+     */
+    public function __construct(CategoryService $category)
+    {
+        $this->middleware('auth');
+        $this->category = $category;
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @param Request $request
+     * @param         $parent_id
+     * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $category = Category::paginate(15);
+        $categories = $this->category->all($request->all());
 
-        return view('category.index', compact('category'));
+        return view('category.show', compact('categories'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return void
+     * @return Response
      */
     public function create()
     {
@@ -35,34 +50,40 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created category in database.
      *
-     * @return void
+     * @param                  $parent_id
+     * @param  CategoryRequest $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store($parent_id, CategoryRequest $request)
     {
-        $formData = $request->all();
-        $category = new Category();
-        $category->fill($formData);
-        $category->position = 0;
-        $category->parent_id = ($request->get('parent_id', null) == '') ? null : $request->get('parent_id', null);
-        $category->save();
+        if ($this->category->save($request->all(), $parent_id)) {
+            return redirect()->route('category.show', $parent_id)->with(
+                'success',
+                'Category saved successfully.'
+            );
+        };
 
-        Session::flash('flash_message', 'Category added!');
-
-        return redirect('category');
+        return redirect()->route('category')->with('error', 'There is some problem saving category.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified category.
      *
      * @param  int $id
-     *
-     * @return void
+     * @return Response
      */
     public function show($id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->category->find($id);
+
+        if (is_null($category)) {
+            return redirect()->route('category.index', $id)->with(
+                'error',
+                'Category not found.'
+            );
+        }
 
         return view('category.show', compact('category'));
     }
@@ -70,48 +91,71 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param      $parent_id
      * @param  int $id
-     *
-     * @return void
+     * @return Response
      */
-    public function edit($id)
+    public function edit($parent_id, $id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->category->find($id);
+        if (is_null($category)) {
+            return redirect()->route('category.show', $parent_id)->with(
+                'error',
+                'Category not found.'
+            );
+        }
 
-        return view('category.edit', compact('category'));
+        return view('category.edit', compact('category', 'parent_id'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int    $id
-     *
-     * @param Request $request
+     * @param  int             $id
+     * @param  CategoryRequest $request
+     * @return Response
      */
-    public function update($id, Request $request)
+    public function update($parent_id, $id, CategoryRequest $request)
     {
+        $category = $this->category->find($id);
+        if (is_null($category)) {
+            return redirect()->route('category.show', $parent_id)->with(
+                'error',
+                'Category not found.'
+            );
+        }
+        if ($category->update($request->all())) {
+            return redirect()->route('category.show', $parent_id)->with(
+                'success',
+                'Category successfully updated!'
+            );
+        }
 
-        $category = Category::findOrFail($id);
-        $category->update($request->all());
-
-        Session::flash('flash_message', 'Category updated!');
-
-        return redirect('category');
+        return redirect()->route('category.show', $parent_id)->with(
+            'error',
+            'Problem updating Category!'
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param      $parent_id
      * @param  int $id
-     *
-     * @return void
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy($parent_id, $id)
     {
-        Category::destroy($id);
+        if ($this->category->delete($id)) {
+            return redirect()->route('category.show', $parent_id)->with(
+                'success',
+                'Category successfully deleted!'
+            );
+        }
 
-        Session::flash('flash_message', 'Category deleted!');
-
-        return redirect('category');
+        return redirect()->route('category.show', $parent_id)->with(
+            'error',
+            'Error deleting Category !'
+        );
     }
 }

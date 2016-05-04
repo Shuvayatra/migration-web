@@ -6,18 +6,22 @@
 
         <div class="clearfix"></div>
         <br/>
+
         <div class="menu_section">
             <h3>Content</h3>
             <ul class="">
                 <?php
-                $sections = \App\Category::all()->toHierarchy();
+                $sections = \App\Nrna\Models\Category::all()->toHierarchy();
                 ?>
                 @foreach($sections as $section)
                     <li class="active">
-                        <a>{{$section->title}}</a> <a class="" href="{{route('category.create')}}?section_id={{$section->id}}">Add</a>
+                        <span class="">{{$section->title}}</span> <a class=""
+                                                                     href="{{route('category.create')}}?section_id={{$section->id}}">Add</a>
                         <ul class="child_menu">
                             @foreach($section->children as $child)
-                                <li>{{$child->title}} <a class="sidebar-edit" href="{{route('category.edit',$child->id)}}?section_id={{$section->id}}" href="">edit</a></li>
+                                <li>{{$child->title}} <a class="sidebar-edit"
+                                                         href="{{route('category.edit',$child->id)}}?section_id={{$section->id}}"
+                                                         href="">edit</a></li>
                             @endforeach
                         </ul>
                     </li>
