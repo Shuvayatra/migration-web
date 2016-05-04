@@ -36,8 +36,14 @@
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="javascript:;"> Destination</a></li>
-                        <li><a href="javascript:;"> Journey</a></li>
+                        <?php
+                            $sections = \App\Category::roots()->get();
+                        ?>
+                        @foreach($sections as $section)
+                            <li><a href="javascript:;"> {{$section->title}}</a></li>
+                        @endforeach
+                        <li><a href="{{route('category.index')}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -23,6 +23,9 @@
 
     <!-- Custom Theme Style -->
     <link href="{{asset('css/custom.css')}}" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="{{asset("vendors/jquery/dist/jquery.min.js")}}"></script>
+    <!-- Bootstrap -->
     @yield('css')
 </head>
 
@@ -49,9 +52,6 @@
     </div>
 </div>
 
-<!-- jQuery -->
-<script src="{{asset("vendors/jquery/dist/jquery.min.js")}}"></script>
-<!-- Bootstrap -->
 <script src="{{asset("vendors/bootstrap/dist/js/bootstrap.min.js")}}"></script>
 @yield('script')
 <!-- Custom Theme Scripts -->

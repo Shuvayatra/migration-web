@@ -47,6 +47,6 @@ $router->group(['middleware' => 'role:admin'], function () use($router) {
     $router->resource('user', 'User\\UserController');
     $router->resource('section', 'Section\\SectionController');
     $router->resource('section.category', 'CategoryAttribute\\CategoryAttributeController');
-    $router->resource('catagory', 'Category\\CatagoryController');
+    $router->resource('category', 'Category\\CategoryController');
 });
 

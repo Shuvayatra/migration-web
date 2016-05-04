@@ -19,33 +19,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $root = Category::find(1);
-        $data = $root->getDescendantsAndSelf()->toHierarchy()->toArray();
-        $this->recursive($data);
-        $child1    = $root->descendants()->get();
-        $ancestors = $root->getAncestors();
-        dump($ancestors);
-        dump($child1);
-
-        $category = Category::paginate(15);
+        $category  = Category::paginate(15);
 
         return view('category.index', compact('category'));
-    }
-
-    public function recursive($data)
-    {
-        foreach ($data as $key => $value) {
-            //If $value is an array.
-
-            if (!empty($value['children'])) {
-                dump($value['children']);
-                //We need to loop through it.
-                $this->recursive($value['children']);
-            } else {
-                //It is not an array, so print it out.
-                dump($value['children']);
-            }
-        }
     }
 
     /**
@@ -104,9 +80,9 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int    $id
      *
-     * @return void
+     * @param Request $request
      */
     public function update($id, Request $request)
     {
