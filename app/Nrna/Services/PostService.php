@@ -206,7 +206,7 @@ class PostService
                 );
                 $formData['metadata']['featured_image'] = $featuredInfo['filename'];
             } else {
-                $formData['metadata']['featured_image'] = isset($post->metadata->featured_image)?$post->metadata->featured_image:'';
+                $formData['metadata']['featured_image'] = isset($post->metadata->featured_image) ? $post->metadata->featured_image : '';
             }
 
             if (!$post->update($formData)) {
@@ -472,13 +472,13 @@ class PostService
         $data    = json_decode(json_encode($post->metadata->data), true);
         $fileNew = [];
         foreach ($formData['metadata']['data']['file'] as $key => $fileData) {
-            $fileInfo['file_name'] = $data['file'][$key]['file_name'];
+            if (!is_null($fileData['file_name'])) {
+                $fileInfo['file_name'] = $data['file'][$key]['file_name'];
 
-            if (isset($fileData['file_name'])) {
-                $fileInfo['file_name'] = $this->upload($fileData['file_name']);
+                $fileInfo['file_name']   = $this->upload($fileData['file_name']);
+                $fileInfo['description'] = $fileData['description'];
+                $fileNew[]               = $fileInfo;
             }
-            $fileInfo['description'] = $fileData['description'];
-            $fileNew[]               = $fileInfo;
         }
         $data['file']                 = $fileNew;
         $formData['metadata']['data'] = $data;
