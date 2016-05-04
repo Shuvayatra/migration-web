@@ -40,9 +40,9 @@
                             $sections = \App\Category::roots()->get();
                         ?>
                         @foreach($sections as $section)
-                            <li><a href="javascript:;"> {{$section->title}}</a></li>
+                            <li><a href="{{route('category.create')}}?section_id={{$section->id}}"> {{$section->title}}</a></li>
                         @endforeach
-                        <li><a href="{{route('category.index')}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
+                        <li><a href="{{route('category.create')}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
                         </li>
                     </ul>
                 </li>

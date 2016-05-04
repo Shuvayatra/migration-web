@@ -6,32 +6,28 @@
 
         <div class="clearfix"></div>
         <br/>
+        <div class="menu_section">
+            <h3>Content</h3>
+            <ul class="">
+                <?php
+                $sections = \App\Category::all()->toHierarchy();
+                ?>
+                @foreach($sections as $section)
+                    <li class="active">
+                        <a>{{$section->title}}</a> <a class="" href="{{route('category.create')}}?section_id={{$section->id}}">Add</a>
+                        <ul class="child_menu">
+                            @foreach($section->children as $child)
+                                <li>{{$child->title}} <a class="sidebar-edit" href="{{route('category.edit',$child->id)}}?section_id={{$section->id}}" href="">edit</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endforeach
 
+            </ul>
+        </div>
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-                <h3>Content</h3>
-                <ul class="nav side-menu">
-                    <?php
-                    $sections = \App\Category::roots()->get();
-                    ?>
-                    @foreach($sections as $section)
-                        <li class="active"><a>{{$section->title}}</a>
-                            <ul class="nav child_menu">
-                                <li><a>Create</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                                <li>Category<a class="" href="">edit</a></li>
-                            </ul>
-                        </li>
-                    @endforeach
 
-                </ul>
-            </div>
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">

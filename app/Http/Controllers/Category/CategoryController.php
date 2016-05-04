@@ -19,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category  = Category::paginate(15);
+        $category = Category::paginate(15);
 
         return view('category.index', compact('category'));
     }
@@ -41,8 +41,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
-        Category::create($request->all());
+        $formData = $request->all();
+        $category = new Category();
+        $category->fill($formData);
+        $category->position = 0;
+        $category->parent_id = ($request->get('parent_id', null) == '') ? null : $request->get('parent_id', null);
+        $category->save();
 
         Session::flash('flash_message', 'Category added!');
 
