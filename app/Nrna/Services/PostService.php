@@ -199,7 +199,7 @@ class PostService
                 $formData = $this->getVideoData($formData);
             }
             if (isset($formData['featured_image'])) {
-
+                $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
                 $featuredInfo           = $this->fileUpload->handle(
                     $formData['metadata']['featured_image'],
                     $this->uploadPath
