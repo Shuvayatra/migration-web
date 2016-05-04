@@ -198,18 +198,21 @@ class PostService
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
             }
-            if (isset($formData['featured_image'])) {
+            if (isset($formData['metadata']['featured_image'])) {
                 $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
                 $featuredInfo           = $this->fileUpload->handle(
                     $formData['metadata']['featured_image'],
                     $this->uploadPath
                 );
-                $data['featured_image'] = $featuredInfo['filename'];
+                $formData['metadata']['featured_image'] = $featuredInfo['filename'];
+            }else{
+                $formData['metadata']['featured_image'] = $post->metadata->featured_image;
             }
-
+            
             if (!$post->update($formData)) {
                 return false;
             }
+
             $this->updateRelations($formData, $post);
             $post->tags()->sync($tags);
             $this->database->commit();

@@ -104,7 +104,7 @@ class Post extends Model
             try {
                 $metadata->data->file = $this->formatFile($this->metadata->data->file);
             } catch (\Exception $e) {
-                dd($e);
+                return $e;
             }
 
         }
