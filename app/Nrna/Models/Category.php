@@ -44,7 +44,6 @@ class Category extends Node
         'icon',
         'small_icon',
         'position',
-        'section_id',
         'parent_id',
     ];
 

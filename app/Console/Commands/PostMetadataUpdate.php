@@ -70,7 +70,8 @@ class PostMetadataUpdate extends Command
      */
     protected function applyRules(array $metadata)
     {
-        $this->addFileFieldArray($metadata);
+        $this->removeStageFieldArray($metadata);
+        $this->addStatusFieldArray($metadata);
 
         return $metadata;
     }
@@ -81,10 +82,29 @@ class PostMetadataUpdate extends Command
      */
     protected function addFileFieldArray(&$metadata)
     {
-        if($metadata['type']=="text"){
+        if ($metadata['type'] == "text") {
             $metadata['data']['file'] = [];
         }
     }
+
+    /**
+     * add status to metadata
+     * @param $metadata
+     */
+    protected function addStatusFieldArray(&$metadata)
+    {
+        $metadata['status'] = 'published';
+    }
+
+    /**
+     * add status to metadata
+     * @param $metadata
+     */
+    protected function removeStageFieldArray(&$metadata)
+    {
+        unset($metadata['stage']);
+    }
+
     /**
      * add thumbnail to metadata
      * @param $metadata
@@ -100,6 +120,6 @@ class PostMetadataUpdate extends Command
      */
     protected function stageToArray(&$metadata)
     {
-        $metadata['stage'] = (array)$metadata['stage'];
+        $metadata['stage'] = (array) $metadata['stage'];
     }
 }

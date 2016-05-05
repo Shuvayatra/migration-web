@@ -57,53 +57,54 @@
                 <?php
                 use App\Nrna\Models\Category;
                 ?>
-                    <?php
-                    $post_column = 12;
-                    ?>
-                    <div class="row">
-                        @if(request()->has('category'))
+                <?php
+                $post_column = 12;
+                ?>
+                <div class="row">
+                    @if(request()->has('category'))
+                        <?php
+                        $post_column = $post_column-2;
+                        ?>
+                        <div class="col-md-2 col-xs-12">
                             <?php
-                            $post_column = $post_column-2;
+                            $category = Category::find(request()->get('category'));
                             ?>
-                            <div class="col-md-2 col-xs-12">
-                                <?php
-                                $category = Category::find(request()->get('category'));
-                                ?>
-                                <div id="main-menu" class="list-group">
-                                    <a href="#sub-menu" class="list-group-item active" data-toggle="collapse" aria-expanded="true" data-parent="#main-menu">{{$category->title}} <span class="caret"></span></a>
-                                    <div class="list-group-level1 collapse in" aria-expanded="true" id="sub-menu">
-                                        @foreach($category->getimmediateDescendants() as $child)
-                                            <?php
-                                            $url = route('post.index')."?".request()->getQueryString();
-                                            ?>
-                                            <a href="{{removeParam($url,'sub_category')}}&sub_category={{$child->id}}" class="list-group-item" data-parent="#sub-menu">{{$child->title}}</a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if(request()->has('sub_category'))
-                            <?php
-                            $post_column = $post_column-2;
-                            $sub_category = Category::find(request()->get('sub_category'));
-                            ?>
-                            <div class="col-md-2 col-xs-12">
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item"><strong>{{$sub_category->title}}</strong></a>
-                                    @foreach($sub_category->getimmediateDescendants() as $child)
-                                        <a href="#" class="list-group-item">{{$child->title}}</a>
+                            <div id="main-menu" class="list-group">
+                                <a href="#sub-menu" class="list-group-item active" data-toggle="collapse" aria-expanded="true" data-parent="#main-menu">{{$category->title}} <span class="caret"></span></a>
+                                <div class="list-group-level1 collapse in" aria-expanded="true" id="sub-menu">
+                                    <a href="{{route('category.create')}}?section_id={{$category->id}}" class="list-group-item">Add</a>
+                                    @foreach($category->getimmediateDescendants() as $child)
+                                        <?php
+                                        $url = route('post.index')."?".request()->getQueryString();
+                                        ?>
+                                        <a  href="{{removeParam($url,['sub_category','sub_category1'])}}&sub_category={{$child->id}}" class="list-group-item @if(request()->has('sub_category')&& request()->get('sub_category') == $child->id) active @endif" data-parent="#sub-menu">{{$child->title}}</a>
                                     @endforeach
                                 </div>
                             </div>
-                        @endif
-                        <div class="col-md-{{$post_column}} col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                   @yield('content')
-                                </div>
+                        </div>
+                    @endif
+                    @if(request()->has('sub_category'))
+                        <?php
+                        $post_column = $post_column-2;
+                        $sub_category = Category::find(request()->get('sub_category'));
+                        ?>
+                        <div class="col-md-2 col-xs-12">
+                            <div class="list-group">
+                                <span class="list-group-item"><strong>{{$sub_category->title}}</strong><a class="pull pull-right" href="{{route('category.create')}}?section_id={{$sub_category->id}}" >Add</a></span>
+                                @foreach($sub_category->getimmediateDescendants() as $child)
+                                    <a href="{{removeParam($url,'sub_category1')}}&sub_category1={{$child->id}}" class="list-group-item @if(request()->has('sub_category1')&& request()->get('sub_category1') == $child->id) active @endif">{{$child->title}}</a>
+                                @endforeach
                             </div>
                         </div>
+                    @endif
+                    <div class="col-md-{{$post_column}} col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                   @yield('content')
+                                </div>
+                        </div>
                     </div>
+                </div>
                 <div class="clearfix"></div>
             </div>
         </div>

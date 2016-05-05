@@ -28,6 +28,5 @@
 
         {!! Form::text('metadata[data][file][0][description]', null, ['class' => 'form-control']) !!}
         {!! $errors->first('metadata.data.file.0.description', '<p class="help-block">:message</p>') !!}
-    </div>
 </div>
 <hr>

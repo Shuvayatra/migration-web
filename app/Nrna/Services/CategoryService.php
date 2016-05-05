@@ -70,7 +70,7 @@ class CategoryService
     public function save($formData, $parent_id)
     {
         $formData['parent_id'] = $parent_id;
-        $formData['position'] = 0;
+        $formData['position']  = 0;
         try {
             if (isset($formData['main_image'])) {
                 $main_image_info        = $this->fileUpload->handle($formData['main_image'], $this->uploadPath);
@@ -193,6 +193,37 @@ class CategoryService
      */
     public function latest($filter)
     {
-        return $this->category->latest($filter);
+        $categoryArray = [];
+        $categories    = $this->category->latest($filter);
+        foreach ($categories as $category) {
+            $categoryArray[] = $this->buildCategory($category);
+        }
+
+        return $categoryArray;
+    }
+
+    /**
+     * @param Category $category
+     * @return mixed
+     */
+    public function buildCategory(Category $category)
+    {
+        $categoryArray['id']             = $category->id;
+        $categoryArray['title']          = $category->title;
+        $categoryArray['description']    = $category->description;
+        $categoryArray['featured_image'] = $category->main_image_link;
+        $categoryArray['icon']           = $category->icon_link;
+        $categoryArray['small_icon']     = $category->small_icon_link;
+        $categoryArray['position']       = $category->position;
+        $categoryArray['small_icon']     = $category->small_icon_link;
+        $categoryArray['parent_id']      = $category->parent_id;
+        $categoryArray['lft']            = $category->lft;
+        $categoryArray['rgt']            = $category->rgt;
+        $categoryArray['depth']          = $category->depth;
+
+        $categoryArray['created_at'] = $category->created_at->timestamp;
+        $categoryArray['updated_at'] = $category->updated_at->timestamp;
+
+        return $categoryArray;
     }
 }

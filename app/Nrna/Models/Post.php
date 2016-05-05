@@ -75,6 +75,14 @@ class Post extends Model
     }
 
     /**
+     * The category that belongs to post.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    /**
      * The questions that belongs to post.
      */
     public function questions()

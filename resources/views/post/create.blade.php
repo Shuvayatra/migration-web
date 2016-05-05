@@ -1,7 +1,9 @@
 @extends('layouts.post_layout')
+<?php
+$create_route = ['post.store']+getQueryParams(request()->fullUrl());
+?>
 @section('content')
-    {!! Form::open(['route' => 'post.store',
-    'class' => 'form-horizontal post-form',
+    {!! Form::open(['route' => $create_route,'class' => 'form-horizontal post-form',
     'novalidate' => 'novalidate',
     'files' => true]) !!}
     @include('post.form')

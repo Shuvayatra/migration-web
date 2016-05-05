@@ -13,44 +13,49 @@ class ApiService
     /**
      * @var PostService
      */
-    private $post;
+    protected $post;
     /**
      * @var CountryService
      */
-    private $country;
+    protected $country;
     /**
      * @var QuestionService
      */
-    private $question;
+    protected $question;
     /**
      * @var AnswerService
      */
-    private $answer;
+    protected $answer;
     /**
      * @var CountryUpdateService
      */
-    private $update;
+    protected $update;
     /**
      * @var JourneyService
      */
-    private $journey;
+    protected $journey;
     /**
      * @var PlaceService
      */
-    private $place;
+    protected $place;
     /**
      * @var SectionService
      */
-    private $section;
+    protected $section;
+    /**
+     * @var CategoryService
+     */
+    protected $category;
 
     /**
-     * @param PostService    $post
-     * @param CountryService $country
-     * @param AnswerService  $answer
-     * @param JourneyService $journey
-     * @param PlaceService   $place
-     * @param SectionService $section
-     * @param Log            $logger
+     * @param PostService     $post
+     * @param CountryService  $country
+     * @param AnswerService   $answer
+     * @param JourneyService  $journey
+     * @param PlaceService    $place
+     * @param SectionService  $section
+     * @param Log             $logger
+     * @param CategoryService $category
      * @internal param Log $logger
      */
     public function __construct(
@@ -60,7 +65,8 @@ class ApiService
         JourneyService $journey,
         PlaceService $place,
         SectionService $section,
-        Log $logger
+        Log $logger,
+        CategoryService $category
     ) {
         $this->post    = $post;
         $this->country = $country;
@@ -69,6 +75,7 @@ class ApiService
         $this->journey = $journey;
         $this->place   = $place;
         $this->section = $section;
+        $this->category = $category;
     }
 
     /**
@@ -84,7 +91,7 @@ class ApiService
             }
 
             $data['posts']    = $this->post->latest($filter);
-            $data['sections'] = $this->section->latest($filter);
+            $data['sections'] = $this->category->latest($filter);
             return $data;
         } catch (\Exception $e) {
             $this->logger->error($e);

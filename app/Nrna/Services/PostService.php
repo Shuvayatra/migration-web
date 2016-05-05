@@ -308,7 +308,7 @@ class PostService
     protected function updateRelations($formData, $post)
     {
         if (isset($formData['category_id'])) {
-            $post->section_categories()->sync($formData['category_id']);
+            $post->categories()->sync($formData['category_id']);
         }
     }
 

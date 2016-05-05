@@ -68,3 +68,4 @@ if (request()->has('section_id')) {
         </div>
     </div>
 @endif
+{!! Form::hidden('prev_url',URL::previous())!!}

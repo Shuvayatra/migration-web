@@ -61,7 +61,10 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         if ($this->post->save($request->all())) {
-            return redirect()->route('post.index')->with('success', 'Post saved successfully.');
+            return redirect()->route('post.index', getQueryParams($request->fullUrl()))->with(
+                'success',
+                'Post saved successfully.'
+            );
         };
 
         return redirect('post')->with('error', 'There is some problem saving post.');
