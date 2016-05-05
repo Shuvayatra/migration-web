@@ -187,7 +187,6 @@ body .container.body .right_col {
 }
 .nav-md .container.body .right_col {
   padding: 10px 20px 0;
-  margin-left: 230px;
 }
 .nav_title {
   width: 230px;
@@ -673,7 +672,7 @@ footer {
 }
 @media (min-width: 768px) {
   footer {
-    margin-left: 230px;
+
   }
 }
 .nav-sm footer {

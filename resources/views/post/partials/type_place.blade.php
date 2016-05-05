@@ -1,6 +1,6 @@
 <div class="form-group {{ $errors->has('metadata.data.phone') ? 'has-error' : ''}}">
-    {!! Form::label('phone', 'Phone: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
+    {!! Form::label('phone', 'Phone: ', ['class' => 'control-label']) !!}
+    <div class="">
         {!! Form::text('metadata[data][phone][0]', null, ['class' => 'form-control required']) !!}
         {!! $errors->first('metadata.data.phone', '<p class="help-block">:message</p>') !!}
     </div>
@@ -20,8 +20,8 @@
                 ?>
                 @foreach($phones as $key=>$phone_title)
                     <div class="form-group {{ $errors->has('metadata.data.phone') ? 'has-error' : ''}}">
-                        {!! Form::label('', '', ['class' => 'col-sm-3 control-label']) !!}
-                        <div class="col-sm-6">
+                        {!! Form::label('', '', ['class' => 'control-label']) !!}
+                        <div class="">
                         {!! Form::text("metadata[data][phone][$key]", $phone_title, ['class' => 'form-control required']) !!}
                     </div>
                         <div data-id="{{$key}}" class="delete delete-old-phone-field btn btn-danger">X</div>
@@ -35,8 +35,8 @@
 
 
 <div class="form-group {{ $errors->has('metadata.address') ? 'has-error' : ''}}">
-    {!! Form::label('address', 'Address: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
+    {!! Form::label('address', 'Address: ', ['class' => 'control-label']) !!}
+    <div class="">
         {!! Form::text('metadata[data][address]', null, ['class' => 'form-control required']) !!}
         {!! $errors->first('metadata.address', '<p class="help-block">:message</p>') !!}
     </div>

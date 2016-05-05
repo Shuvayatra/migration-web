@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'title' => 'Title',
+    'title'   => 'Title',
+    'section' => 'Section',
 ];

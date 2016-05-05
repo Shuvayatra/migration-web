@@ -36,7 +36,7 @@ class CategoryController extends Controller
     {
         $categories = $this->category->all($request->all());
 
-        return view('category.show', compact('categories'));
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -50,15 +50,26 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created category in database.
-     *
-     * @param                  $parent_id
-     * @param  CategoryRequest $request
-     * @return Response
+     * @param CategoryRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($parent_id, CategoryRequest $request)
+    public function store(CategoryRequest $request)
     {
+        $parent_id = ($request->get('parent_id', null) == '') ? null : $request->get('parent_id', null);
+        if (is_null($parent_id)) {
+            $this->category->save($request->all(), null);
+
+            return redirect()->route('category.show', null)->with(
+                'success',
+                'Category saved successfully.'
+            );
+        };
         if ($this->category->save($request->all(), $parent_id)) {
+            $parent = $this->category->find($parent_id);
+            $root   = $parent->getRoot();
+
+            $parent_id = $root->id;
+
             return redirect()->route('category.show', $parent_id)->with(
                 'success',
                 'Category saved successfully.'
@@ -95,17 +106,11 @@ class CategoryController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function edit($parent_id, $id)
+    public function edit($id)
     {
         $category = $this->category->find($id);
-        if (is_null($category)) {
-            return redirect()->route('category.show', $parent_id)->with(
-                'error',
-                'Category not found.'
-            );
-        }
 
-        return view('category.edit', compact('category', 'parent_id'));
+        return view('category.edit', compact('category'));
     }
 
     /**
@@ -115,16 +120,14 @@ class CategoryController extends Controller
      * @param  CategoryRequest $request
      * @return Response
      */
-    public function update($parent_id, $id, CategoryRequest $request)
+    public function update($id, CategoryRequest $request)
     {
         $category = $this->category->find($id);
-        if (is_null($category)) {
-            return redirect()->route('category.show', $parent_id)->with(
-                'error',
-                'Category not found.'
-            );
-        }
+
         if ($category->update($request->all())) {
+            $root   = $category->getRoot();
+
+            $parent_id = $root->id;
             return redirect()->route('category.show', $parent_id)->with(
                 'success',
                 'Category successfully updated!'
@@ -144,16 +147,16 @@ class CategoryController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($parent_id, $id)
+    public function destroy($id)
     {
         if ($this->category->delete($id)) {
-            return redirect()->route('category.show', $parent_id)->with(
+            return redirect()->back()->with(
                 'success',
                 'Category successfully deleted!'
             );
         }
 
-        return redirect()->route('category.show', $parent_id)->with(
+        return redirect()->back()->with(
             'error',
             'Error deleting Category !'
         );

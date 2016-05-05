@@ -1,32 +1,24 @@
-@extends('layouts.master')
+@extends('layouts.post_layout')
 
 @section('content')
-    <h1>Posts <a href="{{ route('post.create') }}" class="btn btn-primary pull-right btn-sm">Add New Post</a></h1>
-    {!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
-    {!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
+     <a href="{{ route('post.create') }}?{{request()->getQueryString() }}" class="btn btn-primary pull-right btn-sm">Add New Post</a>
+    {{--{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}--}}
+    {{--{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}--}}
 
-    {!! Form::submit('filter', ['class' => 'btn btn-primary']) !!}
-    {!! Form::close() !!}
+    {{--{!! Form::submit('filter', ['class' => 'btn btn-primary']) !!}--}}
+    {{--{!! Form::close() !!}--}}
     <div class="table">
         <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Title</th>
-                    <th>Info</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
             <tbody>
             {{-- */$x=0;/* --}}
             @forelse($posts as $item)
                 {{-- */$x++;/* --}}
                 <tr>
-                    <td>{{ $x }}</td>
+                    <td><i class="fa {{$item->post_type_icon}}" aria-hidden="true"></i></td>
                     <td><a href="{{route('post.show',$item->id)}}">{{ $item->metadata->title }}</a>
-                        <span class="label label-info pull-right">{{$item->metadata->type}}</span>
+
                     </td>
-                    <td>{{ $item->created_at }}<br>{{ $item->updated_at }}</td>
+                    <td>{{ $item->created_at->format('Y-m-d') }}</td>
 
                     <td>
                         <a href="{{ route('post.edit', $item->id) }}">
@@ -46,10 +38,10 @@
             @endforelse
             </tbody>
         </table>
-        @if ($posts->lastPage()>1)
-          <div class="pagination">{!! $posts->appends($app->request->all())->render() !!}</div>
-          <div class="pagination-text">Showing {{($posts->currentPage()==1)?"1":($posts->currentPage()-1)*$posts->perPage()}} to {{($posts->currentPage()== $posts->lastPage())?$posts->total():($posts->currentPage())*$posts->perPage()}} of {{$posts->total()}} posts</div>
-        @endif
+        {{--@if ($posts->lastPage()>1)--}}
+          {{--<div class="pagination">{!! $posts->appends($app->request->all())->render() !!}</div>--}}
+          {{--<div class="pagination-text">Showing {{($posts->currentPage()==1)?"1":($posts->currentPage()-1)*$posts->perPage()}} to {{($posts->currentPage()== $posts->lastPage())?$posts->total():($posts->currentPage())*$posts->perPage()}} of {{$posts->total()}} posts</div>--}}
+        {{--@endif--}}
     </div>
 
 @endsection

@@ -1,52 +1,58 @@
+<ul class="nav nav-tabs">
+    <?php $post_type_active = true;?>
+    @foreach(config('post_type') as $key => $post_type)
+        <li class="{{($post_type_active)?'active':''}}">
+            <a class="post_type" data-post-type="{{$key}}" href="javascript:;">
+                <i class="fa {{post_type_icon($key)}}" aria-hidden="true"></i>  {{$post_type}}</a></li>
+        <?php $post_type_active = false;?>
+    @endforeach
+</ul>
 <?php
 $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
-$categories = \App\Nrna\Models\CategoryAttribute::all()->lists('title','id')->toArray();
+$categories = \App\Nrna\Models\CategoryAttribute::all()->lists('title', 'id')->toArray();
+$show_text_type = true;
+if (isset($post)) {
+    $show_text_type = false;
+}
 ?>
-<div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
-    {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::select('metadata[type]',[''=>'']+config('post_type'),null, ['class' =>
-        'form-control required','id'=>'post_type']) !!}
-        {!! $errors->first('metadata.type', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
+{!! Form::hidden('metadata[type]', ($show_text_type)?'text':null, ['class' => 'post_type_value']) !!}
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
-    {!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::text('metadata[title]', null, ['class' => 'form-control required']) !!}
-        {!! $errors->first('metadata.title', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('title', 'Title: ', ['class' => 'control-label']) !!}
+
+    {!! Form::text('metadata[title]', null, ['class' => 'form-control required']) !!}
+    {!! $errors->first('metadata.title', '<p class="help-block">:message</p>') !!}
+
 </div>
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
-    {!! Form::label('description', 'Description: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control']) !!}
-        {!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('description', 'Description: ', ['class' => 'control-label']) !!}
+
+    {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control']) !!}
+    {!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
+
 </div>
 
 <div class="form-group {{ $errors->has('metadata.featured_image') ? 'has-error' : ''}}">
-    {!! Form::label('file', 'Featured Image: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
-        {!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('file', 'Featured Image: ', ['class' => 'control-label']) !!}
+
+    {!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
+    {!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
+
 </div>
-<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text") block @else none @endif"
-     class="content-type  type-text">
+<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $show_text_type) block @else none @endif"
+     class="content-type type-text">
     @include('post.partials.type_text')
 </div>
 
 <div style="display: @if(isset($post) && $post->metadata->type === 'video' || old('metadata.type') =="video") block @else none @endif"
      class="form-group content-type  type-video {{ $errors->has('media_url') ? 'has-error' : ''}}">
     {!! Form::label('media_url', 'Media Url: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::text('metadata[data][media_url]',null, ['class' => 'form-control']) !!}
-        {!! $errors->first('metadata.media_url', '<p class="help-block">:message</p>') !!}
-    </div>
+
+    {!! Form::text('metadata[data][media_url]',null, ['class' => 'form-control']) !!}
+    {!! $errors->first('metadata.media_url', '<p class="help-block">:message</p>') !!}
+
 </div>
 
 <div class="content-type type-audio"
@@ -58,63 +64,62 @@ $categories = \App\Nrna\Models\CategoryAttribute::all()->lists('title','id')->to
     @include('post.partials.type_place')
 </div>
 <div class="form-group {{ $errors->has('language') ? 'has-error' : ''}}">
-    {!! Form::label('language', 'Language: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::select('metadata[language]', config('language'),null, ['class' => 'form-control']) !!}
-        {!! $errors->first('metadata.language', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('language', 'Language: ', ['class' => 'control-label']) !!}
+
+    {!! Form::select('metadata[language]', config('language'),null, ['class' => 'form-control']) !!}
+    {!! $errors->first('metadata.language', '<p class="help-block">:message</p>') !!}
+
 </div>
 <div class="form-group {{ $errors->has('source') ? 'has-error' : ''}}">
-    {!! Form::label('source', 'Source: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::text('metadata[source]', null, ['class' => 'form-control']) !!}
-        {!! $errors->first('metadata.source', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('source', 'Source: ', ['class' => 'control-label']) !!}
+
+    {!! Form::text('metadata[source]', null, ['class' => 'form-control']) !!}
+    {!! $errors->first('metadata.source', '<p class="help-block">:message</p>') !!}
+
 </div>
 
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-    {!! Form::label('tag', 'Tags: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::select('tag[]', $tags, isset($post)?$post->tags->lists('id')->toArray():null, ['class' =>
-        'form-control','multiple'=>'','id'=>'tags']) !!}
-        {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('tag', 'Tags: ', ['class' => 'control-label']) !!}
+
+    {!! Form::select('tag[]', $tags, isset($post)?$post->tags->lists('id')->toArray():null, ['class' =>
+    'form-control','multiple'=>'','id'=>'tags']) !!}
+    {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
+
 </div>
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-    {!! Form::label('tag', 'Content Tags: ', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        {!! Form::select('category_id[]', $categories, isset($post)?$post->section_categories->lists('id')->toArray():null, ['class' =>
-        'form-control','multiple'=>'','id'=>'tags']) !!}
-        {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('tag', 'Content Tags: ', ['class' => 'control-label']) !!}
+
+    {!! Form::select('category_id[]', $categories, isset($post)?$post->section_categories->lists('id')->toArray():null,
+    ['class' =>
+    'form-control','multiple'=>'','id'=>'tags']) !!}
+    {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
+
 </div>
 
 <hr>
 @if(isset($post))
     <hr>
     <div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
-        {!! Form::label('created_at', 'Created At: ', ['class' => 'col-sm-3 control-label']) !!}
+        {!! Form::label('created_at', 'Created At: ', ['class' => 'control-label']) !!}
         <div class='input-group date' id='datetimepicker1'>
-            <div class="col-sm-6">
-                {!! Form::text('created_at', null, ['class' => 'form-control']) !!}
-                {!! $errors->first('created_at', '<p class="help-block">:message</p>') !!}
-            </div>
-            <div class="col-sm-1">
+
+            {!! Form::text('created_at', null, ['class' => 'form-control']) !!}
+            {!! $errors->first('created_at', '<p class="help-block">:message</p>') !!}
+        </div>
+        <div class="col-sm-1">
               <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar "></span>
               </span>
-            </div>
         </div>
     </div>
 @endif
 <div class="form-group {{ $errors->has('is_published') ? 'has-error' : ''}}">
-    {!! Form::label('', '', ['class' => 'col-sm-3 control-label']) !!}
-    <div class="col-sm-6">
-        <label class="checkbox">{!! Form::checkbox('is_published', 'is_published') !!} Publish ?</label>
-        {!! $errors->first('is_published', '<p class="help-block">:message</p>') !!}
-    </div>
+    {!! Form::label('', '', ['class' => 'control-label']) !!}
+    <label class="checkbox">{!! Form::checkbox('is_published', 'is_published') !!} Publish ?</label>
+    {!! $errors->first('is_published', '<p class="help-block">:message</p>') !!}
+
 </div>
 @include('templates.templates')
 @section('css')
@@ -137,7 +142,7 @@ $categories = \App\Nrna\Models\CategoryAttribute::all()->lists('title','id')->to
                         format: 'YYYY-MM-DD HH:mm:ss'
                     }
             );
-            //$('.post-form').validate();
+            $('.post-form').validate();
             $(".show-subquestions").click(function () {
                 $(this).parent().find(".question-subquestions").fadeToggle();
             });

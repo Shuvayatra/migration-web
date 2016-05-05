@@ -3,7 +3,6 @@
     <div class="container">
         <?php
         $categories = $category->getImmediateDescendants();
-
         ?>
         <h1>{{$category->title}} <a href="{{ route('category.create') }}?section_id={{$category->id}}" class="btn btn-primary pull-right btn-sm">Add</a></h1>
         <ul class="nav nav-tabs">

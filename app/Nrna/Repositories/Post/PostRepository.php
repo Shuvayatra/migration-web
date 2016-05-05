@@ -47,8 +47,12 @@ class PostRepository implements PostRepositoryInterface
      */
     public function getAll($filters, $limit = null)
     {
+
         $query = $this->post->select('*');
-        $from  = "posts ";
+        if (!\Entrust::can('manage-all-content')) {
+            $query->where('created_by', auth()->user()->id);
+        }
+        $from = "posts ";
         if (isset($filters['stage']) && $filters['stage'] != '') {
             $stages = $filters['stage'];
             $from .= ",json_array_elements(posts.metadata->'stage') stage";
@@ -63,11 +67,9 @@ class PostRepository implements PostRepositoryInterface
         $query->from($this->db->raw($from));
         $query->orderBy('id', 'DESC');
         if (is_null($limit)) {
-            return $query->all();
+            return $query->get();
         }
-        if (!\Entrust::can('manage-all-content')) {
-            $query->where('created_by', auth()->user()->id);
-        }
+
 
         return $query->paginate();
     }

@@ -14,6 +14,11 @@ class Post extends Model
 {
     use SoftDeletes;
 
+    Const AUDIO = 'audio';
+    Const VIDEO = 'video';
+    Const TEXT  = 'text';
+    Const PLACE = 'place';
+
     /**
      * The attributes that should be mutated to dates.
      *
@@ -252,5 +257,23 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
+    }
+
+    public function getPostTypeIconAttribute()
+    {
+        if ($this->metadata->type == Self::AUDIO) {
+            return 'fa-volume-up';
+        }
+        if ($this->metadata->type == Self::VIDEO) {
+            return 'fa-video-camera';
+        }
+        if ($this->metadata->type == Self::PLACE) {
+            return 'fa-plane';
+        }
+        if ($this->metadata->type == Self::TEXT) {
+            return 'fa-file-text-o';
+        }
+
+        return '';
     }
 }

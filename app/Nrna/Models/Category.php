@@ -3,7 +3,6 @@
 namespace App\Nrna\Models;
 
 use Baum\Node;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Node
 {
@@ -39,6 +38,7 @@ class Category extends Node
      */
     protected $fillable = [
         'title',
+        'section',
         'description',
         'main_image',
         'icon',

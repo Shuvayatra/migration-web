@@ -151,7 +151,7 @@ class PostService
      */
     public function all($filter, $limit = 15)
     {
-        return $this->post->getAll($filter, $limit);
+        return $this->post->getAll($filter);
     }
 
     /**

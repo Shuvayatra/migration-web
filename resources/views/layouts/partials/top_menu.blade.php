@@ -1,13 +1,62 @@
 <div class="top_nav">
 
     <div class="nav_menu">
-        <nav class="" role="navigation">
+        <nav class="nav navbar-nav" role="navigation">
             <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                <a id=""><strong>Shuvayatra</strong></a>
             </div>
 
+            <form class="navbar-form navbar-left" method="GET" role="search">
+                <div class="form-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+            </form>
+            <div class="pull pull-right">
+            <ul class="nav navbar-nav">
+                <li class="">
+                    <a href="{{route('home')}}" class="user-profile dropdown-toggle">Dashboard</a>
+                </li>
+            </ul>
+                @role('admin')
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a href="{{route('user.index')}}" class="user-profile dropdown-toggle">Users</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a href="{{route('apilogs.index')}}" class="user-profile dropdown-toggle">Api Log</a>
+                    </li>
+                </ul>
 
-            <ul class="nav navbar-nav pull pull-right">
+            <ul class="nav navbar-nav">
+                <li class="">
+                    <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
+                </li>
+            </ul>
+                @endrole
+            <ul class="nav navbar-nav">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">
+                        Content
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <?php
+                            $sections = \App\Nrna\Models\Category::roots()->get();
+                        ?>
+                        @foreach($sections as $section)
+                            <li><a href="{{route('post.index')}}?category={{$section->id}}"> {{$section->title}}</a></li>
+                        @endforeach
+                        <li><a href="{{route('category.index')}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav">
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                        aria-expanded="false">
@@ -23,42 +72,7 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav navbar-nav pull pull-right">
-                <li class="">
-                    <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav pull pull-right">
-                <li class="">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                       aria-expanded="false">
-                        Content
-                        <span class=" fa fa-angle-down"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <?php
-                            $sections = \App\Nrna\Models\Category::roots()->get();
-                        ?>
-                        @foreach($sections as $section)
-                            <li><a href="{{route('category.show',$section->id)}}"> {{$section->title}}</a></li>
-                        @endforeach
-                        <li><a href="{{route('category.show',$section->id)}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav pull pull-right">
-                <li class="">
-                    <a href="{{route('home')}}" class="user-profile dropdown-toggle">Dashboard</a>
-                </li>
-            </ul>
-            <form class="navbar-form navbar-left" method="GET" role="search">
-                <div class="form-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-            </form>
+            </div>
         </nav>
     </div>
 

@@ -21,6 +21,14 @@ $(function () {
         var field = $(this).val();
         $('.type-' + field).show();
     });
+    $(document).on('click', '.post_type', function () {
+        $('.content-type').hide();
+        $(this).parent().siblings().removeClass('active');
+        $(this).parent().addClass('active');
+        var field = $(this).data('post-type');
+        $('.post_type_value').val(field);
+        $('.type-' + field).show();
+    });
     $(document).on('click', '.delete', function (e) {
         e.preventDefault();
         $(this).parent().remove();

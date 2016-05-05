@@ -41,7 +41,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function getAll($filter = [], $limit = null)
     {
-        $query = $this->category->where('section_id', $section_id);
+        $query = $this->category->roots();
         if (is_null($limit)) {
             return $query->get();
         }

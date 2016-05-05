@@ -29,26 +29,36 @@
     @yield('css')
 </head>
 
-<body class="nav-md">
+<body class="">
 <div class="container body">
-    <div class="main_container">
-        @include('layouts.partials.sidebar')
+    <div class="">
         @include('layouts.partials.top_menu')
         <div class="right_col" role="main">
-            <div class="">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                @yield('content')
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
+            <div class="x_panel">
+                @if ($errors->any())
+                    <ul class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+                @if (\Session::has('success'))
+                    <div class="alert alert-success fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        {{Session::get('success')}}
                     </div>
-                </div>
+                @endif
+                @if (\Session::has('error'))
+                    <div class="alert alert-danger fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        {{Session::get('error')}}
+                    </div>
+                @endif
+                @yield('content')
+                <div class="clearfix"></div>
             </div>
         </div>
-       @include('layouts.partials.footer')
+        @include('layouts.partials.footer')
     </div>
 </div>
 

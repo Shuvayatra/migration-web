@@ -68,8 +68,8 @@
 
 <script id="place_phone_field" type="x-tmpl-mustache">
     <div class="form-group">
-            {!! Form::label('', '', ['class' => 'col-sm-3 control-label']) !!}
-            <div class="col-sm-6">
+            {!! Form::label('', '', ['class' => ' control-label']) !!}
+            <div class="">
                 {!! Form::text('metadata[data][phone][@{{count}}]', null, ['class' => 'form-control required']) !!}
                 {!! $errors->first('place', '<p class="help-block">:message</p>') !!}
             </div>

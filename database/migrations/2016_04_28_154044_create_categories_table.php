@@ -12,25 +12,29 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function(Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->integer('parent_id')->nullable();
-            $table->integer('lft')->nullable();
-            $table->integer('rgt')->nullable();
-            $table->integer('depth')->nullable();
-            $table->text('description')->nullable();
-            $table->string('main_image')->nullable();
-            $table->string('icon')->nullable();
-            $table->string('small_icon')->nullable();
-            $table->integer('position');
+        Schema::create(
+            'categories',
+            function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('title');
+                $table->string('section')->nullable();
+                $table->integer('parent_id')->nullable();
+                $table->integer('lft')->nullable();
+                $table->integer('rgt')->nullable();
+                $table->integer('depth')->nullable();
+                $table->text('description')->nullable();
+                $table->string('main_image')->nullable();
+                $table->string('icon')->nullable();
+                $table->string('small_icon')->nullable();
+                $table->integer('position');
 
-            $table->index('parent_id');
-            $table->index('lft');
-            $table->index('rgt');
+                $table->index('parent_id');
+                $table->index('lft');
+                $table->index('rgt');
 
-            $table->timestamps();
-        });
+                $table->timestamps();
+            }
+        );
     }
 
     /**

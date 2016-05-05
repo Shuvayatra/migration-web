@@ -18,7 +18,7 @@ class PostController extends Controller
      * constructor
      * @param PostService $post
      */
-    public function __construct(PostService $post, PostService $post)
+    public function __construct(PostService $post)
     {
         $this->middleware('auth');
         $postId = \Route::current()->getParameter('post');
@@ -32,6 +32,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
     public function index(Request $request)
