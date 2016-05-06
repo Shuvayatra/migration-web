@@ -132,7 +132,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         if ($this->post->delete($id)) {
-            return redirect('post')->with('success', 'Post successfully deleted!');
+            return redirect('post', getQueryParams($request->fullUrl()))->with('success', 'Post successfully deleted!');
         }
 
         return redirect('post')->with('error', 'Error deleting Post !');

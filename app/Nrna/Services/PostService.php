@@ -165,14 +165,14 @@ class PostService
         }
         if (array_has($filter, "sub_category")) {
             $category     = $this->category->find($filter['sub_category']);
-            $category_ids = $category->children()->lists('id')->toArray();
+            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
 
             return $this->post->getByCategoryId($category_ids);
         }
         if (array_has($filter, "category")) {
             $category     = $this->category->find($filter['category']);
-            $category_ids = $category->children()->lists('id')->toArray();
-
+            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            
             return $this->post->getByCategoryId($category_ids);
         }
 
@@ -502,7 +502,7 @@ class PostService
             if (isset($data['file'][$key]['file_name'])) {
                 $fileInfo['file_name'] = $data['file'][$key]['file_name'];
                 $fileInfo['file_name'] = $this->upload($fileData['file_name']);
-                
+
                 $fileInfo['description'] = $fileData['description'];
                 $fileNew[]               = $fileInfo;
             }
