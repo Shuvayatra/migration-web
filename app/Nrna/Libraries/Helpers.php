@@ -41,3 +41,26 @@ function post_type_icon($type)
 
     return isset($post_type[$type]) ? $post_type[$type] : '';
 }
+
+/**
+ * Checks if multiple keys exist in an array
+ *
+ * @param array $array
+ * @param array|string $keys
+ *
+ * @return bool
+ */
+function array_keys_exist( array $array, $keys ) {
+    $count = 0;
+    if ( ! is_array( $keys ) ) {
+        $keys = func_get_args();
+        array_shift( $keys );
+    }
+    foreach ( $keys as $key ) {
+        if ( array_key_exists( $key, $array ) ) {
+            $count ++;
+        }
+    }
+
+    return count( $keys ) === $count;
+}

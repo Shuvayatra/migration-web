@@ -2,6 +2,7 @@
 namespace App\Nrna\Services;
 
 use App\Nrna\Models\Post;
+use App\Nrna\Repositories\Category\CategoryRepositoryInterface;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Contracts\Logging\Log;
@@ -56,6 +57,10 @@ class PostService
      * @var FileUpload
      */
     protected $fileUpload;
+    /**
+     * @var CategoryService
+     */
+    protected $category;
 
     /**
      * constructor
@@ -68,6 +73,7 @@ class PostService
      * @param Log                     $logger
      * @param FileUpload              $fileUpload
      * @param ImageService            $image
+     * @param CategoryService         $category
      */
     public function __construct(
         PostRepositoryInterface $post,
@@ -78,7 +84,9 @@ class PostService
         AudioService $audio,
         Log $logger,
         FileUpload $fileUpload,
-        ImageService $image
+        ImageService $image,
+        CategoryService $category
+
     ) {
         $this->uploadPath = public_path(Post::UPLOAD_PATH);
         $this->post       = $post;
@@ -90,6 +98,7 @@ class PostService
         $this->logger     = $logger;
         $this->image      = $image;
         $this->fileUpload = $fileUpload;
+        $this->category   = $category;
     }
 
     /**
@@ -151,6 +160,22 @@ class PostService
      */
     public function all($filter, $limit = 15)
     {
+        if (array_has($filter, "sub_category1")) {
+            return $this->post->getByCategoryId($filter['sub_category1']);
+        }
+        if (array_has($filter, "sub_category")) {
+            $category     = $this->category->find($filter['sub_category']);
+            $category_ids = $category->children()->lists('id')->toArray();
+
+            return $this->post->getByCategoryId($category_ids);
+        }
+        if (array_has($filter, "category")) {
+            $category     = $this->category->find($filter['category']);
+            $category_ids = $category->children()->lists('id')->toArray();
+
+            return $this->post->getByCategoryId($category_ids);
+        }
+
         return $this->post->getAll($filter);
     }
 
@@ -199,10 +224,8 @@ class PostService
                 $formData = $this->getVideoData($formData);
             }
             if (isset($formData['metadata']['featured_image'])) {
-                if(isset($post->metadata->featured_image)){
-                    $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
-                }
 
+                $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
                 $featuredInfo                           = $this->fileUpload->handle(
                     $formData['metadata']['featured_image'],
                     $this->uploadPath
@@ -475,13 +498,15 @@ class PostService
         $data    = json_decode(json_encode($post->metadata->data), true);
         $fileNew = [];
         foreach ($formData['metadata']['data']['file'] as $key => $fileData) {
-            if (!is_null($fileData['file_name'])) {
-                $fileInfo['file_name'] = $data['file'][$key]['file_name'];
 
-                $fileInfo['file_name']   = $this->upload($fileData['file_name']);
+            if (isset($data['file'][$key]['file_name'])) {
+                $fileInfo['file_name'] = $data['file'][$key]['file_name'];
+                $fileInfo['file_name'] = $this->upload($fileData['file_name']);
+                
                 $fileInfo['description'] = $fileData['description'];
                 $fileNew[]               = $fileInfo;
             }
+
         }
         $data['file']                 = $fileNew;
         $formData['metadata']['data'] = $data;

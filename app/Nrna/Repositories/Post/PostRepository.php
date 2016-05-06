@@ -170,4 +170,16 @@ class PostRepository implements PostRepositoryInterface
     {
         return $this->post->whereIn('id', $ids)->get(['id']);
     }
+
+    public function getByCategoryId($ids)
+    {
+        $ids = (array) $ids;
+
+        return $this->post->whereHas(
+            'categories',
+            function ($q) use ($ids) {
+                $q->whereIn('id', $ids);
+            }
+        )->orderBy('id', 'asc')->get();
+    }
 }

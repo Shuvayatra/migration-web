@@ -154,24 +154,6 @@ if (isset($post)) {
                     }
             );
             $('.post-form').validate();
-            $(".show-subquestions").click(function () {
-                $(this).parent().find(".question-subquestions").fadeToggle();
-            });
-            $(".select-questions").on("change", function (e) {
-                var questions = $(this).val();
-                var url = '{{route('ajax.question.answers')}}'
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    data: {'question': questions},
-                    success: function (data) {
-                        $('#question_answers').append(data);
-                    },
-                    error: function () {
-                        alert('oops error loading answers.')
-                    }
-                });
-            });
         });
     </script>
 @endsection
