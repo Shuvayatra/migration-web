@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.post_layout')
 
 @section('content')
 

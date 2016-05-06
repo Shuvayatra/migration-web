@@ -80,7 +80,7 @@ class PostRepository implements PostRepositoryInterface
      */
     public function find($id)
     {
-        return $this->post->with('tags', 'questions', 'countries')->find($id);
+        return $this->post->with('tags')->find($id);
     }
 
     /**

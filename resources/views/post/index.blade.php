@@ -15,18 +15,18 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td><i class="fa {{$item->post_type_icon}}" aria-hidden="true"></i></td>
-                    <td><a href="{{route('post.show',$item->id)}}">{{ $item->metadata->title }}</a>
+                    <td><a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
 
                     </td>
                     <td>{{ $item->created_at->format('Y-m-d') }}</td>
 
                     <td>
-                        <a href="{{ route('post.edit', $item->id) }}">
+                        <a href="{{ route('post.edit', $item->id) }}?{{request()->getQueryString() }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
                         </a> /
                         {!! Form::open([
                             'method'=>'DELETE',
-                            'route' => ['post.destroy', $item->id],
+                            'route' => ['post.destroy', $item->id,request()->getQueryString()],
                             'style' => 'display:inline'
                         ]) !!}
                             {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}

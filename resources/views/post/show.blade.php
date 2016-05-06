@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.post_layout')
 
 @section('content')
 
@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong>{{$post->metadata->title}}</strong>
-                    <span class="pull pull-right"><a href="{{route('post.edit',$post->id)}}">Edit</a></span>
+                    <span class="pull pull-right"><a href="{{route('post.edit',$post->id)}}?{{request()->getQueryString() }}">Edit</a></span>
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped table-bordered table-hover">

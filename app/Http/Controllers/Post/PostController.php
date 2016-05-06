@@ -106,7 +106,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int         $id
+     * @param  int $id
      * @param  PostRequest $request
      * @return Response
      */
@@ -126,13 +126,17 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param Request $request
+     * @param  int    $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         if ($this->post->delete($id)) {
-            return redirect('post', getQueryParams($request->fullUrl()))->with('success', 'Post successfully deleted!');
+            return redirect()->route('post.index', getQueryParams($request->fullUrl()))->with(
+                'success',
+                'Post successfully deleted!'
+            );
         }
 
         return redirect('post')->with('error', 'Error deleting Post !');
