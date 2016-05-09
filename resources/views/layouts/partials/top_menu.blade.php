@@ -1,7 +1,7 @@
 <div class="top_nav">
 
     <div class="nav_menu">
-        <nav class="nav navbar-nav" role="navigation">
+        <nav class="" role="navigation">
             <div class="nav toggle">
                 <a id=""><strong>Shuvayatra</strong></a>
             </div>
@@ -13,31 +13,31 @@
                 <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
             </form>
 
-            <div class="pull pull-right">
-                <ul class="nav navbar-nav">
+            <div class="">
+                <ul class="nav navbar-nav navbar-right">
                     <li class="">
                         <a href="{{route('home')}}" class="user-profile dropdown-toggle">Dashboard</a>
                     </li>
-                </ul>
-                @role('admin')
-                <ul class="nav navbar-nav">
+
+                    @role('admin')
+
                     <li class="">
                         <a href="{{route('user.index')}}" class="user-profile dropdown-toggle">Users</a>
                     </li>
-                </ul>
-                <ul class="nav navbar-nav">
+
+
                     <li class="">
                         <a href="{{route('apilogs.index')}}" class="user-profile dropdown-toggle">Api Log</a>
                     </li>
-                </ul>
 
-                <ul class="nav navbar-nav">
+
+
                     <li class="">
                         <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
                     </li>
-                </ul>
-                @endrole
-                <ul class="nav navbar-nav">
+
+                    @endrole
+
                     <li class="">
                         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                            aria-expanded="false">
@@ -56,9 +56,9 @@
                             </li>
                         </ul>
                     </li>
-                </ul>
 
-                <ul class="nav navbar-nav">
+
+
                     <li class="">
                         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                            aria-expanded="false">
@@ -74,7 +74,6 @@
                             </li>
                         </ul>
                     </li>
-                </ul>
             </div>
         </nav>
     </div>

@@ -210,6 +210,7 @@ class CategoryService
     {
         $categoryArray['id']             = $category->id;
         $categoryArray['title']          = $category->title;
+        $categoryArray['alias_name']     = $category->section;
         $categoryArray['description']    = $category->description;
         $categoryArray['featured_image'] = $category->main_image_link;
         $categoryArray['icon']           = $category->icon_link;
