@@ -13,7 +13,7 @@ if(request()->has("section_id")){
             {{$title}}
         </h1>
         <hr/>
-        {!! Form::open(['url' => '/category',
+        {!! Form::open(['route' => 'category.store',
         'class' => 'form-horizontal',
         'files' =>true
         ]) !!}

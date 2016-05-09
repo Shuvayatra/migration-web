@@ -21,10 +21,13 @@ class PostController extends Controller
     public function __construct(PostService $post)
     {
         $this->middleware('auth');
-        $postId = \Route::current()->getParameter('post');
-        if ($postId && auth()->user()->id !== $post->find($postId)->user->id) {
-            $this->middleware('permission:manage-all-content');
+        if (auth()->check()) {
+            $postId = \Route::current()->getParameter('post');
+            if ($postId && auth()->user()->id !== $post->find($postId)->user->id) {
+                $this->middleware('permission:manage-all-content');
+            }
         }
+
 
         $this->post = $post;
     }
@@ -106,7 +109,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int         $id
      * @param  PostRequest $request
      * @return Response
      */

@@ -27,8 +27,44 @@
                                     ]) !!}
                                     <label for="title">Title * :</label>
                                     {!! Form::text('title', null, ['class' => 'form-control']) !!}
-
                                     <br>
+                                    <div class="form-group {{ $errors->has('main_image') ? 'has-error' : ''}}">
+                                        {!! Form::label('main_image', 'Main Image: ', ['class' => ' control-label']) !!}
+                                        <div class="">
+                                            {!! Form::file('main_image', null, ['class' => 'form-control']) !!}
+                                            {!! $errors->first('main_image', '<p class="help-block">:message</p>') !!}
+                                            @if(isset($category))
+                                                <a href="#" class="thumbnail">
+                                                    <img src="{{$category->main_image_link}}">
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('icon') ? 'has-error' : ''}}">
+                                        {!! Form::label('icon', 'Icon: ', ['class' => ' control-label']) !!}
+                                        <div class="">
+                                            {!! Form::file('icon', null, ['class' => 'form-control']) !!}
+                                            {!! $errors->first('icon', '<p class="help-block">:message</p>') !!}
+                                            @if(isset($category))
+                                                <a href="#" class="thumbnail">
+                                                    <img src="{{$category->icon_link}}">
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group {{ $errors->has('small_icon') ? 'has-error' : ''}}">
+                                        {!! Form::label('small_icon', 'Small Icon: ', ['class' => ' control-label']) !!}
+                                        <div class="">
+                                            {!! Form::file('small_icon', null, ['class' => 'form-control']) !!}
+                                            {!! $errors->first('small_icon', '<p class="help-block">:message</p>') !!}
+                                            @if(isset($category))
+                                                <a href="#" class="thumbnail">
+                                                    <img src="{{$category->small_icon_link}}">
+                                                </a>
+                                            @endif
+
+                                        </div>
+                                    </div>
                                     {!! Form::submit('Update', ['class' => 'btn btn-primary form-control']) !!}
 
                                     {!! Form::close() !!}
@@ -44,13 +80,13 @@
                                     @foreach($category->getImmediateDescendants() as $item)
                                         {{-- */$x++;/* --}}
                                         <tr>
-                                            <td><a href="{{ url('category', $item->id) }}">{{ $item->title }}</a></td>
+                                            <td>{{ $item->title }}</td>
                                             <td>
-                                                <a href="{{ url('/category/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs">Update</a>
+                                                <a href="{{ route('category.edit' , $item->id) }}" class="btn btn-primary btn-xs">Update</a>
 
                                                 {!! Form::open([
                                                 'method'=>'DELETE',
-                                                'url' => ['/category', $item->id],
+                                                'route' => ['category.destroy', $item->id],
                                                 'style' => 'display:inline'
                                                 ]) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}

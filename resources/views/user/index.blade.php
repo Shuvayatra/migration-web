@@ -20,7 +20,7 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/user', $item->id) }}">{{ $item->name }}</a></td>
+                    <td><a href="{{ route('user.show', $item->id) }}">{{ $item->name }}</a></td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->roles->first()['name'] }}</td>
                     <td>

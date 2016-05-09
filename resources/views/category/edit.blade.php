@@ -8,7 +8,7 @@
 
     {!! Form::model($category, [
         'method' => 'PATCH',
-        'url' => ['/category', $category->id],
+        'route' => ['category.update', $category->id],
         'class' => 'form-horizontal',
         'files' =>true
     ]) !!}

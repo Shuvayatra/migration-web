@@ -124,10 +124,11 @@ class CategoryController extends Controller
     {
         $category = $this->category->find($id);
 
-        if ($category->update($request->all())) {
-            $root   = $category->getRoot();
+        if ($this->category->update($id, $request->all())) {
+            $root = $category->getRoot();
 
             $parent_id = $root->id;
+
             return redirect()->route('category.show', $parent_id)->with(
                 'success',
                 'Category successfully updated!'

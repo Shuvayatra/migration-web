@@ -10,13 +10,13 @@
             @foreach($categories as $item)
                 {{-- */$x++;/* --}}
                 <tr>
-                    <td><a href="{{ url('category', $item->id) }}">{{ $item->title }}</a></td>
+                    <td><a href="{{ route('category.show', $item->id) }}">{{ $item->title }}</a></td>
                     <td>
-                        <a href="{{ url('/category/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs">Update</a>
+                        <a href="{{ route('category.edit' , $item->id) }}" class="btn btn-primary btn-xs">Update</a>
 
                         {!! Form::open([
                         'method'=>'DELETE',
-                        'url' => ['/category', $item->id],
+                        'route' => ['category.destroy', $item->id],
                         'style' => 'display:inline'
                         ]) !!}
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
