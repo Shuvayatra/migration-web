@@ -172,7 +172,7 @@ class PostService
         if (array_has($filter, "category")) {
             $category     = $this->category->find($filter['category']);
             $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
-            
+
             return $this->post->getByCategoryId($category_ids);
         }
 
@@ -574,6 +574,15 @@ class PostService
         $failureIds = array_diff($ids, $successIds);
 
         return ['success' => $successIds, 'failure' => $failureIds];
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function search($query)
+    {
+        return $this->post->search($query);
     }
 
 }

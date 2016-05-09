@@ -7,7 +7,7 @@
 
     {!! Form::model($post, [
         'method' => 'PATCH',
-        'route' => ['post.update', $post->id],
+        'route' => ['post.update', $post->id,request()->getQueryString()],
         'class' => 'form-horizontal post-form',
         'novalidate' => 'novalidate',
         'files' => true

@@ -227,4 +227,9 @@ class CategoryService
         return $categoryArray;
     }
 
+    public function search($query)
+    {
+        return $this->category->search($query);
+    }
+
 }

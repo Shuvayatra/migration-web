@@ -6,18 +6,19 @@
                 <a id=""><strong>Shuvayatra</strong></a>
             </div>
 
-            <form class="navbar-form navbar-left" method="GET" role="search">
+            <form action="{{route('search')}}" class="navbar-form navbar-left" method="GET" role="search">
                 <div class="form-group">
                     <input type="text" name="q" class="form-control" placeholder="Search">
                 </div>
                 <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
             </form>
+
             <div class="pull pull-right">
-            <ul class="nav navbar-nav">
-                <li class="">
-                    <a href="{{route('home')}}" class="user-profile dropdown-toggle">Dashboard</a>
-                </li>
-            </ul>
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a href="{{route('home')}}" class="user-profile dropdown-toggle">Dashboard</a>
+                    </li>
+                </ul>
                 @role('admin')
                 <ul class="nav navbar-nav">
                     <li class="">
@@ -30,48 +31,50 @@
                     </li>
                 </ul>
 
-            <ul class="nav navbar-nav">
-                <li class="">
-                    <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
-                </li>
-            </ul>
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
+                    </li>
+                </ul>
                 @endrole
-            <ul class="nav navbar-nav">
-                <li class="">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                       aria-expanded="false">
-                        Content
-                        <span class=" fa fa-angle-down"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <?php
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                           aria-expanded="false">
+                            Content
+                            <span class=" fa fa-angle-down"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-usermenu pull-right">
+                            <?php
                             $sections = \App\Nrna\Models\Category::roots()->get();
-                        ?>
-                        @foreach($sections as $section)
-                            <li><a href="{{route('post.index')}}?category={{$section->id}}"> {{$section->title}}</a></li>
-                        @endforeach
-                        <li><a href="{{route('category.index')}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                            ?>
+                            @foreach($sections as $section)
+                                <li><a href="{{route('post.index')}}?category={{$section->id}}"> {{$section->title}}</a>
+                                </li>
+                            @endforeach
+                            <li><a href="{{route('category.index')}}"> Manage <i class="fa fa-gear pull-right"></i> </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 
-            <ul class="nav navbar-nav">
-                <li class="">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                       aria-expanded="false">
-                        <img src="{{url()}}/images/user.png" alt="">{{Auth::user()->email}}
-                        <span class=" fa fa-angle-down"></span>
-                    </a>
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                           aria-expanded="false">
+                            <img src="{{url()}}/images/user.png" alt="">{{Auth::user()->email}}
+                            <span class=" fa fa-angle-down"></span>
+                        </a>
 
-                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="javascript:;"> Profile</a>
-                        </li>
-                        <li><a href="{{ url('/auth/logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                        <ul class="dropdown-menu dropdown-usermenu pull-right">
+                            <li><a href="javascript:;"> Profile</a>
+                            </li>
+                            <li><a href="{{ url('/auth/logout') }}"><i class="fa fa-sign-out pull-right"></i> Log
+                                    Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </nav>
     </div>

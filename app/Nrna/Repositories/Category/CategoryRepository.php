@@ -125,4 +125,14 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         return $query->get(['id', 'deleted_at']);
     }
+
+    /**
+     * @param $query
+     */
+    public function search($query)
+    {
+        return $this->category->whereRaw("to_tsvector(description) @@ plainto_tsquery('" . $query . "')")
+                              ->OrWhereRaw("to_tsvector(title) @@ plainto_tsquery('" . $query . "')")
+                              ->get();
+    }
 }

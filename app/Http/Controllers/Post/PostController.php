@@ -117,7 +117,10 @@ class PostController extends Controller
             return redirect()->route('post.index')->with('error', 'Post not found.');
         }
         if ($this->post->update($id, $request->all())) {
-            return redirect('post')->with('success', 'Post successfully updated!');
+            return redirect()->route('post.index', getQueryParams($request->fullUrl()))->with(
+                'success',
+                'Post successfully updated!'
+            );
         }
 
         return redirect('post')->with('error', 'Problem updating Post!');

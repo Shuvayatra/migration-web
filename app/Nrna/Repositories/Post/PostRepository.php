@@ -166,11 +166,19 @@ class PostRepository implements PostRepositoryInterface
         return $this->post->where('id', $postId)->decrement('likes');
     }
 
+    /**
+     * @param $ids
+     * @return mixed
+     */
     public function postExistsCheck($ids)
     {
         return $this->post->whereIn('id', $ids)->get(['id']);
     }
 
+    /**
+     * @param $ids
+     * @return mixed
+     */
     public function getByCategoryId($ids)
     {
         $ids = (array) $ids;
@@ -181,5 +189,16 @@ class PostRepository implements PostRepositoryInterface
                 $q->whereIn('id', $ids);
             }
         )->orderBy('id', 'asc')->get();
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function search($query)
+    {
+        return $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('" . $query . "')")
+                          ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('" . $query . "')")
+                          ->get();
     }
 }
