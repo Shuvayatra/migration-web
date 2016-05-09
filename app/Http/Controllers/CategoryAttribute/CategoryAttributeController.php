@@ -123,7 +123,7 @@ class CategoryAttributeController extends Controller
                 'CategoryAttribute not found.'
             );
         }
-        if ($categoryattribute->update($request->all())) {
+        if ($this->categoryattribute->update($id, $request->all())) {
             return redirect()->route('section.category.index', $section_id)->with(
                 'success',
                 'CategoryAttribute successfully updated!'
