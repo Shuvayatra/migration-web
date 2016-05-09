@@ -1,0 +1,137 @@
+$cloud:#ecf0f1;
+$midnight-blue:#2c3e50;
+$white:#fff;
+$black:#000;
+$gray:#bbbbbb;
+$light-gray:#EFEBEB;
+$grey:#ddd;
+$light-grey:#C3C3C3;
+$dim:#555;
+$green-sea:#16a085;
+$darker-gray:#9C9C9C;
+$blue:#4A94D4;
+$dark-green:#178C75;
+
+body, html{
+height: 100%;
+}
+.parent-wrapper{
+    height: 100%;
+    width: 100%;
+    background: $light-gray;
+}
+.main-sidebar{
+    height: 100%;
+    background: $light-grey;
+    font-size: 12px;
+    border-right: 1px solid $darker-gray;
+}
+.sub-sidebar{
+    height: 100%;
+    // width: 17.99%;
+    background: $white;
+    font-size: 12px;
+}
+
+.panel_content{
+    // width: 65%;
+}
+.list-group{
+    a{
+        color: $blue;
+        .add-icon{
+            margin-right: 3px;
+        }
+    }
+}
+a.list-group-item{
+    color: $black;
+}
+
+a{
+    &:hover{
+        text-decoration: none;
+    }
+}
+
+.list-group-item{
+    padding: 12px 8px;
+    background: inherit;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    &:first-child{
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+    }
+    &:last-child{
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    &.active {
+        background: $white;
+        color: $dim;
+        border-right-color: $white;
+        border-top-color: $grey;
+        border-bottom-color: $grey;
+        &:hover , &:focus{
+            background: $white;
+            color: $dim;
+            border-right-color: $white;
+            border-top-color: $grey;
+            border-bottom-color: $grey;
+        }
+    }
+}
+.x_panel{
+    margin-top: 20px;
+}
+.x_content{
+    background: $white;
+    border: 1px solid $grey;
+    padding: 20px 15px 25px 30px;
+    .button{
+        border-radius: 0;
+        margin-bottom: 14px;
+        background: $green-sea;
+        border: none;
+        &:hover{
+            background: $dark-green;
+        }
+    }
+}
+.table-bordered{
+    border: none;
+    tbody{
+       tr{
+           td{
+               border: none;
+           }
+       }
+    }
+}
+.table{
+    tbody{
+    tr{
+        td{
+            border-top: none;
+            border-bottom: 2px solid $grey;
+            a{
+                color: $black;
+            }
+        }
+    }
+    }
+}
+.table-button{
+    background: $gray;
+    color: $white;
+    border-radius:10px;
+    border: none;
+    padding: 2px 14px;
+}
+.icons{
+    padding: 5px;
+    border-radius: 12px;
+    background: $gray;
+    color: $black   ;
+}

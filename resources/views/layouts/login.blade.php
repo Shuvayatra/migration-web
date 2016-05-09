@@ -10,12 +10,8 @@
     <title>Shuvayatra | Login </title>
 
     <!-- Bootstrap -->
-    <link href="{{url()}}/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="{{url()}}/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link href="{{url()}}/css/custom.css" rel="stylesheet">
+    <link href="{{asset("css/vendors.min.css")}}" rel="stylesheet">
+    <link href="{{asset("css/app.min.css")}}" rel="stylesheet">
 </head>
 
 <body style="background:#F7F7F7;">

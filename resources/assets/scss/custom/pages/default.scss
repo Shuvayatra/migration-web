@@ -1,0 +1,93 @@
+$gray:#565454;
+$cloud:#ecf0f1;
+$silver:#bdc3c7;
+$drak-gray:#4a4848;
+$white:#fff;
+$black:#332C2C;
+
+.menu{
+    background-color: $gray;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+
+    .navbar-brand{
+        color: $cloud;
+        &:hover{
+            color: $silver;
+        }
+    }
+
+    .navbar-list{
+        li{
+            a{
+                color: $cloud;
+                &:hover{
+                    color: $silver;
+                    background-color: $drak-gray;
+                }
+                &:focus{
+                    color: $cloud;
+                }
+            }
+        }
+        .open{
+            a{
+                background-color: $drak-gray;
+                color: $cloud;
+                &:hover,&:focus{
+                    background-color: $drak-gray;
+                    color: $silver;
+                }
+            }
+        }
+    }
+}
+.menu{
+    .navbar-form{
+        box-shadow: none;
+        border: none;
+        padding: 0 15px;
+        margin-left: 7%;
+    }
+    .navbar-collapse{
+        border: none;
+    }
+}
+.dropdown-menu{
+    background-color: $drak-gray;
+    padding: 10px 0;
+    border: 0;
+    border-radius: 0;
+}
+
+.add-on {
+    .input-group-btn .btn{
+        border-left: 0;
+        left: 0;
+        border-radius: 0;
+        background: $white;
+        color: $drak-gray;
+        border-color: $white;
+    }
+    .form-control{
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+footer{
+    padding:20px 15px;
+}
+
+@media only screen and (max-width : 320px) {
+.main-sidebar{
+    height: auto;
+}
+}
+// @media only screen  and (min-width : 1224px) {
+//     .form-control{
+//         width: 250px !important;
+//     }
+// }

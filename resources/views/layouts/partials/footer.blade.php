@@ -47,7 +47,6 @@
         e.preventDefault();
     });
 </script>
-<link href="{{asset('css/style.css')}}" rel="stylesheet"/>
 @yield('script')
 <!-- footer content -->
 <footer>

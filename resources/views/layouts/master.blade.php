@@ -11,25 +11,15 @@
     <title>Shuvayatra Web</title>
 
     <!-- Bootstrap -->
-    <link href="{{asset("vendors/bootstrap/dist/css/bootstrap.min.css")}}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="{{asset("vendors/font-awesome/css/font-awesome.min.css")}}" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="{{asset("vendors/iCheck/skins/flat/green.css")}}" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="{{asset("vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css")}}" rel="stylesheet">
-    <!-- jVectorMap -->
-    <link href="{{asset('css/maps/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet"/>
+    <link href="{{asset("css/vendors.min.css")}}" rel="stylesheet">
+        <!-- Custom Theme Style -->
+    <link href="{{asset("css/app.min.css")}}" rel="stylesheet">
 
-    <!-- Custom Theme Style -->
-    <link href="{{asset('css/custom.css')}}" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="{{asset("vendors/jquery/dist/jquery.min.js")}}"></script>
     <!-- Bootstrap -->
     @yield('css')
 </head>
 <body class="">
-<div class="container body">
+<div class="body">
     <div class="">
         @include('layouts.partials.top_menu')
         <div class="right_col" role="main">
@@ -60,10 +50,10 @@
         @include('layouts.partials.footer')
     </div>
 </div>
-
-<script src="{{asset("vendors/bootstrap/dist/js/bootstrap.min.js")}}"></script>
+<!-- jQuery -->
+<script src="{{asset("js/vendors.min.js")}}"></script>
 @yield('script')
 <!-- Custom Theme Scripts -->
-<script src="{{asset("js/custom.js")}}"></script>
+<script src="{{asset("js/app.min.js")}}"></script>
 </body>
 </html>

@@ -44,7 +44,7 @@ if (isset($post)) {
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     {!! Form::label('description', 'Description: ', ['class' => 'control-label']) !!}
 
-    {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control']) !!}
+    {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control description']) !!}
     {!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
 
 </div>
@@ -134,19 +134,13 @@ if (isset($post)) {
 </div>
 @include('templates.templates')
 @section('css')
-    <link href="{{asset('css/select2.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('css/bootstrap-datetimepicker.css')}}"
+    <link href="{{asset('css/vendors.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('css/app.min.css')}}"
           rel="stylesheet">
 @endsection
 @section('script')
-    <script type="text/javascript" src="{{asset('js/jquery.validate.min.js')}}"></script>
-    <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/select2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
-    <script type="text/javascript"
-            src="{{asset('/js/bootstrap-datetimepicker.min.js')}}"></script>
-    <script>
+    <script type="text/javascript" src="{{asset('js/vendors.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.min.js') }}">
         $(function () {
             $('#datetimepicker1').datetimepicker(
                     {
@@ -157,4 +151,3 @@ if (isset($post)) {
         });
     </script>
 @endsection
-

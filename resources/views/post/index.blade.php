@@ -1,7 +1,7 @@
 @extends('layouts.post_layout')
 
 @section('content')
-     <a href="{{ route('post.create') }}?{{request()->getQueryString() }}" class="btn btn-primary pull-right btn-sm">Add New Post</a>
+     <a href="{{ route('post.create') }}?{{request()->getQueryString() }}" class="btn btn-primary pull-right btn-sm button">Add New Post</a>
     {{--{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}--}}
     {{--{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}--}}
 
@@ -14,22 +14,22 @@
             @forelse($posts as $item)
                 {{-- */$x++;/* --}}
                 <tr>
-                    <td><i class="fa {{$item->post_type_icon}}" aria-hidden="true"></i></td>
+                    <td><i class="glyphicon glyphicon-list-alt icons" aria-hidden="true"></i></td>
                     <td><a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
 
                     </td>
                     <td>{{ $item->created_at->format('Y-m-d') }}</td>
 
-                    <td>
+                    <td width="150px">
                         <a href="{{ route('post.edit', $item->id) }}?{{request()->getQueryString() }}">
-                            <button type="submit" class="btn btn-primary btn-xs">Update</button>
-                        </a> /
+                            <button type="submit" class="btn btn-primary btn-xs table-button">Edit</button>
+                        </a>
                         {!! Form::open([
                             'method'=>'DELETE',
                             'route' => ['post.destroy', $item->id,request()->getQueryString()],
                             'style' => 'display:inline'
                         ]) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
+                            {!! Form::submit('Remove', ['class' => 'btn btn-danger btn-xs table-button']) !!}
                         {!! Form::close() !!}
                     </td>
                 </tr>
@@ -45,4 +45,3 @@
     </div>
 
 @endsection
-

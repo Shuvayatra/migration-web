@@ -1,7 +1,7 @@
 <div class="form-group {{ $errors->has('audio') ? 'has-error' : ''}}">
     {!! Form::label('content', 'Content: ', ['class' => 'control-label']) !!}
 
-        {!! Form::textArea('metadata[data][content]',null, ['class' => 'form-control']) !!}
+        {!! Form::textArea('metadata[data][content]',null, ['class' => 'form-control description']) !!}
         {!! $errors->first('metadata.content', '<p class="help-block">:message</p>') !!}
 
 </div>
