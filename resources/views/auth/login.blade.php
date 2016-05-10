@@ -12,7 +12,7 @@
             @endforeach
         </div>
     @endif
-    <form method="POST" action="/login" accept-charset="UTF-8" class="form-horizontal">
+    <form method="POST" action="{{route('login')}}" accept-charset="UTF-8" class="form-horizontal">
         {!! csrf_field() !!}
         <div class="form-group ">
             <label for="name" class="col-sm-3 control-label">Email: </label>

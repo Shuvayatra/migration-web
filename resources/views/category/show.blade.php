@@ -4,7 +4,7 @@
         <?php
         $categories = $category->getImmediateDescendants();
         ?>
-        <h1>{{$category->title}} <a href="{{ route('category.create') }}?section_id={{$category->id}}" class="btn btn-primary pull-right btn-sm">Add</a></h1>
+        <h1>{{$category->title}} <a href="{{ route('category.create') }}?section_id={{$category->id}}" class="btn btn-primary pull-right btn-sm">Add Category</a></h1>
         <ul class="nav nav-tabs">
             @foreach($categories as $category)
                 <li class="@if($categories->first() == $category) active @endif" ><a data-toggle="tab" href="#{{str_slug($category->title)}}">{{$category->title}}</a></li>
@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="x_panel">
-                                <label>Drop Down</label> <a href="{{ route('category.create') }}?section_id={{$category->id}}">Add</a>
+                                <label>Drop Down</label> <a class="btn btn-primary pull-right" href="{{ route('category.create') }}?section_id={{$category->id}}">Add</a>
                                 <table class="table table-bordered table-striped table-hover">
                                     <tbody>
                                     {{-- */$x=0;/* --}}

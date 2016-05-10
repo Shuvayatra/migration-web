@@ -19,6 +19,10 @@ class Post extends Model
     Const TEXT  = 'text';
     Const PLACE = 'place';
 
+    Const DRAFT     = 'draft';
+    Const REVIEW    = 'review';
+    Const PUBLISHED = 'published';
+
     /**
      * The attributes that should be mutated to dates.
      *
@@ -260,11 +264,12 @@ class Post extends Model
     /**
      * Scope a query to only include published post.
      *
+     * @param $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePublished($query)
     {
-        return $query->where('is_published', true);
+        return $query->whereRaw("metadata->>'status'=?", [Self::PUBLISHED]);
     }
 
     public function getPostTypeIconAttribute()
