@@ -23,11 +23,11 @@ class PostController extends ApiGuardController
         $this->postService = $postService;
     }
 
-    public function likes(Request $request)
+    public function sync(Request $request)
     {
-        $likes = $this->postService->likes($request->all());
-        if ($likes) {
-            return $this->response->withArray($likes);
+        $response = $this->postService->sync($request->all());
+        if ($response) {
+            return $this->response->withArray($response);
         }
 
         return $this->response->errorInternalError();

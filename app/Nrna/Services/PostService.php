@@ -15,7 +15,7 @@ use Illuminate\Filesystem\Filesystem;
  */
 class PostService
 {
-    const LIKE = 'like';
+    const LIKE = true;
     /**
      * @var PostRepositoryInterface
      */
@@ -315,7 +315,9 @@ class PostService
     {
         $postArray['id']               = $post->id;
         $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
-        $postArray['likes_count']      = $post->likes;
+        $postArray['like_count']       = $post->likes;
+        $postArray['view_count']       = $post->share_count;
+        $postArray['share_count']      = $post->view_count;
         $postArray['tags']             = $post->tags->lists('title')->toArray();
         $postArray['section_category'] = $post->section_categories->lists('id')->toArray();
         $postArray['created_at']       = $post->created_at->timestamp;
@@ -516,19 +518,16 @@ class PostService
 
     /**
      * @param $likesData
-     * @return bool
+     * @return array|bool
      */
-    function likes($likesData)
+    function sync($likesData)
     {
         $ids = $this->postIdsExistsCheck($likesData);
         try {
             foreach ($likesData as $data) {
-                if ($data['status'] == self::LIKE) {
-                    $this->modifyLikes($data['id'], 'increment');
-                } else {
-                    $this->modifyLikes($data['id'], 'decrement');
+                if (in_array($data['id'], $ids['success'])) {
+                    $this->SyncLikeData($data);
                 }
-
             }
         } catch (\Exception $e) {
             $this->logger->error($e);
@@ -583,6 +582,26 @@ class PostService
     public function search($query)
     {
         return $this->post->search($query);
+    }
+
+    /**
+     * @param $data
+     */
+    protected function syncLikeData($data)
+    {
+        $postId = $data['id'];
+        if (isset($data['like']) && $data['like'] == self::LIKE) {
+            $this->modifyLikes($postId, 'increment');
+        } else {
+            $this->modifyLikes($postId, 'decrement');
+        }
+
+        if (isset($data['share_count'])) {
+            $this->post->increaseShare($postId, $data['share_count']);
+        }
+        if (isset($data['view_count'])) {
+            $this->post->increaseView($postId, $data['view_count']);
+        }
     }
 
 }

@@ -201,4 +201,32 @@ class PostRepository implements PostRepositoryInterface
                           ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('" . $query . "')")
                           ->get();
     }
+
+    /**
+     * @param $postId
+     * @param $count
+     * @return mixed
+     */
+    public function increaseView($postId, $count)
+    {
+        $post             = $this->post->find($postId);
+        $post->view_count = $post->view_count + $count;
+        $post->save();
+
+        return $post;
+    }
+
+    /**
+     * @param $postId
+     * @param $count
+     * @return mixed
+     */
+    public function increaseShare($postId, $count)
+    {
+        $post              = $this->post->find($postId);
+        $post->share_count = $post->share_count + $count;
+        $post->save();
+
+        return $post;
+    }
 }

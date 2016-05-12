@@ -18,7 +18,7 @@ interface PostRepositoryInterface
      * @param $limit
      * @return Collection
      */
-    public function getAll($filter,$limit = null);
+    public function getAll($filter, $limit = null);
 
     /**
      * @param $id
@@ -56,11 +56,26 @@ interface PostRepositoryInterface
      * @return mixed
      */
     public function getLikes($postId);
+
     /**
      * @param $postId
      * @return mixed
      */
     public function incrementLikes($postId);
+
+    /**
+     * @param $postId
+     * @param $count
+     * @return mixed
+     */
+    public function increaseView($postId, $count);
+
+    /**
+     * @param $postId
+     * @param $count
+     * @return mixed
+     */
+    public function increaseShare($postId, $count);
 
     /**
      * @param $postId
