@@ -224,7 +224,6 @@ class PostService
                 $formData = $this->getVideoData($formData);
             }
             if (isset($formData['metadata']['featured_image'])) {
-
                 $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
                 $featuredInfo                           = $this->fileUpload->handle(
                     $formData['metadata']['featured_image'],
@@ -500,13 +499,13 @@ class PostService
         $data    = json_decode(json_encode($post->metadata->data), true);
         $fileNew = [];
         foreach ($formData['metadata']['data']['file'] as $key => $fileData) {
-
-            if (isset($data['file'][$key]['file_name'])) {
-                $fileInfo['file_name'] = $data['file'][$key]['file_name'];
-                $fileInfo['file_name'] = $this->upload($fileData['file_name']);
-
+            if (!is_null($fileData['file_name'])) {
+                $fileInfo['file_name']   = $data['file'][$key]['file_name'];
+                $fileInfo['file_name']   = $this->upload($fileData['file_name']);
                 $fileInfo['description'] = $fileData['description'];
                 $fileNew[]               = $fileInfo;
+            } else {
+                $fileNew = $data['file'];
             }
 
         }

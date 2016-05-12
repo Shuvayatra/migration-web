@@ -98,12 +98,12 @@ if (isset($post)) {
 </div>
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-    {!! Form::label('tag', 'Content Tags: ', ['class' => 'control-label']) !!}
+    {!! Form::label('tag', 'Content Tags:* ', ['class' => 'control-label']) !!}
 
     {!! Form::select('category_id[]', $categories, $post_categories,
     ['class' =>
     'form-control','multiple'=>'','id'=>'tags']) !!}
-    {!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
 </div>
 
 <hr>
