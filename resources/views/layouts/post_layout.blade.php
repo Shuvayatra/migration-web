@@ -14,7 +14,6 @@
     <link href="{{asset("css/vendors.min.css")}}" rel="stylesheet">
         <!-- Custom Theme Style -->
     <link href="{{asset("css/app.min.css")}}" rel="stylesheet">
-
     <!-- Bootstrap -->
     @yield('css')
 </head>
@@ -51,12 +50,14 @@
                         <?php
                         $post_column = $post_column-2;
                         ?>
-                        <div class="col-md-2 col-xs-12 main-sidebar">
+                    <div class="sidebar-wrap col-md-4 col-xs-12 clearfix">
+                        <div class="row">
+                        <div class="col-md-6 col-xs-12 main-sidebar">
                             <?php
                             $category = Category::find(request()->get('category'));
                             ?>
                             <div id="main-menu" class="list-group row">
-                                <span class="list-group-item main-menu">
+                                <span class="list-group-item min-menu">
                                     <strong>{{$category->title}}</strong>
                                     <a class="pull pull-right" href="{{route('category.create')}}?section_id={{$category->id}}"><i class="glyphicon glyphicon-plus add-icon"></i>Add
                                     </a>
@@ -78,7 +79,7 @@
                         $post_column = $post_column-2;
                         $sub_category = Category::find(request()->get('sub_category'));
                         ?>
-                        <div class="col-md-2 col-xs-12 sub-sidebar">
+                        <div class="col-md-6 col-xs-12 sub-sidebar">
                             <div class="list-group row">
                                 <span class="list-group-item"><strong>{{$sub_category->title}}</strong><a class="pull pull-right" href="{{route('category.create')}}?section_id={{$sub_category->id}}" ><i class="glyphicon glyphicon-plus add-icon"></i>Add</a></span>
                                 @foreach($sub_category->getimmediateDescendants() as $child)
@@ -86,9 +87,10 @@
                                 @endforeach
                             </div>
                         </div>
-
+                        </div>
+                    </div>
                     @endif
-                        <div class="col-md-{{$post_column}} col-xs-12 panel_content">
+                        <div class="col-md-{{$post_column}} col-xs-12 panel_content col-md-offset-4">
                             <div class="x_panel">
                                 <div class="x_content">
                                        @yield('content')
@@ -102,9 +104,9 @@
         @include('layouts.partials.footer')
 
 <script src="{{asset("js/vendors.min.js")}}"></script>
-
+@include('layouts.partials.notification')
 @yield('script')
 <!-- Custom Theme Scripts -->
-<!-- <script src="{{asset("js/custom.js")}}"></script> -->
+ <script src="{{asset("js/custom.js")}}"></script>
 </body>
 </html>

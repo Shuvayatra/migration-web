@@ -22,7 +22,7 @@
 <div class="body">
     <div class="">
         @include('layouts.partials.top_menu')
-        <div class="right_col" role="main">
+        <div class="right container_col container" role="main">
             <div class="x_panel">
                 @if ($errors->any())
                     <ul class="alert alert-danger">
@@ -52,6 +52,7 @@
 </div>
 <!-- jQuery -->
 <script src="{{asset("js/vendors.min.js")}}"></script>
+@include('layouts.partials.notification')
 @yield('script')
 <!-- Custom Theme Scripts -->
 <script src="{{asset("js/app.min.js")}}"></script>

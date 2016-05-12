@@ -1,0 +1,200 @@
+/* -------- style for tab structure -------- */
+
+.icon-wrap{
+  position: relative;
+  padding-left: 26px;
+  min-height: 83px;
+
+  a:before{
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 30px;
+    width: 20px;
+  }
+
+  .audio{
+    &:before{
+      background: url(#{$img-path}/ic_sprite.svg) 0px -44px no-repeat;
+      height: 18px;
+    }
+  }
+
+  .video{
+    &:before{
+      height: 20px;
+      background: url(#{$img-path}/ic_sprite.svg) 0px -83px no-repeat;
+    }
+  }
+
+  .place{
+    &:before{
+      height: 32px;
+      background: url(#{$img-path}/ic_sprite.svg) 0px -123px no-repeat;
+    }
+  }
+
+  .text{
+    &:before{
+      height: 24px;
+      background: url(#{$img-path}/ic_sprite.svg) 0 0 no-repeat;
+    }
+  }
+}
+
+.nav-tabs{
+  .icons{
+    border-radius: 0;
+  }
+}
+
+.title-btn{
+  background-color: $green-color;
+  width: auto;
+  font-size: 14px;
+  line-height: 20px;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 2px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.tab-wrap{
+  margin-left: 55px;
+  position: relative;
+
+  .nav-tabs{
+    border-bottom: none;
+  }
+  .add-btn{
+    position: relative;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    border: none;
+    background-color: $green-color;
+
+    &:before{
+      content: "+";
+      color: #fff;
+      position: absolute;
+      background: url(/images/ic_add-white.svg) center no-repeat;
+      top: 5px;
+      left: 5px;
+      width: 20px;
+      height: 20px;
+      z-index: 88;
+    }
+  }
+
+  .float-btn{
+    position: absolute;
+    left: -40px;
+    top: 4px;
+  }
+}
+
+.tab-wrap{
+  .tab-content{
+    padding: 0 15px;
+    background: #DCDEE0;
+
+    .green-content{
+      background-color: $green-color;
+      border: none;
+      padding: 10px;
+      border-radius: 2px;
+    }
+
+    .grey-content{
+      background-color: #A7ABA9;
+      padding: 10px;
+      border-radius: 2px;
+
+      .add-btn{
+        background-color: #dcdee0;
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        margin-left: 4px;
+        &:before{
+          width: 10px;
+          height: 10px;
+          left: 6px;
+          background: url(#{$img-path}/ic_add-grey.svg) center center no-repeat;
+        }
+      }
+    }
+  }
+}
+
+.tab-wrap{
+  .nav-tabs>li>a{
+    background: #A7ABA9;
+    color: #fff;
+    border-radius: 0;
+    margin-right: 10px;
+  }
+
+  .nav-tabs>li.active>a,
+  .nav-tabs>li.active>a:focus,
+  .nav-tabs>li.active>a:hover{
+    background-color: $green-color;
+    color: #fff;
+  }
+
+}
+
+/*
+style for scrollable tab panel*/
+.tab-wrap {
+  .wrapper {
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 5px;
+    height: 58px;
+  }
+
+  .list {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    min-width: 3000px;
+    margin-left: 12px;
+    margin-top: 0px;
+  }
+
+  .list li {
+    display: table-cell;
+    position: relative;
+    text-align: center;
+    cursor: grab;
+    cursor: -webkit-grab;
+    color: #efefef;
+    vertical-align: middle;
+  }
+
+  .scroller {
+    text-align: center;
+    cursor: pointer;
+    display: none;
+    padding: 7px;
+    padding-top: 11px;
+    white-space: no-wrap;
+    vertical-align: middle;
+    background-color: #fff;
+  }
+
+  .scroller-right {
+    float: right;
+  }
+
+  .scroller-left {
+    float: left;
+  }
+}

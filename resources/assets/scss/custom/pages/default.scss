@@ -4,15 +4,40 @@ $silver:#bdc3c7;
 $drak-gray:#4a4848;
 $white:#fff;
 $black:#332C2C;
+$green-color: #4db3b1;
+$img-path: "/images";
+
+body{
+    background: #f0f0f0;
+    position: relative;
+}
+
+nav.navbar{
+    margin-bottom: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+    border-radius: 0;
+}
+
+body{
+    padding-top: 62px;
+    padding-bottom: 60px;
+}
+
+#login h1{
+    text-align: center;
+}
+
 
 .menu{
     background-color: $gray;
     border: none;
-    border-radius: 0;
-    margin-bottom: 0;
 
     .navbar-brand{
         color: $cloud;
+        margin-top: 10px;
         &:hover{
             color: $silver;
         }
@@ -31,13 +56,25 @@ $black:#332C2C;
                 }
             }
         }
+
+        li{
+            .dropdown-menu{
+                padding: 0 0 14px;
+                border-radius: 0 0 4px 4px;
+                margin-bottom: 0;
+                a{
+                    padding: 5px 25px;
+                    margin-bottom: 1px;
+                }
+            }
+        }
         .open{
             a{
                 background-color: $drak-gray;
-                color: $cloud;
+                color: $white;
                 &:hover,&:focus{
-                    background-color: $drak-gray;
-                    color: $silver;
+                    background-color: #9A9A9A;
+                    color: $white;
                 }
             }
         }
@@ -79,7 +116,25 @@ $black:#332C2C;
 
 footer{
     padding:20px 15px;
+    background: $white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
+
+
+//overwrite bootstrap
+
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:focus,
+.navbar-default .navbar-nav>.open>a:hover{
+    background: #4a4a4a !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd){
+    background: none;
+}
+
 
 @media only screen and (max-width : 320px) {
 .main-sidebar{

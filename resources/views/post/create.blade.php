@@ -8,7 +8,7 @@ $create_route = ['post.store']+getQueryParams(request()->fullUrl());
     'files' => true]) !!}
     @include('post.form')
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-3">
+        <div class="row col-sm-3">
             {!! Form::submit('Create', ['class' => 'btn btn-primary form-control']) !!}
         </div>
     </div>

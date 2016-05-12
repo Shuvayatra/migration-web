@@ -15,7 +15,7 @@
 
     @include('post.form')
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-3">
+        <div class="col-sm-3 row">
             {!! Form::submit('Update', ['class' => 'btn btn-primary form-control']) !!}
         </div>
     </div>

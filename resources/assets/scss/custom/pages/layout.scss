@@ -5,32 +5,91 @@ $black:#000;
 $gray:#bbbbbb;
 $light-gray:#EFEBEB;
 $grey:#ddd;
-$light-grey:#C3C3C3;
+$light-grey:#d8d8d8;
 $dim:#555;
 $green-sea:#16a085;
-$darker-gray:#9C9C9C;
+$darker-gray:#a7a7a7;
 $blue:#4A94D4;
 $dark-green:#178C75;
 
 body, html{
-height: 100%;
+    min-height: 100%;
+    min-height: 100vh;
+    position: relative;
 }
+
+/*.container{
+    max-width: 960px;
+    float: none;
+    margin: 0 auto;
+}*/
+
+.navbar-form{
+    margin: 12px 0;
+
+    .add-on button[type="submit"]{
+        padding: 10px 12px;
+        border-radius: 4px 0 0 4px;
+
+        i:before{
+            color: #7c7c7c;
+            font-size: 19px;
+        }
+    }
+
+    .input-group .form-control{
+        padding: 13px 12px;
+        height: auto;
+        border-radius: 0px 4px 4px 0;
+    }
+}
+
+@media (min-width: 768px){
+    .navbar-nav>li>a {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .input-group .form-control{
+        width: 280px !important;
+    }
+}
+
+
 .parent-wrapper{
-    height: 100%;
+    min-height: 100%;
     width: 100%;
-    background: $light-gray;
+    background: #f0f0f0;
+    clear: both;
+    overflow: hidden;
 }
+
+.sidebar-wrap{
+    position: fixed !important;
+    left: 0;
+    z-index: 88;
+}
+
 .main-sidebar{
-    height: 100%;
+    min-height: 100% !important;
+    min-height: 100vh !important;
     background: $light-grey;
     font-size: 12px;
     border-right: 1px solid $darker-gray;
 }
 .sub-sidebar{
-    height: 100%;
+    min-height: 100% !important;
+    min-height: 100vh !important;
     // width: 17.99%;
     background: $white;
     font-size: 12px;
+
+    .list-group-item{
+        color: #a5a5a5;
+        &.active{
+            background: #f0f0f0 !important;
+        }
+    }
 }
 
 .panel_content{
@@ -55,10 +114,11 @@ a{
 }
 
 .list-group-item{
-    padding: 12px 8px;
-    background: inherit;
-    border: none;
-    border-bottom: 1px solid #ddd;
+    padding: 1.25em 1em !important;
+    background: inherit !important;
+    border: none !important;
+    border-bottom: 1px solid $darker-gray !important;
+    margin-bottom: 0 !important;
     &:first-child{
         border-top-right-radius: 0;
         border-top-left-radius: 0;
@@ -68,17 +128,13 @@ a{
         border-bottom-left-radius: 0px;
     }
     &.active {
-        background: $white;
-        color: $dim;
-        border-right-color: $white;
-        border-top-color: $grey;
-        border-bottom-color: $grey;
+        background: $white !important;
+        color: $dim !important;
+        border-bottom: 1px solid $darker-gray;
         &:hover , &:focus{
             background: $white;
             color: $dim;
-            border-right-color: $white;
-            border-top-color: $grey;
-            border-bottom-color: $grey;
+            border-bottom: 1px solid $darker-gray !important;
         }
     }
 }
@@ -87,13 +143,16 @@ a{
 }
 .x_content{
     background: $white;
-    border: 1px solid $grey;
-    padding: 20px 15px 25px 30px;
+    border: 1px solid #a1a1a1;
+    //padding: 20px 15px 25px 30px;
+    padding: 25px 20px 25px 20px;
     .button{
         border-radius: 0;
         margin-bottom: 14px;
         background: $green-sea;
         border: none;
+        padding: 10px 12px;
+        border-radius: 2px;
         &:hover{
             background: $dark-green;
         }
@@ -105,6 +164,10 @@ a{
        tr{
            td{
                border: none;
+           }
+
+           td:not(:nth-child(1)){
+               padding-top: 18px;
            }
        }
     }
@@ -130,8 +193,14 @@ a{
     padding: 2px 14px;
 }
 .icons{
-    padding: 5px;
-    border-radius: 12px;
+    padding: 10px;
+    border-radius: 50%;
     background: $gray;
     color: $black   ;
+
+    &:before{
+        font-size: 17px;
+    }
 }
+
+

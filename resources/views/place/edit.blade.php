@@ -13,7 +13,7 @@
     ]) !!}
     @include('place.form')
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-3">
+        <div class="row col-sm-3">
             {!! Form::submit('Update', ['class' => 'btn btn-primary form-control']) !!}
         </div>
     </div>
