@@ -7,14 +7,14 @@
         <h1>{{$category->title}} <a href="{{ route('category.create') }}?section_id={{$category->id}}" class="btn btn-primary pull-right btn-sm">Add Category</a></h1>
         <ul class="nav nav-tabs">
             @foreach($categories as $category)
-                <li class="@if($categories->first() == $category) active @endif" ><a data-toggle="tab" href="#{{str_slug($category->title)}}">{{$category->title}}</a></li>
+                <li class="@if($categories->first() == $category) active @endif" ><a data-toggle="tab" href="#category-{{$category->id}}">{{$category->title}}</a></li>
             @endforeach
         </ul>
         <div class="tab-content">
             <br>
             <br>
             @foreach($categories as $category)
-                <div id="{{str_slug($category->title)}}" class="tab-pane fade in @if($categories->first() == $category) active @endif">
+                <div id="category-{{$category->id}}" class="tab-pane fade in @if($categories->first() == $category) active @endif">
                     <div class="row">
                         <div class="col-md-3">
                             <div class="x_panel">
