@@ -143,20 +143,34 @@ class AclSetup extends Command
     {
         $this->line('');
         $this->info(sprintf('Attach role for default admin'));
+
         $adminEmail = $this->ask("Enter default admin email");
 
         $user = User::where('email', '=', $adminEmail)->first();
+        $role = Role::where('name', '=', 'admin')->first();
 
         if ($user) {
             if ($user->hasRole('admin')) {
                 $this->error(sprintf('%s has been already been assigned with admin role', $adminEmail));
             } else {
-                $role = Role::where('name', '=', 'admin')->first();
                 $user->attachRole($role);
                 $this->info(sprintf('%s has been assigned with admin role', $adminEmail));
             }
         } else {
-            $this->error(sprintf('No user found with the email: %s', $adminEmail));
+            $adminName     = $this->ask("Enter default admin name");
+            $adminPassword = $this->ask("password");
+            $user          = User::create(
+                [
+                    'name'         => $adminName,
+                    'email'        => $adminEmail,
+                    'phone_number' => '',
+                    'address'      => '',
+                    'password'     => bcrypt($adminPassword),
+                    'is_active'    => '1',
+                ]
+            );
+            $user->attachRole($role);
+            $this->info(sprintf('Admin User created with email : %s', $adminEmail));
         }
     }
 
