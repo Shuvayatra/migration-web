@@ -1,4 +1,4 @@
-$(function () {
+$(document).ready(function () {
     $('select').select2({placeholder: "Select", allowClear: true, theme: "classic"});
     $('#tags').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true})
     tinymce.init({
@@ -53,7 +53,10 @@ $(function () {
     };
 
     var getLeftPosi = function(){
-        return $('.list').position().left;
+        if($('.list').position()){
+            return $('.list').position().left;
+        }
+        return 0;
     };
 
     var reAdjust = function(){

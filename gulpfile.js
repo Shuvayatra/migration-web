@@ -26,7 +26,7 @@ var vendor_css = [
     './resources/assets/css/vendors/bootstrap.min.css',
     './resources/assets/css/vendors/bootstrap-datetimepicker.css',
     './resources/assets/css/vendors/select2.min.css',
-    './resources/assets/css/vendors/font-awesome.min.css'
+    //'./resources/assets/css/vendors/font-awesome.min.css'
 ];
 
 var custom_js = [

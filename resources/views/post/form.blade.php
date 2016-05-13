@@ -13,27 +13,6 @@
     @endforeach
 </ul>
 
-{{--template to put icons starts--}}
-
-{{--<ul class="nav nav-tabs">
-        <li class="icon-wrap">
-            <a class="audio">audio</a>
-        </li>
-
-    <li class="icon-wrap">
-        <a class="video">video</a>
-    </li>
-
-    <li class="icon-wrap">
-        <a class="place">place</a>
-    </li>
-
-    <li class="icon-wrap">
-        <a class="text">text</a>
-    </li>
-</ul>--}}
-
-{{--template to put icons ends--}}
 <?php
 $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();

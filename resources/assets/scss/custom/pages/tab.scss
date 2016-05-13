@@ -2,15 +2,31 @@
 
 .icon-wrap{
   position: relative;
-  padding-left: 26px;
-  min-height: 83px;
 
-  a:before{
+  a{
+    min-height: 84px;
+  }
+
+
+  a:before,.icons:before{
     content: "";
     display: inline-block;
     vertical-align: middle;
-    padding-right: 30px;
+    padding-right: 24px;
     width: 20px;
+  }
+
+  .icons{
+    width: 36px;
+    height: 36px;
+    position: relative;
+    display: inline-block;
+
+    &:before{
+      position: absolute;
+      left: 8px;
+      top: 9px;
+    }
   }
 
   .audio{
@@ -27,6 +43,12 @@
     }
   }
 
+  .icons.video{
+    &:before{
+      top: 8px;
+    }
+  }
+
   .place{
     &:before{
       height: 32px;
@@ -34,11 +56,20 @@
     }
   }
 
+  .icons.place:before{
+    left: 10px;
+    top: 6px;
+  }
+
   .text{
     &:before{
       height: 24px;
       background: url(#{$img-path}/ic_sprite.svg) 0 0 no-repeat;
     }
+  }
+
+  .icons.text:before{
+    top: 6px;
   }
 }
 
@@ -94,7 +125,7 @@
   .float-btn{
     position: absolute;
     left: -40px;
-    top: 4px;
+    top: 16px;
   }
 }
 
@@ -137,7 +168,6 @@
     background: #A7ABA9;
     color: #fff;
     border-radius: 0;
-    margin-right: 10px;
   }
 
   .nav-tabs>li.active>a,
@@ -157,7 +187,20 @@ style for scrollable tab panel*/
     margin: 0 auto;
     overflow: hidden;
     padding: 5px;
-    height: 58px;
+    height: 70px;
+
+    ul.nav-tabs{
+      min-height: 70px;
+      li{
+        padding: 14px 0;
+        margin-right: 10px;
+
+        &.active{
+          padding: 14px;
+          background: #dcdee0;
+        }
+      }
+    }
   }
 
   .list {
@@ -188,6 +231,7 @@ style for scrollable tab panel*/
     white-space: no-wrap;
     vertical-align: middle;
     background-color: #fff;
+    margin-top: 14px;
   }
 
   .scroller-right {
