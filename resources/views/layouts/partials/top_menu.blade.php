@@ -25,21 +25,22 @@
             </form>
 
             <ul class="nav navbar-nav navbar-right navbar-list">
-
-                <li>
-                    <a href="{{route('home')}}">Dashboard</a>
-                </li>
-
                 @role('admin')
-                <li><a href="{{route('pushnotification.index')}}">Push Notification</a></li>
+                <li><a href="{{route('pushnotification.index')}}">Notification</a></li>
 
                 <li>
                     <a href="{{route('user.index')}}">Users</a>
                 </li>
 
-                <li><a href="{{route('rss.index')}}">Rss</a></li>
-                <li><a href="{{route('rssnewsfeeds.index')}}">News Feeds</a></li>
-
+                <li>
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Rss <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route('rss.index')}}">Rss</a></li>
+                        <li><a href="{{route('rssnewsfeeds.index')}}">News Feeds</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="{{route('apilogs.index')}}">Api Log</a>
                 </li>
@@ -48,7 +49,6 @@
                     <a href="{{route('tag.index')}}" class="user-profile dropdown-toggle">Tags</a>
                 </li>
 
-                @endrole
 
                 <li>
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -66,6 +66,8 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
+
 
                 <li>
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
