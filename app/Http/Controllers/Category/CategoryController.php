@@ -122,9 +122,11 @@ class CategoryController extends Controller
      */
     public function update($id, CategoryRequest $request)
     {
-        $category = $this->category->find($id);
-
-        if ($this->category->update($id, $request->all())) {
+        $category              = $this->category->find($id);
+        $formData              = $request->all();
+        $parent_id             = ($request->get('parent_id', null) == '') ? null : $request->get('parent_id', null);
+        $formData['parent_id'] = $parent_id;
+        if ($this->category->update($id, $formData)) {
             $root = $category->getRoot();
 
             $parent_id = $root->id;
