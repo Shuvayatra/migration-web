@@ -14,7 +14,7 @@
             @forelse($posts as $item)
                 {{-- */$x++;/* --}}
                 <tr>
-                    <td class="icon-wrap"><i class="audio icons" aria-hidden="true"></i></td>
+                    <td class="icon-wrap"><i class="{{$item->metadata->type}} icons" aria-hidden="true"></i></td>
                     <td><a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
 
                     </td>

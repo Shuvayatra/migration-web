@@ -87,9 +87,9 @@
                                 @endforeach
                             </div>
                         </div>
+                    @endif
                         </div>
                     </div>
-                    @endif
                         <div class="col-md-{{$post_column}} col-xs-12 panel_content col-md-offset-4">
                             <div class="x_panel">
                                 <div class="x_content">
