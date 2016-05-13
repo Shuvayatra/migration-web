@@ -82,11 +82,16 @@
                                     <div class="x_panel grey-content">
                                         <label>Dropdown</label> <a class="btn btn-primary add-btn" href="{{ route('category.create') }}?section_id={{$category->id}}">Add</a>
                                         <table class="table table-bordered table-striped">
-                                            <tbody>
+                                            <tbody class="sortable" data-entityname="category">
+                                            <?php
+                                            $dropDowncategories = $category->getImmediateDescendants();
+                                            $dropDowncategories = $dropDowncategories->sortBy('position');
+                                            ?>
                                             {{-- */$x=0;/* --}}
-                                            @foreach($category->getImmediateDescendants() as $item)
+                                            @foreach($dropDowncategories as $item)
                                                 {{-- */$x++;/* --}}
-                                                <tr>
+                                                <tr data-itemId="{{{ $item->id }}}">
+                                                    <td class="sortable-handle"><span class="glyphicon glyphicon-sort"></span></td>
                                                     <td>{{ $item->title }}</td>
                                                     <td>
                                                         <a href="{{ route('category.edit' , $item->id) }}" class="btn btn-primary btn-xs">Update</a>
@@ -112,6 +117,7 @@
             </div>
     </div>
 @endsection
+
 
 
 

@@ -3,9 +3,11 @@
 namespace App\Nrna\Models;
 
 use Baum\Node;
+use App\Nrna\Services\SortableTrait;
 
 class Category extends Node
 {
+    use SortableTrait;
     /**
      * upload path for place
      */

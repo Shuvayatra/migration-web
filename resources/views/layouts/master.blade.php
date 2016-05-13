@@ -52,6 +52,7 @@
 </div>
 <!-- jQuery -->
 <script src="{{asset("js/vendors.min.js")}}"></script>
+<script src="{{asset("js/tinymce/tinymce.min.js")}}"></script>
 @include('layouts.partials.notification')
 @yield('script')
 <!-- Custom Theme Scripts -->
