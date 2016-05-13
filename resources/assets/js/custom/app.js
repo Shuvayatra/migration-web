@@ -2,7 +2,9 @@ $(function () {
     $('select').select2({placeholder: "Select", allowClear: true, theme: "classic"});
     $('#tags').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true})
     tinymce.init({
-        selector: "textarea",
+        mode : "textareas",
+        editor_selector : "tinymce",
+        editor_deselector : "mceNoEditor",
         theme: "modern",
         width: 700,
         height: 300,

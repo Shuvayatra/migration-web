@@ -66,7 +66,7 @@ if (isset($post)) {
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     {!! Form::label('description', 'Description: ', ['class' => 'control-label']) !!}
 
-    {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control description']) !!}
+    {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control description tinymce']) !!}
     {!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
 
 </div>

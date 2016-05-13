@@ -26,7 +26,7 @@ if (request()->has('section_id')) {
     <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
         {!! Form::label('description', 'Description: ', ['class' => 'col-sm-3 control-label']) !!}
         <div class="col-sm-6">
-            {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+            {!! Form::textarea('description', null, ['class' => 'form-control tinymce']) !!}
             {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
