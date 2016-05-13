@@ -36,6 +36,14 @@ $(document).ready(function () {
         $(this).parent().remove();
     });
 
+    $(".pagination").each(function(){
+        var dis = $(this);
+        if ( dis.text().length == 0 || dis.val() == "  "  ) {
+            dis.hide();
+        }
+    })
+
+
     var hidWidth;
     var scrollBarWidths = 40;
 

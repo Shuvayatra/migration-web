@@ -158,6 +158,19 @@ a{
         }
     }
 }
+
+.table-bordered>thead>tr>th {
+    border: none;
+}
+
+.table>.table{
+    margin-bottom: 0;
+}
+
+.table-bordered>thead>tr{
+    border-bottom: solid 2px #ddd;
+}
+
 .table-bordered{
     border: none;
     tbody{

@@ -42,7 +42,7 @@
                         {{Session::get('error')}}
                     </div>
                 @endif
-                @yield('content')
+                        @yield('content')
                 <div class="clearfix"></div>
             </div>
         </div>
