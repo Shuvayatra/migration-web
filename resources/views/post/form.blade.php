@@ -5,9 +5,9 @@
      }
     ?>
     @foreach(config('post_type') as $key => $post_type)
-        <li class="@if(isset($post) && $post->metadata->type === $key || old('metadata.type') ==$key) active @endif @if($post_type_active) active @endif ">
-            <a class="post_type" data-post-type="{{$key}}" href="javascript:;">
-                <i class="fa {{post_type_icon($key)}}" aria-hidden="true"></i> {{$post_type}}</a>
+        <li class="icon-wrap @if(isset($post) && $post->metadata->type === $key || old('metadata.type') ==$key) active @endif @if($post_type_active) active @endif ">
+            <a class="post_type {{$key}}" data-post-type="{{$key}}" href="javascript:;">
+              {{$post_type}}</a>
         </li>
         <?php $post_type_active = false;?>
     @endforeach
@@ -155,11 +155,7 @@ if (isset($post)) {
     </div>
 </div>
 @include('templates.templates')
-@section('css')
-    <link href="{{asset('css/vendors.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('css/app.min.css')}}"
-          rel="stylesheet">
-@endsection
+
 @section('script')
     <script type="text/javascript" src="{{asset('js/vendors.min.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/app.min.js') }}">

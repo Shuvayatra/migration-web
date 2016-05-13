@@ -1,4 +1,3 @@
-<script src="{{asset('js/jquery.bootstrap-growl.min.js')}}"></script>
 <script>
     $.ajaxSetup({
         headers: {

@@ -42,12 +42,9 @@
     </div>
 </div>
 <hr>
-
-<script type="text/javascript" src="{{ asset('js/mustache.min.js')}}"></script>
-
+@section('script')
 <script>
     $(function () {
-
         var j = {{$j or 0}};
         $('.add-new-phone').on('click', function (e) {
             e.preventDefault();
@@ -70,3 +67,4 @@
         });
     })
 </script>
+@endsection

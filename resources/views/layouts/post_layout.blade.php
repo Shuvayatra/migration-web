@@ -104,9 +104,11 @@
         @include('layouts.partials.footer')
 
 <script src="{{asset("js/vendors.min.js")}}"></script>
-@include('layouts.partials.notification')
+<script src="{{asset("js/tinymce/tinymce.min.js")}}"></script>
 @yield('script')
 <!-- Custom Theme Scripts -->
- <script src="{{asset("js/custom.js")}}"></script>
+ <script src="{{asset("js/app.min.js")}}"></script>
+@include('layouts.partials.notification')
+
 </body>
 </html>

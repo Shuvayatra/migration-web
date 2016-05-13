@@ -19,7 +19,6 @@ var vendor_js = [
     './resources/assets/js/vendors/jquery.bootstrap-growl.min.js',
     './resources/assets/js/vendors/jquery-ui-1.10.4.custom.min.js',
     './resources/assets/js/vendors/jquery.validate.min.js',
-    './resources/assets/js/vendors/tinymce/tinymce.min.js',
     './resources/assets/js/vendors/mustache.min.js'
 ];
 
