@@ -1,13 +1,13 @@
 <ul class="nav nav-tabs">
     <?php $post_type_active = true;
-     if(isset($post)){
-         $post_type_active = false;
-     }
+    if (isset($post)) {
+        $post_type_active = false;
+    }
     ?>
     @foreach(config('post_type') as $key => $post_type)
         <li class="icon-wrap @if(isset($post) && $post->metadata->type === $key || old('metadata.type') ==$key) active @endif @if($post_type_active) active @endif ">
             <a class="post_type {{$key}}" data-post-type="{{$key}}" href="javascript:;">
-              {{$post_type}}</a>
+                {{$post_type}}</a>
         </li>
         <?php $post_type_active = false;?>
     @endforeach
@@ -24,28 +24,39 @@ if (isset($post)) {
     $show_text_type = false;
 }
 $post_categories = [];
-if(request()->has('sub_category1')){
-    $post_categories []= request()->get('sub_category1');
+if (request()->has('sub_category1')) {
+    $post_categories [] = request()->get('sub_category1');
 }
-if(request()->has('sub_category')){
-    $post_categories []= request()->get('sub_category');
+if (request()->has('sub_category')) {
+    $post_categories [] = request()->get('sub_category');
 }
 if (isset($post)) {
     $post_categories = $post->categories->lists('id')->toArray();
+}
+$post_title = null;
+$post_desc = null;
+$post_source = null;
+if (request()->has('rss_id')) {
+    $feed = \App\Nrna\Models\RssNewsFeeds::find(request()->get('rss_id'));
+    if (!is_null($feed)) {
+        $post_title = $feed->title;
+        $post_desc  = $feed->description;
+        $post_source = $feed->rss->title ;
+    }
 }
 ?>
 {!! Form::hidden('metadata[type]', ($show_text_type)?'text':null, ['class' => 'post_type_value']) !!}
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
     {!! Form::label('title', 'Title:* ', ['class' => 'control-label']) !!}
 
-    {!! Form::text('metadata[title]', null, ['class' => 'form-control required']) !!}
+    {!! Form::text('metadata[title]', $post_title, ['class' => 'form-control required']) !!}
     {!! $errors->first('metadata.title', '<p class="help-block">:message</p>') !!}
 
 </div>
 <div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">
     {!! Form::label('description', 'Description: ', ['class' => 'control-label']) !!}
 
-    {!! Form::textArea ('metadata[description]', null, ['class' => 'form-control description tinymce']) !!}
+    {!! Form::textArea ('metadata[description]', $post_desc, ['class' => 'form-control description tinymce']) !!}
     {!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
 
 </div>
@@ -86,7 +97,7 @@ if (isset($post)) {
 </div>
 <div class="form-group {{ $errors->has('source') ? 'has-error' : ''}}">
     {!! Form::label('source', 'Source: ', ['class' => 'control-label']) !!}
-    {!! Form::text('metadata[source]', null, ['class' => 'form-control']) !!}
+    {!! Form::text('metadata[source]', $post_source, ['class' => 'form-control']) !!}
     {!! $errors->first('metadata.source', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">

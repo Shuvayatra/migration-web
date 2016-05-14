@@ -13,7 +13,7 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Post Date</th>
-                <th>Created</th>
+                <th>Created At</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -25,13 +25,18 @@
                     <td>{{ $x }}</td>
                     <td>{{ $item->rss->title }}</td>
                     <td><a href="{{ url('/rssnewsfeeds', $item->id) }}">{{ $item->title }}</a></td>
-                    <td>{{ $item->description }}</td>
+                    <td>{!! $item->description !!}</td>
                     <td>{{ $item->post_date }}</td>
                     <td>{{ $item->created_at }}</td>
                     <td>
+                        <a class="btn btn-primary btn-xs" href="{{route('post.create',['rss_id'=>$item->id])}}">Add to Post</a>
+                        <br>
+                        <br>
                         <a href="{{ route('rssnewsfeeds.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Update</button>
-                        </a> /
+                        </a>
+                        <br>
+                        <br>
                         {!! Form::open([
                             'method'=>'DELETE',
                             'route' => ['rssnewsfeeds.destroy', $item->id],
