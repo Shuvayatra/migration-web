@@ -12,12 +12,11 @@ $darker-gray:#a7a7a7;
 $blue:#4A94D4;
 $dark-green:#178C75;
 
-body, html{
+body, html {
     min-height: 100%;
     min-height: 100vh;
     position: relative;
 }
-
 /*.container{
     max-width: 960px;
     float: none;
@@ -85,8 +84,9 @@ body, html{
     background-color: #333;
 }
 
-.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
-    background: #fff;
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar{
+    background: $green-sea;
 }
 
 .main-sidebar{
