@@ -1,23 +1,42 @@
 $(document).ready(function () {
     $('select').select2({placeholder: "Select", allowClear: true, theme: "classic"});
-    $('#tags').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true})
-    tinymce.init({
-        mode : "textareas",
-        editor_selector : "tinymce",
-        editor_deselector : "mceNoEditor",
-        theme: "modern",
-        width: 700,
-        height: 300,
-        browser_spellcheck: true,
-        fontsize_formats: "8pt 10pt 12pt 14pt 16pt 18pt 20pt 24pt 36pt",
+    $('#tags').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true});
+
+    var editor_config = {
+        path_absolute : "/",
+        selector: "textarea",
         plugins: [
-            "advlist autolink link image lists charmap  hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-            "save table contextmenu directionality template paste textcolor colorpicker"
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars code fullscreen",
+            "insertdatetime media nonbreaking save table contextmenu directionality",
+            "emoticons template paste textcolor colorpicker textpattern"
         ],
-        content_css: "css/content.css",
-        toolbar: "insertfile undo redo | styleselect | fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image |  media fullpage | forecolor backcolor",
-    });
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+        relative_urls: false,
+        file_browser_callback : function(field_name, url, type, win) {
+            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+            var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+
+            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+            if (type == 'image') {
+                cmsURL = cmsURL + "&type=Images";
+            } else {
+                cmsURL = cmsURL + "&type=Files";
+            }
+
+            tinyMCE.activeEditor.windowManager.open({
+                file : cmsURL,
+                title : 'Filemanager',
+                width : x * 0.8,
+                height : y * 0.8,
+                resizable : "yes",
+                close_previous : "no"
+            });
+        }
+    };
+
+    tinymce.init(editor_config);
+
     $(document).on('change', '#post_type', function () {
         $('.content-type').hide();
         var field = $(this).val();

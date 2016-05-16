@@ -45,6 +45,8 @@ $providers      = [
     Zizaco\Entrust\EntrustServiceProvider::class,
     Baum\Providers\BaumServiceProvider::class,
     willvincent\Feeds\FeedsServiceProvider::class,
+    Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
+    Intervention\Image\ImageServiceProvider::class,
 ];
 $localProviders = [
     /*
