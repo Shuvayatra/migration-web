@@ -22,7 +22,11 @@
         {!! $errors->first('thumbnail', '<p class="help-block">:message</p>') !!}
     </div>
     @if(isset($post->metadata->data->thumbnail ))
-        <div><a target="_blank" href="{{$post->metadataWithPath->data->thumbnail}}">check</a></div>
+        @if(isset($post))
+            <a href="#" class="thumbnail">
+                <img height="100px" width="100px" src="{{$post->metadataWithPath->data->thumbnail}}">
+            </a>
+        @endif
     @endif
 </div>
 <hr>
