@@ -14,8 +14,7 @@ var vendor_js = [
     './resources/assets/js/vendors/jquery.min.js',
     './resources/assets/js/vendors/bootstrap.min.js',
     './resources/assets/js/vendors/jquery.mCustomScrollbar.concat.min.js',
-    './resources/assets/js/vendors/moment.js',
-    './resources/assets/js/vendors/bootstrap-datetimepicker.min.js',
+    './resources/assets/js/vendors/bootstrap-datetimepicker.js',
     './resources/assets/js/vendors/select2.min.js',
     './resources/assets/js/vendors/jquery.bootstrap-growl.min.js',
     './resources/assets/js/vendors/jquery-ui-1.10.4.custom.min.js',
@@ -26,7 +25,7 @@ var vendor_js = [
 var vendor_css = [
     './resources/assets/css/vendors/bootstrap.min.css',
     './resources/assets/css/vendors/jquery.mCustomScrollbar.css',
-    './resources/assets/css/vendors/bootstrap-datetimepicker.css',
+    './resources/assets/css/vendors/bootstrap-datetimepicker.min.css',
     './resources/assets/css/vendors/select2.min.css',
     //'./resources/assets/css/vendors/font-awesome.min.css'
 ];

@@ -126,18 +126,12 @@ if (request()->has('rss_id')) {
 
 <hr>
 @if(isset($post))
-    <hr>
     <div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
         {!! Form::label('created_at', 'Created At: ', ['class' => 'control-label']) !!}
-        <div class='input-group date' id='datetimepicker1'>
-
-            {!! Form::text('created_at', null, ['class' => 'form-control']) !!}
+        <div class='input-group date form_datetime'>
+            {!! Form::text('created_at', null, ['class' => 'form-control datetime']) !!}
+            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
             {!! $errors->first('created_at', '<p class="help-block">:message</p>') !!}
-        </div>
-        <div class="col-sm-1">
-              <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar "></span>
-              </span>
         </div>
     </div>
 @endif
@@ -152,16 +146,3 @@ if (request()->has('rss_id')) {
 </div>
 @include('templates.templates')
 
-@section('script')
-    <script type="text/javascript" src="{{asset('js/vendors.min.js')}}"></script>
-    <script type="text/javascript" src="{{ asset('js/app.min.js') }}">
-        $(function () {
-            $('#datetimepicker1').datetimepicker(
-                    {
-                        format: 'YYYY-MM-DD HH:mm:ss'
-                    }
-            );
-            $('.post-form').validate();
-        });
-    </script>
-@endsection

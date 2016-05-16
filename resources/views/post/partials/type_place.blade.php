@@ -43,28 +43,41 @@
 </div>
 <hr>
 @section('script')
-<script>
-    $(function () {
-        var j = {{$j or 0}};
-        $('.add-new-phone').on('click', function (e) {
-            e.preventDefault();
-            j += 1;
-            var template = $('#place_phone_field').html();
-            Mustache.parse(template);
-            var rendered = Mustache.render(template, {count: j});
-            $('.phone .phone-item:last-child').append(rendered);
+    <script>
+        $(function () {
+            $('.form_datetime').datetimepicker({
+                //language:  'fr',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1
+            });
 
-        });
+            $('.post-form').validate();
+            var j = {{$j or 0}};
+            $('.add-new-phone').on('click', function (e) {
+                e.preventDefault();
+                j += 1;
+                var template = $('#place_phone_field').html();
+                Mustache.parse(template);
+                var rendered = Mustache.render(template, {count: j});
+                $('.phone .phone-item:last-child').append(rendered);
 
-        $(document).on('click', '.delete-phone-field', function (e) {
-            e.preventDefault();
-            $(this).parent().remove();
-            j -= 1;
-        });
-        $(document).on('click', '.delete-old-phone-field', function (e) {
-            e.preventDefault();
+            });
 
-        });
-    })
-</script>
+            $(document).on('click', '.delete-phone-field', function (e) {
+                e.preventDefault();
+                $(this).parent().remove();
+                j -= 1;
+            });
+            $(document).on('click', '.delete-old-phone-field', function (e) {
+                e.preventDefault();
+
+            });
+        })
+    </script>
+
 @endsection
