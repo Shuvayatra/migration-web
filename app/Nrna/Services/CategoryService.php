@@ -70,7 +70,6 @@ class CategoryService
     public function save($formData, $parent_id)
     {
         $formData['parent_id'] = $parent_id;
-        $formData['position']  = 0;
         try {
             if (isset($formData['main_image'])) {
                 $main_image_info        = $this->fileUpload->handle($formData['main_image'], $this->uploadPath);

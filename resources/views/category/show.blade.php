@@ -3,6 +3,7 @@
     <div class="container">
         <?php
         $categories = $category->getImmediateDescendants();
+        $categories = $categories->sortBy('position');
         ?>
         <h1><span class="title-btn">{{$category->title}} </span></h1>
             <div class="tab-wrap">
@@ -13,7 +14,7 @@
                     <div class="wrapper">
                             <ul class="nav nav-tabs list" id="myTab">
                                 @foreach($categories as $category)
-                                    <li class="@if($categories->first() == $category) active @endif" ><a data-toggle="tab" href="#category-{{$category->id}}">{{$category->title}}</a></li>
+                                    <li class="{{activeCategoryTab($categories,$category)}}" ><a data-toggle="tab" href="#category-{{$category->id}}">{{$category->title}}</a></li>
                                 @endforeach
                             </ul>
                     </div>
@@ -21,7 +22,7 @@
 
                 <div class="tab-content">
                     @foreach($categories as $category)
-                        <div id="category-{{$category->id}}" class="tab-pane fade in @if($categories->first() == $category) active @endif">
+                        <div id="category-{{$category->id}}" class="tab-pane fade in {{activeCategoryTab($categories,$category)}}">
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="x_panel">
@@ -114,6 +115,22 @@
                         </div>
                     @endforeach
                 </div>
+            </div>
+            <br>
+            <div class="sort-category">
+                <h2>Sort</h2>
+                <table class="table table-bordered table-striped">
+                    <tbody class="sortable" data-entityname="category">
+                    {{-- */$x=0;/* --}}
+                    @foreach($categories as $item)
+                        {{-- */$x++;/* --}}
+                        <tr data-itemId="{{{ $item->id }}}">
+                            <td class="sortable-handle"><span class="glyphicon glyphicon-sort"></span></td>
+                            <td  class="sortable-handle">{{ $item->title }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
     </div>
 @endsection

@@ -64,13 +64,17 @@ class CategoryController extends Controller
                 'Category saved successfully.'
             );
         };
-        if ($this->category->save($request->all(), $parent_id)) {
+        if ($category = $this->category->save($request->all(), $parent_id)) {
             $parent = $this->category->find($parent_id);
             $root   = $parent->getRoot();
 
             $parent_id = $root->id;
+            $active_id = $category->id;
+            if ($category->getDepth() > 1) {
+                $active_id = $category->parent_id;
+            }
 
-            return redirect()->route('category.show', $parent_id)->with(
+            return redirect()->route('category.show', [$parent_id, 'active_tab' => $active_id])->with(
                 'success',
                 'Category saved successfully.'
             );
@@ -122,14 +126,26 @@ class CategoryController extends Controller
      */
     public function update($id, CategoryRequest $request)
     {
-        $category              = $this->category->find($id);
-        $formData              = $request->all();
+        $category = $this->category->find($id);
+        $formData = $request->all();
+        if ($category->isRoot()) {
+            $formData['parent_id'] = null;
+        }
         if ($this->category->update($id, $formData)) {
-            $root = $category->getRoot();
-
+            if ($category->isRoot()) {
+                return redirect()->route('category.index')->with(
+                    'success',
+                    'Category updated successfully.'
+                );;
+            }
+            $root      = $category->getRoot();
             $parent_id = $root->id;
+            $active_id = $id;
+            if ($category->getDepth() > 1) {
+                $active_id = $category->parent_id;
+            }
 
-            return redirect()->route('category.show', $parent_id)->with(
+            return redirect()->route('category.show', [$parent_id, 'active_tab' => $active_id])->with(
                 'success',
                 'Category successfully updated!'
             );

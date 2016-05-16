@@ -63,7 +63,11 @@
                                     </a>
                                 </span>
                                 <div class="list-group-level1 collapse in" aria-expanded="true">
-                                    @foreach($category->getimmediateDescendants() as $child)
+                                    <?php
+                                    $sectionCategories = $category->getimmediateDescendants();
+                                    $sectionCategories = $sectionCategories->sortBy('position');
+                                    ?>
+                                    @foreach($sectionCategories as $child)
                                         <?php
                                         $url = route('post.index')."?".request()->getQueryString();
                                         ?>
@@ -82,7 +86,11 @@
                         <div class="col-md-6 col-xs-12 sub-sidebar">
                             <div class="list-group row">
                                 <span class="list-group-item"><strong>{{$sub_category->title}}</strong><a class="pull pull-right" href="{{route('category.create')}}?section_id={{$sub_category->id}}" ><i class="glyphicon glyphicon-plus add-icon"></i>Add</a></span>
-                                @foreach($sub_category->getimmediateDescendants() as $child)
+                                <?php
+                                $subCategories = $sub_category->getImmediateDescendants();
+                                $subCategories = $subCategories->sortBy('position');
+                                ?>
+                                @foreach($subCategories as $child)
                                     <a href="{{removeParam($url,'sub_category1')}}&sub_category1={{$child->id}}" class="list-group-item @if(request()->has('sub_category1')&& request()->get('sub_category1') == $child->id) active @endif">{{$child->title}}</a>
                                 @endforeach
                             </div>

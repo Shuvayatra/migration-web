@@ -66,6 +66,11 @@ if (request()->has('rss_id')) {
     {!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
     {!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
 </div>
+@if(isset($post))
+    <a href="#" class="thumbnail">
+        <img height="100px" width="100px" src="{{$post->metadataWithPath->featured_image}}">
+    </a>
+@endif
 <div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $show_text_type) block @else none @endif"
      class="content-type type-text">
     @include('post.partials.type_text')

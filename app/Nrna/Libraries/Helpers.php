@@ -45,22 +45,36 @@ function post_type_icon($type)
 /**
  * Checks if multiple keys exist in an array
  *
- * @param array $array
+ * @param array        $array
  * @param array|string $keys
  *
  * @return bool
  */
-function array_keys_exist( array $array, $keys ) {
+function array_keys_exist(array $array, $keys)
+{
     $count = 0;
-    if ( ! is_array( $keys ) ) {
+    if (!is_array($keys)) {
         $keys = func_get_args();
-        array_shift( $keys );
+        array_shift($keys);
     }
-    foreach ( $keys as $key ) {
-        if ( array_key_exists( $key, $array ) ) {
+    foreach ($keys as $key) {
+        if (array_key_exists($key, $array)) {
             $count ++;
         }
     }
 
-    return count( $keys ) === $count;
+    return count($keys) === $count;
+}
+
+function activeCategoryTab($categories, $category)
+{
+    if (request()->has('active_tab') && request()->get('active_tab') == $category->id) {
+        return "active";
+    }
+
+    if (!request()->has('active_tab') && !request()->get('active_tab') == $category->id && $categories->first() == $category) {
+        return "active";
+    }
+
+    return "";
 }

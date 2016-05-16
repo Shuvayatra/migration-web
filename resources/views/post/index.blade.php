@@ -16,6 +16,7 @@
                 <tr>
                     <td class="icon-wrap"><i class="{{$item->metadata->type}} icons" aria-hidden="true"></i></td>
                     <td><a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
+                        <span class="label label-{{config('post.status_color.'.$item->metadata->status)}}">{{$item->metadata->status}}</span>
 
                     </td>
                     <td>{{ $item->created_at->format('Y-m-d') }}</td>
