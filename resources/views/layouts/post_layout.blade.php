@@ -19,44 +19,43 @@
 </head>
 
 <body>
-@include('layouts.partials.top_menu')
-@if ($errors->any())
-    <ul class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-@endif
-@if (\Session::has('success'))
-    <div class="alert alert-success fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-        {{Session::get('success')}}
-    </div>
-@endif
-@if (\Session::has('error'))
-    <div class="alert alert-danger fade in">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-        {{Session::get('error')}}
-    </div>
-@endif
-<div class="parent-wrapper">
-    <?php
-    use App\Nrna\Models\Category;
-    ?>
-    <?php
-    $post_column = 12;
-    ?>
-    @if(request()->has('category'))
-        <?php
-        $post_column = $post_column - 2;
-        ?>
-        <div class="sidebar-wrap col-md-4 col-xs-12 clearfix">
-            <div class="row">
-                <div class="col-md-6 col-xs-12 main-sidebar">
-                    <?php
-                    $category = Category::find(request()->get('category'));
-                    ?>
-                    <div id="main-menu" class="list-group row">
+        @include('layouts.partials.top_menu')
+            @if ($errors->any())
+                <ul class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
+            @if (\Session::has('success'))
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                    {{Session::get('success')}}
+                </div>
+            @endif
+            @if (\Session::has('error'))
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                    {{Session::get('error')}}
+                </div>
+            @endif
+            <div class="parent-wrapper">
+                <?php
+                use App\Nrna\Models\Category;
+                $post_column = 12;
+                ?>
+                    @if(request()->has('category'))
+                        <?php
+                        $post_column = $post_column-2;
+                        ?>
+                    <div class="sidebar-wrap col-md-4 col-xs-12 clearfix">
+                        <div class="row">
+                        <div class="col-md-6 col-xs-12 main-sidebar mCustomScrollbar">
+
+                            <?php
+                            $category = Category::find(request()->get('category'));
+                            ?>
+                            <div id="main-menu" class="list-group">
                                 <span class="list-group-item min-menu">
                                     <strong>{{$category->title}}</strong>
                                     <a class="pull pull-right"
@@ -64,6 +63,7 @@
                                                 class="glyphicon glyphicon-plus add-icon"></i>Add
                                     </a>
                                 </span>
+
                         <div class="list-group-level1 collapse in" aria-expanded="true">
                             <?php
                             $sectionCategories = $category->getimmediateDescendants();
@@ -87,8 +87,8 @@
                     $post_column = $post_column - 2;
                     $sub_category = Category::find(request()->get('sub_category'));
                     ?>
-                    <div class="col-md-6 col-xs-12 sub-sidebar">
-                        <div class="list-group row">
+                    <div class="col-md-6 col-xs-12 sub-sidebar mCustomScrollbar">
+                        <div class="list-group">
                             <span class="list-group-item"><strong>{{$sub_category->title}}</strong><a
                                         class="pull pull-right"
                                         href="{{route('category.create')}}?section_id={{$sub_category->id}}"><i
@@ -128,6 +128,13 @@
 @yield('script')
         <!-- Custom Theme Scripts -->
 @include('layouts.partials.notification')
-
+    <script>
+        (function($){
+            $(window).ready(function(){
+                $(".main-sidebar").mCustomScrollbar();
+                $(".sub-sidebar").mCustomScrollbar();
+            });
+        })(jQuery);
+    </script>
 </body>
 </html>

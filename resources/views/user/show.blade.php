@@ -3,7 +3,7 @@
 @section('content')
 
     <h1>User</h1>
-    <div class="table-responsive">
+    <div class="table-responsive table">
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <tr>

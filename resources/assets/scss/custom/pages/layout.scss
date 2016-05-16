@@ -70,6 +70,25 @@ body, html{
     z-index: 88;
 }
 
+.main-sidebar,.sub-sidebar{
+    max-height: 100%;
+    max-height: 100vh;
+    overflow: auto;
+    padding: 0;
+}
+
+.mCSB_inside>.mCSB_container {
+    margin-right: 10px;
+}
+
+.mCSB_scrollTools .mCSB_draggerRail{
+    background-color: #333;
+}
+
+.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
+    background: #fff;
+}
+
 .main-sidebar{
     min-height: 100% !important;
     min-height: 100vh !important;
@@ -138,6 +157,19 @@ a{
         }
     }
 }
+
+.list-group-item{
+    a{
+        width: 50px;
+        display: inline-block;
+    }
+
+    strong{
+        width: calc(100% - 50px);
+        display: inline-block;
+    }
+}
+
 .x_panel{
     margin-top: 20px;
 }
@@ -157,6 +189,18 @@ a{
             background: $dark-green;
         }
     }
+}
+
+div.table{
+    background: #fff;
+    border: 1px solid #a1a1a1;
+    padding: 25px 20px 40px 20px;
+}
+
+.x_content .table{
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
 .table-bordered>thead>tr>th {
