@@ -1,4 +1,4 @@
-<div class="form-group {{ $errors->has('audio') ? 'has-error' : ''}}">
+<div style="display: none" class="form-group {{ $errors->has('audio') ? 'has-error' : ''}}">
     {!! Form::label('content', 'Content: ', ['class' => 'control-label']) !!}
 
         {!! Form::textArea('metadata[data][content]',null, ['class' => 'form-control description tinymce']) !!}
