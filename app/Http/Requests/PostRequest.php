@@ -27,6 +27,8 @@ class PostRequest extends Request
             'metadata.status'                => 'required',
             'metadata.type'                  => 'required',
             'category_id'                    => 'required',
+            'metadata.featured_image'        => 'sometimes|max:1024',
+            'metadata.data.thumbnail'        => 'sometimes|max:1024',
             'metadata.data.file.*.file_name' => 'sometimes|mimes:pdf,doc,docx',
         ];
     }
@@ -34,9 +36,10 @@ class PostRequest extends Request
     public function messages()
     {
         return [
-            'metadata.title.required'  => 'Title field is required.',
-            'metadata.type.required'   => 'Post Type field is required.',
-            'metadata.status.required' => 'Post Status field is required.',
+            'metadata.title.required'     => 'Title field is required.',
+            'metadata.type.required'      => 'Post Type field is required.',
+            'metadata.status.required'    => 'Post Status field is required.',
+            'metadata.featured_image.max' => 'The Featured Image may not be greater than :max kilobytes.',
         ];
     }
 }

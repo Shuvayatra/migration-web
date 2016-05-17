@@ -6,7 +6,7 @@
 
 </div>
 
-<div class="form-group {{ $errors->has('metadata.data.file.0.file_name') ? 'has-error' : ''}}">
+<div style="display: none" class="form-group {{ $errors->has('metadata.data.file.0.file_name') ? 'has-error' : ''}}">
     {!! Form::label('file', 'File: ', ['class' => 'control-label']) !!}
 
         {!! Form::file('metadata[data][file][][file_name]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
@@ -23,7 +23,7 @@
 </div>
 
 
-<div class="form-group {{ $errors->has('metadata.data.file') ? 'has-error' : ''}}">
+<div style="display: none" class="form-group {{ $errors->has('metadata.data.file') ? 'has-error' : ''}}">
     {!! Form::label('title', 'File description: ', ['class' => 'control-label']) !!}
 
         {!! Form::text('metadata[data][file][0][description]', null, ['class' => 'form-control']) !!}

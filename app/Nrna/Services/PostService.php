@@ -128,11 +128,7 @@ class PostService
                 $formData = $this->getVideoData($formData);
             }
             if (isset($formData['metadata']['featured_image'])) {
-                $featuredInfo                           = $this->fileUpload->handle(
-                    $formData['metadata']['featured_image'],
-                    $this->uploadPath
-                );
-                $formData['metadata']['featured_image'] = $featuredInfo['filename'];
+                $formData['metadata']['featured_image'] = $this->upload($formData['metadata']['featured_image']);
             }
 
             $post = $this->post->save($formData);
@@ -225,11 +221,7 @@ class PostService
             }
             if (isset($formData['metadata']['featured_image'])) {
                 $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
-                $featuredInfo                           = $this->fileUpload->handle(
-                    $formData['metadata']['featured_image'],
-                    $this->uploadPath
-                );
-                $formData['metadata']['featured_image'] = $featuredInfo['filename'];
+                $formData['metadata']['featured_image'] = $this->upload($formData['metadata']['featured_image']);
             } else {
                 $formData['metadata']['featured_image'] = isset($post->metadata->featured_image) ? $post->metadata->featured_image : '';
             }
@@ -281,11 +273,8 @@ class PostService
      */
     public function upload(UploadedFile $file)
     {
-        $fileName    = $file->getClientOriginalName();
-        $file_type   = $file->getClientOriginalExtension();
-        $newFileName = sprintf("%s.%s", sha1($fileName . time()), $file_type);
-        if ($file->move($this->uploadPath, $newFileName)) {
-            return $newFileName;
+        if ($fileInfo = $this->fileUpload->handle($file, $this->uploadPath)) {
+            return $fileInfo['filename'];
         }
 
         return null;
