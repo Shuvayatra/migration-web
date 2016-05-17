@@ -114,7 +114,7 @@ class ApiService
                 $filter['deleted_at'] = \Carbon::createFromTimestamp($filter['last_updated'])->toDateTimeString();
             }
             $data['posts']    = $this->post->deleted($filter);
-            $data['sections'] = $this->section->deleted($filter);
+            $data['categories'] = $this->category->deleted($filter);
 
             return $data;
         } catch (\Exception $e) {

@@ -227,9 +227,23 @@ class CategoryService
         return $categoryArray;
     }
 
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function search($query)
     {
         return $this->category->search($query);
+    }
+
+    /**
+     * gets deleted categories
+     * @param $filter
+     * @return array
+     */
+    public function deleted($filter)
+    {
+        return $this->category->deleted($filter);
     }
 
 }

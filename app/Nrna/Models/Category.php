@@ -4,10 +4,12 @@ namespace App\Nrna\Models;
 
 use Baum\Node;
 use App\Nrna\Services\SortableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Node
 {
     use SortableTrait;
+    use SoftDeletes;
     /**
      * upload path for place
      */
@@ -89,5 +91,13 @@ class Category extends Node
     public function getSmallIconPathAttribute()
     {
         return sprintf('%s/%s', public_path(self::UPLOAD_PATH), $this->small_icon);
+    }
+
+    /**
+     * @return timestamp
+     */
+    public function getDeletedAtAttribute()
+    {
+        return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
     }
 }
