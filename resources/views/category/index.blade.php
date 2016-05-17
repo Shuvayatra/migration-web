@@ -4,16 +4,16 @@
     <h1>Category <a href="{{ route('category.create') }}" class="btn btn-primary pull-right btn-sm">Add Section</a></h1>
     <div class="x_panel">
         <table class="table table-bordered table-striped table-hover">
-            <tbody>
+            <tbody class="sortable" data-entityname="category">
             {{-- */$x=0;/* --}}
-            @foreach($categories as $item)
+            @foreach($categories->sortBy('position') as $item)
                 {{-- */$x++;/* --}}
-                <tr>
+                <tr data-itemId="{{{ $item->id }}}">
 
-                    <td>
+                    <td  class="sortable-handle">
                         <a href="{{ route('category.show', $item->id) }}">{{ $item->title }}</a>
                     </td>
-                    <td width="150px">
+                    <td width="250px">
                         <a href="{{ route('category.edit' , $item->id) }}" class="btn btn-primary btn-xs table-button">Edit</a>
                         {!! Form::open([
                         'method'=>'DELETE',
