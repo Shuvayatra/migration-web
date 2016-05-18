@@ -17,7 +17,7 @@
                     <td class="icon-wrap"><i class="{{$item->metadata->type}} icons" aria-hidden="true"></i></td>
                     <td><a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
                         <span class="label label-{{config('post.status_color.'.$item->metadata->status)}}">{{$item->metadata->status}}</span>
-                        <span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;" class="post-updated_on"> Created at: {{ $item->created_at->format('Y-m-d H:m') }}/Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>
+                        <span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;" class="post-updated_on"> Created at: {{ $item->created_at->format('Y-m-d H:m') }} / Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>
                     </td>
 
                     <td width="150px">
