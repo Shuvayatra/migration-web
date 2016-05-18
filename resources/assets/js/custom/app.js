@@ -4,7 +4,9 @@ $(document).ready(function () {
 
     var editor_config = {
         path_absolute : "/",
-        selector: "textarea",
+        mode : "textareas",
+        editor_selector : "tinymce",
+        editor_deselector : "mceNoEditor",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen",
