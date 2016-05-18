@@ -65,7 +65,7 @@ class PostRepository implements PostRepositoryInterface
         }
 
         $query->from($this->db->raw($from));
-        $query->orderBy('id', 'DESC');
+        $query->orderBy('updated_at', 'DESC');
         if (is_null($limit)) {
             return $query->get();
         }

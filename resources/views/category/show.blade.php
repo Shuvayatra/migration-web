@@ -127,6 +127,15 @@
                         <tr data-itemId="{{{ $item->id }}}">
                             <td class="sortable-handle"><span class="glyphicon glyphicon-sort"></span></td>
                             <td  class="sortable-handle">{{ $item->title }}</td>
+                            <td>
+                                {!! Form::open([
+                                'method'=>'DELETE',
+                                'route' => ['category.destroy', $item->id],
+                                'style' => 'display:inline'
+                                ]) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
+                                {!! Form::close() !!}
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
