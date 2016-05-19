@@ -83,6 +83,18 @@
                                 </ul>
                             </td>
                         </tr>
+                        <tr>
+                            <th>Views</th>
+                            <td>{{$post->view_count}}</td>
+                        </tr>
+                        <tr>
+                            <th>Likes</th>
+                            <td>{{$post->likes}}</td>
+                        </tr>
+                        <tr>
+                            <th>Shares</th>
+                            <td>{{$post->share_count}}</td>
+                        </tr>
                         </tbody>
                     </table>
 

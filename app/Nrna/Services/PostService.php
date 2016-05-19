@@ -579,7 +579,9 @@ class PostService
         $postId = $data['id'];
         if (isset($data['like']) && $data['like'] == self::LIKE) {
             $this->modifyLikes($postId, 'increment');
-        } else {
+        }
+
+        if (isset($data['like']) && $data['like'] != self::LIKE) {
             $this->modifyLikes($postId, 'decrement');
         }
 
