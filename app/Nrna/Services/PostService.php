@@ -304,8 +304,8 @@ class PostService
         $postArray['id']               = $post->id;
         $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
         $postArray['like_count']       = $post->likes;
-        $postArray['view_count']       = $post->share_count;
-        $postArray['share_count']      = $post->view_count;
+        $postArray['view_count']       = $post->view_count;
+        $postArray['share_count']      = $post->share_count;
         $postArray['tags']             = $post->tags->lists('title')->toArray();
         $postArray['section_category'] = $post->categories->lists('id')->toArray();
         $postArray['created_at']       = $post->created_at->timestamp;
