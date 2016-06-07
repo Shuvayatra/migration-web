@@ -19,10 +19,10 @@ class PushNotificationService
     {
         $this->pushNotification = $pushNotification;
     }
-    const GCM_URL = "https://android.googleapis.com/gcm/send";
+    const GCM_URL = "https://fcm.googleapis.com/fcm/send";
 
     /**
-     * GCM Notification Service
+     * Notification Service
      * @param $data
      * @return mixed
      */
