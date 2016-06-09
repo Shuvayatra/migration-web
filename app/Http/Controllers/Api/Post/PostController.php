@@ -15,7 +15,9 @@ class PostController extends ApiGuardController
 
     /**
      * PostController constructor.
+     *
      * @param PostService $postService
+     * @param Response    $response
      */
     public function __construct(PostService $postService, Response $response)
     {
@@ -23,6 +25,13 @@ class PostController extends ApiGuardController
         $this->postService = $postService;
     }
 
+    /**
+     * updates likes,views and share count
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
+     */
     public function sync(Request $request)
     {
         $response = $this->postService->sync($request->all());
@@ -31,6 +40,24 @@ class PostController extends ApiGuardController
         }
 
         return $this->response->errorInternalError();
+    }
 
+    /**
+     * detail for post
+     *
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory
+     *
+     */
+    public function show($id)
+    {
+        if ($post = $this->postService->find($id)) {
+            $data = $this->postService->buildPost($post, true);
+
+            return $this->response->withArray($data);
+        }
+
+        return $this->response->errorNotFound();
     }
 }

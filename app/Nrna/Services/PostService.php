@@ -297,17 +297,25 @@ class PostService
 
     /**
      * @param  Post $post
+     * @param bool  $withCategoryTitle
+     *
      * @return array
+     *
      */
-    public function buildPost(Post $post)
+    public function buildPost(Post $post,$withCategoryTitle=false)
     {
+        $post->load('categories');
         $postArray['id']               = $post->id;
         $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
         $postArray['like_count']       = $post->likes;
-        $postArray['view_count']       = $post->view_count;
-        $postArray['share_count']      = $post->share_count;
+        $postArray['view_count']       = (int)$post->view_count;
+        $postArray['share_count']      = (int)$post->share_count;
         $postArray['tags']             = $post->tags->lists('title')->toArray();
-        $postArray['section_category'] = $post->categories->lists('id')->toArray();
+        if($withCategoryTitle){
+            $postArray['categories'] = $post->categories->lists('title')->toArray();
+        }else{
+            $postArray['section_category'] = $post->categories->lists('id')->toArray();
+        }
         $postArray['created_at']       = $post->created_at->timestamp;
         $postArray['updated_at']       = $post->updated_at->timestamp;
 
