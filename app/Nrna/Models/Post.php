@@ -16,11 +16,11 @@ class Post extends Model
 
     Const AUDIO = 'audio';
     Const VIDEO = 'video';
-    Const TEXT  = 'text';
+    Const TEXT = 'text';
     Const PLACE = 'place';
 
-    Const DRAFT     = 'draft';
-    Const REVIEW    = 'review';
+    Const DRAFT = 'draft';
+    Const REVIEW = 'review';
     Const PUBLISHED = 'published';
 
     /**
@@ -112,6 +112,7 @@ class Post extends Model
      * Convert json metadata to array
      *
      * @param $metaData
+     *
      * @return array
      */
     public function getMetadataWithPathAttribute()
@@ -167,12 +168,13 @@ class Post extends Model
      * Convert json metadata to array
      *
      * @param $metaData
+     *
      * @return array
      */
     public function getApiMetadataAttribute()
     {
-        $metadata = json_decode(json_encode($this->metadataWithPath), true);
-
+        $metadata        = json_decode(json_encode($this->metadataWithPath), true);
+        $metadata['share_url'] = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
         if ($metadata['type'] == 'text') {
             $metadata['data'] = array_only($metadata['data'], ['content', 'file']);
         }
@@ -265,6 +267,7 @@ class Post extends Model
      * Scope a query to only include published post.
      *
      * @param $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePublished($query)
