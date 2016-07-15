@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Api\Post;
 
-use App\Nrna\Services\PostService;
+use App\Nrna\Services\Api\PostService;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use EllipseSynergie\ApiResponse\Laravel\Response;
 
 class PostController extends ApiGuardController
 {
@@ -12,6 +12,14 @@ class PostController extends ApiGuardController
      * @var
      */
     protected $postService;
+    protected $apiMethods = [
+        'index' => [
+            'keyAuthentication' => false,
+        ],
+        'detail' => [
+            'keyAuthentication' => false,
+        ],
+    ];
 
     /**
      * PostController constructor.
@@ -23,6 +31,39 @@ class PostController extends ApiGuardController
     {
         parent::__construct();
         $this->postService = $postService;
+    }
+
+    /**
+     * get all posts
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
+     */
+    public function index()
+    {
+        $response = $this->postService->all(request()->all());
+        if ($response) {
+            return $this->response->withArray($response);
+        }
+
+        return $this->response->errorInternalError();
+
+    }
+
+    /**
+     * post detail
+     *
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
+     */
+    public function detail($id)
+    {
+        $response = $this->postService->find($id);
+        if ($response) {
+            return $this->response->withArray($response);
+        }
+
+        return $this->response->errorInternalError();
+
     }
 
     /**

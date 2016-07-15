@@ -173,7 +173,7 @@ class Post extends Model
      */
     public function getApiMetadataAttribute()
     {
-        $metadata        = json_decode(json_encode($this->metadataWithPath), true);
+        $metadata              = json_decode(json_encode($this->metadataWithPath), true);
         $metadata['share_url'] = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
         if ($metadata['type'] == 'text') {
             $metadata['data'] = array_only($metadata['data'], ['content', 'file']);
@@ -273,6 +273,29 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->whereRaw("metadata->>'status'=?", [Self::PUBLISHED]);
+    }
+
+    public function getMainCategoryAttribute()
+    {
+        foreach ($this->categories as $category) {
+            if ($category->depth == '1' && $category->getRoot()->section == 'journey') {
+                return $category->title;
+            }
+            if ($category->getRoot()->section == 'journey') {
+                if (isset($category->getAncestors()[1])) {
+                    return $category->getAncestors()[1]->title;
+                }
+            }
+        }
+
+        if ($this->categories->count() > 0) {
+            $category = $this->categories->first();
+            if (isset($category->getAncestors()[1])) {
+                return $category->getAncestors()[1]->title;
+            }
+        }
+
+        return null;
     }
 
     public function getPostTypeIconAttribute()
