@@ -21,6 +21,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * constructor
+     *
      * @param Post            $post
      * @param DatabaseManager $db
      */
@@ -32,7 +33,9 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * Save Post
+     *
      * @param $data
+     *
      * @return Post
      */
     public function save($data)
@@ -43,11 +46,11 @@ class PostRepository implements PostRepositoryInterface
     /**
      * @param       $filters
      * @param  null $limit
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAll($filters, $limit = null)
     {
-
         $query = $this->post->select('*');
         if (!\Entrust::can('manage-all-content')) {
             $query->where('created_by', auth()->user()->id);
@@ -76,6 +79,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $id
+     *
      * @return Post
      */
     public function find($id)
@@ -85,6 +89,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $data
+     *
      * @return bool|int
      */
     public function update($data)
@@ -94,6 +99,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $id
+     *
      * @return int
      */
     public function delete($id)
@@ -103,6 +109,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $filter
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function latest($filter)
@@ -123,6 +130,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $filter
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function deleted($filter)
@@ -141,6 +149,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $postId
+     *
      * @return mixed
      */
     public function getLikes($postId)
@@ -150,6 +159,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $postId
+     *
      * @return mixed
      */
     public function incrementLikes($postId)
@@ -159,6 +169,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $postId
+     *
      * @return mixed
      */
     public function decrementLikes($postId)
@@ -168,6 +179,7 @@ class PostRepository implements PostRepositoryInterface
 
     /**
      * @param $ids
+     *
      * @return mixed
      */
     public function postExistsCheck($ids)
@@ -176,35 +188,46 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param $ids
+     * @param      $ids
+     *
+     * @param bool $paginate
+     *
      * @return mixed
      */
-    public function getByCategoryId($ids)
+    public function getByCategoryId($ids, $paginate = false)
     {
         $ids = (array) $ids;
 
-        return $this->post->whereHas(
+        $query = $this->post->whereHas(
             'categories',
             function ($q) use ($ids) {
                 $q->whereIn('id', $ids);
             }
-        )->orderBy('id', 'asc')->get();
+        )->orderBy('id', 'asc');
+
+        if ($paginate) {
+            return $query->paginate();
+        }
+
+        return $query->get();
     }
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function search($query)
     {
-        return $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('" . $query . "')")
-                          ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('" . $query . "')")
+        return $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('".$query."')")
+                          ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('".$query."')")
                           ->get();
     }
 
     /**
      * @param $postId
      * @param $count
+     *
      * @return mixed
      */
     public function increaseView($postId, $count)
@@ -219,6 +242,7 @@ class PostRepository implements PostRepositoryInterface
     /**
      * @param $postId
      * @param $count
+     *
      * @return mixed
      */
     public function increaseShare($postId, $count)
@@ -236,5 +260,29 @@ class PostRepository implements PostRepositoryInterface
     public function getAllPosts()
     {
         return $this->post->all();
+    }
+
+
+    /**
+     * @param       $filters
+     * @param  null $limit
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function all($filters, $limit = null)
+    {
+        $query = $this->post->select('*');
+        $from  = "posts ";
+
+        if (isset($filters['post_type']) && $filters['post_type'] != '') {
+            $post_type = $filters['post_type'];
+            $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
+
+        $query->from($this->db->raw($from));
+        $query->orderBy('updated_at', 'DESC');
+        $query->published();
+
+        return $query->paginate();
     }
 }

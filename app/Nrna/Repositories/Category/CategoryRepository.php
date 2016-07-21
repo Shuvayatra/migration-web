@@ -16,6 +16,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * constructor
+     *
      * @param Category $category
      */
     public function __construct(Category $category)
@@ -25,7 +26,9 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * Save Category
+     *
      * @param $data
+     *
      * @return Category
      */
     public function save($data)
@@ -37,6 +40,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @param       $section_id
      * @param array $filter
      * @param  null $limit
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAll($filter = [], $limit = null)
@@ -51,6 +55,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * @param $id
+     *
      * @return Category
      */
     public function find($id)
@@ -60,6 +65,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * @param $data
+     *
      * @return bool|int
      */
     public function update($data)
@@ -69,6 +75,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * @param $id
+     *
      * @return int
      */
     public function delete($id)
@@ -89,7 +96,9 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     /**
      * get latest category
+     *
      * @param $filter
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function latest($filter)
@@ -110,6 +119,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      * gets deleted categorys
      *
      * @param $filter
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function deleted($filter)
@@ -131,8 +141,20 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function search($query)
     {
-        return $this->category->whereRaw("to_tsvector(description) @@ plainto_tsquery('" . $query . "')")
-                              ->OrWhereRaw("to_tsvector(title) @@ plainto_tsquery('" . $query . "')")
+        return $this->category->whereRaw("to_tsvector(description) @@ plainto_tsquery('".$query."')")
+                              ->OrWhereRaw("to_tsvector(title) @@ plainto_tsquery('".$query."')")
                               ->get();
+    }
+
+    /**
+     * Category by section
+     *
+     * @param $section
+     *
+     * @return mixed|static
+     */
+    public function findBySection($section)
+    {
+        return $this->category->where('section', $section)->first();
     }
 }
