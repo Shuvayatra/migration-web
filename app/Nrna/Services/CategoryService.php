@@ -4,6 +4,7 @@ namespace App\Nrna\Services;
 use App\Nrna\Models\Category;
 use App\Nrna\Repositories\Category\CategoryRepositoryInterface;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
+use Illuminate\Contracts\Logging\Log;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Filesystem\Filesystem;
 use Mockery\Exception;
@@ -38,21 +39,28 @@ class CategoryService
      * @var DatabaseManager
      */
     private $db;
+    /**
+     * @var Log
+     */
+    private $logger;
 
     /**
      * constructor
+     *
      * @param CategoryRepositoryInterface $category
      * @param Storage                     $storage
      * @param Filesystem                  $file
      * @param FileUpload                  $fileUpload
      * @param DatabaseManager             $db
+     * @param Log                         $logger
      */
     public function __construct(
         CategoryRepositoryInterface $category,
         Storage $storage,
         Filesystem $file,
         FileUpload $fileUpload,
-        DatabaseManager $db
+        DatabaseManager $db,
+        Log $logger
     ) {
         $this->category   = $category;
         $this->storage    = $storage;
@@ -60,11 +68,13 @@ class CategoryService
         $this->file       = $file;
         $this->fileUpload = $fileUpload;
         $this->db         = $db;
+        $this->logger     = $logger;
     }
 
     /**
      * @param $formData
      * @param $parent_id
+     *
      * @return Category|bool
      */
     public function save($formData, $parent_id)
@@ -96,13 +106,12 @@ class CategoryService
 
             return false;
         }
-
-        return false;
     }
 
     /**
      * @param array $filter
      * @param  int  $limit
+     *
      * @return Collection
      */
     public function all($filter = [], $limit = 15)
@@ -112,6 +121,7 @@ class CategoryService
 
     /**
      * @param $id
+     *
      * @return Category
      */
     public function find($id)
@@ -121,13 +131,12 @@ class CategoryService
         } catch (\Exception $e) {
             return null;
         }
-
-        return null;
     }
 
     /**
      * @param $id
      * @param $formData
+     *
      * @return bool
      */
     public function update($id, $formData)
@@ -165,6 +174,7 @@ class CategoryService
 
     /**
      * @param $id
+     *
      * @return int
      */
     public function delete($id)
@@ -188,6 +198,7 @@ class CategoryService
 
     /**
      * @param $filter
+     *
      * @return array
      */
     public function latest($filter)
@@ -203,14 +214,15 @@ class CategoryService
 
     /**
      * @param Category $category
+     *
      * @return mixed
      */
     public function buildCategory(Category $category)
     {
-        $categoryArray['id']             = $category->id;
-        $categoryArray['title']          = $category->title;
-        $categoryArray['alias_name']     = $category->section;
-        $categoryArray['parent_alias']     = (is_null($category->parent_id))?null:$category->getRoot()->section;
+        $categoryArray['id']           = $category->id;
+        $categoryArray['title']        = $category->title;
+        $categoryArray['alias_name']   = $category->section;
+        $categoryArray['parent_alias'] = (is_null($category->parent_id)) ? null : $category->getRoot()->section;
 
         $categoryArray['description']    = $category->description;
         $categoryArray['featured_image'] = $category->main_image_link;
@@ -231,6 +243,7 @@ class CategoryService
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function search($query)
@@ -240,12 +253,64 @@ class CategoryService
 
     /**
      * gets deleted categories
+     *
      * @param $filter
+     *
      * @return array
      */
     public function deleted($filter)
     {
         return $this->category->deleted($filter);
+    }
+
+
+    /**
+     * write brief description
+     *
+     * @param $category
+     *
+     * @return array|bool
+     */
+    public function subCategory($category)
+    {
+        try {
+            $root          = $this->category->findBySection($category);
+            $categoryArray = [];
+            foreach ($root->getImmediateDescendants()->sortBy('position') as $category) {
+                $categoryArray[] = $this->buildCategory($category);
+            }
+
+            return $categoryArray;
+        } catch (\Exception $e) {
+
+            return false;
+        }
+    }
+
+    /**
+     * @param $id
+     *
+     * @return Category
+     */
+    public function detail($id)
+    {
+        try {
+            $root = $this->category->find($id);
+
+            $categoryArray = [];
+            foreach ($root->getImmediateDescendants()->sortBy('position') as $category) {
+                $categoryArray[] = $this->buildCategory($category);
+            }
+
+            $response                   = $this->buildCategory($root);
+            $response['sub_categories'] = $categoryArray;
+
+            return $response;
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+
+            return false;
+        }
     }
 
 }

@@ -13,7 +13,7 @@ class PostController extends ApiGuardController
      */
     protected $postService;
     protected $apiMethods = [
-        'index' => [
+        'index'  => [
             'keyAuthentication' => false,
         ],
         'detail' => [
@@ -45,7 +45,6 @@ class PostController extends ApiGuardController
         }
 
         return $this->response->errorInternalError();
-
     }
 
     /**

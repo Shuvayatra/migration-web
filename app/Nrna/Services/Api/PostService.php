@@ -3,6 +3,7 @@ namespace App\Nrna\Services\Api;
 
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepository;
+use App\Nrna\Services\CategoryService;
 use App\Nrna\Services\PostService as MainPostService;
 
 class PostService
@@ -19,6 +20,10 @@ class PostService
      * @var Post
      */
     private $postModel;
+    /**
+     * @var CategoryService
+     */
+    private $category;
 
     /**
      * MainPostService constructor.
@@ -26,16 +31,22 @@ class PostService
      * @param PostService|MainPostService $post
      * @param PostRepository              $postRepo
      * @param Post                        $postModel
+     * @param CategoryService             $category
      */
-    public function __construct(MainPostService $post, PostRepository $postRepo, Post $postModel)
-    {
+    public function __construct(
+        MainPostService $post,
+        PostRepository $postRepo,
+        Post $postModel,
+        CategoryService $category
+    ) {
         $this->post      = $post;
         $this->postRepo  = $postRepo;
         $this->postModel = $postModel;
+        $this->category  = $category;
     }
 
     /**
-     * write brief description
+     * list of post
      *
      * @param array $filter
      *
@@ -43,13 +54,24 @@ class PostService
      */
     public function all($filter = [])
     {
+        if (array_has($filter, "category")) {
+            $category     = $this->category->find($filter['category']);
+            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+
+            $posts = $this->postRepo->getByCategoryId($category_ids, true);
+        } else {
+            $posts = $this->postRepo->all($filter);
+        }
         $postArray = [];
-        $posts     = $this->postRepo->latest($filter);
         foreach ($posts as $post) {
             $postArray[] = $this->formatPost($post);
         }
+        $posts    = $posts->toArray();
+        $response = array_except($posts, 'data');
 
-        return $postArray;
+        $response['data'] = $postArray;
+
+        return $response;
     }
 
     /**
@@ -76,6 +98,13 @@ class PostService
         return $postArray;
     }
 
+    /**
+     * post detail
+     *
+     * @param $id
+     *
+     * @return array
+     */
     public function find($id)
     {
         $post = $this->postModel->find($id);

@@ -1,6 +1,8 @@
 <?php
 namespace App\Nrna\Repositories\Category;
 
+use App\Nrna\Models\Category;
+
 /**
  * Class CategoryRepositoryInterface
  * @package App\Nrna\Repository\Category
@@ -49,5 +51,7 @@ interface CategoryRepositoryInterface
      * @return Collection
      */
     public function latest($filter);
+
+    public function findBySection($category);
 
 }
