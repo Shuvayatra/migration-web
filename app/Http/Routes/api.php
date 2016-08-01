@@ -18,10 +18,12 @@ $router->group(
             $router->post('sync', 'Post\\PostController@sync');
             $router->get('post/{id}', 'Post\\PostController@show')->where('id', '[0-9]+');
             $router->get('posts', 'Post\\PostController@index');
+            $router->get('posts/{id}', 'Post\\PostController@detail')->where('id', '[0-9]+');
             $router->get('destinations', 'Category\\CategoryController@destination');
             $router->get('destinations/{id}/subcategory', 'Category\\CategoryController@journeySubcategory');
             $router->get('journey', 'Category\\CategoryController@journey');
             $router->get('journey/{id}/subcategory', 'Category\\CategoryController@journeySubcategory');
             $router->get('category/{id}', 'Category\\CategoryController@show')->where('id', '[0-9]+');
+            $router->get('category', 'Category\\CategoryController@index');
     }
 );

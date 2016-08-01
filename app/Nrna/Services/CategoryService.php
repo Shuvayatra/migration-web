@@ -169,7 +169,6 @@ class CategoryService
             return false;
         }
 
-        return;
     }
 
     /**
@@ -265,7 +264,7 @@ class CategoryService
 
 
     /**
-     * write brief description
+     * get subcategory by category id
      *
      * @param $category
      *
@@ -308,6 +307,31 @@ class CategoryService
             return $response;
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+     * get categories
+     *
+     * @param $category
+     *
+     * @return array|bool
+     */
+    public function category()
+    {
+        try {
+            $roots         = $this->category->getAll();
+            $categoryArray = [];
+            foreach ($roots as $root) {
+                $category['title']          = $root->title;
+                $category['sub_categories'] = $this->subCategory($root->section);
+                $categoryArray[]            = $category;
+            }
+
+            return $categoryArray;
+        } catch (\Exception $e) {
 
             return false;
         }

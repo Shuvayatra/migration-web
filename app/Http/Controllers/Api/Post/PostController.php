@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api\Post;
 
 use App\Nrna\Services\Api\PostService;
+use App\Nrna\Services\PostService as Post;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use Illuminate\Http\Request;
 use EllipseSynergie\ApiResponse\Laravel\Response;
@@ -20,17 +21,23 @@ class PostController extends ApiGuardController
             'keyAuthentication' => false,
         ],
     ];
+    /**
+     * @var Post
+     */
+    private $post;
 
     /**
      * PostController constructor.
      *
      * @param PostService $postService
      * @param Response    $response
+     * @param Post        $post
      */
-    public function __construct(PostService $postService, Response $response)
+    public function __construct(PostService $postService, Response $response, Post $post)
     {
         parent::__construct();
         $this->postService = $postService;
+        $this->post        = $post;
     }
 
     /**
@@ -48,24 +55,6 @@ class PostController extends ApiGuardController
     }
 
     /**
-     * post detail
-     *
-     * @param $id
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
-     */
-    public function detail($id)
-    {
-        $response = $this->postService->find($id);
-        if ($response) {
-            return $this->response->withArray($response);
-        }
-
-        return $this->response->errorInternalError();
-
-    }
-
-    /**
      * updates likes,views and share count
      *
      * @param Request $request
@@ -74,7 +63,7 @@ class PostController extends ApiGuardController
      */
     public function sync(Request $request)
     {
-        $response = $this->postService->sync($request->all());
+        $response = $this->post->sync($request->all());
         if ($response) {
             return $this->response->withArray($response);
         }
@@ -92,8 +81,27 @@ class PostController extends ApiGuardController
      */
     public function show($id)
     {
-        if ($post = $this->postService->find($id)) {
-            $data = $this->postService->buildPost($post, true);
+        if ($post = $this->post->find($id)) {
+            $data = $this->post->buildPost($post);
+
+            return $this->response->withArray($data);
+        }
+
+        return $this->response->errorNotFound();
+    }
+
+    /**
+     * detail for post
+     *
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory
+     *
+     */
+    public function detail($id)
+    {
+        if ($post = $this->post->find($id)) {
+            $data = $this->postService->formatPostWithSimilar($post);
 
             return $this->response->withArray($data);
         }
