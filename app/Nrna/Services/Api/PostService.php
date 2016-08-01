@@ -99,6 +99,25 @@ class PostService
     }
 
     /**
+     * post detail with similar post
+     *
+     * @param Post $post
+     *
+     * @return array
+     */
+    public function formatPostWithSimilar(Post $post)
+    {
+        $postArray        = $this->formatPost($post);
+        $similarPostArray = [];
+        foreach ($post->similar as $post) {
+            $similarPostArray[] = $this->formatPost($post);
+        }
+        $postArray['similar'] = $similarPostArray;
+
+        return $postArray;
+    }
+
+    /**
      * post detail
      *
      * @param $id

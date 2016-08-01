@@ -315,4 +315,24 @@ class Post extends Model
 
         return '';
     }
+
+    /**
+     * similar posts
+     * @return mixed
+     */
+    public function getSimilarAttribute()
+    {
+        $query = $this->whereHas(
+            'tags',
+            function ($q) {
+                $q->whereIn('id', $this->tags->lists('id')->toArray());
+            }
+        );
+        $query->where('id', '!=', $this->id);
+
+        $query->orderBy('updated_at', 'DESC');
+        $query->published();
+
+        return $query->get();
+    }
 }

@@ -285,4 +285,26 @@ class PostRepository implements PostRepositoryInterface
 
         return $query->paginate();
     }
+
+    /**
+     * get post by tag/tags
+     *
+     * @param $tags string|array
+     *
+     * @return mixed
+     */
+    public function getByTags($tags)
+    {
+        $query = $this->post->whereHas(
+            'tags',
+            function ($q) use ($tags) {
+                $q->whereIn('id', $tags);
+            }
+        );
+
+        $query->orderBy('updated_at', 'DESC');
+        $query->published();
+
+        return $query->get();
+    }
 }

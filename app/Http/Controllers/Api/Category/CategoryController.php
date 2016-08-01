@@ -28,6 +28,15 @@ class CategoryController extends Controller
         $this->response        = $response;
     }
 
+    public function index(){
+        $categories = $this->categoryService->category();
+        if ($categories) {
+            return $this->response->withArray($categories);
+        }
+
+        return $this->response->errorInternalError();
+    }
+
     /**
      * list of country
      * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
