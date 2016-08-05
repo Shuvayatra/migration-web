@@ -26,6 +26,7 @@ class Handler extends ExceptionHandler
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
      * @param  \Exception $e
+     *
      * @return void
      */
     public function report(Exception $e)
@@ -38,16 +39,18 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Exception               $e
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
     {
         $route = explode('/', $request->path());
         if (current($route) === 'api') {
-            $status_code = $e->getStatusCode();
+
+            $status_code = $this->getStatusCode($e);
             $error       = [
                 'http_code' => $status_code,
-                'message'   => $this->getErrorDescription($status_code)
+                'message'   => $this->getErrorDescription($status_code),
             ];
             $data        = ['error' => $error];
 
@@ -117,9 +120,26 @@ class Handler extends ExceptionHandler
             506 => 'Variant Also Negotiates',
             507 => 'Insufficient Storage',
             509 => 'Bandwidth Limit Exceeded',
-            510 => 'Not Extended'
+            510 => 'Not Extended',
         ];
 
         return isset($http_codes[$code]) ? $http_codes[$code] : 'error occurred!';
+    }
+
+    /**
+     * write brief description
+     *
+     * @param Exception $e
+     *
+     * @return mixed
+     */
+    public function getStatusCode(Exception $e)
+    {
+        $status_code = 500;
+        if (method_exists($e, 'getStatusCode')) {
+            $status_code = $e->getStatusCode();
+        }
+
+        return $status_code;
     }
 }

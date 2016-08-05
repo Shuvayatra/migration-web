@@ -59,6 +59,10 @@ class PostService
             $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
 
             $posts = $this->postRepo->getByCategoryId($category_ids, true);
+        } elseif (array_has($filter, "tag")) {
+            $posts = $this->postRepo->getByTags($filter['tag'], true);
+        } elseif (array_has($filter, "query")) {
+            $posts = $this->postRepo->search($filter['query'], true);
         } else {
             $posts = $this->postRepo->all($filter);
         }

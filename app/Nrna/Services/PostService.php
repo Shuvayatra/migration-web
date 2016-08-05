@@ -64,6 +64,7 @@ class PostService
 
     /**
      * constructor
+     *
      * @param PostRepositoryInterface $post
      * @param TagService              $tag
      * @param DatabaseManager         $database
@@ -103,6 +104,7 @@ class PostService
 
     /**
      * @param $formData
+     *
      * @return Post|bool
      */
     public function save($formData)
@@ -152,6 +154,7 @@ class PostService
     /**
      * @param      $filter
      * @param  int $limit
+     *
      * @return Collection
      */
     public function all($filter, $limit = 15)
@@ -177,6 +180,7 @@ class PostService
 
     /**
      * @param $id
+     *
      * @return Post
      */
     public function find($id)
@@ -193,6 +197,7 @@ class PostService
     /**
      * @param $id
      * @param $formData
+     *
      * @return bool
      */
     public function update($id, $formData)
@@ -220,7 +225,7 @@ class PostService
                 $formData = $this->getVideoData($formData);
             }
             if (isset($formData['metadata']['featured_image'])) {
-                $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
+                $this->file->delete($this->uploadPath.'/'.$post->metadata->featured_image);
                 $formData['metadata']['featured_image'] = $this->upload($formData['metadata']['featured_image']);
             } else {
                 $formData['metadata']['featured_image'] = isset($post->metadata->featured_image) ? $post->metadata->featured_image : '';
@@ -248,17 +253,18 @@ class PostService
 
     /**
      * @param $id
+     *
      * @return bool
      */
     public function delete($id)
     {
         $post = $this->find($id);
         if ($post->metadata->type = 'audio' && isset($post->metadata->data->audio)) {
-            $this->file->delete($this->uploadPath . '/' . $post->metadata->data->audio);
+            $this->file->delete($this->uploadPath.'/'.$post->metadata->data->audio);
         }
 
         if (isset($post->metadata->featured_image)) {
-            $this->file->delete($this->uploadPath . '/' . $post->metadata->featured_image);
+            $this->file->delete($this->uploadPath.'/'.$post->metadata->featured_image);
         }
         if ($this->post->delete($id)) {
             return true;
@@ -269,6 +275,7 @@ class PostService
 
     /**
      * @param  UploadedFile $file
+     *
      * @return string
      */
     public function upload(UploadedFile $file)
@@ -282,6 +289,7 @@ class PostService
 
     /**
      * @param $filter
+     *
      * @return array
      */
     public function latest($filter)
@@ -302,22 +310,22 @@ class PostService
      * @return array
      *
      */
-    public function buildPost(Post $post,$withCategoryTitle=false)
+    public function buildPost(Post $post, $withCategoryTitle = false)
     {
         $post->load('categories');
-        $postArray['id']               = $post->id;
-        $postArray                     = array_merge($postArray, (array) $post->apiMetadata);
-        $postArray['like_count']       = $post->likes;
-        $postArray['view_count']       = (int)$post->view_count;
-        $postArray['share_count']      = (int)$post->share_count;
-        $postArray['tags']             = $post->tags->lists('title')->toArray();
-        if($withCategoryTitle){
+        $postArray['id']          = $post->id;
+        $postArray                = array_merge($postArray, (array) $post->apiMetadata);
+        $postArray['like_count']  = $post->likes;
+        $postArray['view_count']  = (int) $post->view_count;
+        $postArray['share_count'] = (int) $post->share_count;
+        $postArray['tags']        = $post->tags->lists('title')->toArray();
+        if ($withCategoryTitle) {
             $postArray['categories'] = $post->categories->lists('title')->toArray();
-        }else{
+        } else {
             $postArray['section_category'] = $post->categories->lists('id')->toArray();
         }
-        $postArray['created_at']       = $post->created_at->timestamp;
-        $postArray['updated_at']       = $post->updated_at->timestamp;
+        $postArray['created_at'] = $post->created_at->timestamp;
+        $postArray['updated_at'] = $post->updated_at->timestamp;
 
         return $postArray;
     }
@@ -335,6 +343,7 @@ class PostService
 
     /**
      * @param $formData
+     *
      * @return mixed
      */
     protected function getVideoData($formData)
@@ -349,6 +358,7 @@ class PostService
 
     /**
      * @param $fileName
+     *
      * @return string
      */
     protected function getAudioFilePath($fileName)
@@ -358,6 +368,7 @@ class PostService
 
     /**
      * @param $questions
+     *
      * @return array
      */
     protected function getQuestionsData($questions)
@@ -374,6 +385,7 @@ class PostService
 
     /**
      * @param $questions
+     *
      * @return array
      */
     protected function getAnswerData($questions)
@@ -390,7 +402,9 @@ class PostService
 
     /**
      * gets deleted posts
+     *
      * @param $filter
+     *
      * @return array
      */
     public function deleted($filter)
@@ -402,6 +416,7 @@ class PostService
 
     /**
      * @param $formData
+     *
      * @return mixed
      */
     protected function formatTypeAudioCreate($formData)
@@ -431,6 +446,7 @@ class PostService
     /**
      * @param $post
      * @param $formData
+     *
      * @return mixed
      */
     protected function formatTypeAudioUpdate($post, $formData)
@@ -459,6 +475,7 @@ class PostService
 
     /**
      * @param $formData
+     *
      * @return mixed
      */
     protected function formatTypeTextCreate($formData)
@@ -489,6 +506,7 @@ class PostService
     /**
      * @param $post
      * @param $formData
+     *
      * @return mixed
      */
     protected function formatTypeTextUpdate($post, $formData)
@@ -514,6 +532,7 @@ class PostService
 
     /**
      * @param $likesData
+     *
      * @return array|bool
      */
     function sync($likesData)
@@ -536,11 +555,13 @@ class PostService
 
     /**
      * Increment or decrement likes
+     *
      * @param $id
      * @param $status
+     *
      * @return bool|null
      */
-    protected function modifyLikes($id, $status)
+    public function modifyLikes($id, $status)
     {
         if (!$this->post->find($id)) {
             return false;
@@ -558,7 +579,9 @@ class PostService
 
     /**
      * Check success and failure ids of post
+     *
      * @param $likesData
+     *
      * @return array
      */
     protected function postIdsExistsCheck($likesData)
@@ -572,6 +595,7 @@ class PostService
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function search($query)
@@ -594,7 +618,7 @@ class PostService
         }
 
         if (isset($data['share_count'])) {
-            $this->post->increaseShare($postId, $data['share_count']);
+            $this->increaseShareCount($postId, $data['share_count']);
         }
         if (isset($data['view_count'])) {
             $this->post->increaseView($postId, $data['view_count']);
@@ -607,5 +631,24 @@ class PostService
     public function getAllPosts()
     {
         return $this->post->getAllPosts();
+    }
+
+    /**
+     * increase share count
+     *
+     * @param $postId
+     * @param $count
+     *
+     * @return bool
+     */
+    public function increaseShareCount($postId, $count)
+    {
+        try {
+            $this->post->increaseShare($postId, $count);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
