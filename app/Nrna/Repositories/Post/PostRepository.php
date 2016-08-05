@@ -217,11 +217,15 @@ class PostRepository implements PostRepositoryInterface
      *
      * @return mixed
      */
-    public function search($query)
+    public function search($query, $paginate = false)
     {
-        return $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('".$query."')")
-                          ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('".$query."')")
-                          ->get();
+        $query = $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('".$query."')")
+                            ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('".$query."')");
+        if ($paginate) {
+            return $query->paginate();
+        }
+
+        return $query->get();
     }
 
     /**
@@ -289,21 +293,29 @@ class PostRepository implements PostRepositoryInterface
     /**
      * get post by tag/tags
      *
-     * @param $tags string|array
+     * @param      $tags string|array
+     *
+     * @param bool $paginate
      *
      * @return mixed
      */
-    public function getByTags($tags)
+    public function getByTags($tags, $paginate = false)
     {
         $query = $this->post->whereHas(
             'tags',
             function ($q) use ($tags) {
-                $q->whereIn('id', $tags);
+                if (is_string($tags)) {
+                    $q->where('title', $tags);
+                } else {
+                    $q->whereIn('id', $tags);
+                }
             }
         );
-
         $query->orderBy('updated_at', 'DESC');
         $query->published();
+        if ($paginate) {
+            return $query->paginate();
+        }
 
         return $query->get();
     }

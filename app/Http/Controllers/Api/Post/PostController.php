@@ -108,4 +108,55 @@ class PostController extends ApiGuardController
 
         return $this->response->errorNotFound();
     }
+
+    /**
+     * increase/decrease favorite count
+     *
+     * @param         $postId
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
+     */
+    public function favorite($postId, Request $request)
+    {
+        if (!$request->has('type')) {
+            return $this->response->errorWrongArgs();
+        }
+
+        if (!$this->post->find($postId)) {
+            return $this->response->errorNotFound();
+        }
+        if ($request->get('type') == "up") {
+            $this->post->modifyLikes($postId, 'increment');
+
+            return $this->response->withArray(['status' => 'success']);
+        }
+        if ($request->get('type') == "down") {
+            $this->post->modifyLikes($postId, 'decrement');
+
+            return $this->response->withArray(['status' => 'success']);
+        }
+
+        return $this->response->errorWrongArgs();
+    }
+
+    /**
+     * increase share count
+     *
+     * @param $postId
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
+     */
+    public function share($postId)
+    {
+        if (!$this->post->find($postId)) {
+            return $this->response->errorWrongArgs();
+        }
+        if ($post = $this->post->increaseShareCount($postId, 1)) {
+            return $this->response->withArray(['status' => 'success']);
+        }
+
+        return $this->response->errorInternalError();
+    }
 }
