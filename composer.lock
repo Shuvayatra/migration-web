@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8bee383b2198df28d0a49e738cf6c460",
-    "content-hash": "b76ddbdab183d7f98713b4d6840dc48c",
+    "hash": "345ee16ef7b7121788f9305b37c02c52",
+    "content-hash": "8f485649b178a22a7c3da2c9d3746ab7",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alaouy/Youtube/zipball/ca19e80f48ccb06416c40aafcb577751bcc17f95",
+                "url": "https://api.github.com/repos/alaouy/Youtube/zipball/672e110473938b2f08111e1d88f946390c9125f0",
                 "reference": "ca19e80f48ccb06416c40aafcb577751bcc17f95",
                 "shasum": ""
             },
@@ -1691,6 +1691,55 @@
                 "rss"
             ],
             "time": "2012-10-30 17:54:03"
+        },
+        {
+            "name": "suin/php-rss-writer",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/suin/php-rss-writer.git",
+                "reference": "938b067ba0f3a4d494edbdb1241d054e7d15b633"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/suin/php-rss-writer/zipball/938b067ba0f3a4d494edbdb1241d054e7d15b633",
+                "reference": "938b067ba0f3a4d494edbdb1241d054e7d15b633",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "eher/phpunit": ">=1.6",
+                "mockery/mockery": ">=0.7.2",
+                "suin/xoopsunit": ">=1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Suin\\RSSWriter": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hidehito Nozawa aka Suin",
+                    "email": "suinyeze@gmail.com"
+                }
+            ],
+            "description": "Yet another simple RSS writer library for PHP 5.4 or later.",
+            "homepage": "https://github.com/suin/php-rss-writer",
+            "keywords": [
+                "feed",
+                "generator",
+                "php",
+                "rss",
+                "writer"
+            ],
+            "time": "2016-07-21 14:05:32"
         },
         {
             "name": "swiftmailer/swiftmailer",

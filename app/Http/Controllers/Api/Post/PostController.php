@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\Post;
 
+use App\Nrna\Services\Api\PostRssService;
 use App\Nrna\Services\Api\PostService;
 use App\Nrna\Services\PostService as Post;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
@@ -42,11 +43,21 @@ class PostController extends ApiGuardController
 
     /**
      * get all posts
+     *
+     * @param PostRssService $rssService
+     *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed
      */
-    public function index()
+    public function index(PostRssService $rssService)
     {
         $response = $this->postService->all(request()->all());
+        if (request()->has('type') && request()->get('type') == "xml") {
+            $rss = $rssService->buildRssData($response);
+
+            return response($rss)
+                ->header('Content-type', 'application/rss+xml');
+        }
+
         if ($response) {
             return $this->response->withArray($response);
         }

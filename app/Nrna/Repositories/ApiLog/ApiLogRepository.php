@@ -32,7 +32,8 @@ class ApiLogRepository implements ApiLogRepositoryInterface
      */
     public function saveLog($logDetails)
     {
-//        dd($logDetails);
+        $logDetails['response'] = json_encode($logDetails['response']);
+
         return $this->apiLog->fill($logDetails)->save();
     }
 
