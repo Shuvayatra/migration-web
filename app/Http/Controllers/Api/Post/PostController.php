@@ -53,9 +53,8 @@ class PostController extends ApiGuardController
         $response = $this->postService->all(request()->all());
         if (request()->has('type') && request()->get('type') == "xml") {
             $rss = $rssService->buildRssData($response);
-
             return response($rss)
-                ->header('Content-type', 'application/rss+xml');
+                ->header('Content-type', 'application/rss+xml; charset=utf-8');
         }
 
         if ($response) {

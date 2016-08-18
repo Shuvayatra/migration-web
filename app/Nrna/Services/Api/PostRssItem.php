@@ -10,17 +10,21 @@ use Suin\RSSWriter\SimpleXMLElement;
  */
 class PostRssItem extends Item
 {
-    protected $extendFields=[];
+    protected $extendFields = [];
 
     public function extend(array $field)
     {
         array_push($this->extendFields, $field);
+
         return $this;
     }
 
     public function asXML()
     {
-        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><item></item>', LIBXML_NOERROR | LIBXML_ERR_NONE | LIBXML_ERR_FATAL);
+        $xml = new SimpleXMLElement(
+            '<?xml version="1.0" encoding="UTF-8"?><item></item>',
+            LIBXML_NOERROR | LIBXML_ERR_NONE | LIBXML_ERR_FATAL
+        );
 
         if ($this->preferCdata) {
             $xml->addCdataChild('title', $this->title);
@@ -74,8 +78,9 @@ class PostRssItem extends Item
             $xml->addChild('author', $this->author);
         }
 
-        foreach($this->extendFields as $extend){
-            $xml->addChild(array_keys($extend)[0], array_values($extend)[0]);
+        foreach ($this->extendFields as $extend) {
+            $key = array_keys($extend)[0];
+            $xml->addChild("xmlns:{$key}", array_values($extend)[0]);
         }
 
         return $xml;
