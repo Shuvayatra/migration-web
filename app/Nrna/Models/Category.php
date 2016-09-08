@@ -42,6 +42,7 @@ class Category extends Node
      */
     protected $fillable = [
         'title',
+        'title_en',
         'section',
         'description',
         'main_image',

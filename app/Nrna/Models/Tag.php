@@ -18,7 +18,7 @@ class Tag extends Model
      *
      * @var array
      */
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'title_en', 'description'];
 
     /**
      * The question that belong to the tag.
@@ -34,5 +34,28 @@ class Tag extends Model
     public function posts()
     {
         return $this->belongsToMany('App\Nrna\Models\Post');
+    }
+
+    /**
+     * sorted scope
+     *
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function scopeSorted($query)
+    {
+        $field = \Input::has('s');
+        $sort  = \Input::has('o');
+        if ($field && $sort) {
+            $columns = \Schema::getColumnListing($this->table);
+            if (in_array($field, $columns)) {
+                if ($sort === 'asc' || $sort === 'desc') {
+                    return $query->orderBy($field, $sort);
+                }
+            }
+        } else {
+            return $query->orderBy('created_at', 'desc');
+        }
     }
 }

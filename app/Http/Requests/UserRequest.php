@@ -27,11 +27,14 @@ class UserRequest extends Request
             'name'     => 'required',
             'email'    => 'required|email|unique:users',
             'role'     => 'required',
-            'password' => 'required'
+            'password' => 'required',
         ];
 
         if ($this->isMethod('PATCH')) {
-            $rules['email'] = 'required|email|unique:users,email,' . $this->get('id');
+            if (!\Entrust::hasRole('admin')) {
+                unset($rules['role']);
+            }
+            $rules['email'] = 'required|email|unique:users,email,'.$this->get('id');
             if (empty($this->get('password'))) {
                 unset($rules['password']);
             }

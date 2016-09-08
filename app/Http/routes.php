@@ -15,13 +15,20 @@ $router->get('/', 'Auth\AuthController@getLogin');
 $router->get('/auth/login', 'Auth\AuthController@getLogin');
 $router->post('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
 $router->get('auth/logout', 'Auth\AuthController@getLogout');
-$router->get('/home', ['as' => 'home', 'uses' => 'Post\PostController@index']);
 
-$router->resource('post', 'Post\\PostController');
-$router->get('search', ['as' => 'search', 'uses' => 'Search\\SearchController@index']);
-$router->post(
-    'journey/subcategory/delete',
-    ['as' => 'journey.subcategory.delete', 'uses' => 'Journey\JourneyController@deleteSubcategory']
+$router->group(
+    ['middleware' => 'auth'],
+    function () use ($router) {
+        $router->get('/home', ['as' => 'home', 'uses' => 'Post\PostController@index']);
+        $router->resource('post', 'Post\\PostController');
+        $router->get('search', ['as' => 'search', 'uses' => 'Search\\SearchController@index']);
+        $router->get('user/{id}/edit', ['as' => 'user.edit', 'uses' => 'User\\UserController@edit']);
+        $router->patch('user/{id}', ['as' => 'user.update', 'uses' => 'User\\UserController@update']);
+        $router->post(
+            'journey/subcategory/delete',
+            ['as' => 'journey.subcategory.delete', 'uses' => 'Journey\JourneyController@deleteSubcategory']
+        );
+    }
 );
 
 $router->group(
@@ -45,16 +52,19 @@ $router->group(
         $router->resource('place', 'Place\\PlaceController');
         $router->resource('countrytag', 'CountryTag\\CountryTagController');
         $router->resource('apilogs', 'Api\\ApiLog\\ApiLogController');
-        $router->resource('user', 'User\\UserController');
+        $router->resource('user', 'User\\UserController', ['except' => ['edit', 'update']]);
         $router->resource('section', 'Section\\SectionController');
         $router->resource('section.category', 'CategoryAttribute\\CategoryAttributeController');
         $router->resource('category', 'Category\\CategoryController');
         $router->resource('pushnotification', 'PushNotification\\PushNotificationController');
         $router->resource('rss', 'Rss\RssController');
-        $router->get('rssnewsfeeds/fetch', [
-            'as'   => 'rssnewsfeeds.fetch',
-            'uses' => 'RssNewsFeeds\RssNewsFeedsController@fetch'
-        ]);
+        $router->get(
+            'rssnewsfeeds/fetch',
+            [
+                'as'   => 'rssnewsfeeds.fetch',
+                'uses' => 'RssNewsFeeds\RssNewsFeedsController@fetch',
+            ]
+        );
         $router->resource('rssnewsfeeds', 'RssNewsFeeds\RssNewsFeedsController');
     }
 );

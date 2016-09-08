@@ -23,12 +23,13 @@ class UserController extends Controller
 
     /**
      * UserController constructor.
+     *
      * @param UserService $user
      */
     public function __construct(UserService $user)
     {
         $this->user = $user;
-        $this->middleware('role:admin');
+        $this->middleware('auth');
     }
 
     /**
@@ -58,6 +59,7 @@ class UserController extends Controller
 
     /**
      * @param UserRequest $request
+     *
      * @return RedirectResponse
      */
     public function store(UserRequest $request)
@@ -71,6 +73,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -84,10 +87,14 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function edit($id)
     {
+        if (!\Entrust::hasRole('admin')) {
+            $id = auth()->user()->id;
+        }
         $user  = User::findOrFail($id);
         $roles = $this->roles;
 
@@ -99,19 +106,24 @@ class UserController extends Controller
      *
      * @param  int        $id
      * @param UserRequest $request
+     *
      * @return RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update($id, UserRequest $request)
     {
+        if (!\Entrust::hasRole('admin')) {
+            $id = auth()->user()->id;
+        }
         $this->user->update($id, $request->all());
 
-        return redirect('user')->with('success', 'user successfully updated!');
+        return redirect()->back()->with('success', 'user successfully updated!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int $id
+     *
      * @return RedirectResponse
      */
     public function destroy($id)

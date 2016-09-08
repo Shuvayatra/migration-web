@@ -2,14 +2,17 @@
 
 @section('content')
      <a href="{{ route('post.create') }}?{{request()->getQueryString() }}" class="btn btn-primary pull-right btn-sm button">Add New Post</a>
-    {{--{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}--}}
-    {{--{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}--}}
+    {!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
+    {!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
 
-    {{--{!! Form::submit('filter', ['class' => 'btn btn-primary']) !!}--}}
-    {{--{!! Form::close() !!}--}}
+    {!! Form::submit('filter', ['class' => 'btn button btn-primary']) !!}
+    {!! Form::close() !!}
     <div class="table">
         <table class="table table-bordered table-striped table-hover">
             <tbody>
+            <?php
+            $posts->load('user');
+            ?>
             {{-- */$x=0;/* --}}
             @forelse($posts as $item)
                 {{-- */$x++;/* --}}
@@ -17,7 +20,9 @@
                     <td class="icon-wrap"><i class="{{$item->metadata->type}} icons" aria-hidden="true"></i></td>
                     <td><a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
                         <span class="label label-{{config('post.status_color.'.$item->metadata->status)}}">{{$item->metadata->status}}</span>
-                        <span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;" class="post-updated_on"> Created at: {{ $item->created_at->format('Y-m-d H:m') }} / Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>
+                        <span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
+                              class="post-updated_on">Created By: {{ $item->user->name }}
+                            Created at: {{ $item->created_at->format('Y-m-d H:m') }} / Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>
                     </td>
 
                     <td width="150px">

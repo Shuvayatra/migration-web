@@ -76,7 +76,7 @@
                 </a>
 
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:;"> Profile</a>
+                    <li><a href="{{route('user.edit', auth()->user()->id)}}"> Profile</a>
                     </li>
                     <li><a href="{{ url('/auth/logout') }}"><i class="glyphicon glyphicon-log-out pull-right"></i> Log
                         Out</a>

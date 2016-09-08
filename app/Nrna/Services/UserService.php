@@ -19,6 +19,7 @@ class UserService
 
     /**
      * UserService constructor.
+     *
      * @param UserRepositoryInterface $user
      * @param Role                    $role
      */
@@ -30,6 +31,7 @@ class UserService
 
     /**
      * @param $userData
+     *
      * @return mixed
      */
     public function save($userData)
@@ -47,6 +49,7 @@ class UserService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function find($id)
@@ -62,18 +65,18 @@ class UserService
         $user = $this->user->find($id);
 
         $user->update($userData);
-
-        $role = $this->role->where('name', $userData['role'])->first();
-
-        if ($role) {
+        if (\Entrust::hasRole('admin')) {
+            $role = $this->role->where('name', $userData['role'])->first();
             $user->roles()->detach();
             $user->attachRole($role);
         }
+
 
     }
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function destroy($id)

@@ -40,10 +40,10 @@ class TagRepository implements TagRepositoryInterface
     public function getAll($limit = null)
     {
         if (is_null($limit)) {
-            return $this->tag->all();
+            return $this->tag->sorted();
         }
 
-        return $this->tag->paginate();
+        return $this->tag->sorted()->paginate();
     }
 
     /**
