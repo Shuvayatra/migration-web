@@ -107,6 +107,19 @@ class Post extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function similar_posts()
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'similar_posts',
+            'post_id',
+            'similar_post_id'
+        );
+    }
+
 
     /**
      * Convert json metadata to array
@@ -314,6 +327,15 @@ class Post extends Model
         }
 
         return '';
+    }
+
+    /**
+     * title of post
+     * @return mixed
+     */
+    public function getTitleAttribute()
+    {
+        return $this->metadata->title;
     }
 
     /**

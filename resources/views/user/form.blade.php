@@ -19,6 +19,14 @@
         {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+<div class="form-group {{ $errors->has('role') ? 'has-error' : ''}}">
+    {!! Form::label('language', 'Language: ', ['class' => 'col-sm-3 control-label']) !!}
+    <div class="col-sm-6">
+        <?php $language = isset($user) ? $user->language : 'ne'; ?>
+        {!! Form::select('language', config('language'), $language, ['class' => 'form-control']) !!}
+        {!! $errors->first('language', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
 @role('admin')
 <div class="form-group {{ $errors->has('role') ? 'has-error' : ''}}">
     {!! Form::label('role', 'Role: ', ['class' => 'col-sm-3 control-label']) !!}

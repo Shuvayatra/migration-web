@@ -70,8 +70,8 @@ class PostMetadataUpdate extends Command
      */
     protected function applyRules(array $metadata)
     {
-        $this->removeStageFieldArray($metadata);
-        $this->addStatusFieldArray($metadata);
+        #$this->removeStageFieldArray($metadata);
+        #$this->addStatusFieldArray($metadata);
 
         return $metadata;
     }

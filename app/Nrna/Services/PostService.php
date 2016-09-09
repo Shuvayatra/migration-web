@@ -339,6 +339,9 @@ class PostService
         if (isset($formData['category_id'])) {
             $post->categories()->sync($formData['category_id']);
         }
+        if (isset($formData['similar_posts'])) {
+            $post->similar_posts()->sync($formData['similar_posts']);
+        }
     }
 
     /**

@@ -58,4 +58,26 @@ class Tag extends Model
             return $query->orderBy('created_at', 'desc');
         }
     }
+
+    /**
+     * change title as user setting
+     *
+     * @param $title
+     *
+     * @return mixed
+     */
+    public function getTitleAttribute($title)
+    {
+        if (in_array(\Request::route()->getName(), ['tag.edit'])) {
+            return $title;
+        }
+        if (\Auth::guest()) {
+            return $title;
+        }
+        if (\Auth::user()->language == 'en' && $this->title_en != '') {
+            return $this->title_en;
+        }
+
+        return $title;
+    }
 }

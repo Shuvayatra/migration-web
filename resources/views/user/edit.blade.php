@@ -4,7 +4,6 @@
 
     <h1>Edit User</h1>
     <hr/>
-
     {!! Form::model($user, [
         'method' => 'PATCH',
         'route' => ['user.update', $user->id],
