@@ -33,12 +33,5 @@
 		{!! Form::text('metadata[data][photo_credit]',null, ['class'=>'form-control' , 'id' => 'photo_credit'])!!}
 		{!! $errors->first('metadata.data.photo_credit', '<p class="help-block">:message</p>') !!}
 	</div>
-	@if(isset($post->metadata->data->thumbnail ))
-		@if(isset($post))
-			<a href="#" class="thumbnail">
-				<img height="100px" width="100px" src="{{$post->metadataWithPath->data->thumbnail}}">
-			</a>
-		@endif
-	@endif
 </div>
 <hr>

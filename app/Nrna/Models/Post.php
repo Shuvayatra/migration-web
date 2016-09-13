@@ -189,7 +189,8 @@ class Post extends Model
         $metadata              = json_decode(json_encode($this->metadataWithPath), true);
         $metadata['share_url'] = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
         if ($metadata['type'] == 'text') {
-            $metadata['data'] = array_only($metadata['data'], ['content', 'file']);
+            $metadata['photo_credit'] = isset($metadata['photo_credit']) ? $metadata['photo_credit'] : '';
+            $metadata['data']         = array_only($metadata['data'], ['content', 'file']);
         }
         if ($metadata['type'] == 'video') {
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
@@ -197,7 +198,7 @@ class Post extends Model
 
         if ($metadata['type'] == 'audio') {
             $metadata['data']['media_url'] = $metadata['data']['audio'];
-
+            $metadata['photo_credit']      = isset($metadata['data']['photo_credit']) ? $metadata['data']['photo_credit'] : '';
             if (isset($metadata['data']['audio_url']) && $metadata['data']['audio_url'] != "") {
                 $metadata['data']['media_url'] = $this->metadata->data->audio_url;
             }
@@ -357,4 +358,25 @@ class Post extends Model
 
         return $query->get();
     }
+
+    /**
+     * Scope a query to only include published post.
+     *
+     * @param $query
+     *
+     * @param $ids
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCategory($query, $ids)
+    {
+        $ids = (array)$ids;
+        return $query->whereHas(
+            'categories',
+            function ($q) use ($ids) {
+                $q->whereIn('id', $ids);
+            }
+        )->orderBy('id', 'asc');
+    }
+
 }

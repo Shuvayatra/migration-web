@@ -157,24 +157,8 @@ class PostService
      *
      * @return Collection
      */
-    public function all($filter, $limit = 15)
+    public function all($filter)
     {
-        if (array_has($filter, "sub_category1")) {
-            return $this->post->getByCategoryId($filter['sub_category1']);
-        }
-        if (array_has($filter, "sub_category")) {
-            $category     = $this->category->find($filter['sub_category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
-
-            return $this->post->getByCategoryId($category_ids);
-        }
-        if (array_has($filter, "category")) {
-            $category     = $this->category->find($filter['category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
-
-            return $this->post->getByCategoryId($category_ids);
-        }
-
         return $this->post->getAll($filter);
     }
 
@@ -424,10 +408,11 @@ class PostService
      */
     protected function formatTypeAudioCreate($formData)
     {
-        $data['audio']     = '';
-        $data['duration']  = '';
-        $data['audio_url'] = '';
-        $data['thumbnail'] = '';
+        $data['audio']        = '';
+        $data['duration']     = '';
+        $data['audio_url']    = '';
+        $data['thumbnail']    = '';
+        $data['photo_credit'] = $formData['metadata']['data']['photo_credit'];
         if (!is_null($formData['metadata']['data']['audio_url'])) {
             $data['audio']     = $formData['metadata']['data']['audio_url'];
             $data['audio_url'] = $formData['metadata']['data']['audio_url'];

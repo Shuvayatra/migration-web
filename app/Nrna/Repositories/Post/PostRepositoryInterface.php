@@ -17,6 +17,7 @@ interface PostRepositoryInterface
     public function save($data);
 
     /**
+     * @param $filter
      * @param $limit
      *
      * @return Collection

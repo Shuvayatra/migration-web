@@ -1,6 +1,7 @@
 <?php
 namespace App\Nrna\Repositories\Post;
 
+use App\Nrna\Models\Category;
 use App\Nrna\Models\Post;
 use Illuminate\Database\DatabaseManager;
 
@@ -56,15 +57,31 @@ class PostRepository implements PostRepositoryInterface
             $query->where('created_by', auth()->user()->id);
         }
         $from = "posts ";
-        if (isset($filters['stage']) && $filters['stage'] != '') {
-            $stages = $filters['stage'];
-            $from .= ",json_array_elements(posts.metadata->'stage') stage";
-            $query->whereRaw("trim(both '\"' from stage::text) = ?", [$stages]);
+        if (isset($filters['status']) && $filters['status'] != '') {
+            $status = $filters['status'];
+            $query->whereRaw("posts.metadata->>'status' = ?", [$status]);
         }
 
         if (isset($filters['post_type']) && $filters['post_type'] != '') {
             $post_type = $filters['post_type'];
             $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
+
+        if (array_has($filters, "sub_category1")) {
+            $ids = $filters['sub_category1'];
+            $query->category($ids);
+        }
+        if (array_has($filters, "sub_category")) {
+            $category     = Category::find($filters['sub_category']);
+            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+
+            $query->category($category_ids);
+        }
+        if (array_has($filters, "category")) {
+            $category     = Category::find($filters['category']);
+            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+
+            $query->category($category_ids);
         }
 
         $query->from($this->db->raw($from));

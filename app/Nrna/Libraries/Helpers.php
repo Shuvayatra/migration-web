@@ -7,16 +7,12 @@ function _t($object, $key)
 
 function removeParam($url, $param)
 {
-    if (is_array($param)) {
-        foreach ($param as $par) {
-            $url = preg_replace('/(&|\?)' . preg_quote($par) . '=[^&]*$/', '', $url);
-            $url = preg_replace('/(&|\?)' . preg_quote($par) . '=[^&]*&/', '$1', $url);
-        }
-
-        return $url;
+    $param = (array) $param;
+    array_push($param, "post_type", "status");
+    foreach ($param as $par) {
+        $url = preg_replace('/(&|\?)'.preg_quote($par).'=[^&]*$/', '', $url);
+        $url = preg_replace('/(&|\?)'.preg_quote($par).'=[^&]*&/', '$1', $url);
     }
-    $url = preg_replace('/(&|\?)' . preg_quote($param) . '=[^&]*$/', '', $url);
-    $url = preg_replace('/(&|\?)' . preg_quote($param) . '=[^&]*&/', '$1', $url);
 
     return $url;
 }
@@ -59,7 +55,7 @@ function array_keys_exist(array $array, $keys)
     }
     foreach ($keys as $key) {
         if (array_key_exists($key, $array)) {
-            $count ++;
+            $count++;
         }
     }
 
@@ -72,7 +68,9 @@ function activeCategoryTab($categories, $category)
         return "active";
     }
 
-    if (!request()->has('active_tab') && !request()->get('active_tab') == $category->id && $categories->first() == $category) {
+    if (!request()->has('active_tab') && !request()->get('active_tab') == $category->id && $categories->first(
+        ) == $category
+    ) {
         return "active";
     }
 
