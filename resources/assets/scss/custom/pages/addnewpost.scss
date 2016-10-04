@@ -1,5 +1,9 @@
 $light-gray:#fcfcfc;
 $gray:#e5e5e5;
+.panel_content {
+    z-index: 90;
+}
+
 .x_content .form-horizontal{
     .form-group {
         margin-right: 0px;

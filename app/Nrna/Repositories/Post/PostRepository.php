@@ -61,6 +61,12 @@ class PostRepository implements PostRepositoryInterface
             $status = $filters['status'];
             $query->whereRaw("posts.metadata->>'status' = ?", [$status]);
         }
+        if (isset($filters['date_from']) && $filters['date_from'] != '') {
+            $query->whereRaw("date(created_at) >= ?", [str_replace('/', '-', $filters['date_from'])]);
+        }
+        if (isset($filters['date_to']) && $filters['date_to'] != '') {
+            $query->whereRaw("date(created_at) <= ?", [str_replace('/', '-', $filters['date_to'])]);
+        }
 
         if (isset($filters['post_type']) && $filters['post_type'] != '') {
             $post_type = $filters['post_type'];
@@ -89,7 +95,6 @@ class PostRepository implements PostRepositoryInterface
         if (is_null($limit)) {
             return $query->get();
         }
-
 
         return $query->paginate();
     }

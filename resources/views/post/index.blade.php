@@ -1,22 +1,38 @@
 @extends('layouts.post_layout')
 
 @section('content')
+	<?php
+	$tagService = app('App\Nrna\Services\TagService');
+	$tags = $tagService->getList();
+	?>
 	<a href="{{ route('post.create') }}?{{request()->getQueryString() }}"
 	   class="btn btn-primary pull-right btn-sm button">Add New Post</a>
-	{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
-	{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
-	{!! Form::select('status' ,[''=>'Select Status']+config('post.status'),Input::get('status'), ['class' =>'form-control']) !!}
-	@if(Input::has('category'))
-		{!! Form::hidden('category', Input::get('category')) !!}
-	@endif
-	@if(Input::has('sub_category'))
-		{!! Form::hidden('sub_category', Input::get('sub_category')) !!}
-	@endif
-	@if(Input::has('sub_category1'))
-		{!! Form::hidden('sub_category1', Input::get('sub_category1')) !!}
-	@endif
-	{!! Form::submit('filter', ['class' => 'btn button btn-primary']) !!}
-	{!! Form::close() !!}
+	<div class="post-filter-wrap">
+		{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
+		{!! Form::label('Start date:', 'Start date ', ['class' => 'control-label']) !!}
+		{!! Form::text('date_from',Input::get('date_from'), ['class' =>'form-control datepicker','placeholder'=>'From']) !!}
+		{!! Form::label('End date', 'End date ', ['class' => 'control-label']) !!}
+		{!! Form::text('date_to',Input::get('date_to'), ['class' =>'form-control datepicker','placeholder'=>'To']) !!}
+		{!! Form::label('Post type',null, ['class' => 'control-label']) !!}
+		{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
+		{!! Form::label('Post status', 'Post status ', ['class' => 'control-label']) !!}
+		{!! Form::select('status' ,[''=>'Select Status']+config('post.status'),Input::get('status'), ['class' =>'form-control']) !!}
+		{!! Form::label('tags', 'Tags ', ['class' => 'control-label']) !!}
+		{!! Form::select('tags[]',$tags,Input::get('tags'), ['class' =>'form-control','multiple'=>true,]) !!}
+		@if(Input::has('category'))
+			{!! Form::hidden('category', Input::get('category')) !!}
+		@endif
+		@if(Input::has('sub_category'))
+			{!! Form::hidden('sub_category', Input::get('sub_category')) !!}
+		@endif
+		@if(Input::has('sub_category1'))
+			{!! Form::hidden('sub_category1', Input::get('sub_category1')) !!}
+		@endif
+		<br>
+		{!! Form::submit('filter', ['class' => 'btn button btn-primary']) !!}
+		{!! Form::close() !!}
+
+	</div>
 	<div class="table">
 		<table class="table table-bordered table-striped table-hover">
 			<tbody>
@@ -64,3 +80,18 @@
 	</div>
 
 @endsection
+@section('script')
+	<script>
+		$(function () {
+			$(".datepicker").datepicker(
+					{
+						dateFormat: 'yy/mm/dd'
+					}
+			);
+		});
+	</script>
+@endsection
+@section('css')
+	<link href="{{asset("css/jquery-ui.css")}}" rel="stylesheet">
+@endsection
+

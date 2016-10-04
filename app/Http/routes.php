@@ -15,7 +15,6 @@ $router->get('/', 'Auth\AuthController@getLogin');
 $router->get('/auth/login', 'Auth\AuthController@getLogin');
 $router->post('/login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
 $router->get('auth/logout', 'Auth\AuthController@getLogout');
-
 $router->group(
     ['middleware' => 'auth'],
     function () use ($router) {
@@ -44,7 +43,7 @@ $router->group(
 
         $router->get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-        //ajax
+//ajax
         $router->get(
             'ajax/question/answers',
             ['as' => 'ajax.question.answers', 'uses' => 'Question\QuestionController@questionAnswers']

@@ -18,7 +18,8 @@
         "baum/baum": "~1.1",
         "willvincent/feeds": "^1.0",
         "unisharp/laravel-filemanager": "^1.5",
-        "suin/php-rss-writer": "^1.5"
+        "suin/php-rss-writer": "^1.5",
+        "embed/embed": "^2.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

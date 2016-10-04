@@ -62,7 +62,7 @@ $(document).ready(function () {
         if ( dis.text().length == 0 || dis.val() == "  "  ) {
             dis.hide();
         }
-    })
+    });
 
 
     var hidWidth;

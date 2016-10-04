@@ -101,4 +101,27 @@ class Category extends Node
     {
         return \Carbon::parse($this->attributes['deleted_at'])->timestamp;
     }
+
+    /**
+     * change title as user setting
+     *
+     * @param $title
+     *
+     * @return mixed
+     */
+    public function getTitleAttribute($title)
+    {
+        if (in_array(\Request::route()->getName(), ['category.edit'])) {
+            return $title;
+        }
+        if (\Auth::guest()) {
+            return $title;
+        }
+
+        if (\Auth::user()->language == 'en' && $this->title_en != '') {
+            return $this->title_en;
+        }
+
+        return $title;
+    }
 }

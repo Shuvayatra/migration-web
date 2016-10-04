@@ -80,4 +80,4 @@
         })
     </script>
 
-@endsection
+@append

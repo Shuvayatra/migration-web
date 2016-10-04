@@ -4,6 +4,11 @@ use App\Nrna\Repositories\Rss\RssRepositoryInterface;
 
 class RssService
 {
+    protected $adapterData = [
+        'title'       => 'printText',
+        'description' => 'printText',
+        'image'       => 'printImage',
+    ];
     /**
      * @var RssRepositoryInterface
      */
@@ -15,6 +20,7 @@ class RssService
 
     /**
      * RssService constructor.
+     *
      * @param RssRepositoryInterface $rss
      * @param RssNewsFeedsService    $rssNewsFeedsService
      */
@@ -27,6 +33,7 @@ class RssService
 
     /**
      * @param $all
+     *
      * @return mixed
      */
     public function save($all)
@@ -39,6 +46,7 @@ class RssService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function find($id)
@@ -52,5 +60,30 @@ class RssService
     public function getRssList()
     {
         return $this->rss->getRssList();
+    }
+
+    /**
+     * scrape data from url
+     *
+     * @param $url
+     *
+     * @return array|null
+     */
+    public function fetchData($url)
+    {
+        try {
+            $info = \Embed\Embed::create($url);
+            $data = [];
+            foreach ($this->adapterData as $name => $fn) {
+                $data[$name] = $info->$name;
+            }
+
+            return $data;
+
+        } catch (\Exception $exception) {
+            \Log::error('error getting data form url.'.$url, $exception);
+
+            return null;
+        }
     }
 }

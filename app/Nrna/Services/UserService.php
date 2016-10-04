@@ -59,8 +59,10 @@ class UserService
 
     public function update($id, $userData)
     {
-        if (isset($userData['password']) && !empty($userData['password'])) {
+        if (isset($userData['password']) && !empty(trim($userData['password']))) {
             $userData['password'] = bcrypt($userData['password']);
+        } else {
+            unset($userData['password']);
         }
         $user = $this->user->find($id);
 
@@ -70,8 +72,6 @@ class UserService
             $user->roles()->detach();
             $user->attachRole($role);
         }
-
-
     }
 
     /**

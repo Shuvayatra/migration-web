@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "345ee16ef7b7121788f9305b37c02c52",
-    "content-hash": "8f485649b178a22a7c3da2c9d3746ab7",
+    "hash": "02b226c6212c0a3e56f9b2d87ccccd4e",
+    "content-hash": "9ef75659439482baf86ebdd4a5b413f7",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -524,6 +524,60 @@
                 "json"
             ],
             "time": "2015-03-19 17:10:02"
+        },
+        {
+            "name": "embed/embed",
+            "version": "v2.7.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oscarotero/Embed.git",
+                "reference": "71735820539f4b96ed8946acb681101064a701d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oscarotero/Embed/zipball/71735820539f4b96ed8946acb681101064a701d6",
+                "reference": "71735820539f4b96ed8946acb681101064a701d6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "5.x",
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle@5.x": "To use Guzzle5 request resolver"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Embed\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oscar Otero",
+                    "email": "oom@oscarotero.com",
+                    "homepage": "http://oscarotero.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP library to retrieve page info using oembed, opengraph, etc",
+            "homepage": "https://github.com/oscarotero/Embed",
+            "keywords": [
+                "embed",
+                "embedly",
+                "oembed",
+                "opengraph",
+                "twitter cards"
+            ],
+            "time": "2016-09-01 15:31:22"
         },
         {
             "name": "guzzlehttp/psr7",

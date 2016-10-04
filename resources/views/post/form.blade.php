@@ -1,15 +1,22 @@
 <ul class="nav nav-tabs">
-	<?php $post_type_active = true;
+	<?php $post_type_active = "text";
 	if (isset($post)) {
-		$post_type_active = false;
+		if (old('metadata.type')) {
+			$post_type_active = old('metadata.type');
+		} else {
+			$post_type_active = $post->metadata->type;
+		}
+	}
+	if (request()->has('post_type_value')) {
+		$post_type_active = request()->get('post_type_value');
 	}
 	?>
 	@foreach(config('post_type') as $key => $post_type)
-		<li class="icon-wrap @if(isset($post) && $post->metadata->type === $key || old('metadata.type') ==$key) active @endif @if($post_type_active) active @endif ">
+		<li class="icon-wrap
+		@if($post_type_active==$key) active @endif ">
 			<a class="post_type {{$key}}" data-post-type="{{$key}}" href="javascript:;">
 				{{$post_type}}</a>
 		</li>
-		<?php $post_type_active = false;?>
 	@endforeach
 </ul>
 
@@ -20,7 +27,7 @@ $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
 $categories = \App\Nrna\Models\Category::where('depth', '!=', '0')->lists('title', 'id')->toArray();
 $postService = app('App\Nrna\Services\PostService');
-$posts = $postService->getAllPosts()->lists('title','id')->toArray();
+$posts = $postService->getAllPosts()->lists('title', 'id')->toArray();
 $show_text_type = true;
 if (isset($post)) {
 	$show_text_type = false;
@@ -34,20 +41,35 @@ if (request()->has('sub_category')) {
 }
 if (isset($post)) {
 	$post_categories = $post->categories->lists('id')->toArray();
+	$post_image      = isset($post->metadata->data->news_featured_image_link)?$post->metadata->data->news_featured_image_link:'';
 }
 $post_title = null;
 $post_desc = null;
 $post_source = null;
-if (request()->has('rss_id')) {
-	$feed = \App\Nrna\Models\RssNewsFeeds::find(request()->get('rss_id'));
-	if (!is_null($feed)) {
-		$post_title  = $feed->title;
-		$post_desc   = $feed->description;
-		$post_source = $feed->rss->title;
+if (request()->has('url')) {
+	if (isset($news) && !is_null($news)) {
+		$post_title = $news['title'];
+		$post_desc  = $news['description'];
+		$post_image = $news['image'];
 	}
 }
+
 ?>
-{!! Form::hidden('metadata[type]', ($show_text_type)?'text':null, ['class' => 'post_type_value']) !!}
+<div style="display:@if(isset($post) && $post->metadata->type === 'news' || old('metadata.type') =="news" || $post_type_active=="news") block @else none @endif"
+	 class="content-type type-news form-group {{ $errors->has('metadata.data.url') ? 'has-error' : ''}}">
+	{!! Form::label('url', 'Url: ', ['class' => 'control-label']) !!}
+	{!! Form::text('metadata[data][url]',request()->get('url'), ['class'=>'form-control feed-url'])!!}
+	{!! $errors->first('metadata.data.url', '<p class="help-block">:message</p>') !!}
+	{!! Form::button('Fetch news', ['class' => 'btn fetch-url-content-btn form-control']) !!}
+	@if(isset($post_image))
+		{!! Form::hidden('metadata[data][news_featured_image_link]',$post_image)!!}
+		<a href="#" class="thumbnail">
+			<img height="" width="" src="{{$post_image}}">
+		</a>
+	@endif
+</div>
+
+{!! Form::hidden('metadata[type]', $post_type_active, ['class' => 'post_type_value']) !!}
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
 	{!! Form::label('title', 'Title:* ', ['class' => 'control-label']) !!}
 
@@ -63,22 +85,23 @@ if (request()->has('rss_id')) {
 
 </div>
 
-<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $show_text_type) block @else none @endif"
+<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $post_type_active=="text") block @else none @endif"
 	 class="content-type type-text form-group {{ $errors->has('metadata.featured_image') ? 'has-error' : ''}}">
 	{!! Form::label('file', 'Featured Image: ', ['class' => 'control-label']) !!}
 	{!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
 	{!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
 	@if(isset($post))
 		<a href="#" class="thumbnail">
-			<img height="100px" width="100px" src="{{$post->metadataWithPath->featured_image}}">
+			<img src="{{$post->metadataWithPath->featured_image}}">
 		</a>
 	@endif
+
 	{!! Form::label('file', 'Photo Credit: ', ['class' => 'control-label']) !!}
 	{!! Form::text('metadata[photo_credit]',null, ['class'=>'form-control' , 'id' => 'photo_credit'])!!}
 	{!! $errors->first('metadata.photo_credit', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $show_text_type) block @else none @endif"
+<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $post_type_active=="text") block @else none @endif"
 	 class="content-type type-text">
 	@include('post.partials.type_text')
 </div>
@@ -107,11 +130,18 @@ if (request()->has('rss_id')) {
 	{!! $errors->first('metadata.language', '<p class="help-block">:message</p>') !!}
 
 </div>
-<div class="form-group {{ $errors->has('source') ? 'has-error' : ''}}">
+
+<div class="form-group col-md-6 {{ $errors->has('source') ? 'has-error' : ''}}">
 	{!! Form::label('source', 'Source: ', ['class' => 'control-label']) !!}
 	{!! Form::text('metadata[source]', $post_source, ['class' => 'form-control']) !!}
 	{!! $errors->first('metadata.source', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group col-md-6 {{ $errors->has('source_url') ? 'has-error' : ''}}">
+	{!! Form::label('source_url', 'Source Url: ', ['class' => 'control-label']) !!}
+	{!! Form::text('metadata[source_url]', null, ['class' => 'form-control']) !!}
+	{!! $errors->first('metadata.source_url', '<p class="help-block">:message</p>') !!}
+</div>
+
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
 	{!! Form::label('tag', 'Tags: ', ['class' => 'control-label']) !!}
 
@@ -140,7 +170,6 @@ if (request()->has('rss_id')) {
 </div>
 
 <hr>
-
 @if(isset($post))
 	<div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
 		{!! Form::label('created_at', 'Created At: ', ['class' => 'control-label']) !!}
@@ -160,5 +189,40 @@ if (request()->has('rss_id')) {
 		{!! $errors->first('metadata.status', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
+@section('script')
+	<script>
+		$(function () {
+			$('.fetch-url-content-btn').on('click', function () {
+				var url = $('.feed-url').val();
+				var post_type = $('.post_type_value').val();
+				if (url != '' && validateURL(url)) {
+					var post_url = updateQueryStringParameter(document.location.href, 'url', url);
+					post_url = updateQueryStringParameter(post_url, 'post_type_value', post_type);
+					window.location = post_url;
+				} else {
+					alert('Please enter validate url.')
+				}
+			});
+		});
+		function updateQueryStringParameter(uri, key, value) {
+			var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)", "i");
+			if (uri.match(re)) {
+				return uri.replace(re, '$1' + key + "=" + value + '$2');
+			} else {
+				var hash = '';
+				if (uri.indexOf('#') !== -1) {
+					hash = uri.replace(/.*#/, '#');
+					uri = uri.replace(/#.*/, '');
+				}
+				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+				return uri + separator + key + "=" + value + hash;
+			}
+		}
+		var validateURL = function (textval) {
+			var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+			return urlregex.test(textval);
+		}
+	</script>
+@append
 @include('templates.templates')
 
