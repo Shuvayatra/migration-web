@@ -26,6 +26,9 @@
 
             <ul class="nav navbar-nav navbar-right navbar-list">
                 @role('admin')
+                <li>
+                    <a href="{{route('blocks.index')}}">App</a>
+                </li>
                 <li><a href="{{route('pushnotification.index')}}">Notification</a></li>
 
                 <li>
