@@ -95,5 +95,9 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\RssNewsFeeds\RssNewsFeedsRepositoryInterface',
             'App\Nrna\Repositories\RssNewsFeeds\RssNewsFeedsRepository'
         );
+        $this->app->bind(
+            'App\Nrna\Repositories\Block\BlockRepositoryInterface',
+            'App\Nrna\Repositories\Block\BlockRepository'
+        );
     }
 }

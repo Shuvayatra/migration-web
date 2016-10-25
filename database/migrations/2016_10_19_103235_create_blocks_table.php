@@ -18,6 +18,8 @@ class CreateBlocksTable extends Migration
                 $table->increments('id');
                 $table->string('page')->default('home');;
                 $table->json('metadata');
+                $table->boolean('is_active')->default(true);
+                $table->integer('position');
                 $table->integer('created_by');
                 $table->integer('updated_by');
                 $table->foreign('created_by')
@@ -39,7 +41,7 @@ class CreateBlocksTable extends Migration
      */
     public function down()
     {
-        Schema::drop('bloks');
+        Schema::drop('blocks');
     }
 
 }

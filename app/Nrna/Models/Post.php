@@ -205,8 +205,19 @@ class Post extends Model
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
         unset($metadata['stage']);
+        unset($metadata['status']);
+        unset($metadata['language']);
 
         return $metadata;
+    }
+
+    public function getImageAttribute()
+    {
+        if ($this->metadata->type == 'text') {
+            return isset($this->metadataWithPath->featured_image) ? $this->metadataWithPath->featured_image : '';
+        }
+
+        return '';
     }
 
     /**
@@ -370,7 +381,8 @@ class Post extends Model
      */
     public function scopeCategory($query, $ids)
     {
-        $ids = (array)$ids;
+        $ids = (array) $ids;
+
         return $query->whereHas(
             'categories',
             function ($q) use ($ids) {

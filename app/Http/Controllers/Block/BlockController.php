@@ -19,9 +19,11 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $block = Block::paginate(15);
+        $query = Block::orderBy('page', 'desc');
+        $query->where('page', request()->get('page', 'home'));
+        $blocks = $query->get();
 
-        return view('block.index', compact('block'));
+        return view('block.index', compact('blocks'));
     }
 
     /**
@@ -37,16 +39,17 @@ class BlockController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return void
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
+        Block::create($request->except('_token'));
 
-        Block::create($request->all());
+        Session::flash('success', 'Block added!');
 
-        Session::flash('flash_message', 'Block added!');
-
-        return redirect('block');
+        return redirect()->route('blocks.index');
     }
 
     /**
@@ -58,9 +61,9 @@ class BlockController extends Controller
      */
     public function show($id)
     {
-        $block = Block::findOrFail($id);
+        $blocks = Block::findOrFail($id);
 
-        return view('block.show', compact('block'));
+        return view('block.show', compact('blocks'));
     }
 
     /**
@@ -89,9 +92,9 @@ class BlockController extends Controller
         $block = Block::findOrFail($id);
         $block->update($request->all());
 
-        Session::flash('flash_message', 'Block updated!');
+        Session::flash('success', 'Block updated!');
 
-        return redirect('block');
+        return redirect('blocks');
     }
 
     /**
@@ -105,8 +108,8 @@ class BlockController extends Controller
     {
         Block::destroy($id);
 
-        Session::flash('flash_message', 'Block deleted!');
+        Session::flash('success', 'Block deleted!');
 
-        return redirect('block');
+        return redirect('blocks');
     }
 }
