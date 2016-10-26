@@ -51,9 +51,27 @@ class Block extends Model
             $api_metadata['view_more']          = ($this->metadata->show_view_more_flag) ? true : false;
             $api_metadata['view_more_title']    = $this->metadata->show_view_more->title;
             $api_metadata['view_more_deeplink'] = $this->metadata->show_view_more->url;
+            $api_metadata['view_more_filter']   = array_map(
+                function ($category_id) {
+                    return (int) $category_id;
+                },
+                (array) $this->metadata->category_id
+            );
+        }
+        if ($this->metadata->layout == 'notice') {
+            if (is_null($this->getNotice())) {
+                $api_metadata['notice'] = null;
+            } else {
+                $api_metadata['notice'] = $this->getNotice()->pluck('metadata');
+            }
         }
 
         return $api_metadata;
+    }
+
+    public function getNotice()
+    {
+        return Notice::published()->orderBy('created_at', 'desc')->first();
     }
 
     /**

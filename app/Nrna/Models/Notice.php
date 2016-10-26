@@ -42,4 +42,9 @@ class Notice extends Model
     {
         $this->attributes['country_id'] = empty($value) ? null : $value;
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', true);
+    }
 }

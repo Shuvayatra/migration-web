@@ -4,11 +4,12 @@ $pages = ['home' => 'Home', 'destination' => 'Destination', 'journey' => 'Journe
 $categories = \App\Nrna\Models\Category::where('depth', '1')->lists('title', 'id')->toArray();
 $countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->lists('title', 'id')->toArray();
 $journeys = \App\Nrna\Models\Category::find(2)->getImmediateDescendants()->lists('title', 'id')->toArray();
-$layouts = ['list'           => 'List',
-			'slider'         => 'Slider',
-			'country_widget' => 'Country Widget',
-			'radio_widget'   => 'Radio Widget',
-			'notice'         => 'Notice'
+$layouts = [
+		'list'           => 'List',
+		'slider'         => 'Slider',
+		'country_widget' => 'Country Widget',
+		'radio_widget'   => 'Radio Widget',
+		'notice'         => 'Notice'
 ];
 ?>
 <div class="form-group {{ $errors->has('page') ? 'has-error' : ''}}">
@@ -46,26 +47,26 @@ $layouts = ['list'           => 'List',
 	</div>
 </div>
 <?php $show_home_fields = false;
-if (isset($block) && $block->page == 'home') {
+if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 	$show_home_fields = true;
 }
 ?>
 <div style="display:@if($show_home_fields)block @else none @endif" class="block-content-type-post block-fields">
-	<div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}}">
+	<div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}} post-field radio-field">
 		{!! Form::label('title', 'Title: *', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::text('metadata[title]', null, ['class' => 'form-control required']) !!}
 			{!! $errors->first('metadata.title', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	<div class="form-group {{ $errors->has('metadata.description') ? 'has-error' : ''}}">
+	<div class="form-group {{ $errors->has('metadata.description') ? 'has-error' : ''}} post-field radio-field">
 		{!! Form::label('description', 'Description: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::textArea('metadata[description]', null, ['class' => 'form-control']) !!}
 			{!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="form-group post-field">
 		{!! Form::label('content tags', 'Content Tags:* ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::select('metadata[category_id][]', $categories, null,
@@ -74,7 +75,7 @@ if (isset($block) && $block->page == 'home') {
 			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="form-group post-field">
 		{!! Form::label('metadata.post_type', 'Post Type:* ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::select('metadata[post_type][]', config('post_type'), null,
@@ -83,14 +84,14 @@ if (isset($block) && $block->page == 'home') {
 			{!! $errors->first('metadata.post_type', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="form-group post-field">
 		{!! Form::label('content', 'Number of posts: * ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::selectRange('metadata[number_of_post]', 5, 15,null,['class' =>'form-control']) !!}
 			{!! $errors->first('metadata.number_of_posts', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	<div class="form-group {{ $errors->has('metadata.show_view_more') ? 'has-error' : ''}}">
+	<div class="form-group {{ $errors->has('metadata.show_view_more') ? 'has-error' : ''}} post-field">
 		{!! Form::label('view_more', 'Show view more link: *', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::checkbox('metadata[show_view_more_flag]') !!}
@@ -107,6 +108,18 @@ if (isset($block) && $block->page == 'home') {
 @section('script')
 	<script>
 		$(function () {
+			@if(isset($block))
+				var field = "{{$block->metadata->layout}}";
+				if (field == 'list' || field == 'slider') {
+					field = 'post';
+				}
+				if (field == 'radio_widget') {
+					$('.block-content-type-post').show();
+					$('.post-field').hide();
+					$('.radio-field').show();
+				}
+				$('.block-content-type-' + field).show();
+			@endif
 			$(document).on('change', '.block-page', function () {
 				$('.page-type').hide();
 				$('select').select2({width: '100%', placeholder: "Select", allowClear: true, theme: "classic"});
@@ -119,6 +132,11 @@ if (isset($block) && $block->page == 'home') {
 				var field = $(this).val();
 				if (field == 'list' || field == 'slider') {
 					field = 'post';
+				}
+				if (field == 'radio_widget') {
+					$('.block-content-type-post').show();
+					$('.post-field').hide();
+					$('.radio-field').show();
 				}
 				$('.block-content-type-' + field).show();
 			});
