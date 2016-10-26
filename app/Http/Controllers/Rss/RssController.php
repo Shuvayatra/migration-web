@@ -83,8 +83,7 @@ class RssController extends Controller
     {
         $rss      = $this->rssService->find($id);
         $rssItems = $this->rssFeed->getRssItems($rss->url);
-        dd($rssItems);
-
+        
         return view('rss.show', compact('rss', 'rssItems'));
     }
 

@@ -51,6 +51,7 @@
 			<tbody class="sortable" data-entityname="block">
 			@forelse($blocks as $block)
 				<tr data-itemId="{{ $block->id }}">
+					<td class="sortable-handle" style="width: 0px;"><span class="glyphicon glyphicon-sort"></span></td>
 
 					@if(request()->get('page')=="destination")
 						<td class="sortable-handle">{{$block->country->title}}</td>
@@ -60,7 +61,8 @@
 					@endif
 					<td class="sortable-handle">{{$block->layout}}</td>
 					<td class="sortable-handle">{{$block->title}}</td>
-					<td class="sortable-handle"><a href="{{ route('blocks.edit', $block->id) }}?{{request()->getQueryString() }}">
+					<td class="sortable-handle"><a
+								href="{{ route('blocks.edit', $block->id) }}?{{request()->getQueryString() }}">
 							<button type="submit" class="btn btn-primary btn-xs table-button">Edit</button>
 						</a>
 						/{!! Form::open([

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api\Screen;
 
 use App\Nrna\Services\BlockService;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
+use EllipseSynergie\ApiResponse\Laravel\Response;
 
 /**
  * Class HomeController
@@ -24,10 +25,12 @@ class HomeController extends ApiGuardController
      * HomeController constructor.
      *
      * @param BlockService $blockService
+     * @param Response     $response
      */
-    public function __construct(BlockService $blockService)
+    public function __construct(BlockService $blockService, Response $response)
     {
         $this->blockService = $blockService;
+        $this->response     = $response;
     }
 
     /**
@@ -36,6 +39,6 @@ class HomeController extends ApiGuardController
      */
     public function index()
     {
-        return $this->blockService->getHomeBlocks();
+        return $this->response->withArray($this->blockService->getHomeBlocks()->toArray());
     }
 }

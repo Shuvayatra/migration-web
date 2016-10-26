@@ -26,4 +26,13 @@ class RssNewsFeeds extends Model
         return $this->belongsTo(Rss::class, 'rss_id');
     }
 
+    public function getRadioItemAttribute()
+    {
+        $metadata['title']       = $this->title;
+        $metadata['description'] = $this->description;
+        $metadata['source']      = $this->permalink;
+
+        return $metadata;
+    }
+
 }

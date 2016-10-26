@@ -220,6 +220,7 @@ class CategoryService
     {
         $categoryArray['id']           = $category->id;
         $categoryArray['title']        = $category->title;
+        $categoryArray['title_en']     = $category->title_en;
         $categoryArray['alias_name']   = $category->section;
         $categoryArray['parent_alias'] = (is_null($category->parent_id)) ? null : $category->getRoot()->section;
 

@@ -14,6 +14,7 @@ class RssNewsFeedsService
 
     /**
      * RssNewsFeedsService constructor.
+     *
      * @param RssNewsFeedsRepositoryInterface $rssNewsFeeds
      */
     function __construct(RssNewsFeedsRepositoryInterface $rssNewsFeeds)
@@ -24,6 +25,7 @@ class RssNewsFeedsService
     /**
      * @param     $url
      * @param int $limit
+     *
      * @return array|null
      */
     public function getRssItems($url, $limit = 0)
@@ -32,7 +34,7 @@ class RssNewsFeedsService
         $feed     = new SimplePie();
         $feed->set_feed_url($url);
         $feed->enable_cache(true);
-        $feed->set_cache_location(storage_path() . '/cache');
+        $feed->set_cache_location(storage_path().'/cache');
         $feed->set_cache_duration(60 * 60 * 12);
         $feed->set_output_encoding('utf-8');
         $feed->init();
@@ -55,6 +57,7 @@ class RssNewsFeedsService
 
     /**
      * @param $all
+     *
      * @return mixed
      */
     public function save($all)
@@ -65,6 +68,7 @@ class RssNewsFeedsService
     /**
      * @param $rssId
      * @param $rssFeeds
+     *
      * @return mixed
      */
     public function insertFeeds($rssId, $rssFeeds)
@@ -87,6 +91,7 @@ class RssNewsFeedsService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function find($id)
@@ -100,7 +105,7 @@ class RssNewsFeedsService
     public function fetch($rss)
     {
         $rssFeeds = $this->getRssItems($rss->url);
-        $maxDate = strtotime($this->rssNewsFeeds->getMaxDate($rss->id));
+        $maxDate  = strtotime($this->rssNewsFeeds->getMaxDate($rss->id));
 
         foreach ($rssFeeds as $feed) {
             if (strtotime($feed['post_date']) > $maxDate) {
@@ -114,6 +119,7 @@ class RssNewsFeedsService
     /**
      * @param $rssId
      * @param $feed
+     *
      * @return mixed
      */
     protected function checkIfFeedExists($rssId, $feed)

@@ -207,7 +207,6 @@ class Post extends Model
         $metadata['priority'] = $this->priority;
         unset($metadata['stage']);
         unset($metadata['status']);
-        unset($metadata['language']);
 
         return $metadata;
     }

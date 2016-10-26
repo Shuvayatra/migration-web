@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api\Screen;
 
 use App\Nrna\Services\BlockService;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
+use EllipseSynergie\ApiResponse\Laravel\Response;
 
 /**
  * Class DestinationController
@@ -24,10 +25,12 @@ class DestinationController extends ApiGuardController
      * DestinationController constructor.
      *
      * @param BlockService $blockService
+     * @param Response     $response
      */
-    public function __construct(BlockService $blockService)
+    public function __construct(BlockService $blockService, Response $response)
     {
         $this->blockService = $blockService;
+        $this->response     = $response;
     }
 
     /**
@@ -39,7 +42,7 @@ class DestinationController extends ApiGuardController
      */
     public function destination($id)
     {
-        return $this->blockService->getCategoryBlocks($id, 'destination');
+        return $this->response->withArray($this->blockService->getCategoryBlocks($id, 'destination')->toArray());
     }
 
     /**
@@ -51,6 +54,6 @@ class DestinationController extends ApiGuardController
      */
     public function journey($id)
     {
-        return $this->blockService->getCategoryBlocks($id, 'journey');
+        return $this->response->withArray($this->blockService->getCategoryBlocks($id, 'journey')->toArray());
     }
 }
