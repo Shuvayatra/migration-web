@@ -47,19 +47,20 @@
 			</div>
 			{!! Form::close() !!}
 		</div>
-		<table class="table table-striped">
-			<tbody>
+		<table class="table table-bordered table-striped table-hover">
+			<tbody class="sortable" data-entityname="block">
 			@forelse($blocks as $block)
-				<tr>
+				<tr data-itemId="{{ $block->id }}">
+
 					@if(request()->get('page')=="destination")
-						<td>{{$block->country->title}}</td>
+						<td class="sortable-handle">{{$block->country->title}}</td>
 					@endif
 					@if(request()->get('page')=="journey")
 						<td>{{$block->journey->title}}</td>
 					@endif
-					<td>{{$block->layout}}</td>
-					<td>{{$block->title}}</td>
-					<td><a href="{{ route('blocks.edit', $block->id) }}?{{request()->getQueryString() }}">
+					<td class="sortable-handle">{{$block->layout}}</td>
+					<td class="sortable-handle">{{$block->title}}</td>
+					<td class="sortable-handle"><a href="{{ route('blocks.edit', $block->id) }}?{{request()->getQueryString() }}">
 							<button type="submit" class="btn btn-primary btn-xs table-button">Edit</button>
 						</a>
 						/{!! Form::open([

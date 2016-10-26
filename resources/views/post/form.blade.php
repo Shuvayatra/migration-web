@@ -25,7 +25,7 @@ $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
-$categories = \App\Nrna\Models\Category::where('depth', '!=', '0')->lists('title', 'id')->toArray();
+$categories = \App\Nrna\Models\Category::where('depth', '1')->lists('title', 'id')->toArray();
 $postService = app('App\Nrna\Services\PostService');
 $posts = $postService->getAllPosts()->lists('title', 'id')->toArray();
 $show_text_type = true;
@@ -168,7 +168,11 @@ if (request()->has('url')) {
 	'form-control','multiple'=>'','id'=>'similar_posts']) !!}
 	{!! $errors->first('similar_posts', '<p class="help-block">:message</p>') !!}
 </div>
-
+<div class="form-group">
+	{!! Form::label('content', 'Priority: ', ['class' => 'control-label']) !!}
+		{!! Form::selectRange('priority', 1, 10,null,['class' =>'form-control']) !!}
+		{!! $errors->first('priority', '<p class="help-block">:message</p>') !!}
+</div>
 <hr>
 @if(isset($post))
 	<div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">

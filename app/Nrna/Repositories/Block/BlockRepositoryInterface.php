@@ -13,4 +13,6 @@ interface BlockRepositoryInterface
      * @return mixed
      */
     public function getHomeBlocks();
+
+    public function getCategoryBlocks($id, $page);
 }

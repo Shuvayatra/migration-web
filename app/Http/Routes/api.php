@@ -32,5 +32,7 @@ $router->group(
         $router->post('/post/{id}/favorite', 'Post\\PostController@favorite')->where('id', '[0-9]+');
         $router->post('/post/{id}/share', 'Post\\PostController@share')->where('id', '[0-9]+');
         $router->get('screen/home', 'Screen\\HomeController@index');
+        $router->get('screen/destination/{id}', 'Screen\\DestinationController@destination');
+        $router->get('screen/journey/{id}', 'Screen\\DestinationController@journey');
     }
 );

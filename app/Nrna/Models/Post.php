@@ -52,7 +52,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['metadata', 'is_published'];
+    protected $fillable = ['metadata', 'is_published', 'priority'];
 
     /**
      * The tag that belongs to post.
@@ -204,6 +204,7 @@ class Post extends Model
             }
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
+        $metadata['priority'] = $this->priority;
         unset($metadata['stage']);
         unset($metadata['status']);
         unset($metadata['language']);

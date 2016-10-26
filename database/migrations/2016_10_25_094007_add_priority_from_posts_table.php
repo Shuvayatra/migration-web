@@ -12,9 +12,12 @@ class AddPriorityFromPostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->integer('priority');
-        });
+        Schema::table(
+            'posts',
+            function (Blueprint $table) {
+                $table->integer('priority')->default(1);;
+            }
+        );
     }
 
     /**
@@ -24,8 +27,11 @@ class AddPriorityFromPostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('priority');
-        });
+        Schema::table(
+            'posts',
+            function (Blueprint $table) {
+                $table->dropColumn('priority');
+            }
+        );
     }
 }

@@ -1,7 +1,7 @@
 <?php
 $countryService = app('App\Nrna\Services\CountryService');
 $pages = ['home' => 'Home', 'destination' => 'Destination', 'journey' => 'Journey'];
-$categories = \App\Nrna\Models\Category::where('depth', '!=', '0')->lists('title', 'id')->toArray();
+$categories = \App\Nrna\Models\Category::where('depth', '1')->lists('title', 'id')->toArray();
 $countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->lists('title', 'id')->toArray();
 $journeys = \App\Nrna\Models\Category::find(2)->getImmediateDescendants()->lists('title', 'id')->toArray();
 $layouts = ['list'           => 'List',

@@ -19,8 +19,15 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $query = Block::orderBy('page', 'desc');
+        $query = Block::sorted()->orderBy('page', 'desc');
         $query->where('page', request()->get('page', 'home'));
+
+        if (request()->get('country_id') != '') {
+            $query->whereRaw("metadata->>'country_id'=?", [request()->get('country_id')]);
+        }
+        if (request()->get('journey_id') != '') {
+            $query->whereRaw("metadata->>'journey_id'=?", [request()->get('journey_id')]);
+        }
         $blocks = $query->get();
 
         return view('block.index', compact('blocks'));
