@@ -97,7 +97,9 @@ class CategoryService
                 $small_icon             = $small_icon_info['filename'];
                 $formData['small_icon'] = $small_icon;
             }
-
+            if (isset($formData['country_info'])) {
+                $formData['country_info'] = array_values($formData['country_info']);
+            }
             $category = $this->category->save($formData);
 
             return $category;
@@ -160,6 +162,11 @@ class CategoryService
                     $this->uploadPath
                 );
                 $formData['small_icon'] = $small_icon_info['filename'];
+            }
+
+            $formData['status'] = array_has($formData, 'status');
+            if (isset($formData['country_info'])) {
+                $formData['country_info'] = array_values($formData['country_info']);
             }
             $category->update($formData);
 
@@ -237,6 +244,9 @@ class CategoryService
 
         $categoryArray['created_at'] = $category->created_at->timestamp;
         $categoryArray['updated_at'] = $category->updated_at->timestamp;
+        if ($category->getRoot()->section == 'country') {
+            $categoryArray['information'] = (array) $category->country_info;
+        }
 
         return $categoryArray;
     }
@@ -276,7 +286,7 @@ class CategoryService
         try {
             $root          = $this->category->findBySection($category);
             $categoryArray = [];
-            foreach ($root->getImmediateDescendants()->sortBy('position') as $category) {
+            foreach ($root->immediateDescendants()->published()->get()->sortBy('position') as $category) {
                 $categoryArray[] = $this->buildCategory($category);
             }
 

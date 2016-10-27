@@ -20,6 +20,10 @@ class Category extends Node
      * @var string
      */
     protected $table = 'categories';
+    /**
+     * @var array
+     */
+    protected $casts = ['country_info' => 'object'];
 
     /**
      * The database primary key value.
@@ -50,6 +54,8 @@ class Category extends Node
         'small_icon',
         'position',
         'parent_id',
+        'country_info',
+        'status',
     ];
 
     public function getMainImageLinkAttribute()
@@ -123,5 +129,10 @@ class Category extends Node
         }
 
         return $title;
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', true);
     }
 }
