@@ -4,7 +4,7 @@
 
 	<h1>Create New Notice</h1>
 	<hr/>
-	{!! Form::open(['route' => 'notice.store', 'class' => 'form-horizontal notice-form']) !!}
+	{!! Form::open(['route' => 'notice.store', 'class' => 'form-horizontal notice-form', 'files' =>true]) !!}
 	@include('notice.form')
 	<div class="form-group">
 		<div class="col-sm-3"></div>

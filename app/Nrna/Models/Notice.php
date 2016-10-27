@@ -47,4 +47,12 @@ class Notice extends Model
     {
         return $query->where('status', true);
     }
+
+    public function getApiMetadataAttribute()
+    {
+        $metadata              = json_decode(json_encode($this->metadata), true);
+        $metadata['image_url'] = sprintf('%s/%s', url('uploads/notice'), $this->metadata->image);
+
+        return (object) $metadata;
+    }
 }

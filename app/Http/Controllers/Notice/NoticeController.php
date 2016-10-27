@@ -6,12 +6,29 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Nrna\Models\Notice;
+use App\Nrna\Services\FileUpload;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
 
 class NoticeController extends Controller
 {
+    /**
+     * @var FileUpload
+     */
+    private $fileUpload;
+
+    /**
+     * NoticeController constructor.
+     *
+     * @param FileUpload $fileUpload
+     */
+    public function __construct(FileUpload $fileUpload)
+    {
+        $this->fileUpload = $fileUpload;
+        $this->uploadPath = public_path('uploads/notice');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,12 +54,19 @@ class NoticeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return void
+     * @param Request $request
      */
     public function store(Request $request)
     {
-        $data               = $request->all();
-        $data['status']     = $request->has('status');
+        $data           = $request->all();
+        $data['status'] = $request->has('status');
+        if (isset($data['metadata']['image'])) {
+            $main_image_info           = $this->fileUpload->handle(
+                $data['metadata']['image'],
+                $this->uploadPath
+            );
+            $data['metadata']['image'] = $main_image_info['filename'];
+        };
         Notice::create($data);
 
         Session::flash('success', 'Notice added!');
@@ -87,9 +111,18 @@ class NoticeController extends Controller
      */
     public function update($id, Request $request)
     {
-        $notice             = Notice::findOrFail($id);
-        $data               = $request->all();
-        $data['status']     = $request->has('status');
+        $notice         = Notice::findOrFail($id);
+        $data           = $request->all();
+        $data['status'] = $request->has('status');
+        if (isset($data['metadata']['image'])) {
+            $main_image_info           = $this->fileUpload->handle(
+                $data['metadata']['image'],
+                $this->uploadPath
+            );
+            $data['metadata']['image'] = $main_image_info['filename'];
+        } else {
+            $data['metadata']['image'] = $notice->metadata->image;
+        }
         $notice->update($data);
 
         Session::flash('success', 'Notice updated!');

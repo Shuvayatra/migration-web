@@ -25,7 +25,11 @@ $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
-$categories = \App\Nrna\Models\Category::where('depth', '1')->lists('title', 'id')->toArray();
+$categories = \App\Nrna\Models\Category::where('section', 'categories')->first()->getImmediateDescendants()->lists
+('title', 'id')
+									  ->toArray();
+$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists('title', 'id')
+									  ->toArray();
 $postService = app('App\Nrna\Services\PostService');
 $posts = $postService->getAllPosts()->lists('title', 'id')->toArray();
 $show_text_type = true;
@@ -41,7 +45,7 @@ if (request()->has('sub_category')) {
 }
 if (isset($post)) {
 	$post_categories = $post->categories->lists('id')->toArray();
-	$post_image      = isset($post->metadata->data->news_featured_image_link)?$post->metadata->data->news_featured_image_link:'';
+	$post_image      = isset($post->metadata->data->news_featured_image_link) ? $post->metadata->data->news_featured_image_link : '';
 }
 $post_title = null;
 $post_desc = null;
@@ -141,16 +145,6 @@ if (request()->has('url')) {
 	{!! Form::text('metadata[source_url]', null, ['class' => 'form-control']) !!}
 	{!! $errors->first('metadata.source_url', '<p class="help-block">:message</p>') !!}
 </div>
-
-<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-	{!! Form::label('tag', 'Tags: ', ['class' => 'control-label']) !!}
-
-	{!! Form::select('tag[]', $tags, isset($post)?$post->tags->lists('id')->toArray():null, ['class' =>
-	'form-control','multiple'=>'','id'=>'tags']) !!}
-	{!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
-
-</div>
-
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
 	{!! Form::label('tag', 'Content Tags:* ', ['class' => 'control-label']) !!}
 	{!! Form::select('category_id[]', $categories, $post_categories,
@@ -158,6 +152,24 @@ if (request()->has('url')) {
 	'form-control','multiple'=>'','id'=>'tags']) !!}
 	{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
 </div>
+
+<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
+	{!! Form::label('tag', 'Country:* ', ['class' => 'control-label']) !!}
+	{!! Form::select('category_id[]', $countries, $post_categories,
+	['class' =>
+	'form-control','multiple'=>'','id'=>'tags']) !!}
+	{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
+</div>
+
+<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
+	{!! Form::label('tag', 'Tags: ', ['class' => 'control-label']) !!}
+
+	{!! Form::select('tag[]', $tags, isset($post)?$post->tags->lists('id')->toArray():null, ['class' =>
+'form-control','multiple'=>'','id'=>'tags']) !!}
+	{!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
+
+</div>
+
 
 <hr>
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
@@ -170,8 +182,8 @@ if (request()->has('url')) {
 </div>
 <div class="form-group">
 	{!! Form::label('content', 'Priority: ', ['class' => 'control-label']) !!}
-		{!! Form::selectRange('priority', 1, 10,null,['class' =>'form-control']) !!}
-		{!! $errors->first('priority', '<p class="help-block">:message</p>') !!}
+	{!! Form::selectRange('priority', 1, 10,null,['class' =>'form-control']) !!}
+	{!! $errors->first('priority', '<p class="help-block">:message</p>') !!}
 </div>
 <hr>
 @if(isset($post))

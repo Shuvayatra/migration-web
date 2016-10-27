@@ -9,6 +9,7 @@
 		'method' => 'PATCH',
 		'route' => ['notice.update', $notice->id],
 		'class' => 'form-horizontal block-form',
+		'files' =>true
 	]) !!}
 	@include('notice.form')
 	<div class="form-group">

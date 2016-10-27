@@ -62,7 +62,8 @@ class Block extends Model
             if (is_null($this->getNotice())) {
                 $api_metadata['notice'] = null;
             } else {
-                $api_metadata['notice'] = $this->getNotice()->pluck('metadata');
+                $notice                 = $this->getNotice();
+                $api_metadata['notice'] = $notice->api_metadata;
             }
         }
 

@@ -2,8 +2,11 @@
 $countryService = app('App\Nrna\Services\CountryService');
 $pages = ['home' => 'Home', 'destination' => 'Destination', 'journey' => 'Journey'];
 $categories = \App\Nrna\Models\Category::where('depth', '1')->lists('title', 'id')->toArray();
-$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->lists('title', 'id')->toArray();
-$journeys = \App\Nrna\Models\Category::find(2)->getImmediateDescendants()->lists('title', 'id')->toArray();
+$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists('title',
+																										   'id')->toArray();
+$journeys = \App\Nrna\Models\Category::whereSection('categories')->first()->getImmediateDescendants()->lists('title',
+																										   'id')
+		->toArray();
 $layouts = [
 		'list'           => 'List',
 		'slider'         => 'Slider',
@@ -15,7 +18,7 @@ $layouts = [
 <div class="form-group {{ $errors->has('page') ? 'has-error' : ''}}">
 	{!! Form::label('page', 'Page: * ', ['class' => 'col-sm-3 control-label ']) !!}
 	<div class="col-sm-6">
-		{!! Form::select('page', [''=>'Select']+$pages, isset($place)?$place->country->id:null, ['class'=>
+		{!! Form::select('page', [''=>'Select']+$pages, null, ['class'=>
 		'form-control block-page']) !!}
 		{!! $errors->first('page', '<p class="help-block">:message</p>') !!}
 	</div>
@@ -24,16 +27,16 @@ $layouts = [
 	 class="form-group {{ $errors->has('metadata.country_id') ? 'has-error' : ''}} page-type block-page-destination">
 	{!! Form::label('country', 'Destination: * ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-		{!! Form::select('metadata[country_id]', [''=>'Select']+$countries, isset($place)?$place->country->id:null, ['class'=>
+		{!! Form::select('metadata[country_id]', [''=>'Select']+$countries, null, ['class'=>
 		'form-control required']) !!}
 		{!! $errors->first('metadata.country_id', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 <div style="display: none"
 	 class="form-group {{ $errors->has('metadata.journey_id') ? 'has-error' : ''}} page-type block-page-journey">
-	{!! Form::label('journey', 'Journey: * ', ['class' => 'col-sm-3 control-label']) !!}
+	{!! Form::label('journey', 'Category: * ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-		{!! Form::select('metadata[journey_id]', [''=>'Select']+$journeys, isset($place)?$place->country->id:null, ['class'=>
+		{!! Form::select('metadata[journey_id]', [''=>'Select']+$journeys, null, ['class'=>
 		'form-control']) !!}
 		{!! $errors->first('metadata.journey_id', '<p class="help-block">:message</p>') !!}
 	</div>
@@ -41,7 +44,7 @@ $layouts = [
 <div class="form-group {{ $errors->has('metadata.layout') ? 'has-error' : ''}}">
 	{!! Form::label('layout', 'Layout: * ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-		{!! Form::select('metadata[layout]', [''=>'Select']+$layouts, isset($place)?$place->country->id:null, ['class'=>
+		{!! Form::select('metadata[layout]', [''=>'Select']+$layouts, null, ['class'=>
 		'form-control block-layout required']) !!}
 		{!! $errors->first('metadata.layout', '<p class="help-block">:message</p>') !!}
 	</div>
@@ -67,9 +70,18 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 		</div>
 	</div>
 	<div class="form-group post-field">
-		{!! Form::label('content tags', 'Content Tags:* ', ['class' => 'col-sm-3 control-label']) !!}
+		{!! Form::label('content tags', 'Category:* ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
-			{!! Form::select('metadata[category_id][]', $categories, null,
+			{!! Form::select('metadata[category_id][]', $journeys, null,
+			['class' =>
+			'form-control','multiple'=>'','id'=>'tags']) !!}
+			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
+		</div>
+	</div>
+	<div class="form-group post-field">
+		{!! Form::label('content tags', 'Country:* ', ['class' => 'col-sm-3 control-label']) !!}
+		<div class="col-sm-6">
+			{!! Form::select('metadata[category_id][]', $countries, null,
 			['class' =>
 			'form-control','multiple'=>'','id'=>'tags']) !!}
 			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}

@@ -16,6 +16,18 @@ $countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->list
 		{!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
+<div class="form-group {{ $errors->has('metadata.image') ? 'has-error' : ''}}">
+	{!! Form::label('metadata.image', 'Image: ', ['class' => 'col-sm-3 control-label']) !!}
+	<div class="col-sm-6">
+		{!! Form::file('metadata[image]', null, ['class' => 'form-control']) !!}
+		{!! $errors->first('metadata.image', '<p class="help-block">:message</p>') !!}
+		@if(isset($notice->api_metadata->image_url))
+			<a href="#" class="thumbnail">
+				<img src="{{$notice->api_metadata->image_url}}">
+			</a>
+		@endif
+	</div>
+</div>
 <div class="form-group {{ $errors->has('country_id') ? 'has-error' : ''}}">
 	{!! Form::label('country', 'Destination: * ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
