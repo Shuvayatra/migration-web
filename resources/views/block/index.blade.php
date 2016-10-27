@@ -14,7 +14,7 @@
 
 	<div class="block-list-wrap">
 		<h3>List of Blocks in {{request()->get('page','home')}} page</h3>
-		<div style="display: @if(in_array(request()->get('page'),['destination','journey'])) block @else none @endif">
+		<div style="display: @if(in_array(request()->get('page'),['destination'])) block @else none @endif">
 			{!! Form::open(['route' => 'blocks.store','method'=>'get', 'class' => 'form-horizontal block-form']) !!}
 			<?php
 			$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->lists('title', 'id')->toArray();
@@ -49,7 +49,6 @@
 					@if(request()->get('page')=="destination")
 						<td class="sortable-handle">{{$block->country->title}}</td>
 					@endif
-					
 					<td class="sortable-handle">{{$block->layout}}</td>
 					<td class="sortable-handle">{{$block->title}}</td>
 					<td class="sortable-handle"><a
