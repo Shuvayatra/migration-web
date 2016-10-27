@@ -55,10 +55,14 @@ class PostService
     public function all($filter = [])
     {
         if (array_has($filter, "category")) {
-            $category     = $this->category->find($filter['category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
-
-            $posts = $this->postRepo->getByCategoryId($category_ids, true);
+            $category_ids = [];
+            $categories   = explode(',', $filter['category']);
+            foreach ($categories as $category_id) {
+                $category       = $this->category->find($category_id);
+                $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            }
+            $category_ids = array_unique(array_flatten($category_ids));
+            $posts        = $this->postRepo->getByCategoryId($category_ids, true);
         } elseif (array_has($filter, "tag")) {
             $posts = $this->postRepo->getByTags($filter['tag'], true);
         } elseif (array_has($filter, "query")) {
