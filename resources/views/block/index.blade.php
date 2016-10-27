@@ -30,14 +30,7 @@
 					'form-control']) !!}
 				</div>
 			</div>
-			<div style="display: @if(request()->get('page')=="journey")block @else none @endif" class="form-group {{
-			$errors->has('metadata.journey_id') ? 'has-error' : ''}}">
-				{!! Form::label('journey', 'Journey: * ', ['class' => 'col-sm-3 control-label']) !!}
-				<div class="col-sm-6">
-					{!! Form::select('journey_id', [''=>'Select']+$journeys, request()->get('journey_id'), ['class'=>
-					'form-control']) !!}
-				</div>
-			</div>
+
 			<div class="form-group">
 				<div class="col-sm-3"></div>
 				<div class="col-sm-3">
@@ -56,9 +49,7 @@
 					@if(request()->get('page')=="destination")
 						<td class="sortable-handle">{{$block->country->title}}</td>
 					@endif
-					@if(request()->get('page')=="journey")
-						<td>{{$block->journey->title}}</td>
-					@endif
+					
 					<td class="sortable-handle">{{$block->layout}}</td>
 					<td class="sortable-handle">{{$block->title}}</td>
 					<td class="sortable-handle"><a

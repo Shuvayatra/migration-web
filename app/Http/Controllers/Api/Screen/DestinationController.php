@@ -52,8 +52,8 @@ class DestinationController extends ApiGuardController
      *
      * @return array
      */
-    public function journey($id)
+    public function journey()
     {
-        return $this->response->withArray($this->blockService->getCategoryBlocks($id, 'journey')->toArray());
+        return $this->response->withArray($this->blockService->getJourneyBlocks()->toArray());
     }
 }

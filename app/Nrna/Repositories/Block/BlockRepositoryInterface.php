@@ -15,4 +15,6 @@ interface BlockRepositoryInterface
     public function getHomeBlocks();
 
     public function getCategoryBlocks($id, $page);
+
+    public function getJourneyBlocks();
 }

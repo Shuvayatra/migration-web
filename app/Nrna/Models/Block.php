@@ -87,11 +87,13 @@ class Block extends Model
             $query->whereRaw("posts.metadata->>'type' in (?)", [implode(',', $this->metadata->post_type)]);
         }
         if (isset($this->metadata->category_id)) {
+            $category_ids = [];
             foreach ($this->metadata->category_id as $category) {
-                $category     = Category::find($category);
-                $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
-                $query->category($category_ids);
+                $category       = Category::find($category);
+                $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
             }
+            $category_ids = array_unique(array_flatten($category_ids));
+            $query->category($category_ids);
         }
         $query->from(\DB::raw($from));
         $query->published();

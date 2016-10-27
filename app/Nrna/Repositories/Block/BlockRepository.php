@@ -52,4 +52,9 @@ class BlockRepository implements BlockRepositoryInterface
 
         return $query->get();
     }
+
+    public function getJourneyBlocks()
+    {
+        return $this->block->sorted()->wherePage('journey')->get();
+    }
 }

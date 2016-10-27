@@ -44,4 +44,15 @@ class BlockService
 
         return $blocks->pluck('api_metadata');
     }
+
+    /**
+     * home page blocks
+     * @return array
+     */
+    public function getJourneyBlocks()
+    {
+        $blocks = $this->block->getJourneyBlocks();
+
+        return $blocks->pluck('api_metadata');
+    }
 }

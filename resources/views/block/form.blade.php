@@ -32,15 +32,7 @@ $layouts = [
 		{!! $errors->first('metadata.country_id', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
-<div style="display: none"
-	 class="form-group {{ $errors->has('metadata.journey_id') ? 'has-error' : ''}} page-type block-page-journey">
-	{!! Form::label('journey', 'Category: * ', ['class' => 'col-sm-3 control-label']) !!}
-	<div class="col-sm-6">
-		{!! Form::select('metadata[journey_id]', [''=>'Select']+$journeys, null, ['class'=>
-		'form-control']) !!}
-		{!! $errors->first('metadata.journey_id', '<p class="help-block">:message</p>') !!}
-	</div>
-</div>
+
 <div class="form-group {{ $errors->has('metadata.layout') ? 'has-error' : ''}}">
 	{!! Form::label('layout', 'Layout: * ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
