@@ -38,17 +38,20 @@ class RssNewsFeedsService
         $feed->set_cache_duration(60 * 60 * 12);
         $feed->set_output_encoding('utf-8');
         $feed->init();
-
         if (!is_null($feed->error)) {
             return null;
         }
+        $image_array = $feed->get_channel_tags('http://www.itunes.com/dtds/podcast-1.0.dtd', 'image');
         foreach ($feed->get_items(0, $limit) as $item) {
             $feedData[] = [
                 'title'       => $item->get_title(),
                 'description' => $item->get_description(),
                 'permalink'   => $item->get_permalink(),
                 'post_date'   => $item->get_date('Y:m:d h:i:s'),
-
+                'image'       => isset(array_flatten($image_array[0]['attribs'])[0]) ? array_flatten
+                                                                                       (
+                                                                                           $image_array[0]['attribs']
+                                                                                       )[0] : '',
             ];
         }
 

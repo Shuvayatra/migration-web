@@ -19,7 +19,7 @@ class RssNewsFeeds extends Model
      *
      * @var array
      */
-    protected $fillable = ['rss_id', 'title', 'description', 'permalink', 'post_date'];
+    protected $fillable = ['rss_id', 'title', 'description', 'image', 'permalink', 'post_date'];
 
     public function rss()
     {
@@ -31,6 +31,7 @@ class RssNewsFeeds extends Model
         $metadata['title']       = $this->title;
         $metadata['description'] = html_entity_decode($this->description);
         $metadata['source']      = $this->permalink;
+        $metadata['image']       = $this->image;
 
         return $metadata;
     }
