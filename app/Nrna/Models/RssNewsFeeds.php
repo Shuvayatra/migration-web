@@ -29,7 +29,7 @@ class RssNewsFeeds extends Model
     public function getRadioItemAttribute()
     {
         $metadata['title']       = $this->title;
-        $metadata['description'] = $this->description;
+        $metadata['description'] = html_entity_decode($this->description);
         $metadata['source']      = $this->permalink;
 
         return $metadata;
