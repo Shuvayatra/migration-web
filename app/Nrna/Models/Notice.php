@@ -51,6 +51,7 @@ class Notice extends Model
     public function getApiMetadataAttribute()
     {
         $metadata              = json_decode(json_encode($this->metadata), true);
+        $metadata['id']        = $this->id;
         $metadata['image_url'] = sprintf('%s/%s', url('uploads/notice'), $this->metadata->image);
 
         return (object) $metadata;
