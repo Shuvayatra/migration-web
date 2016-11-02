@@ -205,6 +205,7 @@ class Post extends Model
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
         $metadata['priority'] = $this->priority;
+        $metadata['id']       = $this->id;
         unset($metadata['stage']);
         unset($metadata['status']);
 
