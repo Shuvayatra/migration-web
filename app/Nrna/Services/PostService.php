@@ -639,4 +639,9 @@ class PostService
             return false;
         }
     }
+
+    public function fullTextSearch($q)
+    {
+        return $this->post->fullTextSearch($q);
+    }
 }

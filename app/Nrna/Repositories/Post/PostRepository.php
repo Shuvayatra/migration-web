@@ -235,14 +235,28 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param $query
+     * @param      $q
+     *
+     * @param bool $paginate
      *
      * @return mixed
      */
-    public function search($query, $paginate = false)
+    public function search($q, $paginate = false)
     {
-        $query = $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('".$query."')")
-                            ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('".$query."')");
+        $q                = implode('|', explode(' ', $q));
+        $document_columns = "setweight(to_tsvector(posts.metadata->>'description'), 'B') 
+        || setweight(to_tsvector(posts.metadata->>'title'),'A') || setweight(to_tsvector(coalesce
+        (string_agg(tags.title, ' '))), 'A')";
+        $sub_query        = $this->post->selectRaw(
+            "posts.*,($document_columns) as document,ts_rank({$document_columns}, to_tsquery('{$q}'))
+         as rank"
+        );
+        $sub_query->join('post_tag', 'post_tag.post_id', '=', 'post_tag.tag_id');
+        $sub_query->join('tags', 'tags.id', '=', 'post_tag.tag_id');
+        $sub_query->groupBy('posts.id');
+        $query = $this->post->from(\DB::raw('('.$sub_query->toSql().')  as posts'));
+        $query->whereRaw("posts.document @@ to_tsquery('{$q}')");
+        $query->orderBy("rank", 'desc');
         if ($paginate) {
             return $query->paginate();
         }
@@ -338,6 +352,27 @@ class PostRepository implements PostRepositoryInterface
         if ($paginate) {
             return $query->paginate();
         }
+
+        return $query->get();
+    }
+
+    /**
+     * full text search for post
+     *
+     * @param      $q
+     * @param bool $paginate
+     *
+     * @return mixed
+     */
+    public function fullTextSearch($q, $paginate = false)
+    {
+        $query = $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('{$q}')")
+                            ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('{$q}')");
+        $query->selectRaw("posts.*,ts_rank(to_tsvector(metadata->>'description') ,to_tsquery('{$q}')) as rank");
+        if ($paginate) {
+            return $query->paginate();
+        }
+        $query->orderBy('rank');
 
         return $query->get();
     }
