@@ -47,11 +47,12 @@
 				<li>
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button"
 					   aria-haspopup="true" aria-expanded="false">
-						Rss <span class="caret"></span>
+						Radio <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="{{route('rss.index')}}">Rss</a></li>
-						<li><a href="{{route('rssnewsfeeds.index')}}">News Feeds</a></li>
+						<li><a href="{{route('rss_category.index')}}">Category</a></li>
+						<li><a href="{{route('rss.index')}}">Radio</a></li>
+						<li><a href="{{route('rssnewsfeeds.index')}}">Radio Feeds</a></li>
 					</ul>
 				</li>
 				<li>
@@ -83,7 +84,7 @@
 
 				<li>
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<!-- <img class="img-responsive admin-image" src="{{url()}}/images/user.png" alt=""> -->
+					<!-- <img class="img-responsive admin-image" src="{{url()}}/images/user.png" alt=""> -->
 						{{Auth::user()->email}}<span class="caret"></span>
 					</a>
 

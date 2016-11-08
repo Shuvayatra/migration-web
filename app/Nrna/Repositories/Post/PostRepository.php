@@ -226,7 +226,10 @@ class PostRepository implements PostRepositoryInterface
                 $q->whereIn('id', $ids);
             }
         )->orderBy('id', 'asc');
-
+        if (request()->has('post_type') && request()->get('post_type') != '') {
+            $post_type = request()->get('post_type');
+            $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
         if ($paginate) {
             return $query->paginate();
         }
@@ -246,13 +249,16 @@ class PostRepository implements PostRepositoryInterface
         $q                = implode('|', explode(' ', $q));
         $document_columns = "setweight(to_tsvector(posts.metadata->>'description'), 'B') 
         || setweight(to_tsvector(posts.metadata->>'title'),'A') || setweight(to_tsvector(coalesce
-        (string_agg(tags.title, ' '))), 'A')";
+        (string_agg(tags.title, ' '))), 'A') || setweight(to_tsvector(coalesce
+        (string_agg(categories.title, ' '))), 'A')";
         $sub_query        = $this->post->selectRaw(
             "posts.*,($document_columns) as document,ts_rank({$document_columns}, to_tsquery('{$q}'))
          as rank"
         );
         $sub_query->join('post_tag', 'post_tag.post_id', '=', 'post_tag.tag_id');
         $sub_query->join('tags', 'tags.id', '=', 'post_tag.tag_id');
+        $sub_query->join('category_post', 'category_post.post_id', '=', 'category_post.category_id');
+        $sub_query->join('categories', 'categories.id', '=', 'category_post.category_id');
         $sub_query->groupBy('posts.id');
         $query = $this->post->from(\DB::raw('('.$sub_query->toSql().')  as posts'));
         $query->whereRaw("posts.document @@ to_tsquery('{$q}')");

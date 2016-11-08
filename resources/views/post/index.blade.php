@@ -7,12 +7,14 @@
 	?>
 	<a href="{{ route('post.create') }}?{{request()->getQueryString() }}"
 	   class="btn btn-primary pull-right btn-sm button">Add New Post</a>
-	<div class="post-filter-wrap">
+	<div style="width: 80%" class="post-filter-wrap">
+		<h3>Filter Criteria</h3>
 		{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
 		{!! Form::label('Start date:', 'Start date ', ['class' => 'control-label']) !!}
 		{!! Form::text('date_from',Input::get('date_from'), ['class' =>'form-control datepicker','placeholder'=>'From']) !!}
 		{!! Form::label('End date', 'End date ', ['class' => 'control-label']) !!}
 		{!! Form::text('date_to',Input::get('date_to'), ['class' =>'form-control datepicker','placeholder'=>'To']) !!}
+		<br>
 		{!! Form::label('Post type',null, ['class' => 'control-label']) !!}
 		{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
 		{!! Form::label('Post status', 'Post status ', ['class' => 'control-label']) !!}
@@ -47,7 +49,7 @@
 					<td>
 						<a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
 						<span class="label label-{{config('post.status_color.'.$item->metadata->status)}}">{{$item->metadata->status}}</span>
-                        <span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
+						<span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
 							  class="post-updated_on">Created By: {{ $item->user->name }}
 							Created at: {{ $item->created_at->format('Y-m-d H:m') }}
 							/ Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>

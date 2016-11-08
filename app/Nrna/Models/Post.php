@@ -301,6 +301,10 @@ class Post extends Model
         return $query->whereRaw("metadata->>'status'=?", [Self::PUBLISHED]);
     }
 
+    /**
+     * main category for the post
+     * @return null
+     */
     public function getMainCategoryAttribute()
     {
         foreach ($this->categories as $category) {

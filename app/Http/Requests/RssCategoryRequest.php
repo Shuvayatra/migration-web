@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class RssRequest extends Request
+class RssCategoryRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,6 @@ class RssRequest extends Request
     {
         return [
             'title'       => 'required',
-            'url'         => 'required|url|unique:rss',
-            'category_id' => 'required',
         ];
     }
 

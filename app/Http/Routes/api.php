@@ -35,5 +35,6 @@ $router->group(
         $router->get('screen/destination/{id}', 'Screen\\DestinationController@destination');
         $router->get('screen/journey', 'Screen\\DestinationController@journey');
         $router->get('podcasts', 'Radio\\RadioController@index');
+        $router->get('radio/categories', 'Radio\\RadioController@Categories');
     }
 );

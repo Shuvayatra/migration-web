@@ -117,10 +117,15 @@ class PostService
     {
         $postArray        = $this->formatPost($post);
         $similarPostArray = [];
-        foreach ($post->similar as $post) {
-            $similarPostArray[] = $this->formatPost($post);
+        foreach ($post->similar as $post_model) {
+            $similarPostArray[] = $this->formatPost($post_model);
         }
-        $postArray['similar'] = $similarPostArray;
+        $similarPostsArray = [];
+        foreach ($post->similar_posts as $post) {
+            $similarPostsArray[] = $this->formatPost($post);
+        }
+        $postArray['similar']       = $similarPostArray;
+        $postArray['similar_posts'] = $similarPostsArray;
 
         return $postArray;
     }

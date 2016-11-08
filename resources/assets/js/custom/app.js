@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('select').select2({placeholder: "Select", allowClear: true, theme: "classic"});
+    $('select').select2({width: '100%',placeholder: "Select", allowClear: true, theme: "classic"});
     $('#tags').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true});
 
     var editor_config = {

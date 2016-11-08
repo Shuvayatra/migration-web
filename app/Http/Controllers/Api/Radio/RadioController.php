@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\Radio;
 
+use App\Nrna\Models\RssCategory;
 use App\Nrna\Models\RssNewsFeeds;
 use App\Nrna\Services\RssNewsFeedsService;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
@@ -40,13 +41,33 @@ class RadioController extends ApiGuardController
      */
     public function index()
     {
-        $data     = [];
-        $podcasts = RssNewsFeeds::orderBy('created_at', 'desc')->get();
+        $data = [];
+        if (request()->has('category')) {
+            $category = RssCategory::find(request()->get('category'));
+            $data     = array_only($category->toArray(), ['id', 'title']);
+            if ($category->feeds->count() > 0) {
+                $feeds = $category->feeds()->paginate();
+                $feeds->appends(request()->except('page'));
+                $data ['feeds']        = $feeds->toArray();
+                $data['feeds']['data'] = $feeds->pluck('radio_item')->toArray();
+            }
+
+            return $this->response->withArray($data);
+        }
+        $query    = RssNewsFeeds::orderBy('created_at', 'desc');
+        $podcasts = $query->paginate();
         if (count($podcasts) > 0) {
-            $data = $podcasts->pluck('radio_item')->toArray();
+            $data         = $podcasts->toArray();
+            $data['data'] = $podcasts->pluck('radio_item')->toArray();
         }
 
-        return $this->response
-            ->withArray($data);
+        return $this->response->withArray($data);
+    }
+
+    public function categories()
+    {
+        $data = RssCategory::orderBy('created_at', 'desc')->get(['id', 'title']);
+
+        return $this->response->withArray($data->toArray());
     }
 }

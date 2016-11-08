@@ -67,5 +67,6 @@ $router->group(
         $router->resource('rssnewsfeeds', 'RssNewsFeeds\RssNewsFeedsController');
         $router->resource('blocks', 'Block\\BlockController');
         $router->resource('notice', 'Notice\\NoticeController');
+        $router->resource('rss_category', 'Rss\\RssCategoryController');
     }
 );
