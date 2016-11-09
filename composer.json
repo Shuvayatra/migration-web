@@ -19,7 +19,8 @@
         "willvincent/feeds": "^1.0",
         "unisharp/laravel-filemanager": "^1.5",
         "suin/php-rss-writer": "^1.5",
-        "embed/embed": "^2.7"
+        "embed/embed": "^2.7",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

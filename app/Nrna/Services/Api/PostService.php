@@ -4,6 +4,7 @@ namespace App\Nrna\Services\Api;
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepository;
 use App\Nrna\Services\CategoryService;
+use App\Nrna\Services\GoogleTranslator;
 use App\Nrna\Services\PostService as MainPostService;
 
 class PostService
@@ -66,7 +67,8 @@ class PostService
         } elseif (array_has($filter, "tag")) {
             $posts = $this->postRepo->getByTags($filter['tag'], true);
         } elseif (array_has($filter, "query")) {
-            $posts = $this->postRepo->search($filter['query'], true);
+            $query = $this->processSearchQuery($filter['query']);
+            $posts = $this->postRepo->search($query, true);
         } else {
             $posts = $this->postRepo->all($filter);
         }
@@ -142,5 +144,23 @@ class PostService
         $post = $this->postModel->find($id);
 
         return $this->formatPost($post);
+    }
+
+    /**
+     * change search String to nepali
+     *
+     * @param $string
+     *
+     * @return null
+     */
+    private function processSearchQuery($string)
+    {
+        if (strlen($string) == mb_strlen($string, 'utf-8')) {
+            $googleService = new GoogleTranslator;
+
+            return $googleService->setSourceLang('en')->setTargetLang('ne')->translate($string);
+        }
+
+        return $string;
     }
 }

@@ -246,7 +246,7 @@ class PostRepository implements PostRepositoryInterface
      */
     public function search($q, $paginate = false)
     {
-        $q                = implode('|', explode(' ', $q));
+        $q                = implode('|', explode(' ', trim($q)));
         $document_columns = "setweight(to_tsvector(posts.metadata->>'description'), 'B') 
         || setweight(to_tsvector(posts.metadata->>'title'),'A') || setweight(to_tsvector(coalesce
         (string_agg(tags.title, ' '))), 'A') || setweight(to_tsvector(coalesce
@@ -255,10 +255,10 @@ class PostRepository implements PostRepositoryInterface
             "posts.*,($document_columns) as document,ts_rank({$document_columns}, to_tsquery('{$q}'))
          as rank"
         );
-        $sub_query->join('post_tag', 'post_tag.post_id', '=', 'post_tag.tag_id');
-        $sub_query->join('tags', 'tags.id', '=', 'post_tag.tag_id');
-        $sub_query->join('category_post', 'category_post.post_id', '=', 'category_post.category_id');
-        $sub_query->join('categories', 'categories.id', '=', 'category_post.category_id');
+        $sub_query->leftJoin('post_tag', 'post_tag.post_id', '=', 'posts.id');
+        $sub_query->leftJoin('tags', 'tags.id', '=', 'post_tag.tag_id');
+        $sub_query->leftJoin('category_post', 'category_post.post_id', '=', 'posts.id');
+        $sub_query->leftJoin('categories', 'categories.id', '=', 'category_post.category_id');
         $sub_query->groupBy('posts.id');
         $query = $this->post->from(\DB::raw('('.$sub_query->toSql().')  as posts'));
         $query->whereRaw("posts.document @@ to_tsquery('{$q}')");
