@@ -238,19 +238,22 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param      $q
+     * @param       $q
      *
-     * @param bool $paginate
+     * @param bool  $paginate
+     *
+     *
+     * @param float $rank_limit
      *
      * @return mixed
      */
-    public function search($q, $paginate = false)
+    public function search($q, $paginate = false, $rank_limit = 0.0)
     {
         $q                = implode('|', explode(' ', trim($q)));
         $document_columns = "setweight(to_tsvector(posts.metadata->>'description'), 'B') 
-        || setweight(to_tsvector(posts.metadata->>'title'),'A') || setweight(to_tsvector(coalesce
-        (string_agg(tags.title, ' '))), 'A') || setweight(to_tsvector(coalesce
-        (string_agg(categories.title, ' '))), 'A')";
+        || setweight(to_tsvector(posts.metadata->>'title'),'A') 
+        || setweight(to_tsvector(CASE WHEN count(tags.title)=0 THEN ' ' ELSE coalesce(string_agg(tags.title, ' ')) END), 'A') 
+        || setweight(to_tsvector(coalesce(string_agg(categories.title, ' '))), 'A')";
         $sub_query        = $this->post->selectRaw(
             "posts.*,($document_columns) as document,ts_rank({$document_columns}, to_tsquery('{$q}'))
          as rank"
@@ -265,6 +268,9 @@ class PostRepository implements PostRepositoryInterface
         if (request()->has('post_type') && request()->get('post_type') != '') {
             $post_type = request()->get('post_type');
             $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
+        if ($rank_limit) {
+            $query->whereRaw("rank > ?", [$rank_limit]);
         }
         $query->orderBy("rank", 'desc');
         if ($paginate) {

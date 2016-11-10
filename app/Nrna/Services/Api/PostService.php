@@ -68,7 +68,7 @@ class PostService
             $posts = $this->postRepo->getByTags($filter['tag'], true);
         } elseif (array_has($filter, "query")) {
             $query = $this->processSearchQuery($filter['query']);
-            $posts = $this->postRepo->search($query, true);
+            $posts = $this->postRepo->search($query, true, 0.5);
         } else {
             $posts = $this->postRepo->all($filter);
         }
