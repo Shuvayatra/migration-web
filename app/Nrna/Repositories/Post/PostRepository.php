@@ -262,6 +262,10 @@ class PostRepository implements PostRepositoryInterface
         $sub_query->groupBy('posts.id');
         $query = $this->post->from(\DB::raw('('.$sub_query->toSql().')  as posts'));
         $query->whereRaw("posts.document @@ to_tsquery('{$q}')");
+        if (request()->has('post_type') && request()->get('post_type') != '') {
+            $post_type = request()->get('post_type');
+            $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
         $query->orderBy("rank", 'desc');
         if ($paginate) {
             return $query->paginate();
