@@ -59,7 +59,8 @@ if (request()->has('url')) {
 }
 
 ?>
-<div style="display:@if(isset($post) && $post->metadata->type === 'news' || old('metadata.type') =="news" || $post_type_active=="news") block @else none @endif"
+<div style="display:@if(isset($post) && $post->metadata->type === 'news' || old('metadata.type') =="news" ||
+$post_type_active=="news") block @else block @endif"
 	 class="content-type type-news form-group {{ $errors->has('metadata.data.url') ? 'has-error' : ''}}">
 	{!! Form::label('url', 'Url: ', ['class' => 'control-label']) !!}
 	{!! Form::text('metadata[data][url]',request()->get('url'), ['class'=>'form-control feed-url'])!!}
