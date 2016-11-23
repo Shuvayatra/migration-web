@@ -23,8 +23,13 @@ class RssCategoryRequest extends Request
      */
     public function rules()
     {
+        if ($this->method == "PATCH") {
+            return ['title' => 'required', 'image' => 'image'];
+        }
+
         return [
-            'title'       => 'required',
+            'title' => 'required',
+            'image' => 'required|image',
         ];
     }
 

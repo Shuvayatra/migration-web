@@ -44,7 +44,7 @@ class RadioController extends ApiGuardController
         $data = [];
         if (request()->has('category')) {
             $category = RssCategory::find(request()->get('category'));
-            $data     = array_only($category->toArray(), ['id', 'title']);
+            $data     = $category->api_items;
             if ($category->feeds->count() > 0) {
                 $feeds = $category->feeds()->paginate();
                 $feeds->appends(request()->except('page'));
@@ -66,8 +66,8 @@ class RadioController extends ApiGuardController
 
     public function categories()
     {
-        $data = RssCategory::orderBy('created_at', 'desc')->get(['id', 'title']);
+        $data = RssCategory::orderBy('created_at', 'desc')->get();
 
-        return $this->response->withArray($data->toArray());
+        return $this->response->withArray($data->pluck('api_items')->toArray());
     }
 }

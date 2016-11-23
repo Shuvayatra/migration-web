@@ -7,12 +7,28 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Requests\RssCategoryRequest;
 use App\Nrna\Models\RssCategory;
+use App\Nrna\Services\FileUpload;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
 
 class RssCategoryController extends Controller
 {
+    /**
+     * @var FileUpload
+     */
+    private $fileUpload;
+
+    /**
+     * RssCategoryController constructor.
+     *
+     * @param FileUpload $fileUpload
+     */
+    public function __construct(FileUpload $fileUpload)
+    {
+        $this->fileUpload = $fileUpload;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +58,9 @@ class RssCategoryController extends Controller
      */
     public function store(RssCategoryRequest $request)
     {
-        RssCategory::create($request->all());
+        $data          = $request->all();
+        $data['image'] = $this->fileUpload->handle($request->file('image'));
+        RssCategory::create($data);
         Session::flash('success', 'Category added!');
 
         return redirect('rss_category');
@@ -86,7 +104,12 @@ class RssCategoryController extends Controller
     public function update($id, RssCategoryRequest $request)
     {
         $rss_category = RssCategory::findOrFail($id);
-        $rss_category->update($request->all());
+        $data         = $request->all();
+        if ($request->file('image')) {
+            $data['image'] = $this->fileUpload->handle($request->file('image'))['filename'];
+        }
+
+        $rss_category->update($data);
 
         Session::flash('success', 'Category updated!');
 

@@ -102,7 +102,12 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 			{!! $errors->first('metadata.show_view_more', '<p class="help-block">:message</p>') !!}
 			<div class="form-group view-more-fields">
 				{!! Form::label('metadata.show_view_more.title', 'View more text: * ', ['class' => 'control-label']) !!}
-				{!! Form::text('metadata[show_view_more][title]', 'View more', ['class' => 'form-control required']) !!}
+				{!! Form::text('metadata[show_view_more][title]', (isset($block)&&isset($block->show_view_more->title))
+				?$block->show_view_more->title:'View more',
+				['class' =>
+				'form-control
+				required'])
+				 !!}
 				{!! Form::label('metadata[show_view_more][url]', 'URL: * ', ['class' => 'control-label']) !!}
 				{!! Form::text('metadata[show_view_more][url]', null, ['class' => 'form-control required']) !!}
 			</div>
