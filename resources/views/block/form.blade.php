@@ -2,11 +2,15 @@
 $countryService = app('App\Nrna\Services\CountryService');
 $pages = ['home' => 'Home', 'destination' => 'Destination', 'journey' => 'Journey'];
 $categories = \App\Nrna\Models\Category::where('depth', '1')->lists('title', 'id')->toArray();
-$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists('title',
-																										   'id')->toArray();
-$journeys = \App\Nrna\Models\Category::whereSection('categories')->first()->getImmediateDescendants()->lists('title',
-																										   'id')
-		->toArray();
+$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists(
+		'title',
+		'id'
+)->toArray();
+$journeys = \App\Nrna\Models\Category::whereSection('categories')->first()->getImmediateDescendants()->lists(
+		'title',
+		'id'
+)
+									 ->toArray();
 $layouts = [
 		'list'           => 'List',
 		'slider'         => 'Slider',
@@ -15,23 +19,11 @@ $layouts = [
 		'notice'         => 'Notice'
 ];
 ?>
-<div class="form-group {{ $errors->has('page') ? 'has-error' : ''}}">
-	{!! Form::label('page', 'Page: * ', ['class' => 'col-sm-3 control-label ']) !!}
-	<div class="col-sm-6">
-		{!! Form::select('page', [''=>'Select']+$pages, null, ['class'=>
-		'form-control block-page']) !!}
-		{!! $errors->first('page', '<p class="help-block">:message</p>') !!}
-	</div>
-</div>
-<div style="display: none"
-	 class="form-group {{ $errors->has('metadata.country_id') ? 'has-error' : ''}} page-type block-page-destination">
-	{!! Form::label('country', 'Destination: * ', ['class' => 'col-sm-3 control-label']) !!}
-	<div class="col-sm-6">
-		{!! Form::select('metadata[country_id]', [''=>'Select']+$countries, null, ['class'=>
-		'form-control required']) !!}
-		{!! $errors->first('metadata.country_id', '<p class="help-block">:message</p>') !!}
-	</div>
-</div>
+{!! Form::hidden('page', request()->get('page','home')) !!}
+{!! Form::hidden('metadata[country_id]',request()->get('country_id')) !!}
+@if(request()->has('country_id'))
+	{!! Form::hidden('country_id', request()->get('country_id')) !!}
+@endif
 
 <div class="form-group {{ $errors->has('metadata.layout') ? 'has-error' : ''}}">
 	{!! Form::label('layout', 'Layout: * ', ['class' => 'col-sm-3 control-label']) !!}
@@ -117,17 +109,17 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 @section('script')
 	<script>
 		$(function () {
-			@if(isset($block))
-				var field = "{{$block->metadata->layout}}";
-				if (field == 'list' || field == 'slider') {
-					field = 'post';
-				}
-				if (field == 'radio_widget') {
-					$('.block-content-type-post').show();
-					$('.post-field').hide();
-					$('.radio-field').show();
-				}
-				$('.block-content-type-' + field).show();
+					@if(isset($block))
+			var field = "{{$block->metadata->layout}}";
+			if (field == 'list' || field == 'slider') {
+				field = 'post';
+			}
+			if (field == 'radio_widget') {
+				$('.block-content-type-post').show();
+				$('.post-field').hide();
+				$('.radio-field').show();
+			}
+			$('.block-content-type-' + field).show();
 			@endif
 			$(document).on('change', '.block-page', function () {
 				$('.page-type').hide();

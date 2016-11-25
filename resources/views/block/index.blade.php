@@ -2,43 +2,44 @@
 
 @section('content')
 	<div class="">
-		<h2>Manage App content</h2>
+		<a href="{{route('mobile.screens')}}">Back</a>
 	</div>
-	<ul>
-		<li><a href="{{route('blocks.create')}}">Add Block</a></li>
-		<li><a href="{{route('blocks.index',['page'=>'home'])}}">Home Page Blocks</a></li>
-		<li><a href="{{route('blocks.index',['page'=>'destination'])}}">Destination Page Blocks</a></li>
-		<li><a href="{{route('blocks.index',['page'=>'journey'])}}">Journey Page Blocks</a></li>
-
-	</ul>
 
 	<div class="block-list-wrap">
-		<h3>List of Blocks in {{request()->get('page','home')}} page</h3>
-		<div style="display: @if(in_array(request()->get('page'),['destination'])) block @else none @endif">
-			{!! Form::open(['route' => 'blocks.store','method'=>'get', 'class' => 'form-horizontal block-form']) !!}
+
+		@if(request()->get('page')=='destination')
 			<?php
-			$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->lists('title', 'id')->toArray();
-			$journeys = \App\Nrna\Models\Category::find(2)->getImmediateDescendants()->lists('title', 'id')->toArray();
-
+			$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants();
 			?>
-			<div style="display: @if(request()->get('page')=="destination")block @else none @endif"
-				 class="form-group {{ $errors->has('metadata.country_id') ?
-			'has-error' : ''}}">
-				{!! Form::label('country', 'Destination: * ', ['class' => 'col-sm-3 control-label']) !!}
-				<div class="col-sm-6">
-					{!! Form::select('country_id', [''=>'Select']+$countries, request()->get('country_id'), ['class'=>
-					'form-control']) !!}
-				</div>
+			<div>
+				<h3>Destination List</h3>
+				<ul class="list-group">
+					@foreach($countries as $country)
+						<li class="@if(request()->get('country_id')==$country->id) active @endif"><a
+									href="{{route('blocks.index',['page'=>'destination','country_id'=>$country->id])
+						}}">{{$country->title}}</a></li>
+					@endforeach
+				</ul>
 			</div>
-
-			<div class="form-group">
-				<div class="col-sm-3"></div>
-				<div class="col-sm-3">
-					{!! Form::hidden('page',request()->get('page','home')) !!}
-					{!! Form::submit('Filter', ['class' => 'btn btn-primary form-control']) !!}
-				</div>
-			</div>
-			{!! Form::close() !!}
+		@endif
+	</div>
+	@if(request()->get('page')!='destination' || request()->has('country_id'))
+		<div>
+			<h3>List of blocks in {{request()->get('page','home')}} @if(request()->get('page')=='destination' && request
+		()->has('country_id'))
+					<?php
+					$country = $countries->where('id', (int) request()->get('country_id'))->first();
+					?>
+					{{$country->title}}
+				@endif
+				screen</h3>
+			<?php
+			$request_query = ['page' => request()->get('page', 'home')];
+			if (request()->get('page') == 'destination') {
+				$request_query = $request_query + ['country_id' => request()->get('country_id')];
+			}
+			?>
+			<a href="{{route('blocks.create',$request_query)}}">Add New block</a>
 		</div>
 		<table class="table table-bordered table-striped table-hover">
 			<tbody class="sortable" data-entityname="block">
@@ -70,5 +71,5 @@
 			@endforelse
 			</tbody>
 		</table>
-	</div>
+	@endif
 @endsection

@@ -2,8 +2,14 @@
 
 @section('content')
 
-	<h1>Create New Block</h1>
+	<h1>Create New Block ({{ucfirst(request()->get('page','home'))}} Screen) @if(request()->has('country_id'))
+			<?php
+			$country = \App\Nrna\Models\Category::find(request()->get('country_id'))
+			?>
+			({{$country->title}})
+		@endif</h1>
 	<hr/>
+	<a href="{{route('blocks.index',['page'=>request()->get('page','home')])}}">Back</a>
 	{!! Form::open(['route' => 'blocks.store', 'class' => 'form-horizontal block-form']) !!}
 	@include('block.form')
 	<div class="form-group">

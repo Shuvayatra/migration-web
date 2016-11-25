@@ -28,7 +28,7 @@
 					<div id="category-{{$category->id}}"
 						 class="tab-pane fade in {{activeCategoryTab($categories,$category)}}">
 						<div class="row">
-							<div class="col-md-3">
+							<div class="col-md-6">
 								<div class="x_panel">
 									<div class="x_content green-content">
 										{!! Form::model($category, [
@@ -118,41 +118,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-9">
-								<div class="x_panel grey-content">
-									<label>Dropdown</label> <a class="btn btn-primary add-btn"
-															   href="{{ route('category.create') }}?section_id={{$category->id}}">Add</a>
-									<table class="table table-bordered table-striped">
-										<tbody class="sortable" data-entityname="category">
-										<?php
-										$dropDowncategories = $category->getImmediateDescendants();
-										$dropDowncategories = $dropDowncategories->sortBy('position');
-										?>
-										{{-- */$x=0;/* --}}
-										@foreach($dropDowncategories as $item)
-											{{-- */$x++;/* --}}
-											<tr data-itemId="{{{ $item->id }}}">
-												<td class="sortable-handle"><span
-															class="glyphicon glyphicon-sort"></span></td>
-												<td>{{ $item->title }}</td>
-												<td>
-													<a href="{{ route('category.edit' , $item->id) }}"
-													   class="btn btn-primary btn-xs">Update</a>
 
-													{!! Form::open([
-													'method'=>'DELETE',
-													'route' => ['category.destroy', $item->id],
-													'style' => 'display:inline'
-													]) !!}
-													{!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
-													{!! Form::close() !!}
-												</td>
-											</tr>
-										@endforeach
-										</tbody>
-									</table>
-								</div>
-							</div>
 						</div>
 					</div>
 				@endforeach

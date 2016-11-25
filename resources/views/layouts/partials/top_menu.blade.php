@@ -34,7 +34,7 @@
 						App <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="{{route('blocks.index')}}">Layout</a></li>
+						<li><a href="{{route('mobile.screens')}}">Screens</a></li>
 						<li><a href="{{route('notice.index')}}">Notice</a></li>
 					</ul>
 				</li>
@@ -72,8 +72,10 @@
 						$sections = \App\Nrna\Models\Category::roots()->get();
 						?>
 						@foreach($sections as $section)
+							@if($section->id !=2)
 							<li><a href="{{route('post.index')}}?category={{$section->id}}"> {{$section->title}}</a>
 							</li>
+							@endif
 						@endforeach
 						<li><a href="{{route('category.index')}}"> Manage <i
 										class="glyphicon glyphicon-cog pull-right"></i> </a>

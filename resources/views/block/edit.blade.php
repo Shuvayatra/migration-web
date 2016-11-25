@@ -2,7 +2,13 @@
 
 @section('content')
 
-	<h1>Edit Block</h1>
+	<h1>Edit Block ({{ucfirst(request()->get('page','home'))}} Screen) @if(request()->has('country_id'))
+			<?php
+			$country = \App\Nrna\Models\Category::find(request()->get('country_id'))
+			?>
+			({{$country->title}})
+		@endif</h1>
+	<hr/>
 	<hr/>
 
 	{!! Form::model($block, [

@@ -55,8 +55,12 @@ class BlockController extends Controller
         Block::create($request->except('_token'));
 
         Session::flash('success', 'Block added!');
+        $request_query = ['page' => request()->get('page', 'home')];
+        if (request()->get('page') == 'destination') {
+            $request_query = $request_query + ['country_id' => request()->get('country_id')];
+        }
 
-        return redirect()->route('blocks.index');
+        return redirect()->route('blocks.index', $request_query);
     }
 
     /**
@@ -101,7 +105,12 @@ class BlockController extends Controller
 
         Session::flash('success', 'Block updated!');
 
-        return redirect('blocks');
+        $request_query = ['page' => request()->get('page', 'home')];
+        if (request()->get('page') == 'destination') {
+            $request_query = $request_query + ['country_id' => request()->get('country_id')];
+        }
+
+        return redirect()->route('blocks.index', $request_query);
     }
 
     /**
@@ -117,6 +126,6 @@ class BlockController extends Controller
 
         Session::flash('success', 'Block deleted!');
 
-        return redirect('blocks');
+        return redirect()->back();
     }
 }

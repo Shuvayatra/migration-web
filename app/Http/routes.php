@@ -66,6 +66,12 @@ $router->group(
         );
         $router->resource('rssnewsfeeds', 'RssNewsFeeds\RssNewsFeedsController');
         $router->resource('blocks', 'Block\\BlockController');
+        $router->get(
+            'mobile/screens',
+            function () {
+                return view('block.screens');
+            }
+        )->name('mobile.screens');
         $router->resource('notice', 'Notice\\NoticeController');
         $router->resource('rss_category', 'Rss\\RssCategoryController');
     }
