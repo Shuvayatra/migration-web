@@ -4,6 +4,7 @@
 	<?php
 	$tagService = app('App\Nrna\Services\TagService');
 	$tags = $tagService->getList();
+	$users = \App\Nrna\Models\User::all()->lists('name','id')->toArray();
 	?>
 	<a href="{{ route('post.create') }}?{{request()->getQueryString() }}"
 	   class="btn btn-primary pull-right btn-sm button">Add New Post</a>
@@ -21,6 +22,9 @@
 		{!! Form::select('status' ,[''=>'Select Status']+config('post.status'),Input::get('status'), ['class' =>'form-control']) !!}
 		{!! Form::label('tags', 'Tags ', ['class' => 'control-label']) !!}
 		{!! Form::select('tags[]',$tags,Input::get('tags'), ['class' =>'form-control','multiple'=>true,]) !!}
+		{!! Form::label('user', 'Author ', ['class' => 'control-label']) !!}
+		{!! Form::select('user',[''=>'Select Author']+$users,Input::get('user'), ['class' =>'form-control']) !!}
+
 		@if(Input::has('category'))
 			{!! Form::hidden('category', Input::get('category')) !!}
 		@endif

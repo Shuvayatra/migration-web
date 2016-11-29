@@ -28,6 +28,13 @@ $countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->list
 		@endif
 	</div>
 </div>
+<div class="form-group {{ $errors->has('metadata.deeplink') ? 'has-error' : ''}}">
+	{!! Form::label('deeplink', 'Deeplink:', ['class' => 'col-sm-3 control-label']) !!}
+	<div class="col-sm-6">
+		{!! Form::text('metadata[deeplink]', null, ['class' => 'form-control']) !!}
+		{!! $errors->first('metadata.deeplink', '<p class="help-block">:message</p>') !!}
+	</div>
+</div>
 <div class="form-group {{ $errors->has('country_id') ? 'has-error' : ''}}">
 	{!! Form::label('country', 'Destination: * ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">

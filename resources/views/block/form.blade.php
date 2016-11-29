@@ -63,7 +63,7 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 		</div>
 	</div>
 	<div class="form-group post-field">
-		{!! Form::label('content tags', 'Country:* ', ['class' => 'col-sm-3 control-label']) !!}
+		{!! Form::label('content tags', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::select('metadata[category_id][]', $countries, null,
 			['class' =>
@@ -72,7 +72,7 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 		</div>
 	</div>
 	<div class="form-group post-field">
-		{!! Form::label('metadata.post_type', 'Post Type:* ', ['class' => 'col-sm-3 control-label']) !!}
+		{!! Form::label('metadata.post_type', 'Post Type: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::select('metadata[post_type][]', config('post_type'), null,
 			['class' =>

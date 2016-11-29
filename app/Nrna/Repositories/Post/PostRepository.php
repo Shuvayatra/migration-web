@@ -61,6 +61,10 @@ class PostRepository implements PostRepositoryInterface
             $status = $filters['status'];
             $query->whereRaw("posts.metadata->>'status' = ?", [$status]);
         }
+        if (isset($filters['user']) && $filters['user'] != '') {
+            $user = $filters['user'];
+            $query->where("created_by", [$user]);
+        }
         if (isset($filters['date_from']) && $filters['date_from'] != '') {
             $query->whereRaw("date(created_at) >= ?", [str_replace('/', '-', $filters['date_from'])]);
         }

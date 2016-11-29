@@ -147,7 +147,7 @@ $post_type_active=="news") block @else block @endif"
 	{!! $errors->first('metadata.source_url', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-	{!! Form::label('tag', 'Content Tags:* ', ['class' => 'control-label']) !!}
+	{!! Form::label('tag', 'Category:* ', ['class' => 'control-label']) !!}
 	{!! Form::select('category_id[]', $categories, $post_categories,
 	['class' =>
 	'form-control','multiple'=>'','id'=>'tags']) !!}
@@ -158,7 +158,7 @@ $post_type_active=="news") block @else block @endif"
 	{!! Form::label('tag', 'Country:* ', ['class' => 'control-label']) !!}
 	{!! Form::select('category_id[]', $countries, $post_categories,
 	['class' =>
-	'form-control','multiple'=>'','id'=>'tags']) !!}
+	'form-control','multiple'=>true,'id'=>'tags']) !!}
 	{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
 </div>
 
