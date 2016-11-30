@@ -93,6 +93,15 @@ class PostRepository implements PostRepositoryInterface
 
             $query->category($category_ids);
         }
+        if (array_has($filters, "tags") && !empty($filters['tags'])) {
+            $tags = $filters['tags'];
+            $query->whereHas(
+                'tags',
+                function ($q) use ($tags) {
+                    $q->whereIn('id', $tags);
+                }
+            );
+        }
 
         $query->from($this->db->raw($from));
         $query->orderBy('updated_at', 'DESC');
