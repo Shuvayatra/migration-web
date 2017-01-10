@@ -48,7 +48,8 @@ class Block extends Model
 
         if (in_array($this->metadata->layout, ['list', 'slider'])) {
             $api_metadata['content']            = $this->getContent();
-            $api_metadata['view_more']          = ($this->metadata->show_view_more_flag) ? true : false;
+            $api_metadata['view_more']          = (isset($this->metadata->show_view_more_flag) &&
+                $this->metadata->show_view_more_flag == true) ? true : false;
             $api_metadata['view_more_title']    = ($api_metadata['view_more']) ? $this->metadata->show_view_more->title : '';
             $api_metadata['view_more_deeplink'] = ($api_metadata['view_more']) ? $this->metadata->show_view_more->url
                 : '';
