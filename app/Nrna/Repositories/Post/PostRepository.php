@@ -78,8 +78,10 @@ class PostRepository implements PostRepositoryInterface
         }
 
         if (array_has($filters, "sub_category1")) {
-            $ids = $filters['sub_category1'];
-            $query->category($ids);
+            $ids = array_values(array_filter($filters['sub_category1']));
+            foreach ($ids as $id) {
+                $query->category($id);
+            }
         }
         if (array_has($filters, "sub_category")) {
             $category     = Category::find($filters['sub_category']);

@@ -4,7 +4,16 @@
 	<?php
 	$tagService = app('App\Nrna\Services\TagService');
 	$tags = $tagService->getList();
-	$users = \App\Nrna\Models\User::all()->lists('name','id')->toArray();
+	$users = \App\Nrna\Models\User::all()->lists('name', 'id')->toArray();
+	$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists(
+			'title',
+			'id'
+	)->toArray();
+	$categories = \App\Nrna\Models\Category::whereSection('categories')->first()->getImmediateDescendants()->lists(
+			'title',
+			'id'
+	)
+										   ->toArray();
 	?>
 	<a href="{{ route('post.create') }}?{{request()->getQueryString() }}"
 	   class="btn btn-primary pull-right btn-sm button">Add New Post</a>
@@ -25,15 +34,22 @@
 		{!! Form::label('user', 'Author ', ['class' => 'control-label']) !!}
 		{!! Form::select('user',[''=>'Select Author']+$users,Input::get('user'), ['class' =>'form-control']) !!}
 
+		{!! Form::label('Country', 'Country ', ['class' => 'control-label']) !!}
+		{!! Form::select('sub_category1[]',[''=>'Country']+$countries,Input::get('sub_category1')[0], ['class'
+		=>'form-control'])
+		 !!}
+		{!! Form::label('Category', 'Category ', ['class' => 'control-label']) !!}
+		{!! Form::select('sub_category1[]',[''=>'Category']+$categories,Input::get('sub_category1')[1], ['class'
+		=>'form-control'])
+		 !!}
+
 		@if(Input::has('category'))
 			{!! Form::hidden('category', Input::get('category')) !!}
 		@endif
 		@if(Input::has('sub_category'))
 			{!! Form::hidden('sub_category', Input::get('sub_category')) !!}
 		@endif
-		@if(Input::has('sub_category1'))
-			{!! Form::hidden('sub_category1', Input::get('sub_category1')) !!}
-		@endif
+
 		<br>
 		{!! Form::submit('filter', ['class' => 'btn button btn-primary']) !!}
 		{!! Form::close() !!}
@@ -43,7 +59,7 @@
 		<table class="table table-bordered table-striped table-hover">
 			<tbody>
 			<?php
-			$posts->load('user');
+			$posts->load('user', 'categories');
 			?>
 			{{-- */$x=0;/* --}}
 			@forelse($posts as $item)
@@ -52,6 +68,12 @@
 					<td class="icon-wrap"><i class="{{$item->metadata->type}} icons" aria-hidden="true"></i></td>
 					<td>
 						<a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
+						<div>
+							@foreach($item->categories as $category)
+								<span class="label label-default">{{$category->title}}</span>
+							@endforeach
+						</div>
+						<span></span>
 						<span class="label label-{{config('post.status_color.'.$item->metadata->status)}}">{{$item->metadata->status}}</span>
 						<span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
 							  class="post-updated_on">Created By: {{ $item->user->name }}

@@ -95,7 +95,7 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 			<div class="form-group view-more-fields">
 				{!! Form::label('metadata.show_view_more.title', 'View more text: * ', ['class' => 'control-label']) !!}
 				{!! Form::text('metadata[show_view_more][title]', (isset($block)&&isset($block->show_view_more->title))
-				?$block->show_view_more->title:'View more',
+				?$block->show_view_more->title:'थप हेर्नुहोस्',
 				['class' =>
 				'form-control
 				required'])

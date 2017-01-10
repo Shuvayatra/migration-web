@@ -166,7 +166,7 @@ class PostService
 
     public function news()
     {
-        $posts     = $this->postModel->category(144)->orderBy('updated_at')->paginate();
+        $posts     = $this->postModel->category(144)->orderBy('created_at', 'desc')->paginate();
         $postArray = [];
         foreach ($posts as $post) {
             $postArray[] = $this->formatPost($post);
