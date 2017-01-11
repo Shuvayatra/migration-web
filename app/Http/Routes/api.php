@@ -15,10 +15,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 $router->group(
     ['namespace' => 'Api', 'middleware' => StoreApiLog::class, 'prefix' => 'api'],
     function ($router) {
-        $router->get(
-            'latest',
-            'LatestController@index'
-        );
+        $router->get('latest', 'LatestController@index');
         $router->get('trash', 'ApiController@getDeleted');
         $router->get('country', 'Country\\CountryController@index');
         $router->post('sync', 'Post\\PostController@sync');
@@ -40,5 +37,6 @@ $router->group(
         $router->get('screen/journey', 'Screen\\DestinationController@journey');
         $router->get('podcasts', 'Radio\\RadioController@index');
         $router->get('radio/categories', 'Radio\\RadioController@Categories');
+        $router->post('onboarding/save', 'Onboarding\\OnboardingController@save');
     }
 );

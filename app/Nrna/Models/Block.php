@@ -79,7 +79,14 @@ class Block extends Model
 
     public function getNotice()
     {
-        return Notice::published()->orderBy('created_at', 'desc')->first();
+        $query = Notice::published()->orderBy('created_at', 'desc');
+        if (request()->has('country_id')) {
+            $query->where('country_id', request()->get('country_id'));
+        } else {
+            $query->where('country_id', null);
+        }
+
+        return $query->first();
     }
 
     /**

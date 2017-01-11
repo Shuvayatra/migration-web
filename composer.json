@@ -20,7 +20,8 @@
         "unisharp/laravel-filemanager": "^1.5",
         "suin/php-rss-writer": "^1.5",
         "embed/embed": "^2.7",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "jenssegers/agent": "^2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

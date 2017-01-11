@@ -47,6 +47,7 @@ $providers      = [
     willvincent\Feeds\FeedsServiceProvider::class,
     Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
     Intervention\Image\ImageServiceProvider::class,
+    Jenssegers\Agent\AgentServiceProvider::class,
 ];
 $localProviders = [
     /*
@@ -213,6 +214,7 @@ return [
         'Carbon'    => Carbon\Carbon::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Feeds'     => willvincent\Feeds\Facades\FeedsFacade::class,
+        'Agent'     => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];
