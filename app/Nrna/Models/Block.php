@@ -36,6 +36,11 @@ class Block extends Model
 
     protected $fillable = ['metadata', 'page', 'position', 'show_country_id'];
 
+    public function setShowCountryIdAttribute($show_country_id)
+    {
+        $this->attributes['show_country_id'] = ($show_country_id == '') ? null : $show_country_id;
+    }
+
     /**
      * block api response format
      * @return array

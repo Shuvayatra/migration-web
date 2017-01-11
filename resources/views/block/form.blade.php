@@ -43,7 +43,7 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 <div style="display:@if($page=="home")block @else none @endif" class="form-group post-field">
 	{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-		{!! Form::select('show_country_id', [null]+$countries, null,
+		{!! Form::select('show_country_id', [null=>'']+$countries, null,
 		['class' =>'form-control']) !!}
 		{!! $errors->first('show_country_id', '<p class="help-block">:message</p>') !!}
 	</div>
