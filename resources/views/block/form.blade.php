@@ -18,8 +18,9 @@ $layouts = [
 		'radio_widget'   => 'Radio Widget',
 		'notice'         => 'Notice'
 ];
+$page = request()->get('page', 'home');
 ?>
-{!! Form::hidden('page', request()->get('page','home')) !!}
+{!! Form::hidden('page', $page) !!}
 {!! Form::hidden('metadata[country_id]',request()->get('country_id')) !!}
 @if(request()->has('country_id'))
 	{!! Form::hidden('country_id', request()->get('country_id')) !!}
@@ -38,6 +39,15 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 	$show_home_fields = true;
 }
 ?>
+
+<div style="display:@if($page=="home")block @else none @endif" class="form-group post-field">
+	{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-3 control-label']) !!}
+	<div class="col-sm-6">
+		{!! Form::select('show_country_id', [null]+$countries, null,
+		['class' =>'form-control']) !!}
+		{!! $errors->first('show_country_id', '<p class="help-block">:message</p>') !!}
+	</div>
+</div>
 <div style="display:@if($show_home_fields)block @else none @endif" class="block-content-type-post block-fields">
 	<div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}} post-field radio-field">
 		{!! Form::label('title', 'Title: *', ['class' => 'col-sm-3 control-label']) !!}
@@ -57,15 +67,6 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 		{!! Form::label('content tags', 'Category:* ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::select('metadata[category_id][]', $journeys, null,
-			['class' =>
-			'form-control','multiple'=>'','id'=>'tags']) !!}
-			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
-		</div>
-	</div>
-	<div class="form-group post-field">
-		{!! Form::label('content tags', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
-		<div class="col-sm-6">
-			{!! Form::select('metadata[category_id][]', $countries, null,
 			['class' =>
 			'form-control','multiple'=>'','id'=>'tags']) !!}
 			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
@@ -101,7 +102,7 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 				required'])
 				 !!}
 				{!! Form::label('metadata[show_view_more][url]', 'URL: * ', ['class' => 'control-label']) !!}
-				{!! Form::text('metadata[show_view_more][url]', null, ['class' => 'form-control required']) !!}
+				{!! Form::text('metadata[show_view_more][url]', (isset($block)&&isset($block->show_view_more->url))?$block->show_view_more->url:'shuvayatra://feed', ['class' => 'form-control required']) !!}
 			</div>
 		</div>
 	</div>

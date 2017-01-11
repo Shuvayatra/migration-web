@@ -52,7 +52,8 @@ class BlockController extends Controller
      */
     public function store(Request $request)
     {
-        Block::create($request->except('_token'));
+        $data = $request->except('_token');
+        Block::create($data);
 
         Session::flash('success', 'Block added!');
         $request_query = ['page' => request()->get('page', 'home')];

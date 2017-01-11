@@ -59,7 +59,7 @@ class RssCategoryController extends Controller
     public function store(RssCategoryRequest $request)
     {
         $data          = $request->all();
-        $data['image'] = $this->fileUpload->handle($request->file('image'));
+        $data['image'] = $this->fileUpload->handle($request->file('image'))['filename'];
         RssCategory::create($data);
         Session::flash('success', 'Category added!');
 

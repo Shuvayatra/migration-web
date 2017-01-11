@@ -31,7 +31,12 @@ class BlockRepository implements BlockRepositoryInterface
      */
     public function getHomeBlocks()
     {
-        return $this->block->sorted()->wherePage('home')->get();
+        $query = $this->block->sorted()->wherePage('home')->where('show_country_id', null);
+        if (request()->has('country_id')) {
+            $query->orWhere('show_country_id', request()->get('country_id'));
+        }
+
+        return $query->get();
     }
 
     /**

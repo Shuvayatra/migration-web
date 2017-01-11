@@ -32,6 +32,6 @@ class CreatePostPostPivotTable extends Migration
      */
     public function down()
     {
-        Schema::drop('post_post');
+        Schema::drop('similar_posts');
     }
 }

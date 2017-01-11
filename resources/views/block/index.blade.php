@@ -52,6 +52,10 @@
 					@endif
 					<td class="sortable-handle">{{$block->layout}}</td>
 					<td class="sortable-handle">{{$block->title}}</td>
+					@if(request()->get('page')=="home")
+						<td class="sortable-handle">@if(!is_null($block->show_country))
+								{{$block->show_country->title}}@endif</td>
+					@endif
 					<td class="sortable-handle"><a
 								href="{{ route('blocks.edit', $block->id) }}?{{request()->getQueryString() }}">
 							<button type="submit" class="btn btn-primary btn-xs table-button">Edit</button>

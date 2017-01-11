@@ -34,7 +34,7 @@ class Block extends Model
      */
     protected $primaryKey = 'id';
 
-    protected $fillable = ['metadata', 'page', 'position'];
+    protected $fillable = ['metadata', 'page', 'position', 'show_country_id'];
 
     /**
      * block api response format
@@ -97,6 +97,9 @@ class Block extends Model
             $category_ids = array_unique(array_flatten($category_ids));
             $query->category($category_ids);
         }
+        if (request()->has('country_id')) {
+            $query->category(request()->get('country_id'));
+        }
         $query->from(\DB::raw($from));
         $query->published();
         $query->limit($this->post_limit);
@@ -143,6 +146,15 @@ class Block extends Model
     public function journey()
     {
         return $this->belongsTo(Category::class, "metadata->>'journey_id'");
+    }
+
+    /**
+     * belongs to category
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function show_country()
+    {
+        return $this->belongsTo(Category::class, 'show_country_id');
     }
 
     /**
