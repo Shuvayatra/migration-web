@@ -32,7 +32,7 @@ class RssCategory extends Model
      */
     public function feeds()
     {
-        return $this->hasManyThrough(RssNewsFeeds::class, Rss::class, 'category_id');
+        return $this->hasManyThrough(RssNewsFeeds::class, Rss::class, 'category_id')->orderBy('post_date','desc');
     }
 
     public function getImageUrlAttribute()

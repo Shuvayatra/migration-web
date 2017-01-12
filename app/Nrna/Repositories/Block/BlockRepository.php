@@ -33,7 +33,12 @@ class BlockRepository implements BlockRepositoryInterface
     {
         $query = $this->block->sorted()->wherePage('home')->where('show_country_id', null);
         if (request()->has('country_id')) {
-            $query->orWhere('show_country_id', request()->get('country_id'));
+            $query->orWhere(
+                function ($q) {
+                    $q->where('show_country_id', request()->get('country_id'))
+                      ->where('page', 'home');
+                }
+            );
         }
 
         return $query->get();
@@ -60,6 +65,16 @@ class BlockRepository implements BlockRepositoryInterface
 
     public function getJourneyBlocks()
     {
-        return $this->block->sorted()->wherePage('journey')->get();
+        $query = $this->block->sorted()->wherePage('journey')->where('show_country_id', null);
+        if (request()->has('country_id')) {
+            $query->orWhere(
+                function ($q) {
+                    $q->where('show_country_id', request()->get('country_id'))
+                      ->where('page', 'journey');
+                }
+            );
+        }
+
+        return $query->get();
     }
 }

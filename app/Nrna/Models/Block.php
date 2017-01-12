@@ -80,6 +80,9 @@ class Block extends Model
     public function getNotice()
     {
         $query = Notice::published()->orderBy('created_at', 'desc');
+        if ($this->page == "destination") {
+            return $query->where('country_id', $this->metadata->country_id)->first();
+        }
         if (request()->has('country_id')) {
             $query->where('country_id', request()->get('country_id'));
         } else {
