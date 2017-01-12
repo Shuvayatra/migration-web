@@ -74,5 +74,6 @@ $router->group(
         )->name('mobile.screens');
         $router->resource('notice', 'Notice\\NoticeController');
         $router->resource('rss_category', 'Rss\\RssCategoryController');
+        $router->resource('pages', 'Page\\PageController');
     }
 );

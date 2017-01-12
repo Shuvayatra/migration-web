@@ -38,5 +38,6 @@ $router->group(
         $router->get('podcasts', 'Radio\\RadioController@index');
         $router->get('radio/categories', 'Radio\\RadioController@Categories');
         $router->post('onboarding/save', 'Onboarding\\OnboardingController@save');
+        $router->get('page/{page}', 'Page\\PageController@index');
     }
 );
