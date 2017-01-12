@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-class OnboardingRequest extends Request
+class NoticeRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +22,6 @@ class OnboardingRequest extends Request
      */
     public function rules()
     {
-
+        return ['title' => 'required'];
     }
 }

@@ -164,9 +164,18 @@ class PostService
         return $string;
     }
 
+    /**
+     *  news posts
+     * @return mixed
+     */
     public function news()
     {
-        $posts     = $this->postModel->category(144)->orderBy('created_at', 'desc')->paginate();
+        $posts     = $this->postModel->whereHas(
+            'categories',
+            function ($q) {
+                $q->where('section', 'news');
+            }
+        )->orderBy('priority', 'asc')->orderBy('created_by', 'desc')->paginate();
         $postArray = [];
         foreach ($posts as $post) {
             $postArray[] = $this->formatPost($post);

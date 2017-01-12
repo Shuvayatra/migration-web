@@ -36,7 +36,7 @@ $countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->list
 	</div>
 </div>
 <div class="form-group {{ $errors->has('country_id') ? 'has-error' : ''}}">
-	{!! Form::label('country', 'Destination: * ', ['class' => 'col-sm-3 control-label']) !!}
+	{!! Form::label('country', 'Destination: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
 		{!! Form::select('country_id', [''=>'Select']+$countries, null, ['class'=>
 		'form-control required']) !!}

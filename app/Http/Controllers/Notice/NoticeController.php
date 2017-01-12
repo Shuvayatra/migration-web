@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Notice;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\NoticeRequest;
 use App\Nrna\Models\Notice;
 use App\Nrna\Services\FileUpload;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class NoticeController extends Controller
      *
      * @param Request $request
      */
-    public function store(Request $request)
+    public function store(NoticeRequest $request)
     {
         $data           = $request->all();
         $data['status'] = $request->has('status');
@@ -103,13 +104,14 @@ class NoticeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * write brief description
      *
-     * @param  int $id
+     * @param               $id
+     * @param NoticeRequest $request
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update($id, Request $request)
+    public function update($id, NoticeRequest $request)
     {
         $notice         = Notice::findOrFail($id);
         $data           = $request->all();

@@ -40,7 +40,8 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 }
 ?>
 
-<div style="display:@if($page=="home")block @else none @endif" class="form-group post-field">
+<div style="display:@if(in_array($page,['home','journey']))block @else none @endif" class="form-group
+post-field">
 	{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
 		{!! Form::select('show_country_id', [null=>'']+$countries, null,

@@ -52,7 +52,7 @@
 					@endif
 					<td class="sortable-handle">{{$block->layout}}</td>
 					<td class="sortable-handle">{{$block->title}}</td>
-					@if(request()->get('page')=="home")
+					@if(in_array(request()->get('page'),['home','journey']))
 						<td class="sortable-handle">@if(!is_null($block->show_country))
 								{{$block->show_country->title}}@endif</td>
 					@endif
