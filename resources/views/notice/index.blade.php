@@ -14,12 +14,13 @@
 				<tr data-itemId="{{ $item->id }}">
 					<td>
 						{{$item->title}}
-						 <span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
-							   class="post-updated_on">
+						<span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
+							  class="post-updated_on">
 
 							 Created at: {{ $item->created_at->format('Y-m-d H:m') }}
-							 / Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>
+							/ Updated at: {{ $item->updated_at->format('Y-m-d H:m') }}</span>
 					</td>
+					<td>@if(!is_null($item->country)) {{$item->country->title}}@endif</td>
 					<td class="sortable-handle"><a href="{{ route('notice.edit', $item->id) }}">
 							<button type="submit" class="btn btn-primary btn-xs table-button">Edit</button>
 						</a>

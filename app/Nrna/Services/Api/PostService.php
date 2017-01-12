@@ -55,9 +55,9 @@ class PostService
      */
     public function all($filter = [])
     {
-        if (array_has($filter, "category")) {
+        if (array_has($filter, "category_id")) {
             $category_ids = [];
-            $categories   = explode(',', $filter['category']);
+            $categories   = explode(',', $filter['category_id']);
             foreach ($categories as $category_id) {
                 $category       = $this->category->find($category_id);
                 $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();

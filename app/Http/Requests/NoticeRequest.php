@@ -22,6 +22,6 @@ class NoticeRequest extends Request
      */
     public function rules()
     {
-        return ['title' => 'required'];
+        return ['metadata.title' => 'required'];
     }
 }

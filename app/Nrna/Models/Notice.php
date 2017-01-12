@@ -57,4 +57,9 @@ class Notice extends Model
 
         return (object) $metadata;
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
