@@ -17,31 +17,49 @@
 	?>
 	<a href="{{ route('post.create') }}?{{request()->getQueryString() }}"
 	   class="btn btn-primary pull-right btn-sm button">Add New Post</a>
-	<div style="width: 80%" class="post-filter-wrap">
+	<div class="post-filter-wrap">
 		<h3>Filter Criteria</h3>
-		{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
-		{!! Form::label('Start date:', 'Start date ', ['class' => 'control-label']) !!}
-		{!! Form::text('date_from',Input::get('date_from'), ['class' =>'form-control datepicker','placeholder'=>'From']) !!}
-		{!! Form::label('End date', 'End date ', ['class' => 'control-label']) !!}
-		{!! Form::text('date_to',Input::get('date_to'), ['class' =>'form-control datepicker','placeholder'=>'To']) !!}
-		<br>
-		{!! Form::label('Post type',null, ['class' => 'control-label']) !!}
-		{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
-		{!! Form::label('Post status', 'Post status ', ['class' => 'control-label']) !!}
-		{!! Form::select('status' ,[''=>'Select Status']+config('post.status'),Input::get('status'), ['class' =>'form-control']) !!}
-		{!! Form::label('tags', 'Tags ', ['class' => 'control-label']) !!}
-		{!! Form::select('tags[]',$tags,Input::get('tags'), ['class' =>'form-control','multiple'=>true,]) !!}
-		{!! Form::label('user', 'Author ', ['class' => 'control-label']) !!}
-		{!! Form::select('user',[''=>'Select Author']+$users,Input::get('user'), ['class' =>'form-control']) !!}
+		<div class="row">
+			{!! Form::open(['route' => 'post.index', 'method' => 'get', 'class'=>'form-inline']) !!}
+				<div class="form-group col-md-6">
+					{!! Form::label('Start date:', 'Start date ', ['class' => 'control-label']) !!}
+					{!! Form::text('date_from',Input::get('date_from'), ['class' =>'form-control datepicker','placeholder'=>'From']) !!}
+				</div>
+				<div class="form-group col-md-6">
+					{!! Form::label('End date', 'End date ', ['class' => 'control-label']) !!}
+					{!! Form::text('date_to',Input::get('date_to'), ['class' =>'form-control datepicker','placeholder'=>'To']) !!}
+				</div>
+				<div class="form-group col-md-4">
+					{!! Form::label('Post type',null, ['class' => 'control-label']) !!}
+					{!! Form::select('post_type',config('post_type'),Input::get('post_type'), ['class' =>'form-control','placeholder'=>'Select Post type']) !!}
+				</div>
+				<div class="form-group col-md-4">
+					{!! Form::label('Post status', 'Post status ', ['class' => 'control-label']) !!}
+					{!! Form::select('status' ,[''=>'Select Status']+config('post.status'),Input::get('status'), ['class' =>'form-control']) !!}
+				</div>
+				<div class="form-group col-md-4">
+					{!! Form::label('tags', 'Tags ', ['class' => 'control-label']) !!}
+					{!! Form::select('tags[]',$tags,Input::get('tags'), ['class' =>'form-control','multiple'=>true,]) !!}
 
-		{!! Form::label('Country', 'Country ', ['class' => 'control-label']) !!}
-		{!! Form::select('sub_category1[]',[''=>'Country']+$countries,Input::get('sub_category1')[0], ['class'
-		=>'form-control'])
-		 !!}
-		{!! Form::label('Category', 'Category ', ['class' => 'control-label']) !!}
-		{!! Form::select('sub_category1[]',[''=>'Category']+$categories,Input::get('sub_category1')[1], ['class'
-		=>'form-control'])
-		 !!}
+				</div>
+				<div class="form-group col-md-4">
+					{!! Form::label('user', 'Author ', ['class' => 'control-label']) !!}
+					{!! Form::select('user',[''=>'Select Author']+$users,Input::get('user'), ['class' =>'form-control']) !!}
+
+				</div>
+			<div class="form-group col-md-4">
+				{!! Form::label('Country', 'Country ', ['class' => 'control-label']) !!}
+				{!! Form::select('sub_category1[]',[''=>'Country']+$countries,Input::get('sub_category1')[0], ['class'
+				=>'form-control'])
+				 !!}
+			</div>
+			<div class="form-group col-md-4">
+				{!! Form::label('Category', 'Category ', ['class' => 'control-label']) !!}
+				{!! Form::select('sub_category1[]',[''=>'Category']+$categories,Input::get('sub_category1')[1], ['class'
+				=>'form-control'])
+				 !!}
+			</div>
+		</div>
 
 		@if(Input::has('category'))
 			{!! Form::hidden('category', Input::get('category')) !!}
@@ -50,7 +68,6 @@
 			{!! Form::hidden('sub_category', Input::get('sub_category')) !!}
 		@endif
 
-		<br>
 		{!! Form::submit('filter', ['class' => 'btn button btn-primary']) !!}
 		{!! Form::close() !!}
 

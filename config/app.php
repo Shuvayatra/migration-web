@@ -36,7 +36,6 @@ $providers      = [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
-    Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
     Collective\Html\HtmlServiceProvider::class,
     Alaouy\Youtube\YoutubeServiceProvider::class,
     Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
@@ -55,6 +54,7 @@ $localProviders = [
     */
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     'Barryvdh\Debugbar\ServiceProvider',
+    Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
 ];
 
 if (env('APP_ENV') == "local") {
