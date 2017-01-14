@@ -76,3 +76,15 @@ function activeCategoryTab($categories, $category)
 
     return "";
 }
+
+/**
+ * Return active class if the url pattern matches
+ *
+ * @param string $urlPattern
+ *
+ * @return string
+ */
+function activeFor($urlPattern)
+{
+    return str_contains(request()->fullUrl(), $urlPattern) ? 'active' : '';
+}

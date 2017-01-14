@@ -6,6 +6,7 @@ return [
         'section_category' => '\App\Nrna\Models\CategoryAttribute',
         'category'         => '\App\Nrna\Models\Category',
         'block'            => '\App\Nrna\Models\Block',
+        'screen'           => '\App\Nrna\Models\Screen',
         // 'articles' => ['entity' => '\Article', 'relation' => 'tags'] for many to many or many to many polymorphic relation sorting
     ],
 ];

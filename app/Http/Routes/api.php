@@ -39,5 +39,8 @@ $router->group(
         $router->get('radio/categories', 'Radio\\RadioController@Categories');
         $router->post('onboarding/save', 'Onboarding\\OnboardingController@save');
         $router->get('page/{page}', 'Page\\PageController@index');
+
+        $router->get('screens', 'Screen\\ScreenController@index');
+        $router->get('screens/{id}', 'Screen\\ScreenController@show');
     }
 );

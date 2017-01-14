@@ -20,11 +20,21 @@ $layouts = [
 		'notice'         => 'Notice'
 ];
 $page = request()->get('page', 'home');
+if($page == 'dynamic'){
+	$layouts = [
+			'list'           => 'List',
+			'slider'         => 'Slider',
+	];
+}
 ?>
 {!! Form::hidden('page', $page) !!}
 {!! Form::hidden('metadata[country_id]',request()->get('country_id')) !!}
+{!! Form::hidden('metadata[screen_id]',request()->get('screen_id')) !!}
 @if(request()->has('country_id'))
 	{!! Form::hidden('country_id', request()->get('country_id')) !!}
+@endif
+@if(request()->has('screen_id'))
+	{!! Form::hidden('screen_id', request()->get('screen_id')) !!}
 @endif
 
 <div class="form-group {{ $errors->has('metadata.layout') ? 'has-error' : ''}}">

@@ -19,4 +19,13 @@ interface BlockRepositoryInterface
     public function getCategoryBlocks($id, $page);
 
     public function getJourneyBlocks();
+
+    /**
+     * write brief description
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function create($data);
 }

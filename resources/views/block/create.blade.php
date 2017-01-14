@@ -2,12 +2,20 @@
 
 @section('content')
 
-	<h1>Create New Block ({{ucfirst(request()->get('page','home'))}} Screen) @if(request()->has('country_id'))
+	<h1>Create New Block ({{ucfirst(request()->get('page','home'))}} Screen)
+		@if(request()->has('country_id'))
 			<?php
 			$country = \App\Nrna\Models\Category::find(request()->get('country_id'))
 			?>
 			({{$country->title}})
-		@endif</h1>
+		@endif
+		@if(request()->has('screen_id'))
+			<?php
+			$screen = \App\Nrna\Models\Screen::find(request()->get('screen_id'))
+			?>
+			({{$screen->title}})
+		@endif
+	</h1>
 	<hr/>
 	<a href="{{route('blocks.index',['page'=>request()->get('page','home')])}}">Back</a>
 	{!! Form::open(['route' => 'blocks.store', 'class' => 'form-horizontal block-form']) !!}

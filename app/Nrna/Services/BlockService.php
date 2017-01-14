@@ -1,6 +1,7 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\Block;
 use App\Nrna\Repositories\Block\BlockRepositoryInterface;
 
 class BlockService
@@ -57,5 +58,36 @@ class BlockService
         $blocks = $this->block->getJourneyBlocks();
 
         return $blocks->pluck('api_metadata');
+    }
+
+    /**
+     * saves block
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function save($data)
+    {
+        return $this->block->create($data);
+    }
+
+    public function all($filters)
+    {
+        $query = Block::sorted()->orderBy('page', 'desc');
+        $query->where('page', request()->get('page', 'home'));
+
+        if (request()->get('country_id') != '') {
+            $query->whereRaw("metadata->>'country_id'=?", [request()->get('country_id')]);
+        }
+        if (request()->get('journey_id') != '') {
+            $query->whereRaw("metadata->>'journey_id'=?", [request()->get('journey_id')]);
+        }
+
+        if (request()->get('screen_id') != '') {
+            $query->whereRaw("metadata->>'screen_id'=?", [request()->get('screen_id')]);
+        }
+
+        return $query->get();
     }
 }
