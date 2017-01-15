@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\Screen;
 
+use Illuminate\Http\Request;
 use App\Nrna\Services\BlockService;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use EllipseSynergie\ApiResponse\Laravel\Response;
@@ -35,10 +36,14 @@ class HomeController extends ApiGuardController
 
     /**
      * write brief description
+     *
+     * @param Request $request
+     *
      * @return array
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->response->withArray($this->blockService->getHomeBlocks()->toArray());
+        $data = $this->blockService->getHomeBlocks($request->all());
+        return $this->response->withArray($data->toArray());
     }
 }

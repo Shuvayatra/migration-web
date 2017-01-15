@@ -6,6 +6,7 @@ $countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImm
 		'title',
 		'id'
 )->toArray();
+$gender = ['all' => 'select all gender'] + ['m' => 'male', 'f' => 'female', 'o' => 'other'];
 $journeys = \App\Nrna\Models\Category::whereSection('categories')->first()->getImmediateDescendants()->lists(
 		'title',
 		'id'
@@ -49,6 +50,22 @@ post-field">
 		{!! $errors->first('show_country_id', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
+
+<div style="display:@if(in_array($page,['home','journey']))block @else none @endif" class="form-group
+post-field">
+	<div class="form-group {{ $errors->has('visibility') ? 'has-error' : ''}}">
+		{!! Form::label('visibility', 'Visibility: ', ['class' => 'col-sm-3 control-label']) !!}
+		<div class="col-sm-6">
+			{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-4 control-label']) !!}
+			{!! Form::select('visibility[country_id][]',  ['0' => 'select all country'] + $countries, null, ['multiple'=> '','class' => 'form-control'] )
+			 !!}
+			{!! Form::label('Gender', 'Show for gender: ', ['class' => 'col-sm-4 control-label']) !!}
+			{!! Form::select('visibility[gender]',  $gender, null, ['class' => 'form-control'] ) !!}
+			{!! $errors->first('visibility', '<p class="help-block">:message</p>') !!}
+		</div>
+	</div>
+</div>
+
 <div style="display:@if($show_home_fields)block @else none @endif" class="block-content-type-post block-fields">
 	<div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}} post-field radio-field">
 		{!! Form::label('title', 'Title: *', ['class' => 'col-sm-3 control-label']) !!}
@@ -146,5 +163,4 @@ post-field">
 		});
 	</script>
 @endsection
-
 

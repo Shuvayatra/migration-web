@@ -187,7 +187,7 @@ class Post extends Model
     public function getApiMetadataAttribute()
     {
         $metadata              = json_decode(json_encode($this->metadataWithPath), true);
-        $metadata['share_url'] = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
+        $metadata['share_url'] = sprintf('https://app.shuvayatra.org/post/%s', $this->id);
         if ($metadata['type'] == 'text') {
             $metadata['photo_credit'] = isset($metadata['photo_credit']) ? $metadata['photo_credit'] : '';
             $metadata['data']         = array_only($metadata['data'], ['content', 'file']);

@@ -20,11 +20,11 @@ class Block extends Model
     /**
      * @var array
      */
-    protected $jsonColumns = ['metadata'];
+    protected $jsonColumns = ['metadata', 'visibility'];
     /**
      * @var array
      */
-    protected $casts = ['metadata' => 'object'];
+    protected $casts = ['metadata' => 'object', 'visibility' => 'array'];
 
 
     /**
@@ -34,7 +34,7 @@ class Block extends Model
      */
     protected $primaryKey = 'id';
 
-    protected $fillable = ['metadata', 'page', 'position', 'show_country_id'];
+    protected $fillable = ['metadata', 'page', 'position', 'show_country_id', 'visibility'];
 
     public function setShowCountryIdAttribute($show_country_id)
     {
@@ -189,6 +189,11 @@ class Block extends Model
                 return true;
             }
         );
+    }
+
+    public function scopePage($query, $page)
+    {
+        return $query->wherePage($page);
     }
 
 }
