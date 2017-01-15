@@ -53,7 +53,6 @@ class BlockController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-
         Block::create($data);
 
         Session::flash('success', 'Block added!');

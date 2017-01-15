@@ -10,9 +10,11 @@ interface BlockRepositoryInterface
     /**
      * get home screen blocks
      *
+     * @param array $filters
+     *
      * @return mixed
      */
-    public function getHomeBlocks();
+    public function getHomeBlocks(array $filters =[]);
 
     public function getCategoryBlocks($id, $page);
 

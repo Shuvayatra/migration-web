@@ -2,6 +2,7 @@
 namespace App\Nrna\Repositories\Block;
 
 use App\Nrna\Models\Block;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -27,21 +28,56 @@ class BlockRepository implements BlockRepositoryInterface
 
     /**
      * home page blocks
+     *
+     * @param array $filters
+     *
      * @return mixed
+     * @internal param array $applicableFilters
+     *
      */
-    public function getHomeBlocks()
+    public function getHomeBlocks(array $filters = [])
     {
-        $query = $this->block->sorted()->wherePage('home')->where('show_country_id', null);
-        if (request()->has('country_id')) {
-            $query->orWhere(
-                function ($q) {
-                    $q->where('show_country_id', request()->get('country_id'))
-                      ->where('page', 'home');
-                }
-            );
-        }
+        $query = $this->getFilteredBlocks($filters);
 
         return $query->get();
+    }
+
+    /**
+     * @param array    $applicableFilters
+     * @param null|int $limit
+     *
+     * @return array
+     */
+    public function getFilteredBlocks(array $applicableFilters = [], $limit = null)
+    {
+        $query = $this->block->page('home')->select('*');
+        $from  = "blocks ";
+        $this->applyWhere($query, $applicableFilters, $from);
+        $query->from(\DB::raw($from));
+
+        return $query;
+    }
+
+    /**
+     * Prepare where criteria as given filters
+     *
+     * @param       $query
+     * @param array $applicableFilters
+     *
+     * @return string
+     */
+    private function applyWhere($query, array $applicableFilters, &$from)
+    {
+        if (!empty($applicableFilters['gender'])) {
+            $query->whereRaw("blocks.visibility->>'gender' IN (?, 'all')", [$applicableFilters['gender']]);
+        }
+        if (!empty($applicableFilters['country_id'])) {
+            $from .= ",json_array_elements(blocks.visibility->'country_id') as country_id";
+            $query->whereRaw(
+                "(country_id)::TEXT IN (?, '0')",
+                [$applicableFilters['country_id']]
+            );
+        }
     }
 
     /**

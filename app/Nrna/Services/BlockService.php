@@ -22,11 +22,14 @@ class BlockService
 
     /**
      * home page blocks
+     *
+     * @param array $filters
+     *
      * @return array
      */
-    public function getHomeBlocks()
+    public function getHomeBlocks($filters = [])
     {
-        $blocks = $this->block->getHomeBlocks();
+        $blocks = $this->block->getHomeBlocks($filters);
 
         return $blocks->pluck('api_metadata');
     }
