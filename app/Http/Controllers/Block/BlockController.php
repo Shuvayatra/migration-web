@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Nrna\Models\Block;
+use App\Nrna\Services\BlockService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
@@ -13,22 +14,28 @@ use Session;
 class BlockController extends Controller
 {
     /**
+     * @var BlockService
+     */
+    private $blockService;
+
+    /**
+     * BlockController constructor.
+     *
+     * @param BlockService $blockService
+     */
+    public function __construct(BlockService $blockService)
+    {
+        $this->blockService = $blockService;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return void
      */
     public function index()
     {
-        $query = Block::sorted()->orderBy('page', 'desc');
-        $query->where('page', request()->get('page', 'home'));
-
-        if (request()->get('country_id') != '') {
-            $query->whereRaw("metadata->>'country_id'=?", [request()->get('country_id')]);
-        }
-        if (request()->get('journey_id') != '') {
-            $query->whereRaw("metadata->>'journey_id'=?", [request()->get('journey_id')]);
-        }
-        $blocks = $query->get();
+        $blocks = $this->blockService->all(request()->all());
 
         return view('block.index', compact('blocks'));
     }
@@ -53,13 +60,19 @@ class BlockController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        Block::create($data);
+        if ($this->blockService->save($data)) {
+            Session::flash('success', 'Block added!');
+            $request_query = ['page' => request()->get('page', 'home')];
+            if (request()->get('page') == 'destination') {
+                $request_query = $request_query + ['country_id' => request()->get('country_id')];
+            }
+            if (request()->get('page') == 'dynamic') {
+                $request_query = $request_query + ['screen_id' => request()->get('screen_id')];
+            }
 
-        Session::flash('success', 'Block added!');
-        $request_query = ['page' => request()->get('page', 'home')];
-        if (request()->get('page') == 'destination') {
-            $request_query = $request_query + ['country_id' => request()->get('country_id')];
+            return redirect()->route('blocks.index', $request_query);
         }
+        Session::flash('error', 'Problem creating block !');
 
         return redirect()->route('blocks.index', $request_query);
     }
@@ -109,6 +122,9 @@ class BlockController extends Controller
         $request_query = ['page' => request()->get('page', 'home')];
         if (request()->get('page') == 'destination') {
             $request_query = $request_query + ['country_id' => request()->get('country_id')];
+        }
+        if (request()->get('page') == 'dynamic') {
+            $request_query = $request_query + ['screen_id' => request()->get('screen_id')];
         }
 
         return redirect()->route('blocks.index', $request_query);

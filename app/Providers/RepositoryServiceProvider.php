@@ -99,5 +99,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Block\BlockRepositoryInterface',
             'App\Nrna\Repositories\Block\BlockRepository'
         );
+
+        $this->app->bind(
+            'App\Nrna\Repositories\Screen\ScreenRepositoryInterface',
+            'App\Nrna\Repositories\Screen\ScreenRepository'
+        );
     }
 }

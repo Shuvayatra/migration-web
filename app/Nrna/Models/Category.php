@@ -56,6 +56,7 @@ class Category extends Node
         'parent_id',
         'country_info',
         'status',
+        'time_zone'
     ];
 
     public function getMainImageLinkAttribute()

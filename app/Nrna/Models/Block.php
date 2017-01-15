@@ -164,6 +164,15 @@ class Block extends Model
     }
 
     /**
+     * belongs to screen
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function screen()
+    {
+        return $this->belongsTo(Screen::class, "metadata->>'screen_id'");
+    }
+
+    /**
      * belongs to category
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

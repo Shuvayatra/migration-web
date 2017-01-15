@@ -34,7 +34,7 @@
 						App <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="{{route('mobile.screens')}}">Screens</a></li>
+						<li><a href="{{url('blocks?page=home')}}">Screens</a></li>
 						<li><a href="{{route('notice.index')}}">Notice</a></li>
 					</ul>
 				</li>

@@ -1,12 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
-	<div class="">
-		<a href="{{route('mobile.screens')}}">Back</a>
-	</div>
+	@include('block.navbar')
 
 	<div class="block-list-wrap">
-
 		@if(request()->get('page')=='destination')
 			<?php
 			$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants();
@@ -25,18 +22,28 @@
 	</div>
 	@if(request()->get('page')!='destination' || request()->has('country_id'))
 		<div>
-			<h3>List of blocks in {{request()->get('page','home')}} @if(request()->get('page')=='destination' && request
-		()->has('country_id'))
+			<h3>
+				@if(request()->get('page')=='destination' && request()->has('country_id'))
 					<?php
 					$country = $countries->where('id', (int) request()->get('country_id'))->first();
 					?>
-					{{$country->title}}
+						List of blocks in
+						{{request()->get('page','home')}} {{$country->title}} screen
 				@endif
-				screen</h3>
+				@if(request()->get('page')=='dynamic' && request()->has('screen_id'))
+					<?php
+					$screen = \App\Nrna\Models\Screen::find((int) request()->get('screen_id'));
+					?>
+						List of blocks in {{$screen->title}} screen
+				@endif
+				</h3>
 			<?php
 			$request_query = ['page' => request()->get('page', 'home')];
 			if (request()->get('page') == 'destination') {
 				$request_query = $request_query + ['country_id' => request()->get('country_id')];
+			}
+			if (request()->get('page') == 'dynamic') {
+				$request_query = $request_query + ['screen_id' => request()->get('screen_id')];
 			}
 			?>
 			<a href="{{route('blocks.create',$request_query)}}">Add New block</a>

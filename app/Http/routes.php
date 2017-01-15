@@ -75,5 +75,7 @@ $router->group(
         $router->resource('notice', 'Notice\\NoticeController');
         $router->resource('rss_category', 'Rss\\RssCategoryController');
         $router->resource('pages', 'Page\\PageController');
+        $router->resource('screen', 'Screen\\ScreenController');
+        $router->resource('screen.feed', 'Screen\FeedController');
     }
 );

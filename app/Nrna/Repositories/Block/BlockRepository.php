@@ -113,4 +113,16 @@ class BlockRepository implements BlockRepositoryInterface
 
         return $query->get();
     }
+
+    /**
+     * creates block
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function create($data)
+    {
+        return $this->block->create($data);
+    }
 }

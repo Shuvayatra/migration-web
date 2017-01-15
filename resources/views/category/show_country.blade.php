@@ -95,9 +95,18 @@
 												@endforeach
 											@endif
 										</div>
+
 									</div>
 									<hr>
 								@endif
+								<div class="form-group {{ $errors->has('time_zone') ? 'has-error' : ''}}">
+									{!! Form::label('time_zone', 'Timezone: ', ['class' => 'control-label']) !!}
+
+									{!! Form::select('time_zone', [''=>'']+config('timezone'),null, ['class' =>
+									'form-control']) !!}
+									{!! $errors->first('time_zone', '<p class="help-block">:message</p>') !!}
+
+								</div>
 								<div class="form-group {{ $errors->has('status') ? 'has-error' : ''}}">
 									{!! Form::label('display', 'Display in app:', ['class' => 'control-label']) !!}
 									<div class="">
