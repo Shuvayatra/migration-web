@@ -122,16 +122,18 @@ class ScreenRepository implements ScreenRepositoryInterface
      */
     private function applyWhere(array $applicableFilters)
     {
-        $customWhere = " AND is_published = TRUE";
+        $customWhere = "";
 
         if (!empty($applicableFilters['gender'])) {
-            $customWhere .= sprintf(
-                " AND screens.visibility->>'gender' IN ('%s', 'all')",
-                $applicableFilters['gender']
-            );
-        }
-        if (!empty($applicableFilters['country_id'])) {
-            $customWhere .= sprintf(" AND (country_id)::TEXT IN ('\"%s\"', '\"0\"')", $applicableFilters['country_id']);
+            $customWhere .= sprintf(" AND screens.visibility->>'gender' IN ('%s', 'all')", $applicableFilters['gender']);
+
+            if (!empty($applicableFilters['country_id'])) {
+                $customWhere .= sprintf(" AND trim(both '\"' from (country_id)::TEXT) IN ('%s', 'all')",
+                                        $applicableFilters['country_id']);
+            }
+        } else {
+            $customWhere .= " AND trim(both '\"' from (country_id)::TEXT) IN ('all') AND screens.visibility->>'gender' 
+            IN ('all')";
         }
 
         return $customWhere;
