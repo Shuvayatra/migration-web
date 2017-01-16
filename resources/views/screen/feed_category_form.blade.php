@@ -14,11 +14,16 @@
 	)
 										  ->toArray();
 	$is_edit = false;
-	$countries = [''	 => 'All countries'] + $countries;
+	$countries = ['all' => 'All countries'] + $countries;
 	$route = ['screen.feed.store', $screen->id];
 	if ($screen->categories->count() > 0) {
 		$is_edit = true;
 		$route   = ['screen.feed.update', $screen->id, 1];
+		if ($screen->feed_country == 'all') {
+			$selected_country = ['all'];
+		} else {
+			$selected_country = $screen->categories->lists('id')->toArray();
+		}
 	}
 	?>
 	{!! Form::open(['route' => $route,'class' => 'form-horizontal post-form',
@@ -38,7 +43,7 @@
 	</div>
 	<div class="form-group {{ $errors->has('country') ? 'has-error' : ''}}">
 		{!! Form::label('tag', 'Country: ', ['class' => 'control-label']) !!}
-		{!! Form::select('category[country][]', $countries, ($is_edit)?$screen->categories->lists('id')->toArray()
+		{!! Form::select('category[country][]', $countries, ($is_edit)?$selected_country
 		:null,
 		['class' =>
 		'form-control','multiple'=>true]) !!}

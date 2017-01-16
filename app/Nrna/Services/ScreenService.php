@@ -135,7 +135,10 @@ class ScreenService
      */
     public function getDetail($screenId)
     {
-        $screen   = $this->screen->find($screenId);
+        $screen = $this->screen->find($screenId);
+        if (!$screen) {
+            abort(404);
+        }
         $response = (array) $screen->api_metadata;
         if ($screen->type == "block") {
             $response['blocks'] = $this->getBlocks($screen->id);
@@ -163,15 +166,27 @@ class ScreenService
     {
         try {
             $screen = $this->screen->find($screenId);
-
-            foreach ($inputs['category'] as $type => $id) {
-                $categories = $this->categoryService->find($id);
+            if (isset($inputs['category']['category'])) {
+                $categories = $this->categoryService->find($inputs['category']['category']);
                 $categories->map(
-                    function ($category) use ($screen, $type) {
-                        return $screen->categories()->save($category, ['category_type' => $type]);
+                    function ($category) use ($screen) {
+                        return $screen->categories()->save($category, ['category_type' => 'category']);
                     }
                 );
+            }
+            if (isset($inputs['category']['country']) && in_array('all', $inputs['category']['country'])) {
+                $screen->feed_country = 'all';
+                $screen->save();
 
+                return true;
+            }
+            if (isset($inputs['category']['country']) && !in_array('all', $inputs['category']['country'])) {
+                $categories = $this->categoryService->find($inputs['category']['country']);
+                $categories->map(
+                    function ($category) use ($screen) {
+                        return $screen->categories()->save($category, ['category_type' => 'country']);
+                    }
+                );
             }
 
             return true;
@@ -186,12 +201,22 @@ class ScreenService
         try {
             $data   = [];
             $screen = $this->screen->find($screenId);
-
             foreach ($inputs['category'] as $type => $ids) {
                 foreach ($ids as $id) {
-                    $data[$id] = ['category_type' => $type];
+                    if ($id != 0) {
+                        $data[$id] = ['category_type' => $type];
+                    }
                 };
 
+            }
+            if (isset($inputs['category']['country']) && in_array('all', $inputs['category']['country'])) {
+                $screen->feed_country = 'all';
+                $screen->save();
+            }
+            if (isset($inputs['category']['country']) && !in_array('all', $inputs['category']['country'])) {
+                $screen->feed_country = '';
+
+                $screen->save();
             }
             $screen->categories()->sync($data);
 
@@ -214,10 +239,13 @@ class ScreenService
         $screen     = $this->screen->find($id);
         $categories = $screen->categories->groupBy('pivot.category_type');
         $query      = $this->post->select("*");
-        foreach ($categories as $category) {
-            $query->category($category->lists('id')->toArray());
+        if (isset($categories['category'])) {
+            $query->category($categories['category']->lists('id')->toArray());
         }
-        $posts     = $query->paginate(1);
+        if ($screen->feed_country != 'all' && isset($categories['country'])) {
+            $query->category($categories['country']->lists('id')->toArray());
+        }
+        $posts     = $query->paginate();
         $postArray = [];
         foreach ($posts as $post) {
             $postArray[] = $this->postService->formatPost($post);
