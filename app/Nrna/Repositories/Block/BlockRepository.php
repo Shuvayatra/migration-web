@@ -38,6 +38,7 @@ class BlockRepository implements BlockRepositoryInterface
     public function getHomeBlocks(array $filters = [])
     {
         $query = $this->getFilteredBlocks($filters);
+
         $query->page('home');
 
         return $query->get();
@@ -71,12 +72,19 @@ class BlockRepository implements BlockRepositoryInterface
     {
         if (!empty($applicableFilters['gender'])) {
             $query->whereRaw("blocks.visibility->>'gender' IN (?, 'all')", [$applicableFilters['gender']]);
+        } else {
+            $query->whereRaw("blocks.visibility->>'gender' IN ('all')");
         }
         if (!empty($applicableFilters['country_id'])) {
             $from .= ",json_array_elements(blocks.visibility->'country_id') as country_id";
             $query->whereRaw(
-                "(country_id)::TEXT IN (?, '0')",
+                "trim(both '\"' from (country_id)::TEXT) IN (?, '0')",
                 [$applicableFilters['country_id']]
+            );
+        } else {
+            $from .= ",json_array_elements(blocks.visibility->'country_id') as country_id";
+            $query->whereRaw(
+                "trim(both '\"' from (country_id)::TEXT) IN ('0')"
             );
         }
     }
