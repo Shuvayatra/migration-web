@@ -57,6 +57,6 @@ class ScreenController extends ApiGuardController
     {
         $screenDetail = $this->screen->getDetail($screenId);
 
-        return $this->response->withItem($screenDetail, new ScreenDetailTransformer());
+        return $this->response->withArray((array)$screenDetail);
     }
 }

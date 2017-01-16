@@ -23,12 +23,17 @@ class ScreenRequest extends Request
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name'                  => 'required',
             'title'                 => 'required',
             'type'                  => 'required',
             'visibility.country_id' => 'required',
         ];
+        if ($this->isMethod("patch")) {
+            unset($rules['type']);
+        }
+
+        return $rules;
     }
 
     public function messages()
@@ -36,7 +41,7 @@ class ScreenRequest extends Request
         return [
             'name.required'                  => 'Name is required',
             'title.required'                 => 'Title is required',
-            'type.required'                  => 'Name is required',
+            'type.required'                  => 'Type is required',
             'visibility.country_id.required' => 'Visibility Country is required',
         ];
     }

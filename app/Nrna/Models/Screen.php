@@ -86,7 +86,23 @@ class Screen extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class,'screen_feeds')->withPivot("category_type");
+        return $this->belongsToMany(Category::class, 'screen_feeds')->withPivot("category_type");
     }
 
+    public function getApiMetadataAttribute()
+    {
+        $metadata = array_only(
+            $this->toArray(),
+            [
+                'name',
+                'title',
+                'icon_image',
+                'type',
+            ]
+        );
+
+        $metadata['icon_image'] = $this->icon_image_path;
+
+        return (object) $metadata;
+    }
 }

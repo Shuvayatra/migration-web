@@ -38,6 +38,7 @@ class BlockRepository implements BlockRepositoryInterface
     public function getHomeBlocks(array $filters = [])
     {
         $query = $this->getFilteredBlocks($filters);
+        $query->page('home');
 
         return $query->get();
     }
@@ -50,7 +51,7 @@ class BlockRepository implements BlockRepositoryInterface
      */
     public function getFilteredBlocks(array $applicableFilters = [], $limit = null)
     {
-        $query = $this->block->page('home')->select('*');
+        $query = $this->block->select('*');
         $from  = "blocks ";
         $this->applyWhere($query, $applicableFilters, $from);
         $query->from(\DB::raw($from));
@@ -124,5 +125,22 @@ class BlockRepository implements BlockRepositoryInterface
     public function create($data)
     {
         return $this->block->create($data);
+    }
+
+    /**
+     * block for screen
+     *
+     * @param       $screenId
+     * @param array $filters
+     *
+     * @return mixed
+     */
+    public function getScreenBlocks($screenId, $filters = [])
+    {
+        $query = $this->getFilteredBlocks($filters);
+        $query->whereRaw("metadata->>'screen_id'=?", [$screenId]);
+        $query->page('dynamic');
+
+        return $query->get();
     }
 }

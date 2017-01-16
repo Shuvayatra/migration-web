@@ -55,7 +55,7 @@ class FeedController extends Controller
      */
     public function create($screenId)
     {
-        if (!$screen = $this->screen->getDetail($screenId)) {
+        if (!$screen = $this->screen->find($screenId)) {
             return abort(500);
         }
 
@@ -89,7 +89,7 @@ class FeedController extends Controller
      */
     public function edit($screenId, $id)
     {
-        if (!$screen = $this->screen->getDetail($screenId)) {
+        if (!$screen = $this->screen->find($screenId)) {
             return abort(500);
         }
 

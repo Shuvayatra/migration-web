@@ -51,7 +51,7 @@ if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 }
 ?>
 
-<div style="display:@if(in_array($page,['home','journey']))block @else none @endif" class="form-group
+<div style="display:@if(in_array($page,['home','journey','dynamic']))block @else none @endif" class="form-group
 post-field">
 	{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
@@ -61,7 +61,7 @@ post-field">
 	</div>
 </div>
 
-<div style="display:@if(in_array($page,['home','journey']))block @else none @endif" class="form-group
+<div style="display:@if(in_array($page,['home','journey','dynamic']))block @else none @endif" class="form-group
 post-field">
 	<div class="form-group {{ $errors->has('visibility') ? 'has-error' : ''}}">
 		{!! Form::label('visibility', 'Visibility: ', ['class' => 'col-sm-3 control-label']) !!}

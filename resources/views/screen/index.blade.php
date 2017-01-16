@@ -20,7 +20,8 @@
 				@forelse($screens as $screen)
 					<tr data-itemId="{{ $screen->id }}">
 						<td class="sortable-handle"><span class="glyphicon glyphicon-sort"></span></td>
-						<td class="sortable-handle"><img src="{{ $screen->icon_image }}"/></td>
+						<td class="sortable-handle"><img height="70px" width="100px" src="{{ $screen->icon_image_path
+						}}"/></td>
 						<td class="sortable-handle"><a href="{{ route('screen.edit', [$screen->id]) }}">{{ $screen->name }}</a></td>
 						<td class="sortable-handle">{{ $screen->title }}</td>
 						<td class="sortable-handle">{{ $screen->type }}</td>

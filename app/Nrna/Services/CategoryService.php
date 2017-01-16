@@ -246,6 +246,7 @@ class CategoryService
         $categoryArray['updated_at'] = $category->updated_at->timestamp;
         if ($category->getRoot()->section == 'country') {
             $categoryArray['information'] = (array) $category->country_info;
+            $categoryArray['timezone'] =  $category->time_zone;
         }
 
         return $categoryArray;

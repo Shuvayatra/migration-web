@@ -1,8 +1,10 @@
 <?php
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\Post;
 use App\Nrna\Models\Screen;
 use App\Nrna\Repositories\Screen\ScreenRepositoryInterface;
+use App\Nrna\Services\Api\PostService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +26,18 @@ class ScreenService
      * @var CategoryService
      */
     private $categoryService;
+    /**
+     * @var BlockService
+     */
+    private $blockService;
+    /**
+     * @var Post
+     */
+    private $post;
+    /**
+     * @var PostService
+     */
+    private $postService;
 
     /**
      * ScreenService constructor.
@@ -31,15 +45,24 @@ class ScreenService
      * @param ScreenRepositoryInterface $screen
      * @param FileUpload                $fileUpload
      * @param CategoryService           $categoryService
+     * @param BlockService              $blockService
+     * @param Post                      $post
+     * @param PostService               $postService
      */
     public function __construct(
         ScreenRepositoryInterface $screen,
         FileUpload $fileUpload,
-        CategoryService $categoryService
+        CategoryService $categoryService,
+        BlockService $blockService,
+        Post $post,
+        PostService $postService
     ) {
         $this->screen          = $screen;
         $this->fileUpload      = $fileUpload;
         $this->categoryService = $categoryService;
+        $this->blockService    = $blockService;
+        $this->post            = $post;
+        $this->postService     = $postService;
     }
 
     public function getAll()
@@ -71,6 +94,11 @@ class ScreenService
     public function update($screenId, array $updateData)
     {
         if ($screen = $this->screen->find($screenId)) {
+            if (isset($updateData['icon_image'])) {
+                $file_info                = $this->fileUpload->handle($updateData['icon_image']);
+                $updateData['icon_image'] = $file_info['filename'];
+            }
+
             return $screen->update($updateData);
         }
     }
@@ -84,7 +112,18 @@ class ScreenService
      */
     public function getScreens(array $applicableFilters = [])
     {
-        return $this->screen->getFilteredScreens($applicableFilters);
+        $screens = $this->screen->getFilteredScreens($applicableFilters);
+
+        foreach ($screens as $screen) {
+            $screen->icon = ($screen->icon == '') ? '' : url('uploads/'.$screen->icon);
+        }
+
+        return $screens;
+    }
+
+    public function find($id)
+    {
+        return $this->screen->find($id);
     }
 
     /**
@@ -96,7 +135,16 @@ class ScreenService
      */
     public function getDetail($screenId)
     {
-        return $this->screen->find($screenId);
+        $screen   = $this->screen->find($screenId);
+        $response = (array) $screen->api_metadata;
+        if ($screen->type == "block") {
+            $response['blocks'] = $this->getBlocks($screen->id);
+        }
+        if ($screen->type == "feed") {
+            $response['feeds'] = $this->getFeeds($screen->id);
+        }
+
+        return $response;
     }
 
     /**
@@ -152,5 +200,33 @@ class ScreenService
             return false;
         }
 
+    }
+
+    private function getBlocks($id)
+    {
+        $blocks = $this->blockService->getScreenBlocks($id);
+
+        return $blocks->pluck('api_metadata');
+    }
+
+    private function getFeeds($id)
+    {
+        $screen     = $this->screen->find($id);
+        $categories = $screen->categories->groupBy('pivot.category_type');
+        $query      = $this->post->select("*");
+        foreach ($categories as $category) {
+            $query->category($category->lists('id')->toArray());
+        }
+        $posts     = $query->paginate(1);
+        $postArray = [];
+        foreach ($posts as $post) {
+            $postArray[] = $this->postService->formatPost($post);
+        }
+        $posts    = $posts->toArray();
+        $response = array_except($posts, 'data');
+
+        $response['data'] = $postArray;
+
+        return $response;
     }
 }

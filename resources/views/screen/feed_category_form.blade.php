@@ -3,22 +3,29 @@
 	<h1>Manage {{$screen->title}}</h1>
 	<?php
 	$categories = \App\Nrna\Models\Category::where('section', 'categories')->first()->getImmediateDescendants()->lists
-	('title', 'id')
+	(
+			'title',
+			'id'
+	)
 										   ->toArray();
-	$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists('title', 'id')
+	$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists(
+			'title',
+			'id'
+	)
 										  ->toArray();
 	$is_edit = false;
-	$route = ['screen.feed.store',$screen->id];
-	if($screen->categories->count()>0){
+	$countries = [''	 => 'All countries'] + $countries;
+	$route = ['screen.feed.store', $screen->id];
+	if ($screen->categories->count() > 0) {
 		$is_edit = true;
-		$route = ['screen.feed.update',$screen->id,1];
+		$route   = ['screen.feed.update', $screen->id, 1];
 	}
 	?>
 	{!! Form::open(['route' => $route,'class' => 'form-horizontal post-form',
 	'novalidate' => 'novalidate',
 	'files' => true]) !!}
 	@if($is_edit)
-	<input name="_method" type="hidden" value="PUT">
+		<input name="_method" type="hidden" value="PUT">
 	@endif
 
 	<div class="form-group {{ $errors->has('category') ? 'has-error' : ''}}">

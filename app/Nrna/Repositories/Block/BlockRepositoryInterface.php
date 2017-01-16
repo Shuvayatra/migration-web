@@ -14,7 +14,7 @@ interface BlockRepositoryInterface
      *
      * @return mixed
      */
-    public function getHomeBlocks(array $filters =[]);
+    public function getHomeBlocks(array $filters = []);
 
     public function getCategoryBlocks($id, $page);
 
@@ -28,4 +28,6 @@ interface BlockRepositoryInterface
      * @return mixed
      */
     public function create($data);
+
+    public function getScreenBlocks($screenId, $filters = []);
 }

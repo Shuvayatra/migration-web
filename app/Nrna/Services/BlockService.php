@@ -90,4 +90,19 @@ class BlockService
 
         return $query->get();
     }
+
+    /**
+     * home page blocks
+     *
+     * @param       $screenId
+     * @param array $filters
+     *
+     * @return array
+     */
+    public function getScreenBlocks($screenId, $filters = [])
+    {
+        $blocks = $this->block->getScreenBlocks($screenId, $filters);
+
+        return $blocks;
+    }
 }
