@@ -125,10 +125,10 @@ class ScreenRepository implements ScreenRepositoryInterface
         $customWhere = "";
 
         if (!empty($applicableFilters['gender'])) {
-            $customWhere .= sprintf(" AND screens.visibility->>'gender' IN ('%s', 'all')", $applicableFilters['gender']);
+            $customWhere .= sprintf(" AND screens.visibility->>'gender' IN ('%s')", $applicableFilters['gender']);
 
             if (!empty($applicableFilters['country_id'])) {
-                $customWhere .= sprintf(" AND trim(both '\"' from (country_id)::TEXT) IN ('%s', 'all')",
+                $customWhere .= sprintf(" AND trim(both '\"' from (country_id)::TEXT) IN ('%s')",
                                         $applicableFilters['country_id']);
             }
         } else {
