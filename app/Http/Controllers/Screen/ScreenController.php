@@ -97,7 +97,7 @@ class ScreenController extends Controller
      */
     public function edit($screenId)
     {
-        $screen       = $this->screen->getDetail($screenId);
+        $screen       = $this->screen->find($screenId);
         $countries    = Category::where('section', 'country')->first()->getImmediateDescendants()->lists('title', 'id')->toArray();
         $countries    = ['all' => 'All Countries'] + $countries;
         $gender       = config('screen.gender');

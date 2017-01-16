@@ -20,7 +20,7 @@
 		{!! Form::file('icon_image', null, ['class' => 'form-control']) !!}
 		{!! $errors->first('icon_image', '<p class="help-block">:message</p>') !!}
 		@if(isset($screen))
-			<img src="{{$screen->icon_image_path}}"/>
+			<img height="100px"  width="100px" class="thumbnail" src="{{$screen->icon_image_path}}"/>
 		@endif
 	</div>
 </div>
