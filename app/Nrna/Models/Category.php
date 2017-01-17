@@ -118,7 +118,7 @@ class Category extends Node
      */
     public function getTitleAttribute($title)
     {
-        if (in_array(\Request::route()->getName(), ['category.edit', 'category.show'])) {
+        if (in_array(\Request::route()->getName(), ['category.edit'])) {
             return $title;
         }
         if (\Auth::guest()) {
@@ -141,7 +141,7 @@ class Category extends Node
      */
     public function getTitleEnAttribute($title)
     {
-        if (in_array(\Request::route()->getName(), ['category.edit'])) {
+        if (in_array(\Request::route()->getName(), ['category.edit', 'category.show'])) {
             return $title;
         }
         if (\Auth::guest()) {
