@@ -83,11 +83,6 @@
 					<td class="icon-wrap"><i class="{{$item->metadata->type}} icons" aria-hidden="true"></i></td>
 					<td>
 						<a href="{{route('post.show',$item->id)}}?{{request()->getQueryString() }}">{{ $item->metadata->title }}</a>
-						<div>
-							@foreach($item->categories as $category)
-								<span class="label label-default">{{$category->title}}</span>
-							@endforeach
-						</div>
 						<span></span>
 						<span class="label label-{{config('post.status_color.'.$item->metadata->status)}}">{{$item->metadata->status}}</span>
 						<span style="font-size: 10px;color: #3d3d3d;margin-top: 4px;display: block;"
