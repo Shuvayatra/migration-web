@@ -37,6 +37,9 @@ class NoticeService
     public function getByPage($page, $id = null)
     {
         $notice = $this->noticeRepository->getByPage($page, $id);
+        if (is_null($notice)) {
+            return [];
+        }
 
         return $notice->api_metadata;
     }
