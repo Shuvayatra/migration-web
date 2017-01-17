@@ -69,6 +69,7 @@ class Notice extends Model
     {
         $metadata             = json_decode(json_encode($this->metadata), true);
         $metadata['layout']   = 'notice';
+        $metadata['position'] = 1;
         $metadata['id']       = $this->id;
         $metadata['deeplink'] = isset($metadata['deeplink']) ? $metadata['deeplink'] : '';
         if (isset($this->metadata->image) && $this->metadata->image != '') {
