@@ -71,7 +71,7 @@ class BlockRepository implements BlockRepositoryInterface
     private function applyWhere($query, array $applicableFilters, &$from)
     {
         if (!empty($applicableFilters['gender'])) {
-            $query->whereRaw("blocks.visibility->>'gender' IN (?)", [$applicableFilters['gender']]);
+            $query->whereRaw("blocks.visibility->>'gender' IN (?)", [strtolower($applicableFilters['gender'])]);
         } else {
             $query->whereRaw("blocks.visibility->>'gender' IN ('all')");
         }

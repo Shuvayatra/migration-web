@@ -44,6 +44,7 @@ class HomeController extends ApiGuardController
     public function index(Request $request)
     {
         $data = $this->blockService->getHomeBlocks($request->all());
-        return $this->response->withArray($data->toArray());
+
+        return $this->response->withArray($data);
     }
 }

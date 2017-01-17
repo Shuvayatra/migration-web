@@ -65,14 +65,6 @@ class Block extends Model
                 (array) $this->metadata->category_id
             );
         }
-        if ($this->metadata->layout == 'notice') {
-            if (is_null($this->getNotice())) {
-                $api_metadata['notice'] = null;
-            } else {
-                $notice                 = $this->getNotice();
-                $api_metadata['notice'] = $notice->api_metadata;
-            }
-        }
 
         return $api_metadata;
     }

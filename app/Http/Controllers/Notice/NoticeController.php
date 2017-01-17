@@ -53,13 +53,15 @@ class NoticeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * write brief description
      *
-     * @param Request $request
+     * @param NoticeRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(NoticeRequest $request)
     {
-        $data           = $request->all();
+        $data = $request->all();
         $data['status'] = $request->has('status');
         if (isset($data['metadata']['image'])) {
             $main_image_info           = $this->fileUpload->handle(
@@ -68,6 +70,7 @@ class NoticeController extends Controller
             );
             $data['metadata']['image'] = $main_image_info['filename'];
         };
+
         Notice::create($data);
 
         Session::flash('success', 'Notice added!');

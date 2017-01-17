@@ -56,6 +56,6 @@
 </script>
 @yield('script')
 <!-- Custom Theme Scripts -->
-<script src="{{asset("js/app.min.js")}}"></script>
+<script src="{{asset("js/app.min.js")}}?new"></script>
 </body>
 </html>

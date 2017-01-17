@@ -38,6 +38,10 @@ class ScreenService
      * @var PostService
      */
     private $postService;
+    /**
+     * @var NoticeService
+     */
+    private $noticeService;
 
     /**
      * ScreenService constructor.
@@ -48,6 +52,7 @@ class ScreenService
      * @param BlockService              $blockService
      * @param Post                      $post
      * @param PostService               $postService
+     * @param NoticeService             $noticeService
      */
     public function __construct(
         ScreenRepositoryInterface $screen,
@@ -55,7 +60,8 @@ class ScreenService
         CategoryService $categoryService,
         BlockService $blockService,
         Post $post,
-        PostService $postService
+        PostService $postService,
+        NoticeService $noticeService
     ) {
         $this->screen          = $screen;
         $this->fileUpload      = $fileUpload;
@@ -63,6 +69,7 @@ class ScreenService
         $this->blockService    = $blockService;
         $this->post            = $post;
         $this->postService     = $postService;
+        $this->noticeService   = $noticeService;
     }
 
     public function getAll()
@@ -129,23 +136,26 @@ class ScreenService
     /**
      * Get screen detail
      *
-     * @param int $screenId
+     * @param $screenId
      *
-     * @return Model
+     * @return array
      */
+
     public function getDetail($screenId)
     {
         $screen = $this->screen->find($screenId);
+
         if (!$screen) {
             abort(404);
         }
         $response = (array) $screen->api_metadata;
         if ($screen->type == "block") {
-            $response['blocks'] = $this->getBlocks($screen->id);
+            $response['blocks'] = $this->getBlocks($screenId);
         }
         if ($screen->type == "feed") {
-            $response['feeds'] = $this->getFeeds($screen->id);
+            $response['feeds'] = $this->getFeeds($screenId);
         }
+        $response['notice'] = $this->noticeService->getByPage('dynamic', $screenId);
 
         return $response;
     }
@@ -231,7 +241,7 @@ class ScreenService
     {
         $blocks = $this->blockService->getScreenBlocks($id);
 
-        return $blocks->pluck('api_metadata');
+        return $blocks;
     }
 
     private function getFeeds($id)

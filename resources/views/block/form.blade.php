@@ -17,7 +17,6 @@ $layouts = [
 		'slider'         => 'Slider',
 		'country_widget' => 'Country Widget',
 		'radio_widget'   => 'Radio Widget',
-		'notice'         => 'Notice'
 ];
 $page = request()->get('page', 'home');
 if($page == 'dynamic'){
@@ -61,8 +60,7 @@ post-field">
 	</div>
 </div>
 
-<div style="display:@if(in_array($page,['home','journey','dynamic']))block @else none @endif" class="form-group
-post-field">
+<div style="display:@if(in_array($page,['home','journey','dynamic']))block @else block @endif" class="form-group">
 	<div class="form-group {{ $errors->has('visibility') ? 'has-error' : ''}}">
 		{!! Form::label('visibility', 'Visibility: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
@@ -129,8 +127,8 @@ post-field">
 				'form-control
 				required'])
 				 !!}
-				{!! Form::label('metadata[show_view_more][url]', 'URL: * ', ['class' => 'control-label']) !!}
-				{!! Form::text('metadata[show_view_more][url]', (isset($block)&&isset($block->show_view_more->url))?$block->show_view_more->url:'shuvayatra://feed', ['class' => 'form-control required']) !!}
+				{!! Form::hidden('metadata[show_view_more][url]', (isset($block)&&isset($block->show_view_more->url))
+				?$block->show_view_more->url:'shuvayatra://feed', ['class' => 'form-control required']) !!}
 			</div>
 		</div>
 	</div>

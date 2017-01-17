@@ -10,15 +10,21 @@ class BlockService
      * @var BlockRepositoryInterface
      */
     private $block;
+    /**
+     * @var NoticeService
+     */
+    private $noticeService;
 
     /**
      * BlockService constructor.
      *
      * @param BlockRepositoryInterface $block
+     * @param NoticeService            $noticeService
      */
-    public function __construct(BlockRepositoryInterface $block)
+    public function __construct(BlockRepositoryInterface $block, NoticeService $noticeService)
     {
-        $this->block = $block;
+        $this->block         = $block;
+        $this->noticeService = $noticeService;
     }
 
     /**
@@ -31,8 +37,11 @@ class BlockService
     public function getHomeBlocks($filters = [])
     {
         $blocks = $this->block->getHomeBlocks($filters);
+        $data   = $blocks->pluck('api_metadata')->toArray();
+        $notice = $this->noticeService->getByPage('home');
+        array_push($data, $notice);
 
-        return $blocks->pluck('api_metadata');
+        return $data;
     }
 
     /**
@@ -103,6 +112,8 @@ class BlockService
     {
         $blocks = $this->block->getScreenBlocks($screenId, $filters);
 
-        return $blocks;
+        $data = $blocks->pluck('api_metadata')->toArray();
+
+        return $data;
     }
 }
