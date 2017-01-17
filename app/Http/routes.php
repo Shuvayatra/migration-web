@@ -33,7 +33,7 @@ $router->group(
 $router->group(
     ['middleware' => 'role:admin'],
     function () use ($router) {
-        $router->post('sort', '\Rutorika\Sortable\SortableController@sort');
+        $router->post('sort', 'Sort\\SortableController@sort');
         $router->resource('question', 'Question\\QuestionController');
         $router->resource('tag', 'Tag\\TagController');
         $router->resource('country', 'Country\\CountryController');
@@ -77,5 +77,19 @@ $router->group(
         $router->resource('pages', 'Page\\PageController');
         $router->resource('screen', 'Screen\\ScreenController');
         $router->resource('screen.feed', 'Screen\FeedController');
+        $router->get('categorize/post',
+                     [
+                         'as'   => 'categorize.index',
+                         'uses' => 'Post\\CategorizeController@index',
+                     ]
+
+        );
+        $router->post('categorize/post/save',
+                     [
+                         'as'   => 'categorize.save',
+                         'uses' => 'Post\\CategorizeController@update',
+                     ]
+
+        );
     }
 );
