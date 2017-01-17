@@ -67,8 +67,8 @@ class Notice extends Model
 
     public function getApiMetadataAttribute()
     {
-        $metadata['layout']   = 'notice';
         $metadata             = json_decode(json_encode($this->metadata), true);
+        $metadata['layout']   = 'notice';
         $metadata['id']       = $this->id;
         $metadata['deeplink'] = isset($metadata['deeplink']) ? $metadata['deeplink'] : '';
         if (isset($this->metadata->image) && $this->metadata->image != '') {
