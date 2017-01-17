@@ -135,7 +135,7 @@
 				var postId = $(this).data("post-id");
 				var data ={data:selected,post_id:postId};
 				$.ajax({
-					'url': '/categorize/post/save',
+					'url': save_url,
 					'type': 'POST',
 					'data': data,
 					'success': function(data) {
