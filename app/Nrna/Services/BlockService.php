@@ -39,7 +39,7 @@ class BlockService
         $blocks = $this->block->getHomeBlocks($filters);
         $data   = $blocks->pluck('api_metadata')->toArray();
         $notice = $this->noticeService->getByPage('home');
-        if($notice){
+        if (!empty($notice)) {
             array_push($data, $notice);
         }
 

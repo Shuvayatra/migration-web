@@ -156,7 +156,7 @@ class ScreenService
             $response['feeds'] = $this->getFeeds($screenId);
         }
         $notice = $this->noticeService->getByPage('dynamic', $screenId);
-        if ($notice) {
+        if (!empty($notice)) {
             $response['notice'] = $notice;
         }
 
