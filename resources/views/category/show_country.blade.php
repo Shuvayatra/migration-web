@@ -33,7 +33,13 @@
 								{!! Form::text('title', null, ['class' => 'form-control']) !!}
 								<br>
 								<label for="title_en">Title(English) :</label>
-								{!! Form::text('title_en', null, ['class' => 'form-control']) !!}
+								@if($main_category->section =='country')
+									{!! Form::select('title_en', [''=>'select']+config('country'),null, ['class' =>
+									'form-control'])
+									 !!}
+								@else
+									{!! Form::text('title_en', null, ['class' => 'form-control']) !!}
+								@endif
 								<br>
 								<div class="form-group {{ $errors->has('main_image') ? 'has-error' : ''}}">
 									{!! Form::label('main_image', 'Main Image: ', ['class' => ' control-label']) !!}

@@ -56,7 +56,7 @@ class Category extends Node
         'parent_id',
         'country_info',
         'status',
-        'time_zone'
+        'time_zone',
     ];
 
     public function getMainImageLinkAttribute()
@@ -128,6 +128,30 @@ class Category extends Node
         if (\Auth::user()->language == 'en' && $this->title_en != '') {
             return $this->title_en;
         }
+
+        return $title;
+    }
+
+    /**
+     * change title as user setting
+     *
+     * @param $title
+     *
+     * @return mixed
+     */
+    public function getTitleEnAttribute($title)
+    {
+        if (in_array(\Request::route()->getName(), ['category.edit'])) {
+            return $title;
+        }
+        if (\Auth::guest()) {
+            return $title;
+        }
+        if (config()->has('country.'.$title))
+        {
+            return config()->get('country.'.$title);
+        }
+
 
         return $title;
     }

@@ -7,7 +7,7 @@
 		?>
 		<h1><span class="title-btn">{{$category->title}} </span></h1>
 		@if($category->section !=='categories')
-			@include('category.show_country')
+			@include('category.show_country',['main_category'=>$category])
 		@else
 			@include('category.show_categories')
 		@endif
