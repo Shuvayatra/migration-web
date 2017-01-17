@@ -119,6 +119,7 @@
 @endsection
 @section('script')
 	<script>
+		var save_url = "{{route('categorize.save')}}";
 		$(function () {
 			$(".datepicker").datepicker(
 					{

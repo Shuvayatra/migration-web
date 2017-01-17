@@ -4,7 +4,7 @@
 var changePosition = function(requestData){
 
     $.ajax({
-        'url': '/sort',
+        'url': sort_url,
         'type': 'POST',
         'data': requestData,
         'success': function(data) {

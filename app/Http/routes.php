@@ -33,7 +33,7 @@ $router->group(
 $router->group(
     ['middleware' => 'role:admin'],
     function () use ($router) {
-        $router->post('sort', 'Sort\\SortableController@sort');
+        $router->post('sort', ['as'=>'sort.save','uses'=>'Sort\\SortableController@sort']);
         $router->resource('question', 'Question\\QuestionController');
         $router->resource('tag', 'Tag\\TagController');
         $router->resource('country', 'Country\\CountryController');
