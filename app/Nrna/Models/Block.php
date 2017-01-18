@@ -93,8 +93,10 @@ class Block extends Model
         $query = Post::select('*');
         $from  = 'posts ';
         if (isset($this->metadata->post_type) && !empty($this->metadata->post_type)) {
-            $query->whereRaw("posts.metadata->>'type' in (?)", [implode(',', $this->metadata->post_type)]);
+            $query_no = trim(str_repeat('?,', count($this->metadata->post_type)), ',');
+            $query->whereRaw("posts.metadata->>'type' in ({$query_no})", $this->metadata->post_type);
         }
+
         if (isset($this->metadata->category_id)) {
             $category_ids = [];
             foreach ($this->metadata->category_id as $category) {
