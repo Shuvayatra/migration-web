@@ -71,14 +71,14 @@ class BlockRepository implements BlockRepositoryInterface
     private function applyWhere($query, array $applicableFilters, &$from)
     {
         if (!empty($applicableFilters['gender'])) {
-            $query->whereRaw("blocks.visibility->>'gender' IN (?)", [strtolower($applicableFilters['gender'])]);
+            $query->whereRaw("blocks.visibility->>'gender' IN (?,'all')", [strtolower($applicableFilters['gender'])]);
         } else {
             $query->whereRaw("blocks.visibility->>'gender' IN ('all')");
         }
         if (!empty($applicableFilters['country_id'])) {
             $from .= ",json_array_elements(blocks.visibility->'country_id') as country_id";
             $query->whereRaw(
-                "trim(both '\"' from (country_id)::TEXT) IN (?)",
+                "trim(both '\"' from (country_id)::TEXT) IN (?,'0')",
                 [$applicableFilters['country_id']]
             );
         } else {
