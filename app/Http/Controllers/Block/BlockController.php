@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Block;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\BlockRequest;
 use App\Nrna\Models\Block;
 use App\Nrna\Services\BlockService;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class BlockController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(BlockRequest $request)
     {
         $data = $request->except('_token');
         if ($this->blockService->save($data)) {
@@ -108,11 +109,11 @@ class BlockController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int    $id
      *
-     * @return void
+     * @param Request $request
      */
-    public function update($id, Request $request)
+    public function update($id, BlockRequest $request)
     {
         $block = Block::findOrFail($id);
         $block->update($request->all());

@@ -105,4 +105,13 @@ class Screen extends Model
 
         return (object) $metadata;
     }
+
+    public function getStateAttribute()
+    {
+        if ($this->is_published) {
+            return config('screen.state.1');
+        }
+
+        return config('screen.state.0');
+    }
 }

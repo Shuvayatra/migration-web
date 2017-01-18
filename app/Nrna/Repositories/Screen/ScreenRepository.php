@@ -104,7 +104,7 @@ class ScreenRepository implements ScreenRepositoryInterface
     {
         $rawQuery = "SELECT screens.ID, MAX(screens.title) AS title, MAX(screens.TYPE) AS TYPE, MAX(screens.POSITION)
          AS order, MAX(screens.icon_image) AS icon FROM screens, json_array_elements(visibility->'country_id') AS 
-         country_id WHERE 1 = 1 ";
+         country_id WHERE screens.is_published=true ";
         $rawQuery .= $this->applyWhere($applicableFilters);
         $rawQuery .= " GROUP BY screens.ID ORDER BY screens.ID";
 

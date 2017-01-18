@@ -69,20 +69,6 @@ class Block extends Model
         return $api_metadata;
     }
 
-    public function getNotice()
-    {
-        $query = Notice::published()->orderBy('created_at', 'desc');
-        if ($this->page == "destination") {
-            return $query->where('country_id', $this->metadata->country_id)->first();
-        }
-        if (request()->has('country_id')) {
-            $query->where('country_id', request()->get('country_id'));
-        } else {
-            $query->where('country_id', null);
-        }
-
-        return $query->first();
-    }
 
     /**
      * content form list and slider type layout
@@ -106,14 +92,35 @@ class Block extends Model
             $category_ids = array_unique(array_flatten($category_ids));
             $query->category($category_ids);
         }
-        if (request()->has('country_id')) {
-            $query->category(request()->get('country_id'));
-        }
+        $this->countryFilters($query);
         $query->from(\DB::raw($from));
         $query->published();
+        $query->orderBy('priority');
+        $query->orderBy('created_at', 'desc');
         $query->limit($this->post_limit);
 
         return $query->get()->pluck('api_metadata');
+    }
+
+    public function countryFilters(&$query)
+    {
+        if (!isset($this->metadata->country)) {
+            if (request()->has('country_id')) {
+                $query->category(request()->get('country_id'));
+            }
+
+            return;
+        }
+        if ($this->metadata->country == "all-country") {
+            return;
+        }
+        if ($this->metadata->country->type == "country") {
+            $query->category($this->metadata->country->country_ids);
+        }
+
+        if (request()->has('country_id') && $this->metadata->country->type == "user-selected") {
+            $query->category(request()->get('country_id'));
+        }
     }
 
     /**

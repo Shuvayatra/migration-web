@@ -19,10 +19,10 @@ $layouts = [
 		'radio_widget'   => 'Radio Widget',
 ];
 $page = request()->get('page', 'home');
-if($page == 'dynamic'){
+if ($page == 'dynamic') {
 	$layouts = [
-			'list'           => 'List',
-			'slider'         => 'Slider',
+			'list'   => 'List',
+			'slider' => 'Slider',
 	];
 }
 ?>
@@ -48,17 +48,10 @@ if($page == 'dynamic'){
 if (isset($block) && in_array($block->metadata->layout, ['list', 'slider'])) {
 	$show_home_fields = true;
 }
+if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
+	$show_home_fields = true;
+}
 ?>
-
-<div style="display:@if(in_array($page,['home','journey','dynamic']))block @else none @endif" class="form-group
-post-field">
-	{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-3 control-label']) !!}
-	<div class="col-sm-6">
-		{!! Form::select('show_country_id', [null=>'']+$countries, null,
-		['class' =>'form-control']) !!}
-		{!! $errors->first('show_country_id', '<p class="help-block">:message</p>') !!}
-	</div>
-</div>
 
 <div style="display:@if(in_array($page,['home','journey','dynamic']))block @else block @endif" class="form-group">
 	<div class="form-group {{ $errors->has('visibility') ? 'has-error' : ''}}">
@@ -98,6 +91,52 @@ post-field">
 			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
+	<div class="form-group post-field">
+		{!! Form::label('Country', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
+		<div class="checkbox">
+			<label data-type="all-country" class="country-category">{!! Form::radio('metadata[country][type]',
+			'user-selected', false)
+			 !!}
+				User
+				Selected</label>
+			<label data-type="all-country" class="country-category">{!! Form::radio('metadata[country][type]',
+			'all-country',
+			false) !!} All
+				Country</label>
+			<label data-type="country-specific" class="country-category">
+				{!! Form::radio('metadata[country][type]','country',false) !!}Country specific</label>
+			<?php
+			$show_country_specific_list = false;
+			if (isset($block) && isset($block->metadata->country->type) && $block->metadata->country->type ==
+			"country") {
+				$show_country_specific_list = true;
+			}
+			?>
+			<div class="country-specific-list" style="display: {{($show_country_specific_list)?"block":"none"}}">
+				@foreach($countries as $country_id => $country)
+					<label data-type="country">
+						<?php
+						$show_country = false;
+						if (isset($block) && isset($block->metadata->country->type) && $block->metadata->country->type
+						==
+								"country" &&
+								in_array(
+										$country_id,
+										$block->country->country_ids
+								)
+						) {
+							$show_country = true;
+						}
+						?>
+						{!! Form::checkbox('metadata[country][country_ids][]', $country_id,$show_country)
+						!!}{{$country}}</label>
+				@endforeach
+			</div>
+
+		</div>
+
+	</div>
+
 	<div class="form-group post-field">
 		{!! Form::label('metadata.post_type', 'Post Type: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
@@ -168,6 +207,15 @@ post-field">
 				}
 				$('.block-content-type-' + field).show();
 			});
+			$(document).on('click', '.country-category', function () {
+				var type = $(this).data('type');
+				if (type == 'country-specific') {
+					$('.country-specific-list').show();
+				} else {
+					$('.country-specific-list').hide();
+				}
+			});
+
 		});
 	</script>
 @endsection

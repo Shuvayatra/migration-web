@@ -204,8 +204,10 @@ class Post extends Model
             }
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
-        $metadata['priority'] = $this->priority;
-        $metadata['id']       = $this->id;
+        $metadata['priority']   = $this->priority;
+        $metadata['id']         = $this->id;
+        $metadata['created_at'] = $this->created_at->timestamp;
+        $metadata['updated_at'] = $this->updated_at->timestamp;
         unset($metadata['stage']);
         unset($metadata['status']);
 

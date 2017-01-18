@@ -26,9 +26,15 @@ $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
 $categories = \App\Nrna\Models\Category::where('section', 'categories')->first()->getImmediateDescendants()->lists
-('title', 'id')
-									  ->toArray();
-$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists('title', 'id')
+(
+		'title',
+		'id'
+)
+									   ->toArray();
+$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists(
+		'title',
+		'id'
+)
 									  ->toArray();
 $postService = app('App\Nrna\Services\PostService');
 $posts = $postService->getAllPosts()->lists('title', 'id')->toArray();
@@ -182,7 +188,7 @@ if (request()->has('url')) {
 </div>
 <div class="form-group">
 	{!! Form::label('content', 'Priority: ', ['class' => 'control-label']) !!}
-	{!! Form::selectRange('priority', 1, 10,null,['class' =>'form-control']) !!}
+	{!! Form::selectRange('priority', 1, 10,isset($post)?$post->priority:10,['class' =>'form-control']) !!}
 	{!! $errors->first('priority', '<p class="help-block">:message</p>') !!}
 </div>
 <hr>

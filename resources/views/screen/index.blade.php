@@ -23,7 +23,8 @@
 						<td class="sortable-handle"><img height="70px" width="100px" src="{{ $screen->icon_image_path
 						}}"/></td>
 						<td class="sortable-handle"><a href="{{ route('screen.edit', [$screen->id]) }}">{{ $screen->name }}</a></td>
-						<td class="sortable-handle">{{ $screen->title }}</td>
+						<td class="sortable-handle">{{ $screen->title }} <span class="label
+						label-default">{{$screen->state}}</span></td>
 						<td class="sortable-handle">{{ $screen->type }}</td>
 
 						<td>
