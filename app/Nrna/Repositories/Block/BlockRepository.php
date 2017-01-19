@@ -151,4 +151,9 @@ class BlockRepository implements BlockRepositoryInterface
 
         return $query->get();
     }
+
+    public function find($id)
+    {
+        return $this->block->find($id);
+    }
 }

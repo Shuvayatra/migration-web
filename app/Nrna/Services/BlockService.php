@@ -118,4 +118,9 @@ class BlockService
 
         return $data;
     }
+
+    public function find($id)
+    {
+        return $this->block->find($id);
+    }
 }

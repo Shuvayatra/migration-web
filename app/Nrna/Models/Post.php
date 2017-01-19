@@ -395,7 +395,7 @@ class Post extends Model
             function ($q) use ($ids) {
                 $q->whereIn('id', $ids);
             }
-        )->orderBy('id', 'asc');
+        );
     }
 
 }

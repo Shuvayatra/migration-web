@@ -87,9 +87,9 @@ class BlockController extends Controller
      */
     public function show($id)
     {
-        $blocks = Block::findOrFail($id);
+        $block = Block::findOrFail($id);
 
-        return view('block.show', compact('blocks'));
+        return view('block.show', compact('block'));
     }
 
     /**

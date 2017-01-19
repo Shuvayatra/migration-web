@@ -91,5 +91,12 @@ $router->group(
                      ]
 
         );
+        $router->post('block/{id}/posts',
+                      [
+                          'as'   => 'blocks.posts.store',
+                          'uses' => 'Block\\PostController@store',
+                      ]
+
+        );
     }
 );

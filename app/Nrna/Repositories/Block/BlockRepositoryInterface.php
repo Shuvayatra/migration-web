@@ -30,4 +30,6 @@ interface BlockRepositoryInterface
     public function create($data);
 
     public function getScreenBlocks($screenId, $filters = []);
+
+    public function find($id);
 }

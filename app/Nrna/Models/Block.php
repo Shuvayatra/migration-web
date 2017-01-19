@@ -69,12 +69,40 @@ class Block extends Model
         return $api_metadata;
     }
 
+    public function getContent()
+    {
+        if ($this->custom_posts->count() > 0) {
+            $posts = $this->custom_posts;
+            $posts = $posts->sortBy('priority');
+            $posts = $posts->sortByDesc('created_at');
+        } else {
+            $posts = $this->limited_posts;
+        }
+
+        return $posts->pluck('api_metadata');
+    }
+
+    public function getLimitedPostsAttribute()
+    {
+        $query = $this->getPostsBuilder();
+        $query->limit($this->post_limit);
+
+        return $query->get();
+    }
+
+    public function getAllPostsAttribute()
+    {
+        $query = $this->getPostsBuilder();
+
+        return $query->get();
+    }
+
 
     /**
      * content form list and slider type layout
      * @return mixed
      */
-    public function getContent()
+    public function getPostsBuilder()
     {
         $query = Post::select('*');
         $from  = 'posts ';
@@ -97,9 +125,8 @@ class Block extends Model
         $query->published();
         $query->orderBy('priority');
         $query->orderBy('created_at', 'desc');
-        $query->limit($this->post_limit);
 
-        return $query->get()->pluck('api_metadata');
+        return $query;
     }
 
     public function countryFilters(&$query)
@@ -204,6 +231,21 @@ class Block extends Model
     public function scopePage($query, $page)
     {
         return $query->wherePage($page);
+    }
+
+    public function custom_posts()
+    {
+        return $this->belongsToMany(Post::class, 'block_custom_post');
+    }
+
+    public function getCategories()
+    {
+        return Category::whereIn('id', $this->metadata->category_id)->get();
+    }
+
+    public function getSpecificCountries()
+    {
+        return Category::whereIn('id', $this->metadata->country->country_ids)->get();
     }
 
 }

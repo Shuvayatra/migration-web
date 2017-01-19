@@ -21,15 +21,15 @@
 							/ Updated at: {{ $notice->updated_at->format('Y-m-d H:m') }}</span>
 					</td>
 					<td>
-						@if($notice->screen->screen_type =="home")
+						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="home")
 							<span class="label label-success">
-							{{$notice->screen->screen_type}}
+							{{isset($notice->screen->screen_type)&&$notice->screen->screen_type}}
 						</span>
 						@endif
-						@if($notice->screen->screen_type =="dynamic")
+						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="dynamic")
 							<span class="label label-default">{{$notice->dynamic_screen->title}}</span>
 						@endif
-						@if($notice->screen->screen_type =="country")
+						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="country")
 							<span class="label label-default">{{$notice->destination->title}}</span>
 						@endif
 					</td>
