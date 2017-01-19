@@ -27,7 +27,11 @@
 						</span>
 						@endif
 						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="dynamic")
-							<span class="label label-default">{{$notice->dynamic_screen->title}}</span>
+							@if(!is_null($notice->dynamic_screen))
+								<span class="label label-default">
+								{{$notice->dynamic_screen->title}}
+							</span>
+							@endif
 						@endif
 						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="country")
 							<span class="label label-default">{{$notice->destination->title}}</span>
