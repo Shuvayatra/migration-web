@@ -27,16 +27,16 @@
 					<?php
 					$country = $countries->where('id', (int) request()->get('country_id'))->first();
 					?>
-						List of blocks in
-						{{request()->get('page','home')}} {{$country->title}} screen
+					List of blocks in
+					{{request()->get('page','home')}} {{$country->title}} screen
 				@endif
 				@if(request()->get('page')=='dynamic' && request()->has('screen_id'))
 					<?php
 					$screen = \App\Nrna\Models\Screen::find((int) request()->get('screen_id'));
 					?>
-						List of blocks in {{$screen->title}} screen
+					List of blocks in {{$screen->title}} screen
 				@endif
-				</h3>
+			</h3>
 			<?php
 			$request_query = ['page' => request()->get('page', 'home')];
 			if (request()->get('page') == 'destination') {
@@ -64,10 +64,12 @@
 								{{$block->show_country->title}}@endif</td>
 					@endif
 					<td class="sortable-handle">
-						<a
-								href="{{ route('blocks.show', $block->id) }}?{{request()->getQueryString() }}">
-							<button type="submit" class="btn btn-primary btn-xs table-button">Preview</button>
-						</a>
+						@if(in_array($block->metadata->layout,['list','slider']) )
+							<a
+									href="{{ route('blocks.show', $block->id) }}?{{request()->getQueryString() }}">
+								<button type="submit" class="btn btn-primary btn-xs table-button">Preview</button>
+							</a>
+						@endif
 						<a
 								href="{{ route('blocks.edit', $block->id) }}?{{request()->getQueryString() }}">
 							<button type="submit" class="btn btn-primary btn-xs table-button">Edit</button>
