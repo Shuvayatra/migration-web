@@ -1,16 +1,24 @@
 <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-	{!! Form::label('name', 'Name: ', ['class' => 'col-sm-3 control-label']) !!}
+	{!! Form::label('name', 'Internal Title: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-		{!! Form::text('name', null, ['class' => 'form-control']) !!}
+		{!! Form::text('name', null, ['class' => 'form-control slug-source']) !!}
 		{!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
-	{!! Form::label('title', 'Title: ', ['class' => 'col-sm-3 control-label']) !!}
+	{!! Form::label('title', 'App Title: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
 		{!! Form::text('title', null, ['class' => 'form-control']) !!}
 		{!! $errors->first('title', '<p class="help-block">:message</p>') !!}
+	</div>
+</div>
+
+<div class="form-group {{ $errors->has('slug') ? 'has-error' : ''}}">
+	{!! Form::label('slug', 'Url slug: ', ['class' => 'col-sm-3 control-label']) !!}
+	<div class="col-sm-6">
+		{!! Form::text('slug', null, ['class' => 'form-control slug-target']) !!}
+		{!! $errors->first('slug', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
@@ -20,7 +28,7 @@
 		{!! Form::file('icon_image', null, ['class' => 'form-control']) !!}
 		{!! $errors->first('icon_image', '<p class="help-block">:message</p>') !!}
 		@if(isset($screen))
-			<img height="100px"  width="100px" class="thumbnail" src="{{$screen->icon_image_path}}"/>
+			<img height="100px" width="100px" class="thumbnail" src="{{$screen->icon_image_path}}"/>
 		@endif
 	</div>
 </div>
@@ -51,3 +59,13 @@
 		{!! $errors->first('is_published', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
+
+@section('script')
+	<script src="{{asset("js/vendor/speakingurl.min.js")}}"></script>
+	<script src="{{asset("js/vendor/slugify.min.js")}}"></script>
+	<script>
+		jQuery(function ($) {
+			$('.slug-target').slugify('.slug-source'); // Type as you slug
+		});
+	</script>
+@endsection

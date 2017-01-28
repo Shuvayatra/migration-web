@@ -24,13 +24,16 @@ class ScreenRequest extends Request
     public function rules()
     {
         $rules = [
-            'name'                  => 'required',
+            'name'                  => 'required|unique:screens,name',
+            'slug'                  => 'required|unique:screens,slug',
             'title'                 => 'required',
             'type'                  => 'required',
             'visibility.country_id' => 'required',
         ];
         if ($this->isMethod("patch")) {
             unset($rules['type']);
+            $rules['name'] = 'required|unique:screens,name,'.$this->segment(2);
+            $rules['slug'] = 'required|unique:screens,slug,'.$this->segment(2);
         }
 
         return $rules;

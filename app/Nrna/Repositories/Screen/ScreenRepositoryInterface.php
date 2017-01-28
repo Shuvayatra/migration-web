@@ -56,4 +56,12 @@ interface ScreenRepositoryInterface
      * @return Collection
      */
     public function getFilteredScreens(array $applicableFilters = [], $limit = null);
+
+    /**
+     * @param $slug
+     *
+     * @return Screen
+     *
+     */
+    public function getBySlug($slug);
 }

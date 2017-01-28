@@ -143,7 +143,12 @@ class ScreenService
 
     public function getDetail($screenId)
     {
-        $screen = $this->screen->find($screenId);
+        if (is_numeric($screenId)) {
+            $screen = $this->screen->find($screenId);
+        } else {
+            $screen   = $this->screen->getBySlug($screenId);
+            $screenId = $screen->id;
+        }
 
         if (!$screen) {
             abort(404);

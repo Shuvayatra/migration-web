@@ -102,7 +102,10 @@ class ScreenRepository implements ScreenRepositoryInterface
      */
     public function getFilteredScreens(array $applicableFilters = [], $limit = null)
     {
-        $rawQuery = "SELECT screens.ID, MAX(screens.title) AS title, MAX(screens.TYPE) AS TYPE, MAX(screens.POSITION)
+        $rawQuery = "SELECT screens.ID, MAX(screens.title) AS title, MAX(screens.slug) AS url_slug, MAX(screens.TYPE)
+         AS 
+        TYPE, 
+        MAX(screens.POSITION)
          AS order, MAX(screens.icon_image) AS icon FROM screens, json_array_elements(visibility->'country_id') AS 
          country_id WHERE screens.is_published=true ";
         $rawQuery .= $this->applyWhere($applicableFilters);
@@ -125,12 +128,19 @@ class ScreenRepository implements ScreenRepositoryInterface
         $customWhere = "";
 
         if (!empty($applicableFilters['gender'])) {
-            $customWhere .= sprintf(" AND screens.visibility->>'gender' IN ('%s','all')", strtolower
-            ($applicableFilters['gender']));
+            $customWhere .= sprintf(
+                " AND screens.visibility->>'gender' IN ('%s','all')",
+                strtolower
+                (
+                    $applicableFilters['gender']
+                )
+            );
 
             if (!empty($applicableFilters['country_id'])) {
-                $customWhere .= sprintf(" AND trim(both '\"' from (country_id)::TEXT) IN ('%s','all')",
-                                        $applicableFilters['country_id']);
+                $customWhere .= sprintf(
+                    " AND trim(both '\"' from (country_id)::TEXT) IN ('%s','all')",
+                    $applicableFilters['country_id']
+                );
             }
         } else {
             $customWhere .= " AND trim(both '\"' from (country_id)::TEXT) IN ('all') AND screens.visibility->>'gender' 
@@ -138,6 +148,19 @@ class ScreenRepository implements ScreenRepositoryInterface
         }
 
         return $customWhere;
+    }
+
+    /**
+     * Find an existing Screen by its slug
+     *
+     * @param $slug
+     *
+     * @return Screen
+     *
+     */
+    public function getBySlug($slug)
+    {
+        return $this->screen->whereSlug($slug)->first();
     }
 
 }

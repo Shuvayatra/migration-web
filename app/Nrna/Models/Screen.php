@@ -24,6 +24,7 @@ class Screen extends Model
         'visibility',
         'is_published',
         'position',
+        'slug'
     ];
 
     /**
