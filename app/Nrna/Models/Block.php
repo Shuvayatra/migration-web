@@ -177,7 +177,7 @@ class Block extends Model
      * belongs to country
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function country()
+    public function destination()
     {
         return $this->belongsTo(Category::class, "metadata->>'country_id'");
     }

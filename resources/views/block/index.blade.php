@@ -55,7 +55,8 @@
 					<td class="sortable-handle" style="width: 0px;"><span class="glyphicon glyphicon-sort"></span></td>
 
 					@if(request()->get('page')=="destination")
-						<td class="sortable-handle">{{isset($block->country->title)?$block->country->title:''}}</td>
+						<td class="sortable-handle">{{isset($block->destination->title)
+						?$block->destination->title:''}}</td>
 					@endif
 					<td class="sortable-handle">{{$block->layout}}</td>
 					<td class="sortable-handle">{{$block->title}}</td>
