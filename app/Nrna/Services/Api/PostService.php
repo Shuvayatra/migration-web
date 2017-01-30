@@ -118,15 +118,12 @@ class PostService
     public function formatPostWithSimilar(Post $post)
     {
         $postArray        = $this->formatPost($post);
-        $similarPostArray = [];
-        foreach ($post->similar as $post_model) {
-            $similarPostArray[] = $this->formatPost($post_model);
-        }
+
         $similarPostsArray = [];
         foreach ($post->similar_posts as $post) {
             $similarPostsArray[] = $this->formatPost($post);
         }
-        $postArray['similar']       = $similarPostArray;
+        $postArray['similar']       = [];
         $postArray['similar_posts'] = $similarPostsArray;
 
         return $postArray;
