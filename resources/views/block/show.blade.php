@@ -27,15 +27,17 @@
 							<th>Visible to</th>
 							<td>
 								<label>Country</label>
-								@foreach($block->visibility['country_id'] as $country)
-									@if($country==0)
-										<span class="label label-default">All country</span>
-									@else
-										<?php $countryObject = \App\Nrna\Models\Category::find($country);?>
-										<span class="label label-default">{{$countryObject->title}}</span>
-									@endif
+								@if(!is_null($block->visibility))
+									@foreach($block->visibility['country_id'] as $country)
+										@if($country==0)
+											<span class="label label-default">All country</span>
+										@else
+											<?php $countryObject = \App\Nrna\Models\Category::find($country);?>
+											<span class="label label-default">{{$countryObject->title}}</span>
+										@endif
 
-								@endforeach
+									@endforeach
+								@endif
 								<br>
 								<label>Gender</label>
 								<span class="label label-default">
