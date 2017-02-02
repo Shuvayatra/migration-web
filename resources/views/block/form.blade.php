@@ -57,9 +57,8 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 	<div class="form-group {{ $errors->has('visibility') ? 'has-error' : ''}}">
 		{!! Form::label('visibility', 'Visibility: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
-			{!! Form::label('Country', 'Show in country: ', ['class' => 'col-sm-4 control-label']) !!}
-			{!! Form::select('visibility[country_id][]',  ['0' => 'select all country'] + $countries, null, ['multiple'=> '','class' => 'form-control'] )
-			 !!}
+			<input type="hidden" name="visibility[country_id][]" value="0">
+
 			{!! Form::label('Gender', 'Show for gender: ', ['class' => 'col-sm-4 control-label']) !!}
 			{!! Form::select('visibility[gender]',  $gender, null, ['class' => 'form-control'] ) !!}
 			{!! $errors->first('visibility', '<p class="help-block">:message</p>') !!}
