@@ -27,8 +27,23 @@ class BlockRequest extends Request
         ];
         if (in_array($this->get('metadata')['layout'], ['slider', 'list'])) {
             $rules = $rules + ['metadata.title' => 'required'];
+            $rules = $rules + ['metadata.category_id' => 'required'];
         }
 
         return $rules;
+    }
+
+    /**
+     * Set custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'metadata.layout.required'      => 'Layout is required.',
+            'metadata.title.required'       => 'Title is required.',
+            'metadata.category_id.required' => 'Category field is required.',
+        ];
     }
 }

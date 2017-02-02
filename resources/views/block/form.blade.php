@@ -82,7 +82,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 			{!! $errors->first('metadata.description', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	<div class="form-group post-field">
+	<div class="form-group {{ $errors->has('metadata.category_id') ? 'has-error' : ''}} post-field">
 		{!! Form::label('content tags', 'Category:* ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="col-sm-6">
 			{!! Form::select('metadata[category_id][]', $journeys, null,
