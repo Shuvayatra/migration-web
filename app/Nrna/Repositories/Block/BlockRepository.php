@@ -41,7 +41,7 @@ class BlockRepository implements BlockRepositoryInterface
 
         $query->page('home');
 
-        return $query->get();
+        return $query->sorted()->get();
     }
 
     /**

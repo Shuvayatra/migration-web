@@ -31,11 +31,11 @@ class NoticeRepository
      */
     public function getByPage($page, $id = null)
     {
-        $query = $this->notice->screen($page);
+        $query = $this->notice->published()->screen($page);
         if (!is_null($id)) {
             $query->whereRaw("screen->>'dynamic_id' = ?", [$id]);
         }
 
-        return $query->first();
+        return $query->orderBy('created_by', 'desc')->first();
     }
 }

@@ -22,9 +22,7 @@
 					</td>
 					<td>
 						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="home")
-							<span class="label label-success">
-							{{isset($notice->screen->screen_type)&&$notice->screen->screen_type}}
-						</span>
+							<span class="label label-success">Home</span>
 						@endif
 						@if(isset($notice->screen->screen_type)&&$notice->screen->screen_type =="dynamic")
 							@if(!is_null($notice->dynamic_screen))
