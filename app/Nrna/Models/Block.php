@@ -243,6 +243,10 @@ class Block extends Model
 
     public function getCategories()
     {
+        if (empty($this->metadata->country->category_id)) {
+            return collect([]);
+        }
+
         return Category::whereIn('id', $this->metadata->category_id)->get();
     }
 
