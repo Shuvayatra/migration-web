@@ -80,7 +80,7 @@ if (request()->has('url')) {
 </div>
 
 {!! Form::hidden('metadata[type]', $post_type_active, ['class' => 'post_type_value']) !!}
-<div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
+<div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}}">
 	{!! Form::label('title', 'Title:* ', ['class' => 'control-label']) !!}
 
 	{!! Form::text('metadata[title]', $post_title, ['class' => 'form-control required']) !!}
@@ -151,7 +151,7 @@ if (request()->has('url')) {
 	{!! Form::text('metadata[source_url]', null, ['class' => 'form-control']) !!}
 	{!! $errors->first('metadata.source_url', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
+<div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
 	{!! Form::label('tag', 'Category:* ', ['class' => 'control-label']) !!}
 	{!! Form::select('category_id[]', $categories, $post_categories,
 	['class' =>
@@ -159,12 +159,11 @@ if (request()->has('url')) {
 	{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
 </div>
 
-<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-	{!! Form::label('tag', 'Country:* ', ['class' => 'control-label']) !!}
+<div class="form-group">
+	{!! Form::label('tag', 'Country: ', ['class' => 'control-label']) !!}
 	{!! Form::select('category_id[]', $countries, $post_categories,
 	['class' =>
 	'form-control','multiple'=>true,'id'=>'tags']) !!}
-	{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
 </div>
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">

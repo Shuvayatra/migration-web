@@ -27,12 +27,17 @@ class PostRequest extends Request
             'metadata.status'                => 'required',
             'metadata.type'                  => 'required',
             'category_id'                    => 'required',
-            'metadata.featured_image'        => 'sometimes|max:1024',
+            'metadata.featured_image'        => 'sometimes|max:1024|image',
             'metadata.data.thumbnail'        => 'sometimes|max:1024',
             'metadata.data.file.*.file_name' => 'sometimes|mimes:pdf,doc,docx',
         ];
     }
 
+    /**
+     * Set custom messages for validator errors.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
@@ -40,6 +45,8 @@ class PostRequest extends Request
             'metadata.type.required'      => 'Post Type field is required.',
             'metadata.status.required'    => 'Post Status field is required.',
             'metadata.featured_image.max' => 'The Featured Image may not be greater than :max kilobytes.',
+            'metadata.featured_image.mime' => 'Image file must be valid image file.',
+            'category_id.required' => 'This field is required.'
         ];
     }
 }

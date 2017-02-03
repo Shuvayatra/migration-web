@@ -54,7 +54,7 @@ class BlockController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param BlockRequest|Request $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
