@@ -247,7 +247,7 @@ class ScreenService
 
     private function getBlocks($id)
     {
-        $blocks = $this->blockService->getScreenBlocks($id);
+        $blocks = $this->blockService->getScreenBlocks($id, request()->only('country_id', 'gender'));
 
         return $blocks;
     }

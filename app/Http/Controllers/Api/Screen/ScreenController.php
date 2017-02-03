@@ -47,11 +47,11 @@ class ScreenController extends ApiGuardController
     }
 
     /**
-     * Fetch screen detail
+     *blocks for screen
      *
-     * @param int $screenId
+     * @param $screenId
      *
-     * @return Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory
      */
     public function show($screenId)
     {

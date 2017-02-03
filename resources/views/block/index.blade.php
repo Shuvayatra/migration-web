@@ -64,6 +64,25 @@
 						<td class="sortable-handle">@if(!is_null($block->show_country))
 								{{$block->show_country->title}}@endif</td>
 					@endif
+					<td>
+						@if(!is_null($block->visibility) && isset($block->visibility['country_id']))
+							@foreach($block->visibility['country_id'] as $country)
+								@if($country==0)
+									<span class="label label-default">All country</span>
+								@else
+									<?php $countryObject = \App\Nrna\Models\Category::find($country);?>
+									<span class="label label-default">{{$countryObject->title}}</span>
+								@endif
+
+							@endforeach
+						@endif
+						<br>
+						@if(!empty($block->visibility['gender']))
+						<span class="label label-default">
+									{{config('screen.gender.'.$block->visibility['gender'])}}
+								</span>
+						@endif
+					</td>
 					<td class="sortable-handle">
 						@if(in_array($block->metadata->layout,['list','slider']) )
 							<a
