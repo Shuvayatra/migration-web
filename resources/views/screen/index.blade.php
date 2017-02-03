@@ -13,6 +13,7 @@
 					<th>Name</th>
 					<th>Title</th>
 					<th>Type</th>
+					<th>Visibility</th>
 					<th>Actions</th>
 				</tr>
 				</thead>
@@ -26,6 +27,25 @@
 						<td class="sortable-handle">{{ $screen->title }} <span class="label
 						label-default">{{$screen->state}}</span></td>
 						<td class="sortable-handle">{{ $screen->type }}</td>
+						<td class="sortable-handle">
+							@if(!is_null($screen->visibility) && isset($screen->visibility['country_id']))
+								@foreach($screen->visibility['country_id'] as $country)
+									@if($country=='all')
+										<span class="label label-default">All country</span>
+									@else
+										<?php $countryObject = \App\Nrna\Models\Category::find($country);?>
+										<span class="label label-default">{{$countryObject->title}}</span>
+									@endif
+
+								@endforeach
+							@endif
+							<br>
+							@if(!empty($screen->visibility['gender']))
+								<span class="label label-default">
+									{{config('screen.gender.'.$screen->visibility['gender'])}}
+								</span>
+							@endif
+						</td>
 
 						<td>
 							<a href="{{ route('screen.edit', $screen->id) }}">

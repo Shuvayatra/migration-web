@@ -64,7 +64,7 @@
 						<td class="sortable-handle">@if(!is_null($block->show_country))
 								{{$block->show_country->title}}@endif</td>
 					@endif
-					<td>
+					<td class="sortable-handle">
 						@if(!is_null($block->visibility) && isset($block->visibility['country_id']))
 							@foreach($block->visibility['country_id'] as $country)
 								@if($country==0)
