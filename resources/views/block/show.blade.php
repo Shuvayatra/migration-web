@@ -6,7 +6,17 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<strong> Block Detail</strong>
-					<span class="pull pull-right"><a href="{{route('blocks.edit',$block->id)}}">Edit</a></span>
+					<?php
+					$request_query = ['page' => request()->get('page', 'home')];
+					if (request()->get('page') == 'destination') {
+						$request_query = $request_query + ['country_id' => request()->get('country_id')];
+					}
+					if (request()->get('page') == 'dynamic') {
+						$request_query = $request_query + ['screen_id' => request()->get('screen_id')];
+					}
+					?>
+					<span class="pull pull-right"><a href="{{route('blocks.edit',[$block->id]+$request_query)
+					}}">Edit</a></span>
 				</div>
 				<div class="panel-body">
 					<table class="table table-striped table-bordered table-hover">
