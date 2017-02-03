@@ -51,13 +51,20 @@ class BlockService
      *
      * @param $id
      *
+     * @param $page
+     *
      * @return array
      */
     public function getCategoryBlocks($id, $page)
     {
         $blocks = $this->block->getCategoryBlocks($id, $page);
+        $data   = $blocks->pluck('api_metadata')->toArray();
+        $notice = $this->noticeService->getByPage('country', $id);
+        if (!empty($notice)) {
+            array_push($data, $notice);
+        }
 
-        return $blocks->pluck('api_metadata');
+        return $data;
     }
 
     /**

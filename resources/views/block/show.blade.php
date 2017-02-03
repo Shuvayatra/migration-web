@@ -27,7 +27,7 @@
 							<th>Visible to</th>
 							<td>
 								<label>Country</label>
-								@if(!is_null($block->visibility))
+								@if(!is_null($block->visibility) && isset($block->visibility['country_id']))
 									@foreach($block->visibility['country_id'] as $country)
 										@if($country==0)
 											<span class="label label-default">All country</span>

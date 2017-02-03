@@ -34,15 +34,17 @@ class DestinationController extends ApiGuardController
     }
 
     /**
-     * write brief description
+     * block for destination screen
      *
      * @param $id
      *
-     * @return array
+     * @return \Illuminate\Contracts\Routing\ResponseFactory
      */
     public function destination($id)
     {
-        return $this->response->withArray($this->blockService->getCategoryBlocks($id, 'destination')->toArray());
+        $data = $this->blockService->getCategoryBlocks($id, 'destination');
+
+        return $this->response->withArray($data);
     }
 
     /**

@@ -98,4 +98,9 @@ class Notice extends Model
     {
         return $query->whereRaw("screen->>'screen_type' = ?", [$screen]);
     }
+
+    public function scopeCountry($query, $country_id)
+    {
+        return $query->whereRaw("screen->>'dynamic_id' = ?", [$country_id]);
+    }
 }

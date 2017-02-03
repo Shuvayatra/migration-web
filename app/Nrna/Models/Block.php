@@ -58,12 +58,15 @@ class Block extends Model
             $api_metadata['view_more_title']    = ($api_metadata['view_more']) ? $this->metadata->show_view_more->title : '';
             $api_metadata['view_more_deeplink'] = ($api_metadata['view_more']) ? $this->metadata->show_view_more->url
                 : '';
-            $api_metadata['view_more_filter']   = array_map(
-                function ($category_id) {
-                    return (int) $category_id;
-                },
-                (array) $this->metadata->category_id
-            );
+            $api_metadata['view_more_filter']   = '';
+            if (!empty((array) $this->metadata->category_id)) {
+                $api_metadata['view_more_filter'] = array_map(
+                    function ($category_id) {
+                        return (int) $category_id;
+                    },
+                    (array) $this->metadata->category_id
+                );
+            }
         }
 
         return $api_metadata;
@@ -141,7 +144,7 @@ class Block extends Model
         if ($this->metadata->country == "all-country") {
             return;
         }
-        if ($this->metadata->country->type == "country") {
+        if ($this->metadata->country->type == "country" && !empty($this->metadata->country->country_ids)) {
             $query->category($this->metadata->country->country_ids);
         }
 
@@ -245,6 +248,10 @@ class Block extends Model
 
     public function getSpecificCountries()
     {
+        if (empty($this->metadata->country->country_ids)) {
+            return collect([]);
+        }
+
         return Category::whereIn('id', $this->metadata->country->country_ids)->get();
     }
 
