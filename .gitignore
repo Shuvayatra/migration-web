@@ -1,5 +1,7 @@
 /vendor
+/v1
 /public/files
+/public/photos
 /node_modules
 Homestead.yaml
 Homestead.json
