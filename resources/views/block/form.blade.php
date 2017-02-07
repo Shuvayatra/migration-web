@@ -97,57 +97,52 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
-	@if(in_array($page,['home','dynamic']))
 
-		<div class="form-group post-field">
-			{!! Form::label('Country', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
-			<div class="checkbox">
-				<label data-type="all-country" class="country-category">{!! Form::radio('metadata[country][type]',
-			'user-selected', false)
-			 !!}
-					User
-					Selected</label>
-				<label data-type="all-country" class="country-category">{!! Form::radio('metadata[country][type]',
-			'all-country',
-			false) !!} All
-					Country</label>
-				<label data-type="country-specific" class="country-category">
-					{!! Form::radio('metadata[country][type]','country',false) !!}Country specific</label>
-				<?php
-				$show_country_specific_list = false;
-				if (isset($block) && isset($block->metadata->country->type) && $block->metadata->country->type ==
-						"country"
-				) {
-					$show_country_specific_list = true;
-				}
-				?>
-				<div class="country-specific-list" style="display: {{($show_country_specific_list)?"block":"none"}}">
-					@foreach($countries as $country_id => $country)
-						<label data-type="country">
-							<?php
-							$show_country = false;
-							if (!empty($block->metadata->country->type) && isset($block->country->country_ids) && $block->metadata->country->type ==
-									"country" && in_array(
-											$country_id,
-											$block->country->country_ids
-									)
-							) {
-								$show_country = true;
-							}
-							?>
-							{!! Form::checkbox('metadata[country][country_ids][]', $country_id,$show_country)
-							!!}{{$country}}</label>
-					@endforeach
-				</div>
-
+	<div class="form-group post-field">
+		{!! Form::label('Country', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
+		<div class="checkbox">
+			<label data-type="all-country" class="country-category">
+				{!! Form::radio('metadata[country][type]','user-selected', false)!!}
+				User Selected
+			</label>
+			<label data-type="all-country" class="country-category">
+				{!! Form::radio('metadata[country][type]','all-country',false) !!}
+				All Country
+			</label>
+			<label data-type="country-specific" class="country-category">
+				{!! Form::radio('metadata[country][type]','country',false) !!}
+				Country specific
+			</label>
+			<?php
+			$show_country_specific_list = false;
+			if (isset($block) && isset($block->metadata->country->type) && $block->metadata->country->type ==
+					"country"
+			) {
+				$show_country_specific_list = true;
+			}
+			?>
+			<div class="country-specific-list" style="display: {{($show_country_specific_list)?"block":"none"}}">
+				@foreach($countries as $country_id => $country)
+					<label data-type="country">
+						<?php
+						$show_country = false;
+						if (!empty($block->metadata->country->type) && isset($block->country->country_ids) && $block->metadata->country->type ==
+								"country" && in_array(
+										$country_id,
+										$block->country->country_ids
+								)
+						) {
+							$show_country = true;
+						}
+						?>
+						{!! Form::checkbox('metadata[country][country_ids][]', $country_id,$show_country)
+						!!}{{$country}}</label>
+				@endforeach
 			</div>
 
 		</div>
-	@endif
-	@if(in_array($page,['destination']))
-		{!! Form::hidden('metadata[country][country_ids][]',request()->get('country_id')) !!}
-		{!! Form::hidden('metadata[country][type]','country') !!}
-	@endif
+
+	</div>
 
 	<div class="form-group post-field">
 		{!! Form::label('metadata.post_type', 'Post Type: ', ['class' => 'col-sm-3 control-label']) !!}

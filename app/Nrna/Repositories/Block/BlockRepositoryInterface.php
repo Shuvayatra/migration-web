@@ -16,7 +16,7 @@ interface BlockRepositoryInterface
      */
     public function getHomeBlocks(array $filters = []);
 
-    public function getCategoryBlocks($id, $page);
+    public function getCategoryBlocks($id, $page, array $filters = []);
 
     public function getJourneyBlocks();
 

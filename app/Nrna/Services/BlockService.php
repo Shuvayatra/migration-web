@@ -57,7 +57,7 @@ class BlockService
      */
     public function getCategoryBlocks($id, $page)
     {
-        $blocks = $this->block->getCategoryBlocks($id, $page);
+        $blocks = $this->block->getCategoryBlocks($id, $page, request()->only('country_id', 'gender'));
         $data   = $blocks->pluck('api_metadata')->toArray();
         $notice = $this->noticeService->getByPage('country', $id);
         if (!empty($notice)) {

@@ -147,12 +147,12 @@ class ScreenService
             $screen = $this->screen->find($screenId);
         } else {
             $screen   = $this->screen->getBySlug($screenId);
-            $screenId = $screen->id;
         }
 
         if (!$screen) {
             abort(404);
         }
+        $screenId = $screen->id;
         $response = (array) $screen->api_metadata;
         if ($screen->type == "block") {
             $response['blocks'] = $this->getBlocks($screenId);

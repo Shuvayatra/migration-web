@@ -48,7 +48,7 @@ class Block extends Model
     public function getApiMetadataAttribute()
     {
         $metadata                 = json_decode(json_encode($this->metadata), true);
-        $api_metadata             = array_only($metadata, ['layout', 'title', 'description']);
+        $api_metadata             = array_only($metadata, ['id', 'layout', 'title', 'description']);
         $api_metadata['position'] = $this->position;
 
         if (in_array($this->metadata->layout, ['list', 'slider'])) {
@@ -59,7 +59,7 @@ class Block extends Model
             $api_metadata['view_more_deeplink'] = ($api_metadata['view_more']) ? $this->metadata->show_view_more->url
                 : '';
             $api_metadata['view_more_filter']   = '';
-            if (!empty((array) $this->metadata->category_id)) {
+            if (isset($this->metadata->category_id)) {
                 $api_metadata['view_more_filter'] = array_map(
                     function ($category_id) {
                         return (int) $category_id;
@@ -243,7 +243,7 @@ class Block extends Model
 
     public function getCategories()
     {
-        if (empty($this->metadata->country->category_id)) {
+        if (!isset($this->metadata->category_id)) {
             return collect([]);
         }
 

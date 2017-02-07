@@ -92,12 +92,16 @@ class BlockRepository implements BlockRepositoryInterface
     /**
      * write brief description
      *
-     * @param $id
-     * @param $page
+     * @param       $id
+     * @param       $page
+     * @param array $filters
+     *
+     * @return
      */
-    public function getCategoryBlocks($id, $page)
+    public function getCategoryBlocks($id, $page, array $filters = [])
     {
-        $query = $this->block->sorted()->wherePage($page);
+        $query = $this->getFilteredBlocks($filters);
+        $query->wherePage($page);
         if ($page == 'destination') {
             $query->whereRaw("metadata->>'country_id'=?", [$id]);
         }
