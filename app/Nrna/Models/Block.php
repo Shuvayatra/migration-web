@@ -48,8 +48,9 @@ class Block extends Model
     public function getApiMetadataAttribute()
     {
         $metadata                 = json_decode(json_encode($this->metadata), true);
-        $api_metadata             = array_only($metadata, ['id', 'layout', 'title', 'description']);
+        $api_metadata             = array_only($metadata, ['layout', 'title', 'description']);
         $api_metadata['position'] = $this->position;
+        $api_metadata['id']       = $this->id;
 
         if (in_array($this->metadata->layout, ['list', 'slider'])) {
             $api_metadata['content']            = $this->getContent();
