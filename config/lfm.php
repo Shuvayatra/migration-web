@@ -1,6 +1,8 @@
 <?php
 $images_dir = 'public/photos/';
 $files_dir  = 'public/files/';
+$images_url = '/photos/';
+$files_url  = '/files/';
 if (env("APP_VERSION_URL")) {
     $images_url = '/v1/photos/';
     $files_url  = '/v1/files/';

@@ -6,10 +6,12 @@ use App\Nrna\Services\SortableTrait;
 use App\Nrna\Traits\Json;
 use Illuminate\Database\Eloquent\Model;
 use Rutorika\Sortable;
+use Rutorika\Sortable\BelongsToSortedManyTrait;
 
 class Block extends Model
 {
     use SortableTrait;
+    use BelongsToSortedManyTrait;
     use Json;
     /**
      * The database table used by the model.
@@ -239,7 +241,7 @@ class Block extends Model
 
     public function custom_posts()
     {
-        return $this->belongsToMany(Post::class, 'block_custom_post');
+        return $this->belongsToSortedMany(Post::class, 'position', 'block_custom_post');
     }
 
     public function getCategories()

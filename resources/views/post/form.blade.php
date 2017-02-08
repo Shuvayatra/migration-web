@@ -25,11 +25,8 @@ $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
-$categories = \App\Nrna\Models\Category::where('section', 'categories')->first()->getImmediateDescendants()->lists
-(
-		'title',
-		'id'
-)
+$categories = \App\Nrna\Models\Category::where('section', 'categories')
+									   ->first()->getImmediateDescendants()->sortBy('title')->lists('title', 'id')
 									   ->toArray();
 $countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists(
 		'title',

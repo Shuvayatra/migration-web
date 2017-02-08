@@ -103,7 +103,29 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<strong> Posts</strong>
+					<strong>Pinned Posts</strong>
+					<small class="pull pull-right">(Drag and drop to rearrange position)</small>
+				</div>
+				<div class="panel-body">
+					<table class="table table-striped table-hover">
+						<tbody class="sortable" data-entityname="block">
+						@foreach ($custom_posts as $key=>$post)
+							<tr data-itemId="{{ $post->id }}" data-parentId="{{ $block->id }}">
+								<td class="sortable-handle"><span class="glyphicon glyphicon-sort"></span></td>
+								<th class="sortable-handle"><a href="{{route("post.show",$post->id)}}">{{$post->id}}</a></th>
+								<th class="sortable-handle">{{$post->title}}</th>
+							</tr>
+						@endforeach
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<strong>All Posts</strong>
+					<small class="pull pull-right">(Tick checkbox to pin post)</small>
 				</div>
 				<div class="panel-body">
 					<table class="table table-striped table-bordered table-hover">
@@ -124,13 +146,11 @@
 								if ($custom_posts->count() > 0) {
 									$select_post = !$custom_posts->where('id', $post->id)
 																 ->isEmpty();
-								} else {
-									$select_post = $i < $block->metadata->number_of_post;
 								}
 								?>
 								<th>{!! Form::checkbox("posts[]",$post->id,$select_post,
 								['class' =>
-								 'post']) !!} </th>
+								 'post']) !!}</th>
 							</tr>
 							<?php $i++;?>
 						@endforeach

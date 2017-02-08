@@ -25,7 +25,7 @@ use App\Nrna\Models\Category;
                     <div class="list-group-level1 collapse in" aria-expanded="true">
                         <?php
                         $sectionCategories = $category->getimmediateDescendants();
-                        $sectionCategories = $sectionCategories->sortBy('position');
+                        $sectionCategories = $sectionCategories->sortBy('title');
                         ?>
                         @foreach($sectionCategories as $child)
                             <?php
