@@ -1,6 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
+	<?php
+	$custom_posts = $block->custom_posts;
+	?>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">
@@ -106,18 +109,8 @@
 					<strong>Pinned Posts</strong>
 					<small class="pull pull-right">(Drag and drop to rearrange position)</small>
 				</div>
-				<div class="panel-body">
-					<table class="table table-striped table-hover">
-						<tbody class="sortable" data-entityname="block">
-						@foreach ($custom_posts as $key=>$post)
-							<tr data-itemId="{{ $post->id }}" data-parentId="{{ $block->id }}">
-								<td class="sortable-handle"><span class="glyphicon glyphicon-sort"></span></td>
-								<th class="sortable-handle"><a href="{{route("post.show",$post->id)}}">{{$post->id}}</a></th>
-								<th class="sortable-handle">{{$post->title}}</th>
-							</tr>
-						@endforeach
-						</tbody>
-					</table>
+				<div class="panel-body" id="block_custom_posts">
+					@include('block.pinned_posts_table')
 				</div>
 			</div>
 		</div>
@@ -134,7 +127,6 @@
 						block-form','id'=>'block-posts-form'])
 						 !!}
 						<?php
-						$custom_posts = $block->custom_posts;
 						$i = 0;
 						?>
 						@foreach($block->all_posts as $key=>$post)

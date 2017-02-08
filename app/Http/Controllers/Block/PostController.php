@@ -30,13 +30,12 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * store custom posts
      *
      * @param Request $request
-     *
      * @param         $blockId
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return array
      */
     public function store(Request $request, $blockId)
     {
@@ -48,7 +47,10 @@ class PostController extends Controller
             $posts = $request->get('posts');
         }
         if ($block->custom_posts()->sync($posts)) {
-            return ['success' => true];
+            $custom_posts      = $block->custom_posts();
+            $custom_post_table = view('block.pinned_posts_table', compact('custom_posts'))->render();
+
+            return ['success' => true, 'custom_posts_table' => $custom_post_table];
         }
 
         return ['success' => false];
