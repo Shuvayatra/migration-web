@@ -130,4 +130,32 @@ class BlockService
     {
         return $this->block->find($id);
     }
+
+    public function getBlockPosts($id)
+    {
+        try {
+            $block    = $this->block->find($id);
+            $query    = $block->getPostsBuilder();
+            $posts    = $query->paginate();
+            $response = array_except($posts->toArray(), 'data');
+            $data     = $posts->pluck('api_metadata')->toArray();
+            if ($block->custom_posts->count() > 0) {
+                $query->whereNotIn('id', $block->custom_posts->lists('id')->toArray());
+                if (request()->get('page') == 1) {
+                    $pinned_posts = $block->custom_posts->pluck('api_metadata')->toArray();
+                    $block_posts  = $posts->pluck('api_metadata')->toArray();
+                    $data         = array_merge($pinned_posts, $block_posts);
+                }
+            }
+
+            $response['data'] = $data;
+
+            return $response;
+
+        } catch (\Exception $exception) {
+            logger()->error($exception);
+
+            return false;
+        }
+    }
 }

@@ -117,15 +117,7 @@ class Block extends Model
             $query->whereRaw("posts.metadata->>'type' in ({$query_no})", $this->metadata->post_type);
         }
 
-        if (isset($this->metadata->category_id)) {
-            $category_ids = [];
-            foreach ($this->metadata->category_id as $category) {
-                $category       = Category::find($category);
-                $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
-            }
-            $category_ids = array_unique(array_flatten($category_ids));
-            $query->category($category_ids);
-        }
+        $this->postCategoryFilters($query);
         $this->countryFilters($query);
         $query->from(\DB::raw($from));
         $query->published();
@@ -260,6 +252,42 @@ class Block extends Model
         }
 
         return Category::whereIn('id', $this->metadata->country->country_ids)->get();
+    }
+
+    /**
+     * post category filters
+     *
+     * @param $query
+     *
+     * @return void|string
+     */
+    private function postCategoryFilters(&$query)
+    {
+        if (!isset($this->metadata->category_id)) {
+            return;
+        }
+        $category_ids = [];
+        foreach ($this->metadata->category_id as $category) {
+            $category       = Category::find($category);
+            $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
+        }
+        $category_ids = array_unique(array_flatten($category_ids));
+        if ($this->getCategoryOperator() == "and") {
+            $query->category($category_ids);
+        } else {
+            foreach ($category_ids as $category_id) {
+                $query->category($category_id);
+            }
+        }
+    }
+
+    public function getCategoryOperator()
+    {
+        if (!isset($this->metadata->cateogry->type)) {
+            return "and";
+        }
+
+        return $this->metadata->cateogry->type;
     }
 
 }
