@@ -63,7 +63,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 				 !!}
 			@endif
 			@if(in_array($page,['destination']))
-				{!! Form::hidden('visibility[country_id][]',0) !!}
+				<input name="visibility[country_id][]" type="hidden" value="0">
 			@endif
 
 			{!! Form::label('Gender', 'Show for gender: ', ['class' => 'col-sm-4 control-label']) !!}
@@ -141,7 +141,8 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 										$country_id,
 										$block->country->country_ids
 								)
-						 || (request()->get('country_id')==$country_id)) {
+								|| (request()->get('country_id') == $country_id)
+						) {
 							$show_country = true;
 						}
 						?>
@@ -233,9 +234,9 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 				}
 			});
 
-            if ($('input[name="metadata[country][type]"]:checked').val() == 'country') {
-                $('.country-specific-list').show();
-            }
+			if ($('input[name="metadata[country][type]"]:checked').val() == 'country') {
+				$('.country-specific-list').show();
+			}
 
 		});
 	</script>

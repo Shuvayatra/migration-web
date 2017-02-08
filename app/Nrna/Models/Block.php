@@ -61,7 +61,7 @@ class Block extends Model
             $api_metadata['view_more_title']    = ($api_metadata['view_more']) ? $this->metadata->show_view_more->title : '';
             $api_metadata['view_more_deeplink'] = ($api_metadata['view_more']) ? $this->metadata->show_view_more->url
                 : '';
-            $api_metadata['view_more_filter']   = '';
+            $api_metadata['view_more_filter']   = [];
             if (isset($this->metadata->category_id)) {
                 $api_metadata['view_more_filter'] = array_map(
                     function ($category_id) {

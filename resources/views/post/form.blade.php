@@ -92,8 +92,12 @@ if (request()->has('url')) {
 
 </div>
 
-<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $post_type_active=="text") block @else none @endif"
-	 class="content-type type-text form-group {{ $errors->has('metadata.featured_image') ? 'has-error' : ''}}">
+<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" ||
+$post_type_active=="text" || $post->metadata->type === 'place' || old('metadata.type') =="place" ||
+$post_type_active=="place")
+		block @else none @endif"
+	 class="content-type type-text type-place form-group {{ $errors->has('metadata.featured_image') ? 'has-error' :
+	 ''}}">
 	{!! Form::label('file', 'Featured Image: ', ['class' => 'control-label']) !!}
 	{!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
 	{!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
