@@ -97,6 +97,12 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 			{!! $errors->first('metadata.category_id', '<p class="help-block">:message</p>') !!}
 		</div>
 	</div>
+	<div class="form-group">
+		{!! Form::label('Category', 'Enable AND logic: ', ['class' => 'col-sm-3 control-label']) !!}
+		<label data-type="and-category">
+			{!! Form::checkbox('metadata[category][type]','and', isset($block->metadata->category->type))!!}
+		</label>
+	</div>
 
 	<div class="form-group post-field">
 		{!! Form::label('Country', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -110,7 +116,11 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 				All Country
 			</label>
 			<label data-type="country-specific" class="country-category">
-				{!! Form::radio('metadata[country][type]','country',false) !!}
+				@if(request()->has('country_id'))
+					{!! Form::radio('metadata[country][type]','country',true) !!}
+				@else
+					{!! Form::radio('metadata[country][type]','country',false) !!}
+				@endif
 				Country specific
 			</label>
 			<?php
@@ -131,7 +141,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 										$country_id,
 										$block->country->country_ids
 								)
-						) {
+						 || (request()->get('country_id')==$country_id)) {
 							$show_country = true;
 						}
 						?>
@@ -222,6 +232,10 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 					$('.country-specific-list').hide();
 				}
 			});
+
+            if ($('input[name="metadata[country][type]"]:checked').val() == 'country') {
+                $('.country-specific-list').show();
+            }
 
 		});
 	</script>

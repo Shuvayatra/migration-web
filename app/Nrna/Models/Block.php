@@ -116,7 +116,6 @@ class Block extends Model
             $query_no = trim(str_repeat('?,', count($this->metadata->post_type)), ',');
             $query->whereRaw("posts.metadata->>'type' in ({$query_no})", $this->metadata->post_type);
         }
-
         $this->postCategoryFilters($query);
         $this->countryFilters($query);
         $query->from(\DB::raw($from));
@@ -272,7 +271,7 @@ class Block extends Model
             $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
         }
         $category_ids = array_unique(array_flatten($category_ids));
-        if ($this->getCategoryOperator() == "and") {
+        if ($this->getCategoryOperator() == "or") {
             $query->category($category_ids);
         } else {
             foreach ($category_ids as $category_id) {
@@ -283,11 +282,11 @@ class Block extends Model
 
     public function getCategoryOperator()
     {
-        if (!isset($this->metadata->cateogry->type)) {
-            return "and";
+        if (!isset($this->metadata->category->type)) {
+            return "or";
         }
 
-        return $this->metadata->cateogry->type;
+        return $this->metadata->category->type;
     }
 
 }

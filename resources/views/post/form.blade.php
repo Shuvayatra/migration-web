@@ -158,9 +158,8 @@ if (request()->has('url')) {
 
 <div class="form-group">
 	{!! Form::label('tag', 'Country: ', ['class' => 'control-label']) !!}
-	{!! Form::select('category_id[]', $countries, $post_categories,
-	['class' =>
-	'form-control','multiple'=>true,'id'=>'tags']) !!}
+	{!! Form::select('category_id[]', ['0' => 'select all country'] + $countries, $post_categories,
+	['class' => 'form-control','multiple'=>true,'id'=>'tags']) !!}
 </div>
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
