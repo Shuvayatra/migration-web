@@ -5,7 +5,8 @@ return [
         'journey_category' => '\App\Nrna\Models\JourneySubcategory',
         'section_category' => '\App\Nrna\Models\CategoryAttribute',
         'category'         => '\App\Nrna\Models\Category',
-        'block'            => [
+        'block'            => 'App\Nrna\Models\Block',
+        'block_posts'      => [
             'entity'   => '\App\Nrna\Models\Block',
             'relation' => 'custom_posts' // relation name (method name which returns $this->belongsToSortedMany)
         ],

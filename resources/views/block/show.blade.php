@@ -117,39 +117,11 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<strong>All Posts</strong>
+					<strong>Posts</strong>
 					<small class="pull pull-right">(Tick checkbox to pin post)</small>
 				</div>
-				<div class="panel-body">
-					<table class="table table-striped table-bordered table-hover">
-						<tbody>
-						{!! Form::open(['route' => ['blocks.posts.store',$block->id], 'class' => 'form-horizontal
-						block-form','id'=>'block-posts-form'])
-						 !!}
-						<?php
-						$i = 0;
-						?>
-						@foreach($block->all_posts as $key=>$post)
-							<tr>
-								<th><a href="{{route("post.show",$post->id)}}">{{$post->id}}</a></th>
-								<th>{{$post->title}}</th>
-								<?php
-								$select_post = false;
-								if ($custom_posts->count() > 0) {
-									$select_post = !$custom_posts->where('id', $post->id)
-																 ->isEmpty();
-								}
-								?>
-								<th>{!! Form::checkbox("posts[]",$post->id,$select_post,
-								['class' =>
-								 'post']) !!}</th>
-							</tr>
-							<?php $i++;?>
-						@endforeach
-						{!! Form::close() !!}
-
-						</tbody>
-					</table>
+				<div class="panel-body" id="post_list_table">
+					@include('block.all_posts_table')
 				</div>
 			</div>
 		</div>
@@ -159,16 +131,38 @@
 @section('script')
 	<script>
 		$(function () {
+			$(document).on('click', '.unpin_post', function (e) {
+				var unpin_url = "{{route('blocks.unpin.post',$block->id)}}";
+				var post_id = $(this).data('itemid');
+				$.ajax({
+					'url': unpin_url,
+					'type': 'POST',
+					'data': {post_id: post_id},
+					'success': function (data) {
+						if (data.success) {
+							$('#block_custom_posts').html(data.custom_posts_table);
+							$('#post_list_table').html(data.all_post_table);
+							App.notify.success('Saved!');
+						} else {
+							App.notify.validationError(data.errors);
+						}
+					},
+					'error': function () {
+						App.notify.danger('Something wrong!');
+					}
+				});
+			});
 			$(document).on('click', '.post', function (e) {
-				var $form = $('#block-posts-form');
-				var formData = $form.serialize();
-				var save_url = $form.attr('action');
+				var postId = $(this).val();
+				var save_url = "{{route('blocks.posts.store',$block->id)}}";
 				$.ajax({
 					'url': save_url,
 					'type': 'POST',
-					'data': formData,
+					'data': {post_id: postId},
 					'success': function (data) {
 						if (data.success) {
+							$('#block_custom_posts').html(data.custom_posts_table);
+							$('#post_list_table').html(data.all_post_table);
 							App.notify.success('Saved!');
 						} else {
 							App.notify.validationError(data.errors);

@@ -40,17 +40,33 @@ class PostController extends Controller
     public function store(Request $request, $blockId)
     {
         $block = $this->blockService->find($blockId);
+        $block->custom_posts()->attach($request->get('post_id'));
+        $block             = $this->blockService->find($blockId);
+        $custom_posts      = $block->custom_posts;
+        $custom_post_table = view('block.pinned_posts_table', compact('custom_posts', 'block'))->render();
+        $all_post_table    = view('block.all_posts_table', compact('custom_posts', 'block'))->render();
 
-        if (is_null($request->get('posts'))) {
-            $posts = [];
-        } else {
-            $posts = $request->get('posts');
-        }
-        if ($block->custom_posts()->sync($posts)) {
-            $custom_posts      = $block->custom_posts();
-            $custom_post_table = view('block.pinned_posts_table', compact('custom_posts'))->render();
+        return ['success' => true, 'custom_posts_table' => $custom_post_table, 'all_post_table' => $all_post_table];
+    }
 
-            return ['success' => true, 'custom_posts_table' => $custom_post_table];
+    /**
+     * store custom posts
+     *
+     * @param Request $request
+     * @param         $blockId
+     *
+     * @return array
+     */
+    public function unpin(Request $request, $blockId)
+    {
+        $block = $this->blockService->find($blockId);
+        if ($block->custom_posts()->detach($request->get('post_id'))) {
+            $block             = $this->blockService->find($blockId);
+            $custom_posts      = $block->custom_posts;
+            $custom_post_table = view('block.pinned_posts_table', compact('custom_posts', 'block'))->render();
+            $all_post_table    = view('block.all_posts_table', compact('custom_posts', 'block'))->render();
+
+            return ['success' => true, 'custom_posts_table' => $custom_post_table, 'all_post_table' => $all_post_table];
         }
 
         return ['success' => false];

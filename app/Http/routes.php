@@ -33,7 +33,7 @@ $router->group(
 $router->group(
     ['middleware' => 'role:admin'],
     function () use ($router) {
-        $router->post('sort', ['as'=>'sort.save','uses'=>'Sort\\SortableController@sort']);
+        $router->post('sort', ['as' => 'sort.save', 'uses' => 'Sort\\SortableController@sort']);
         $router->resource('question', 'Question\\QuestionController');
         $router->resource('tag', 'Tag\\TagController');
         $router->resource('country', 'Country\\CountryController');
@@ -77,25 +77,36 @@ $router->group(
         $router->resource('pages', 'Page\\PageController');
         $router->resource('screen', 'Screen\\ScreenController');
         $router->resource('screen.feed', 'Screen\FeedController');
-        $router->get('categorize/post',
-                     [
-                         'as'   => 'categorize.index',
-                         'uses' => 'Post\\CategorizeController@index',
-                     ]
+        $router->get(
+            'categorize/post',
+            [
+                'as'   => 'categorize.index',
+                'uses' => 'Post\\CategorizeController@index',
+            ]
 
         );
-        $router->post('categorize/post/save',
-                     [
-                         'as'   => 'categorize.save',
-                         'uses' => 'Post\\CategorizeController@update',
-                     ]
+        $router->post(
+            'categorize/post/save',
+            [
+                'as'   => 'categorize.save',
+                'uses' => 'Post\\CategorizeController@update',
+            ]
 
         );
-        $router->post('block/{id}/posts',
-                      [
-                          'as'   => 'blocks.posts.store',
-                          'uses' => 'Block\\PostController@store',
-                      ]
+        $router->post(
+            'block/{id}/posts',
+            [
+                'as'   => 'blocks.posts.store',
+                'uses' => 'Block\\PostController@store',
+            ]
+
+        );
+        $router->post(
+            'block/{id}/unpin/post',
+            [
+                'as'   => 'blocks.unpin.post',
+                'uses' => 'Block\\PostController@unpin',
+            ]
 
         );
     }
