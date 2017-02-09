@@ -72,6 +72,7 @@ $countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImm
 								</span>&nbsp;
 								@endforeach
 								<br>	Using <span style="font-weight: 600">'{{$block->getCategoryOperator()}} '</span> logic
+
 							</td>
 						</tr>
 						<tr>
