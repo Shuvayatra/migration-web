@@ -25,7 +25,7 @@ class ScreenRequest extends Request
     {
         $rules = [
             'name'                  => 'required|unique:screens,name',
-            'slug'                  => 'required|unique:screens,slug',
+            'slug'                  => ['required','unique:screens,slug','regex:/^[a-zA-Z0-9|-]+$/'],
             'title'                 => 'required',
             'type'                  => 'required',
             'visibility.country_id' => 'required',
