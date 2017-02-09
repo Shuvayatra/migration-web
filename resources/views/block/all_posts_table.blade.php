@@ -17,7 +17,9 @@
 			<tr>
 				<th><a href="{{route("post.show",$post->id)}}">{{$post->id}}</a></th>
 				<th>{{$post->title}}</th>
-				<th>{!! Form::checkbox("posts[]",$post->id,false,['class' =>'post']) !!}</th>
+				@if($block->metadata->country->type !== "user-selected")
+					<th>{!! Form::checkbox("posts[]",$post->id,false,['class' =>'post']) !!}</th>
+				@endif
 			</tr>
 		@endif
 		<?php $i++;?>

@@ -71,6 +71,7 @@ $countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImm
 									{{$category->title}}
 								</span>&nbsp;
 								@endforeach
+								<br>	Using <span style="font-weight: 600">'{{$block->getCategoryOperator()}} '</span> logic
 							</td>
 						</tr>
 						<tr>
@@ -109,17 +110,19 @@ $countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImm
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<strong>Pinned Posts</strong>
-					<small class="pull pull-right">(Drag and drop to rearrange position)</small>
-				</div>
-				<div class="panel-body" id="block_custom_posts">
-					@include('block.pinned_posts_table')
+		@if($block->metadata->country->type !== "user-selected")
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<strong>Pinned Posts</strong>
+						<small class="pull pull-right">(Drag and drop to rearrange position)</small>
+					</div>
+					<div class="panel-body" id="block_custom_posts">
+						@include('block.pinned_posts_table')
+					</div>
 				</div>
 			</div>
-		</div>
+		@endif
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading clearfix">
