@@ -162,8 +162,13 @@ $post_type_active=="place")
 
 <div class="form-group">
 	{!! Form::label('tag', 'Country: ', ['class' => 'control-label']) !!}
-	{!! Form::select('category_id[]', ['0' => 'select all country'] + $countries, $post_categories,
-	['class' => 'form-control','multiple'=>true,'id'=>'tags']) !!}
+	&nbsp;
+	<label data-type="all-country" class="country-category">
+		{!! Form::checkbox('select all',null,false,['id'=>'select_all_checkbox'])!!}
+		Select All Country
+	</label>
+	{!! Form::select('category_id[]', $countries, $post_categories,
+    ['class' => 'form-control','multiple'=>true,'id'=>'list-of-country']) !!}
 </div>
 
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
@@ -212,6 +217,7 @@ $post_type_active=="place")
 </div>
 @section('script')
 	<script>
+        $('#list-of-country').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true});
 		$(function () {
 			$('.fetch-url-content-btn').on('click', function () {
 				var url = $('.feed-url').val();
@@ -243,6 +249,15 @@ $post_type_active=="place")
 			var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
 			return urlregex.test(textval);
 		}
+
+        $("#select_all_checkbox").click(function(){
+            if($("#select_all_checkbox").is(':checked') ){
+                var selectedItems = $('#list-of-country option').map(function() { return this.value });
+                $("#list-of-country").select2("val", selectedItems);
+            }else{
+                $("#list-of-country").select2("val", "");
+            }
+        });
 	</script>
 @append
 @include('templates.templates')
