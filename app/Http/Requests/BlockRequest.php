@@ -28,6 +28,7 @@ class BlockRequest extends Request
         if (in_array($this->get('metadata')['layout'], ['slider', 'list'])) {
             $rules = $rules + ['metadata.title' => 'required'];
             $rules = $rules + ['metadata.category_id' => 'required'];
+            $rules = $rules + ['metadata.country.type' => 'required'];
         }
 
         return $rules;
@@ -44,6 +45,7 @@ class BlockRequest extends Request
             'metadata.layout.required'      => 'Layout is required.',
             'metadata.title.required'       => 'Title is required.',
             'metadata.category_id.required' => 'Category field is required.',
+            'metadata.country.type.required'=> 'Country type filed is required',
         ];
     }
 }
