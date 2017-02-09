@@ -265,8 +265,7 @@ class Block extends Model
         }
         $category_ids = [];
         foreach ($this->metadata->category_id as $category) {
-            $category       = Category::find($category);
-            $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            $category_ids[] = $category;
         }
         $category_ids = array_unique(array_flatten($category_ids));
         if ($this->getCategoryOperator() == "or") {
