@@ -104,7 +104,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 		</label>
 	</div>
 
-	<div class="form-group post-field">
+	<div class="form-group post-field {{  $errors->has('metadata.country.type') ? 'has-error' : ''}}">
 		{!! Form::label('Country', 'Country: ', ['class' => 'col-sm-3 control-label']) !!}
 		<div class="checkbox">
 			<label data-type="all-country" class="country-category">
@@ -152,7 +152,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 			</div>
 
 		</div>
-
+		{!! $errors->first('metadata.country.type', '<p class="help-block">:message</p>') !!}
 	</div>
 
 	<div class="form-group post-field">

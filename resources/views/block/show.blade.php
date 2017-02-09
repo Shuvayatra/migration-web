@@ -1,3 +1,9 @@
+<?php
+$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists(
+    'title',
+    'id'
+)->toArray();
+?>
 @extends('layouts.master')
 
 @section('content')
@@ -116,9 +122,26 @@
 		</div>
 		<div class="col-md-6">
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<strong>Posts</strong>
-					<small class="pull pull-right">(Tick checkbox to pin post)</small>
+				<div class="panel-heading clearfix">
+					<strong class="pull-left">Posts</strong>
+					@if(isset($block->metadata->country->type) && $block->metadata->country->type === "user-selected")
+						<div class="dropdown pull pull-right">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+									data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								@if(request()->has('country_id'))
+								{{ $countries[request()->get('country_id')] }}
+								@else
+								Select Country
+								@endif
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" style="background: #f5f5f5" aria-labelledby="dropdownMenu1">
+								@foreach($countries as $country_id => $country)
+									<li><a href="{{Request::url().'?country_id='.$country_id}}">{{$country}}</a></li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
 				</div>
 				<div class="panel-body" id="post_list_table">
 					@include('block.all_posts_table')
