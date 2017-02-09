@@ -42,7 +42,7 @@ class PushNotificationRepository implements PushNotificationRepositoryInterface
      */
     public function getAll()
     {
-        return $this->pushNotification->paginate(15);
+        return $this->pushNotification->orderBy('id','desc')->paginate(15);
     }
 
     /**
