@@ -78,9 +78,7 @@ class Block extends Model
     public function getContent()
     {
         if ($this->custom_posts->count() > 0) {
-            $posts = $this->custom_posts;
-            $posts = $posts->sortBy('priority');
-            $posts = $posts->sortByDesc('created_at');
+            $posts = $this->pinnedPosts();
         } else {
             $posts = $this->limited_posts;
         }
@@ -287,6 +285,26 @@ class Block extends Model
         }
 
         return $this->metadata->category->type;
+    }
+
+    /**
+     * pinned posts for api only
+     * @return mixed
+     */
+    private function pinnedPosts()
+    {
+        $posts = $this->custom_posts;
+
+        if ($this->post_limit > $this->custom_posts->count()) {
+            $query = $this->getPostsBuilder();
+            $query->whereNotIn('id', $this->custom_posts->lists('id')->toArray());
+            $query->limit($this->post_limit - $this->custom_posts->count());
+            foreach ($query->get() as $post) {
+                $posts->push($post);
+            }
+        }
+        
+        return $posts;
     }
 
 }
