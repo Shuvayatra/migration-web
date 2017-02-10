@@ -21,7 +21,7 @@
 				<tr>
 					<td>{{ $x }}</td>
 					<td><a href="{{ url('/rss', $item->id) }}">{{ $item->title }}</a></td>
-					<td>{{ isset($item->category->title)?$item->category->title:'' }}</td>
+					<td>{{ ($item->category->title !== null) ? $item->category->title :'' }}</td>
 					<td>{{ $item->url }}</td>
 					<td>
 						<a href="{{ route('rss.edit', $item->id) }}">
