@@ -47,7 +47,7 @@ $posts = \App\Nrna\Models\Post::all()->toArray();
 			</optgroup>
 			<optgroup label="Post">
 				@foreach($posts as $post)
-					<option {{(isset($pushnotification->deeplink) && $pushnotification->deeplink =="shuvayatra://post?post_id=".$post['id'])?"selected":""}}  value="shuvayatra://post?post_id={{$post['id']}}">{{$post['metadata']->title}}</option>
+					<option {{(isset($pushnotification->deeplink) && $pushnotification->deeplink =="shuvayatra://".$post['metadata']->type."?post_id=".$post['id'])?"selected":""}}  value="shuvayatra://{{$post['metadata']->type}}?post_id={{$post['id']}}">{{$post['metadata']->title}}</option>
 				@endforeach
 			</optgroup>
 
