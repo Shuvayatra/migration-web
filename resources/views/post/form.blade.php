@@ -25,7 +25,14 @@ $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
-$categories = \App\Nrna\Models\Category::where('depth', '!=', '0')->lists('title', 'id')->toArray();
+$categories = \App\Nrna\Models\Category::where('section', 'categories')
+									   ->first()->getImmediateDescendants()->sortBy('title')->lists('title', 'id')
+									   ->toArray();
+$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists(
+		'title',
+		'id'
+)
+									  ->toArray();
 $postService = app('App\Nrna\Services\PostService');
 $posts = $postService->getAllPosts()->lists('title', 'id')->toArray();
 $show_text_type = true;
@@ -41,7 +48,7 @@ if (request()->has('sub_category')) {
 }
 if (isset($post)) {
 	$post_categories = $post->categories->lists('id')->toArray();
-	$post_image      = isset($post->metadata->data->news_featured_image_link)?$post->metadata->data->news_featured_image_link:'';
+	$post_image      = isset($post->metadata->data->news_featured_image_link) ? $post->metadata->data->news_featured_image_link : '';
 }
 $post_title = null;
 $post_desc = null;
@@ -55,8 +62,8 @@ if (request()->has('url')) {
 }
 
 ?>
-<div style="display:@if(isset($post) && $post->metadata->type === 'news' || old('metadata.type') =="news" || $post_type_active=="news") block @else none @endif"
-	 class="content-type type-news form-group {{ $errors->has('metadata.data.url') ? 'has-error' : ''}}">
+<div style="display:@if(isset($post)) block @else block @endif"
+	 class="form-group {{ $errors->has('metadata.data.url') ? 'has-error' : ''}}">
 	{!! Form::label('url', 'Url: ', ['class' => 'control-label']) !!}
 	{!! Form::text('metadata[data][url]',request()->get('url'), ['class'=>'form-control feed-url'])!!}
 	{!! $errors->first('metadata.data.url', '<p class="help-block">:message</p>') !!}
@@ -70,7 +77,7 @@ if (request()->has('url')) {
 </div>
 
 {!! Form::hidden('metadata[type]', $post_type_active, ['class' => 'post_type_value']) !!}
-<div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
+<div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}}">
 	{!! Form::label('title', 'Title:* ', ['class' => 'control-label']) !!}
 
 	{!! Form::text('metadata[title]', $post_title, ['class' => 'form-control required']) !!}
@@ -85,8 +92,12 @@ if (request()->has('url')) {
 
 </div>
 
-<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" || $post_type_active=="text") block @else none @endif"
-	 class="content-type type-text form-group {{ $errors->has('metadata.featured_image') ? 'has-error' : ''}}">
+<div style="display:@if(isset($post) && $post->metadata->type === 'text' || old('metadata.type') =="text" ||
+$post_type_active=="text" || $post->metadata->type === 'place' || old('metadata.type') =="place" ||
+$post_type_active=="place")
+		block @else none @endif"
+	 class="content-type type-text type-place form-group {{ $errors->has('metadata.featured_image') ? 'has-error' :
+	 ''}}">
 	{!! Form::label('file', 'Featured Image: ', ['class' => 'control-label']) !!}
 	{!! Form::file('metadata[featured_image]', ['class'=>'form-control' , 'id' => 'text_file'])!!}
 	{!! $errors->first('metadata.featured_image', '<p class="help-block">:message</p>') !!}
@@ -141,23 +152,34 @@ if (request()->has('url')) {
 	{!! Form::text('metadata[source_url]', null, ['class' => 'form-control']) !!}
 	{!! $errors->first('metadata.source_url', '<p class="help-block">:message</p>') !!}
 </div>
-
-<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-	{!! Form::label('tag', 'Tags: ', ['class' => 'control-label']) !!}
-
-	{!! Form::select('tag[]', $tags, isset($post)?$post->tags->lists('id')->toArray():null, ['class' =>
-	'form-control','multiple'=>'','id'=>'tags']) !!}
-	{!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
-
-</div>
-
-<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
-	{!! Form::label('tag', 'Content Tags:* ', ['class' => 'control-label']) !!}
+<div class="form-group {{ $errors->has('category_id') ? 'has-error' : ''}}">
+	{!! Form::label('tag', 'Category:* ', ['class' => 'control-label']) !!}
 	{!! Form::select('category_id[]', $categories, $post_categories,
 	['class' =>
 	'form-control','multiple'=>'','id'=>'tags']) !!}
 	{!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
 </div>
+
+<div class="form-group">
+	{!! Form::label('tag', 'Country: ', ['class' => 'control-label']) !!}
+	&nbsp;
+	<label data-type="all-country" class="country-category">
+		{!! Form::checkbox('select all',null,false,['id'=>'select_all_checkbox'])!!}
+		Select All Country
+	</label>
+	{!! Form::select('category_id[]', $countries, $post_categories,
+    ['class' => 'form-control','multiple'=>true,'id'=>'list-of-country']) !!}
+</div>
+
+<div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
+	{!! Form::label('tag', 'Tags: ', ['class' => 'control-label']) !!}
+
+	{!! Form::select('tag[]', $tags, isset($post)?$post->tags->lists('id')->toArray():null, ['class' =>
+'form-control','multiple'=>'','id'=>'tags']) !!}
+	{!! $errors->first('tag', '<p class="help-block">:message</p>') !!}
+
+</div>
+
 
 <hr>
 <div class="form-group {{ $errors->has('tag') ? 'has-error' : ''}}">
@@ -168,7 +190,11 @@ if (request()->has('url')) {
 	'form-control','multiple'=>'','id'=>'similar_posts']) !!}
 	{!! $errors->first('similar_posts', '<p class="help-block">:message</p>') !!}
 </div>
-
+<div class="form-group">
+	{!! Form::label('content', 'Priority: ', ['class' => 'control-label']) !!}
+	{!! Form::selectRange('priority', 1, 10,isset($post)?$post->priority:10,['class' =>'form-control']) !!}
+	{!! $errors->first('priority', '<p class="help-block">:message</p>') !!}
+</div>
 <hr>
 @if(isset($post))
 	<div class="form-group {{ $errors->has('created_at') ? 'has-error' : ''}}">
@@ -191,6 +217,7 @@ if (request()->has('url')) {
 </div>
 @section('script')
 	<script>
+        $('#list-of-country').select2({placeholder: "Select", allowClear: true, theme: "classic", tags: true});
 		$(function () {
 			$('.fetch-url-content-btn').on('click', function () {
 				var url = $('.feed-url').val();
@@ -222,6 +249,15 @@ if (request()->has('url')) {
 			var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
 			return urlregex.test(textval);
 		}
+
+        $("#select_all_checkbox").click(function(){
+            if($("#select_all_checkbox").is(':checked') ){
+                var selectedItems = $('#list-of-country option').map(function() { return this.value });
+                $("#list-of-country").select2("val", selectedItems);
+            }else{
+                $("#list-of-country").select2("val", "");
+            }
+        });
 	</script>
 @append
 @include('templates.templates')

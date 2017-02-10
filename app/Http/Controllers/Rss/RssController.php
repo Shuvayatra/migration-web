@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Rss;
 
 use App\Http\Requests\RssRequest;
 use App\Nrna\Models\Rss;
+use App\Nrna\Services\RssNewsFeedsService;
 use App\Nrna\Services\RssService;
 use Illuminate\Http\Request;
 
@@ -18,14 +19,21 @@ class RssController extends Controller
      * @var RssService
      */
     private $rssService;
+    /**
+     * @var RssNewsFeedsService
+     */
+    private $rssFeed;
 
     /**
      * RssController constructor.
-     * @param RssService $rssService
+     *
+     * @param RssService          $rssService
+     * @param RssNewsFeedsService $rssFeed
      */
-    public function __construct(RssService $rssService)
+    public function __construct(RssService $rssService, RssNewsFeedsService $rssFeed)
     {
         $this->rssService = $rssService;
+        $this->rssFeed    = $rssFeed;
     }
 
     /**
@@ -54,6 +62,7 @@ class RssController extends Controller
      * Store a newly created resource in storage.
      *
      * @param RssRequest $request
+     *
      * @return Response
      */
     public function store(RssRequest $request)
@@ -67,14 +76,14 @@ class RssController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function show($id)
     {
-        $rss = $this->rssService->find($id);
-        $rssItems = $this->rssService->getRssItems($rss->url);
-        dd($rssItems);
-
+        $rss      = $this->rssService->find($id);
+        $rssItems = $this->rssFeed->getRssItems($rss->url);
+        
         return view('rss.show', compact('rss', 'rssItems'));
     }
 
@@ -82,6 +91,7 @@ class RssController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -96,6 +106,7 @@ class RssController extends Controller
      *
      * @param  int    $id
      * @param Request $request
+     *
      * @return Response
      */
     public function update($id, Request $request)
@@ -113,6 +124,7 @@ class RssController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
+     *
      * @return Response
      */
     public function destroy($id)

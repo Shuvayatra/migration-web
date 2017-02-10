@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api\Post;
 
 use App\Nrna\Services\Api\PostRssService;
 use App\Nrna\Services\Api\PostService;
+use App\Nrna\Services\BlockService;
 use App\Nrna\Services\PostService as Post;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use Illuminate\Http\Request;
@@ -26,19 +27,25 @@ class PostController extends ApiGuardController
      * @var Post
      */
     private $post;
+    /**
+     * @var BlockService
+     */
+    private $blockService;
 
     /**
      * PostController constructor.
      *
-     * @param PostService $postService
-     * @param Response    $response
-     * @param Post        $post
+     * @param PostService  $postService
+     * @param Response     $response
+     * @param Post         $post
+     * @param BlockService $blockService
      */
-    public function __construct(PostService $postService, Response $response, Post $post)
+    public function __construct(PostService $postService, Response $response, Post $post, BlockService $blockService)
     {
         parent::__construct();
-        $this->postService = $postService;
-        $this->post        = $post;
+        $this->postService  = $postService;
+        $this->post         = $post;
+        $this->blockService = $blockService;
     }
 
     /**
@@ -50,9 +57,13 @@ class PostController extends ApiGuardController
      */
     public function index(PostRssService $rssService)
     {
+        if (request()->has('block_id')) {
+            return $this->blockService->getBlockPosts(request()->get('block_id'));
+        }
         $response = $this->postService->all(request()->all());
         if (request()->has('type') && request()->get('type') == "xml") {
             $rss = $rssService->buildRssData($response);
+
             return response($rss)
                 ->header('Content-type', 'application/rss+xml; charset=utf-8');
         }

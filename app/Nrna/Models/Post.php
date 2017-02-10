@@ -52,7 +52,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['metadata', 'is_published'];
+    protected $fillable = ['metadata', 'is_published', 'priority'];
 
     /**
      * The tag that belongs to post.
@@ -186,10 +186,10 @@ class Post extends Model
      */
     public function getApiMetadataAttribute()
     {
-        $metadata              = json_decode(json_encode($this->metadataWithPath), true);
-        $metadata['share_url'] = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
+        $metadata                 = json_decode(json_encode($this->metadataWithPath), true);
+        $metadata['share_url']    = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
+        $metadata['photo_credit'] = isset($metadata['data']['photo_credit']) ? $metadata['data']['photo_credit'] : '';
         if ($metadata['type'] == 'text') {
-            $metadata['photo_credit'] = isset($metadata['photo_credit']) ? $metadata['photo_credit'] : '';
             $metadata['data']         = array_only($metadata['data'], ['content', 'file']);
         }
         if ($metadata['type'] == 'video') {
@@ -198,15 +198,31 @@ class Post extends Model
 
         if ($metadata['type'] == 'audio') {
             $metadata['data']['media_url'] = $metadata['data']['audio'];
-            $metadata['photo_credit']      = isset($metadata['data']['photo_credit']) ? $metadata['data']['photo_credit'] : '';
             if (isset($metadata['data']['audio_url']) && $metadata['data']['audio_url'] != "") {
                 $metadata['data']['media_url'] = $this->metadata->data->audio_url;
             }
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
         }
+        if ($metadata['type'] == 'place') {
+            $metadata['data']         = array_only($metadata['data'], ['phone', 'address']);
+        }
+        $metadata['priority']   = $this->priority;
+        $metadata['id']         = $this->id;
+        $metadata['created_at'] = $this->created_at->timestamp;
+        $metadata['updated_at'] = $this->updated_at->timestamp;
         unset($metadata['stage']);
+        unset($metadata['status']);
 
         return $metadata;
+    }
+
+    public function getImageAttribute()
+    {
+        if ($this->metadata->type == 'text') {
+            return isset($this->metadataWithPath->featured_image) ? $this->metadataWithPath->featured_image : '';
+        }
+
+        return '';
     }
 
     /**
@@ -289,6 +305,10 @@ class Post extends Model
         return $query->whereRaw("metadata->>'status'=?", [Self::PUBLISHED]);
     }
 
+    /**
+     * main category for the post
+     * @return null
+     */
     public function getMainCategoryAttribute()
     {
         foreach ($this->categories as $category) {
@@ -370,13 +390,14 @@ class Post extends Model
      */
     public function scopeCategory($query, $ids)
     {
-        $ids = (array)$ids;
+        $ids = (array) $ids;
+
         return $query->whereHas(
             'categories',
             function ($q) use ($ids) {
                 $q->whereIn('id', $ids);
             }
-        )->orderBy('id', 'asc');
+        );
     }
 
 }

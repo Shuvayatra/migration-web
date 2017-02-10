@@ -49,10 +49,7 @@
 	if (request()->has('category')) {
 		$post_column = $post_column - 2;
 	}
-	if (request()->has('sub_category')) {
-		$post_column        = $post_column - 2;
-		$post_column_offset = 4;
-	}
+
 	?>
 	<div class="col-md-{{$post_column}} col-xs-12 panel_content col-md-offset-{{$post_column_offset}}">
 		<div class="x_panel">

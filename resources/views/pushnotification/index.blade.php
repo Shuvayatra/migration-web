@@ -22,7 +22,10 @@
                 {{-- */$x++;/* --}}
                 <tr>
                     <td>{{ $x }}</td>
-                    <td><a href="{{ url('/pushnotification', $item->id) }}">{{ $item->title }}</a></td>
+                    <td><a href="{{ url('/pushnotification', $item->id) }}">{{ $item->title }}</a>
+                        <br>
+                        <small>Sent at: {{$item->created_at}}</small>
+                    </td>
                     <td>{{ $item->description }}</td>
                     <td>{{ !empty($item->type)?$item->type:'General' }}</td>
                     <td>{{ $item->response }}</td>

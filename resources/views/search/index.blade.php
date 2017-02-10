@@ -6,7 +6,8 @@
 
         <hgroup class="mb20">
             <h1>Search Results</h1>
-            <h2 class="lead"><strong class="text-danger">{{$results->count()}}</strong> results were found for the search for <strong class="text-danger">{{request()->get('q')}}</strong></h2>
+            <h2 class="lead"><strong class="text-danger">{{$results->count()}}</strong> results were found for the
+                search query <strong class="text-danger">{{request()->get('q')}}</strong></h2>
         </hgroup>
 
         <section class="col-xs-12 col-sm-6 col-md-12">

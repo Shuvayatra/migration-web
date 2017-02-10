@@ -28,13 +28,11 @@ class SearchService
 
     /**
      * @param $query
+     *
      * @return Search
      */
     public function search($query)
     {
-        $categoryResults = $this->category->search($query);
-        $postResults     = $this->post->search($query);
-
         return $this->post->search($query);
     }
 

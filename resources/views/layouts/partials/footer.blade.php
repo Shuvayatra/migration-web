@@ -1,12 +1,13 @@
 <!-- footer content -->
 <footer class="clearfix">
     <div class="pull-right">
-       Shuvayatra 2016
+       Shuvayatra {{date('Y')}}
     </div>
 </footer>
 <!-- /footer content -->
 
 <script type="text/javascript">
+    var app_url = "{{url("/")}}";
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', {{env('GOOGLE_ANALYTICS_KEY','')}}]);
     _gaq.push(['_trackPageview']);

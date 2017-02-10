@@ -36,7 +36,6 @@ $providers      = [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
-    Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
     Collective\Html\HtmlServiceProvider::class,
     Alaouy\Youtube\YoutubeServiceProvider::class,
     Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
@@ -47,6 +46,7 @@ $providers      = [
     willvincent\Feeds\FeedsServiceProvider::class,
     Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
     Intervention\Image\ImageServiceProvider::class,
+    Jenssegers\Agent\AgentServiceProvider::class,
 ];
 $localProviders = [
     /*
@@ -54,6 +54,7 @@ $localProviders = [
     */
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
     'Barryvdh\Debugbar\ServiceProvider',
+    Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
 ];
 
 if (env('APP_ENV') == "local") {
@@ -213,6 +214,7 @@ return [
         'Carbon'    => Carbon\Carbon::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Feeds'     => willvincent\Feeds\Facades\FeedsFacade::class,
+        'Agent'     => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];

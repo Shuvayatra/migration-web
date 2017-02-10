@@ -6,6 +6,7 @@ use App\Nrna\Repositories\PushNotification\PushNotificationRepositoryInterface;
 
 class PushNotificationService
 {
+    public $send_notification_to = "global";
     /**
      * @var
      */
@@ -13,32 +14,35 @@ class PushNotificationService
 
     /**
      * PushNotificationService constructor.
+     *
      * @param PushNotificationRepositoryInterface $pushNotification
      */
     public function __construct(PushNotificationRepositoryInterface $pushNotification)
     {
         $this->pushNotification = $pushNotification;
     }
+
     const GCM_URL = "https://fcm.googleapis.com/fcm/send";
 
     /**
      * Notification Service
+     *
      * @param $data
+     *
      * @return mixed
      */
     protected function send($data)
     {
-        $fields = array
-        (
-            "to"   => "/topics/global",
-            'data' => $data
-        );
+        $fields = [
+            "to"   => "/topics/".$this->send_notification_to,
+            'data' => $data,
+        ];
 
-        $headers = array
-        (
-            'Authorization: key=' . env('GCM_API_ACCESS_KEY'),
-            'Content-Type: application/json'
-        );
+        $headers = [
+            'Authorization: key='.env('GCM_API_ACCESS_KEY'),
+            'Content-Type: application/json',
+        ];
+
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::GCM_URL);
@@ -55,14 +59,20 @@ class PushNotificationService
 
     /**
      * Send push notification
+     *
      * @param $data
+     *
      * @return mixed
      */
     public function sendNotification($data)
     {
+        if (isset($data['send_notification_to'])) {
+            $this->send_notification_to = $data['send_notification_to'];
+        }
         $message = [
             'title'       => $data['title'],
-            'description' => $data['description']
+            'description' => $data['description'],
+            'deeplink'    => $data['deeplink'],
         ];
 
         return $this->send($message);
@@ -70,6 +80,7 @@ class PushNotificationService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function find($id)
@@ -79,6 +90,7 @@ class PushNotificationService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function destroy($id)
@@ -96,6 +108,7 @@ class PushNotificationService
 
     /**
      * @param $data
+     *
      * @return mixed
      */
     public function create($data)

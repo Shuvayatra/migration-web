@@ -14,6 +14,7 @@ class RssNewsFeedsService
 
     /**
      * RssNewsFeedsService constructor.
+     *
      * @param RssNewsFeedsRepositoryInterface $rssNewsFeeds
      */
     function __construct(RssNewsFeedsRepositoryInterface $rssNewsFeeds)
@@ -24,6 +25,7 @@ class RssNewsFeedsService
     /**
      * @param     $url
      * @param int $limit
+     *
      * @return array|null
      */
     public function getRssItems($url, $limit = 0)
@@ -32,21 +34,24 @@ class RssNewsFeedsService
         $feed     = new SimplePie();
         $feed->set_feed_url($url);
         $feed->enable_cache(true);
-        $feed->set_cache_location(storage_path() . '/cache');
+        $feed->set_cache_location(storage_path().'/cache');
         $feed->set_cache_duration(60 * 60 * 12);
         $feed->set_output_encoding('utf-8');
         $feed->init();
-
         if (!is_null($feed->error)) {
             return null;
         }
+        $image_array = $feed->get_channel_tags('http://www.itunes.com/dtds/podcast-1.0.dtd', 'image');
         foreach ($feed->get_items(0, $limit) as $item) {
             $feedData[] = [
                 'title'       => $item->get_title(),
                 'description' => $item->get_description(),
                 'permalink'   => $item->get_permalink(),
                 'post_date'   => $item->get_date('Y:m:d h:i:s'),
-
+                'image'       => isset(array_flatten($image_array[0]['attribs'])[0]) ? array_flatten
+                                                                                       (
+                                                                                           $image_array[0]['attribs']
+                                                                                       )[0] : '',
             ];
         }
 
@@ -55,6 +60,7 @@ class RssNewsFeedsService
 
     /**
      * @param $all
+     *
      * @return mixed
      */
     public function save($all)
@@ -65,6 +71,7 @@ class RssNewsFeedsService
     /**
      * @param $rssId
      * @param $rssFeeds
+     *
      * @return mixed
      */
     public function insertFeeds($rssId, $rssFeeds)
@@ -87,6 +94,7 @@ class RssNewsFeedsService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function find($id)
@@ -100,7 +108,7 @@ class RssNewsFeedsService
     public function fetch($rss)
     {
         $rssFeeds = $this->getRssItems($rss->url);
-        $maxDate = strtotime($this->rssNewsFeeds->getMaxDate($rss->id));
+        $maxDate  = strtotime($this->rssNewsFeeds->getMaxDate($rss->id));
 
         foreach ($rssFeeds as $feed) {
             if (strtotime($feed['post_date']) > $maxDate) {
@@ -114,6 +122,7 @@ class RssNewsFeedsService
     /**
      * @param $rssId
      * @param $feed
+     *
      * @return mixed
      */
     protected function checkIfFeedExists($rssId, $feed)

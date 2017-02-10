@@ -61,6 +61,10 @@ class PostRepository implements PostRepositoryInterface
             $status = $filters['status'];
             $query->whereRaw("posts.metadata->>'status' = ?", [$status]);
         }
+        if (isset($filters['user']) && $filters['user'] != '') {
+            $user = $filters['user'];
+            $query->where("created_by", [$user]);
+        }
         if (isset($filters['date_from']) && $filters['date_from'] != '') {
             $query->whereRaw("date(created_at) >= ?", [str_replace('/', '-', $filters['date_from'])]);
         }
@@ -74,20 +78,36 @@ class PostRepository implements PostRepositoryInterface
         }
 
         if (array_has($filters, "sub_category1")) {
-            $ids = $filters['sub_category1'];
-            $query->category($ids);
+            $ids = array_values(array_filter($filters['sub_category1']));
+            foreach ($ids as $id) {
+                $query->category($id);
+            }
         }
         if (array_has($filters, "sub_category")) {
-            $category     = Category::find($filters['sub_category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            $category = Category::find($filters['sub_category']);
+            if (!is_null($category)) {
+                $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
 
-            $query->category($category_ids);
+                $query->category($category_ids);
+            }
+
         }
         if (array_has($filters, "category")) {
-            $category     = Category::find($filters['category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            $category = Category::find($filters['category']);
+            if (!is_null($category)) {
+                $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
 
-            $query->category($category_ids);
+                $query->category($category_ids);
+            }
+        }
+        if (array_has($filters, "tags") && !empty($filters['tags'])) {
+            $tags = $filters['tags'];
+            $query->whereHas(
+                'tags',
+                function ($q) use ($tags) {
+                    $q->whereIn('id', $tags);
+                }
+            );
         }
 
         $query->from($this->db->raw($from));
@@ -226,7 +246,10 @@ class PostRepository implements PostRepositoryInterface
                 $q->whereIn('id', $ids);
             }
         )->orderBy('id', 'asc');
-
+        if (request()->has('post_type') && request()->get('post_type') != '') {
+            $post_type = request()->get('post_type');
+            $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
         if ($paginate) {
             return $query->paginate();
         }
@@ -235,14 +258,41 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
-     * @param $query
+     * @param       $q
+     *
+     * @param bool  $paginate
+     *
+     *
+     * @param float $rank_limit
      *
      * @return mixed
      */
-    public function search($query, $paginate = false)
+    public function search($q, $paginate = false, $rank_limit = 0.0)
     {
-        $query = $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('".$query."')")
-                            ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('".$query."')");
+        $q                = implode('|', explode(' ', trim($q)));
+        $document_columns = "setweight(to_tsvector(posts.metadata->>'description'), 'B') 
+        || setweight(to_tsvector(posts.metadata->>'title'),'A') 
+        || setweight(to_tsvector(CASE WHEN count(tags.title)=0 THEN ' ' ELSE coalesce(string_agg(tags.title, ' ')) END), 'A') 
+        || setweight(to_tsvector(coalesce(string_agg(categories.title, ' '))), 'A')";
+        $sub_query        = $this->post->selectRaw(
+            "posts.*,($document_columns) as document,ts_rank({$document_columns}, to_tsquery('{$q}'))
+         as rank"
+        );
+        $sub_query->leftJoin('post_tag', 'post_tag.post_id', '=', 'posts.id');
+        $sub_query->leftJoin('tags', 'tags.id', '=', 'post_tag.tag_id');
+        $sub_query->leftJoin('category_post', 'category_post.post_id', '=', 'posts.id');
+        $sub_query->leftJoin('categories', 'categories.id', '=', 'category_post.category_id');
+        $sub_query->groupBy('posts.id');
+        $query = $this->post->from(\DB::raw('('.$sub_query->toSql().')  as posts'));
+        $query->whereRaw("posts.document @@ to_tsquery('{$q}')");
+        if (request()->has('post_type') && request()->get('post_type') != '') {
+            $post_type = request()->get('post_type');
+            $query->whereRaw("posts.metadata->>'type' = ?", [$post_type]);
+        }
+        if ($rank_limit) {
+            $query->whereRaw("rank > ?", [$rank_limit]);
+        }
+        $query->orderBy("rank", 'desc');
         if ($paginate) {
             return $query->paginate();
         }
@@ -338,6 +388,27 @@ class PostRepository implements PostRepositoryInterface
         if ($paginate) {
             return $query->paginate();
         }
+
+        return $query->get();
+    }
+
+    /**
+     * full text search for post
+     *
+     * @param      $q
+     * @param bool $paginate
+     *
+     * @return mixed
+     */
+    public function fullTextSearch($q, $paginate = false)
+    {
+        $query = $this->post->whereRaw("to_tsvector(metadata->>'description') @@ plainto_tsquery('{$q}')")
+                            ->OrWhereRaw("to_tsvector(metadata->>'title') @@ plainto_tsquery('{$q}')");
+        $query->selectRaw("posts.*,ts_rank(to_tsvector(metadata->>'description') ,to_tsquery('{$q}')) as rank");
+        if ($paginate) {
+            return $query->paginate();
+        }
+        $query->orderBy('rank');
 
         return $query->get();
     }

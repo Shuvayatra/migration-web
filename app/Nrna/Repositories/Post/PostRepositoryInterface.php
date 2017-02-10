@@ -117,4 +117,8 @@ interface PostRepositoryInterface
      * @return mixed
      */
     public function getByCategoryId($category_ids);
+
+    public function search($query);
+
+    public function fullTextSearch($q);
 }

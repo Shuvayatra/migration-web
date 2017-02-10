@@ -4,6 +4,7 @@ namespace App\Nrna\Services\Api;
 use App\Nrna\Models\Post;
 use App\Nrna\Repositories\Post\PostRepository;
 use App\Nrna\Services\CategoryService;
+use App\Nrna\Services\GoogleTranslator;
 use App\Nrna\Services\PostService as MainPostService;
 
 class PostService
@@ -54,15 +55,20 @@ class PostService
      */
     public function all($filter = [])
     {
-        if (array_has($filter, "category")) {
-            $category     = $this->category->find($filter['category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
-
-            $posts = $this->postRepo->getByCategoryId($category_ids, true);
+        if (array_has($filter, "category_id")) {
+            $category_ids = [];
+            $categories   = explode(',', $filter['category_id']);
+            foreach ($categories as $category_id) {
+                $category       = $this->category->find($category_id);
+                $category_ids[] = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            }
+            $category_ids = array_unique(array_flatten($category_ids));
+            $posts        = $this->postRepo->getByCategoryId($category_ids, true);
         } elseif (array_has($filter, "tag")) {
             $posts = $this->postRepo->getByTags($filter['tag'], true);
         } elseif (array_has($filter, "query")) {
-            $posts = $this->postRepo->search($filter['query'], true);
+            $query = $this->processSearchQuery($filter['query']);
+            $posts = $this->postRepo->search($query, true, 0.5);
         } else {
             $posts = $this->postRepo->all($filter);
         }
@@ -112,11 +118,13 @@ class PostService
     public function formatPostWithSimilar(Post $post)
     {
         $postArray        = $this->formatPost($post);
-        $similarPostArray = [];
-        foreach ($post->similar as $post) {
-            $similarPostArray[] = $this->formatPost($post);
+
+        $similarPostsArray = [];
+        foreach ($post->similar_posts as $post) {
+            $similarPostsArray[] = $this->formatPost($post);
         }
-        $postArray['similar'] = $similarPostArray;
+        $postArray['similar']       = [];
+        $postArray['similar_posts'] = $similarPostsArray;
 
         return $postArray;
     }
@@ -133,5 +141,45 @@ class PostService
         $post = $this->postModel->find($id);
 
         return $this->formatPost($post);
+    }
+
+    /**
+     * change search String to nepali
+     *
+     * @param $string
+     *
+     * @return null
+     */
+    private function processSearchQuery($string)
+    {
+        if (strlen($string) == mb_strlen($string, 'utf-8')) {
+            $googleService = new GoogleTranslator;
+
+            return $googleService->setSourceLang('en')->setTargetLang('ne')->translate($string);
+        }
+
+        return $string;
+    }
+
+    /**
+     *  news posts
+     * @return mixed
+     */
+    public function news()
+    {
+        $posts     = $this->postModel->whereHas(
+            'categories',
+            function ($q) {
+                $q->where('section', 'news');
+            }
+        )->orderBy('priority', 'asc')->orderBy('created_by', 'desc')->paginate();
+        $postArray = [];
+        foreach ($posts as $post) {
+            $postArray[] = $this->formatPost($post);
+        }
+        $posts         = $posts->toArray();
+        $posts['data'] = $postArray;
+
+        return $posts;
     }
 }

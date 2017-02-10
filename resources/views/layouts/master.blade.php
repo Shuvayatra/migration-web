@@ -51,8 +51,11 @@
 <script src="{{asset("js/vendors.min.js")}}"></script>
 <script src="{{asset("js/tinymce/tinymce.min.js")}}"></script>
 @include('layouts.partials.notification')
+<script>
+    var sort_url = "{{route('sort.save')}}";
+</script>
 @yield('script')
 <!-- Custom Theme Scripts -->
-<script src="{{asset("js/app.min.js")}}"></script>
+<script src="{{asset("js/app.min.js")}}?new"></script>
 </body>
 </html>

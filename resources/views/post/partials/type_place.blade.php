@@ -3,6 +3,7 @@
     <div class="">
         {!! Form::text('metadata[data][phone][0]', null, ['class' => 'form-control required']) !!}
         {!! $errors->first('metadata.data.phone', '<p class="help-block">:message</p>') !!}
+        <p class="help-block">Please add phone number in english.</p>
     </div>
     <button type="button" class="btn btn-default add-new-phone" id="add-new-phone">+
     </button>

@@ -38,8 +38,11 @@ class RssService
      */
     public function save($all)
     {
-        $rss = $this->rss->save($all);
-        $this->rssNewsFeedsService->insertFeeds($rss->id, $this->rssNewsFeedsService->getRssItems($all['url'], 10));
+        $rss   = $this->rss->save($all);
+        $feeds = $this->rssNewsFeedsService->getRssItems($all['url'], 10);
+        if (is_null($feeds)) {
+            $this->rssNewsFeedsService->insertFeeds($rss->id, $feeds);
+        }
 
         return $rss;
     }

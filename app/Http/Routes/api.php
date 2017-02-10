@@ -21,6 +21,7 @@ $router->group(
         $router->post('sync', 'Post\\PostController@sync');
         $router->get('post/{id}', 'Post\\PostController@show')->where('id', '[0-9]+');
         $router->get('posts', ['as' => 'api.posts', 'uses' => 'Post\\PostController@index']);
+        $router->get('posts/news', ['as' => 'api.news', 'uses' => 'Post\\NewsController@index']);
         $router->get('posts/{id}', 'Post\\PostController@detail')->where('id', '[0-9]+');
         $router->get('destinations', 'Category\\CategoryController@destination');
         $router->get('destinations/{id}/subcategory', 'Category\\CategoryController@journeySubcategory');
@@ -31,5 +32,15 @@ $router->group(
         $router->get('tags', 'TagController@index');
         $router->post('/post/{id}/favorite', 'Post\\PostController@favorite')->where('id', '[0-9]+');
         $router->post('/post/{id}/share', 'Post\\PostController@share')->where('id', '[0-9]+');
+        $router->get('screen/home', 'Screen\\HomeController@index');
+        $router->get('screen/destination/{id}', 'Screen\\DestinationController@destination');
+        $router->get('screen/journey', 'Screen\\DestinationController@journey');
+        $router->get('podcasts', 'Radio\\RadioController@index');
+        $router->get('radio/categories', 'Radio\\RadioController@Categories');
+        $router->post('onboarding/save', 'Onboarding\\OnboardingController@save');
+        $router->get('page/{page}', 'Page\\PageController@index');
+
+        $router->get('screens', 'Screen\\ScreenController@index');
+        $router->get('screens/{id}', 'Screen\\ScreenController@show');
     }
 );

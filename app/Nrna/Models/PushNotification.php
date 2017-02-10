@@ -19,6 +19,6 @@ class PushNotification extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'type', 'content_id', 'response'];
+    protected $fillable = ['title', 'description', 'type', 'content_id', 'response','deeplink'];
     
 }

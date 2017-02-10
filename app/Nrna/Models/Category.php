@@ -20,6 +20,10 @@ class Category extends Node
      * @var string
      */
     protected $table = 'categories';
+    /**
+     * @var array
+     */
+    protected $casts = ['country_info' => 'object'];
 
     /**
      * The database primary key value.
@@ -50,6 +54,9 @@ class Category extends Node
         'small_icon',
         'position',
         'parent_id',
+        'country_info',
+        'status',
+        'time_zone',
     ];
 
     public function getMainImageLinkAttribute()
@@ -123,5 +130,33 @@ class Category extends Node
         }
 
         return $title;
+    }
+
+    /**
+     * change title as user setting
+     *
+     * @param $title
+     *
+     * @return mixed
+     */
+    public function getTitleEnAttribute($title)
+    {
+        if (in_array(\Request::route()->getName(), ['category.edit', 'category.show'])) {
+            return $title;
+        }
+        if (\Auth::guest()) {
+            return $title;
+        }
+        if (config()->has('country.'.$title)) {
+            return config()->get('country.'.$title);
+        }
+
+
+        return $title;
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', true);
     }
 }

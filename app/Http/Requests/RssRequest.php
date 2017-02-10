@@ -24,8 +24,9 @@ class RssRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required',
-            'url'   => 'required|unique:rss'
+            'title'       => 'required',
+            'url'         => 'required|url|unique:rss',
+            'category_id' => 'required',
         ];
     }
 

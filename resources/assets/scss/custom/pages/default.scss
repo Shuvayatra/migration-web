@@ -140,6 +140,11 @@ footer{
     margin-bottom: 0;
 }
 
+@media only screen  and (max-width: 1268px) {
+    body{
+        padding-top: 140px;
+    }
+}
 @media only screen and (max-width : 320px) {
 .main-sidebar{
     height: auto;
@@ -150,3 +155,7 @@ footer{
 //         width: 250px !important;
 //     }
 // }
+.error {
+    color:#a94442;
+    box-shadow: none;
+}

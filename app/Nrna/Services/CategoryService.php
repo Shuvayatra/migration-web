@@ -97,7 +97,9 @@ class CategoryService
                 $small_icon             = $small_icon_info['filename'];
                 $formData['small_icon'] = $small_icon;
             }
-
+            if (isset($formData['country_info'])) {
+                $formData['country_info'] = array_values($formData['country_info']);
+            }
             $category = $this->category->save($formData);
 
             return $category;
@@ -161,6 +163,11 @@ class CategoryService
                 );
                 $formData['small_icon'] = $small_icon_info['filename'];
             }
+
+            $formData['status'] = array_has($formData, 'status');
+            if (isset($formData['country_info'])) {
+                $formData['country_info'] = array_values($formData['country_info']);
+            }
             $category->update($formData);
 
             return true;
@@ -220,6 +227,7 @@ class CategoryService
     {
         $categoryArray['id']           = $category->id;
         $categoryArray['title']        = $category->title;
+        $categoryArray['title_en']     = $category->title_en;
         $categoryArray['alias_name']   = $category->section;
         $categoryArray['parent_alias'] = (is_null($category->parent_id)) ? null : $category->getRoot()->section;
 
@@ -236,6 +244,10 @@ class CategoryService
 
         $categoryArray['created_at'] = $category->created_at->timestamp;
         $categoryArray['updated_at'] = $category->updated_at->timestamp;
+        if ($category->getRoot()->section == 'country') {
+            $categoryArray['information'] = (array) $category->country_info;
+            $categoryArray['timezone'] =  $category->time_zone;
+        }
 
         return $categoryArray;
     }
@@ -275,7 +287,7 @@ class CategoryService
         try {
             $root          = $this->category->findBySection($category);
             $categoryArray = [];
-            foreach ($root->getImmediateDescendants()->sortBy('position') as $category) {
+            foreach ($root->immediateDescendants()->published()->get()->sortBy('position') as $category) {
                 $categoryArray[] = $this->buildCategory($category);
             }
 
@@ -336,5 +348,6 @@ class CategoryService
             return false;
         }
     }
+
 
 }

@@ -33,7 +33,7 @@ $router->group(
 $router->group(
     ['middleware' => 'role:admin'],
     function () use ($router) {
-        $router->post('sort', '\Rutorika\Sortable\SortableController@sort');
+        $router->post('sort', ['as' => 'sort.save', 'uses' => 'Sort\\SortableController@sort']);
         $router->resource('question', 'Question\\QuestionController');
         $router->resource('tag', 'Tag\\TagController');
         $router->resource('country', 'Country\\CountryController');
@@ -65,5 +65,49 @@ $router->group(
             ]
         );
         $router->resource('rssnewsfeeds', 'RssNewsFeeds\RssNewsFeedsController');
+        $router->resource('blocks', 'Block\\BlockController');
+        $router->get(
+            'mobile/screens',
+            function () {
+                return view('block.screens');
+            }
+        )->name('mobile.screens');
+        $router->resource('notice', 'Notice\\NoticeController');
+        $router->resource('rss_category', 'Rss\\RssCategoryController');
+        $router->resource('pages', 'Page\\PageController');
+        $router->resource('screen', 'Screen\\ScreenController');
+        $router->resource('screen.feed', 'Screen\FeedController');
+        $router->get(
+            'categorize/post',
+            [
+                'as'   => 'categorize.index',
+                'uses' => 'Post\\CategorizeController@index',
+            ]
+
+        );
+        $router->post(
+            'categorize/post/save',
+            [
+                'as'   => 'categorize.save',
+                'uses' => 'Post\\CategorizeController@update',
+            ]
+
+        );
+        $router->post(
+            'block/{id}/posts',
+            [
+                'as'   => 'blocks.posts.store',
+                'uses' => 'Block\\PostController@store',
+            ]
+
+        );
+        $router->post(
+            'block/{id}/unpin/post',
+            [
+                'as'   => 'blocks.unpin.post',
+                'uses' => 'Block\\PostController@unpin',
+            ]
+
+        );
     }
 );
