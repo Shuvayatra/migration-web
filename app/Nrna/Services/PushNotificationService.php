@@ -72,6 +72,7 @@ class PushNotificationService
         $message = [
             'title'       => $data['title'],
             'description' => $data['description'],
+            'deeplink'    => $data['deeplink'],
         ];
 
         return $this->send($message);

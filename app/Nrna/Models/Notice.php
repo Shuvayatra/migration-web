@@ -35,7 +35,7 @@ class Notice extends Model
      *
      * @var array
      */
-    protected $fillable = ['metadata', 'country_id', 'status', 'screen'];
+    protected $fillable = ['metadata', 'country_id', 'status', 'screen','deeplink'];
 
     public function getTitleAttribute()
     {
@@ -71,13 +71,14 @@ class Notice extends Model
         $metadata['layout']   = 'notice';
         $metadata['position'] = 1;
         $metadata['id']       = $this->id;
-        $metadata['deeplink'] = isset($metadata['deeplink']) ? $metadata['deeplink'] : '';
+        $metadata['deeplink'] = $this->getDeeplink();
         if (isset($this->metadata->image) && $this->metadata->image != '') {
             $metadata['image_url'] = sprintf('%s/%s', url('uploads/notice'), $this->metadata->image);
         }
 
         return (object) $metadata;
     }
+
 
     public function country()
     {
@@ -102,5 +103,15 @@ class Notice extends Model
     public function scopeCountry($query, $country_id)
     {
         return $query->whereRaw("screen->>'dynamic_id' = ?", [$country_id]);
+    }
+
+
+    /**
+     * Fetch deeplink of notice
+     * @return mixed
+     */
+    public function getDeeplink()
+    {
+        return $this->deeplink;
     }
 }
