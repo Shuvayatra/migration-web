@@ -41,6 +41,7 @@
         {!! Form::text('metadata[data][address]', null, ['class' => 'form-control required']) !!}
         {!! $errors->first('metadata.address', '<p class="help-block">:message</p>') !!}
     </div>
+    <p class="help-block">Please add address in english.</p>
 </div>
 <hr>
 @section('script')
