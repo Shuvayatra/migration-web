@@ -202,7 +202,7 @@ class PostService
                 $formData = $this->formatTypeTextUpdate($post, $formData);
             }
             if ($formData['metadata']['type'] === 'audio') {
-                $formData = $this->formatTypeAudioUpdate($post, $formData);
+                $formData['metadata']['data'] = $this->formatTypeAudioUpdate($post, $formData);
             }
 
             if ($formData['metadata']['type'] === 'video') {
@@ -440,25 +440,22 @@ class PostService
     protected function formatTypeAudioUpdate($post, $formData)
     {
         $data = (array) $post->metadata->data;
-
-        if (!is_null($formData['metadata']['data']['audio_url'])) {
+        if (!empty($formData['metadata']['data']['audio_url'])) {
             $data['audio']     = $formData['metadata']['data']['audio_url'];
             $data['audio_url'] = $formData['metadata']['data']['audio_url'];
         }
-        if (isset($formData['metadata']['data']['audio'])) {
+        if (!empty($formData['metadata']['data']['audio'])) {
             $data['audio']    = $this->upload($formData['metadata']['data']['audio']);
             $data['duration'] = $this->audio->getDuration(
                 $this->getAudioFilePath($data['audio'])
             );
             $this->file->delete($post->audioPath);
         }
-        if (isset($formData['metadata']['data']['thumbnail'])) {
+        if (!empty($formData['metadata']['data']['thumbnail'])) {
             $data['thumbnail'] = $this->upload($formData['metadata']['data']['thumbnail']);
         }
 
-        $formData['metadata']['data'] = $data;
-
-        return $formData;
+        return $data;
     }
 
     /**
