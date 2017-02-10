@@ -52,8 +52,11 @@ $posts = \App\Nrna\Models\Post::all()->toArray();
 			</optgroup>
 
 		</select>
+		<p class="help-block">Please select the screen from the dropdown or type the title of the post you want to deeplink.</p>
 	</div>
+
 </div>
+
 <div style="display: none" class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
 	{!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
