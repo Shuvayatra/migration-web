@@ -3,7 +3,7 @@
 	<div class="container">
 		<?php
 		$categories = $category->getImmediateDescendants();
-		$categories = $categories->sortBy('position');
+		$categories = $categories->sortBy('title');
 		?>
 		<h1><span class="title-btn">{{$category->title}} </span></h1>
 		@if($category->section !=='categories')

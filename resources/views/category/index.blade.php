@@ -7,7 +7,7 @@
 			<table class="table table-bordered table-striped table-hover">
 				<tbody class="sortable" data-entityname="category">
 				{{-- */$x=0;/* --}}
-				@foreach($categories->sortBy('position') as $item)
+				@foreach($categories->sortBy('title') as $item)
 					{{-- */$x++;/* --}}
 					@if($item->id !=2)
 					<tr data-itemId="{{{ $item->id }}}">

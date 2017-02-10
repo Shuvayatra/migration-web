@@ -84,16 +84,21 @@ class PostRepository implements PostRepositoryInterface
             }
         }
         if (array_has($filters, "sub_category")) {
-            $category     = Category::find($filters['sub_category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            $category = Category::find($filters['sub_category']);
+            if (!is_null($category)) {
+                $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
 
-            $query->category($category_ids);
+                $query->category($category_ids);
+            }
+
         }
         if (array_has($filters, "category")) {
-            $category     = Category::find($filters['category']);
-            $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
+            $category = Category::find($filters['category']);
+            if (!is_null($category)) {
+                $category_ids = $category->getDescendantsAndSelf()->lists('id')->toArray();
 
-            $query->category($category_ids);
+                $query->category($category_ids);
+            }
         }
         if (array_has($filters, "tags") && !empty($filters['tags'])) {
             $tags = $filters['tags'];
