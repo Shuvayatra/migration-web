@@ -136,7 +136,8 @@ class BlockController extends Controller
         Session::flash('success', 'Block updated!');
         if ($changes && $block->custom_posts->count() > 0) {
             $block->custom_posts()->sync([]);
-            Session::flash('success', 'Block information updated and all pinned posts has been.');
+            Session::flash('success', 'Block information updated and all pinned posts has been removed from this block  
+            .');
         }
         $request_query = [ $block->id,'page' => request()->get('page', 'home') ];
         if (request()->get('page') == 'destination') {
