@@ -134,13 +134,15 @@ class BlockService
     public function getBlockPosts($id)
     {
         try {
-            $block    = $this->block->find($id);
-            $query    = $block->getPostsBuilder();
+            $block = $this->block->find($id);
+            $query = $block->getPostsBuilder();
+            if ($block->custom_posts->count() > 0) {
+                $query->whereNotIn('id', $block->custom_posts->lists('id')->toArray());
+            }
             $posts    = $query->paginate();
             $response = array_except($posts->toArray(), 'data');
             $data     = $posts->pluck('api_metadata')->toArray();
             if ($block->custom_posts->count() > 0) {
-                $query->whereNotIn('id', $block->custom_posts->lists('id')->toArray());
                 if (request()->get('page') == 1) {
                     $pinned_posts = $block->custom_posts->pluck('api_metadata')->toArray();
                     $block_posts  = $posts->pluck('api_metadata')->toArray();

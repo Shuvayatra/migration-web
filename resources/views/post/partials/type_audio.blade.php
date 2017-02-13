@@ -27,6 +27,7 @@
 		</a>
 	@endif
 </div>
+
 <div class="form-group {{ $errors->has('thumbnail') ? 'has-error' : ''}}">
 	{!! Form::label('photo_credit', 'Photo Credit: ', ['class' => ' control-label']) !!}
 	<div class="">
