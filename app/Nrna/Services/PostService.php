@@ -440,6 +440,7 @@ class PostService
     protected function formatTypeAudioUpdate($post, $formData)
     {
         $data = (array) $post->metadata->data;
+        $data = array_merge($data, $formData['metadata']['data']);
         if (!empty($formData['metadata']['data']['audio_url'])) {
             $data['audio']     = $formData['metadata']['data']['audio_url'];
             $data['audio_url'] = $formData['metadata']['data']['audio_url'];

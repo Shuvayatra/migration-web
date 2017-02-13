@@ -111,15 +111,16 @@ class Block extends Model
         $query = Post::select('*');
         $from  = 'posts ';
         if (isset($this->metadata->post_type) && !empty($this->metadata->post_type)) {
-            $query_no = trim(str_repeat('?,', count($this->metadata->post_type)), ',');
-            $query->whereRaw("posts.metadata->>'type' in ({$query_no})", $this->metadata->post_type);
+
+            $query_param_no = trim(str_repeat('?,', count($this->metadata->post_type)), ',');
+            $query->whereRaw("posts.metadata->>'type' in ({$query_param_no})", $this->metadata->post_type);
         }
         $this->postCategoryFilters($query);
         $this->countryFilters($query);
         $query->from(\DB::raw($from));
         $query->published();
         $query->orderBy('priority');
-        $query->orderBy('created_at', 'desc');
+        $query->orderBy('updated_at', 'desc');
 
         return $query;
     }

@@ -75,7 +75,6 @@ if (request()->has('url')) {
 		</a>
 	@endif
 </div>
-
 {!! Form::hidden('metadata[type]', $post_type_active, ['class' => 'post_type_value']) !!}
 <div class="form-group {{ $errors->has('metadata.title') ? 'has-error' : ''}}">
 	{!! Form::label('title', 'Title:* ', ['class' => 'control-label']) !!}
