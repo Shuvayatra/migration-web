@@ -6,7 +6,7 @@
 
 	{!! Form::model($page, [
 		'method' => 'PATCH',
-		'url' => ['/pages', $page->id],
+		'route' => ['pages.update', $page->id],
 		'class' => 'form-horizontal'
 	]) !!}
 

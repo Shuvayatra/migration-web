@@ -1,8 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
-	<h1>Pages <a href="{{ route('pages.create') }}" class="btn btn-primary btn-xs" title="Add New Page"><span
-					class="glyphicon glyphicon-plus" aria-hidden="true"/></a></h1>
+	<h1>Pages
+		{{--<a href="{{ route('pages.create') }}" class="btn btn-primary btn-xs" title="Add New Page"><span--}}
+					{{--class="glyphicon glyphicon-plus" aria-hidden="true"/></a>--}}
+	</h1>
 	<div class="table">
 		<table class="table table-bordered table-striped table-hover">
 			<thead>
