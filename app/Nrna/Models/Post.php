@@ -140,8 +140,7 @@ class Post extends Model
 
         }
 
-        if (!empty($metadata->data->audio)) {
-
+        if (!empty($metadata->data->audio) && !is_object($metadata->data->audio)) {
             $metadata->data->audio = sprintf('%s/%s', url(Self::UPLOAD_PATH), (string)$metadata->data->audio);
 
             if (isset($metadata->data->thumbnail)) {
