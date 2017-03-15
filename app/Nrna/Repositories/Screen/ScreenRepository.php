@@ -109,7 +109,7 @@ class ScreenRepository implements ScreenRepositoryInterface
          AS order, MAX(screens.icon_image) AS icon FROM screens, json_array_elements(visibility->'country_id') AS 
          country_id WHERE screens.is_published=true ";
         $rawQuery .= $this->applyWhere($applicableFilters);
-        $rawQuery .= " GROUP BY screens.ID ORDER BY screens.ID";
+        $rawQuery .= " GROUP BY screens.ID ORDER BY screens.position";
 
         $query = DB::select($rawQuery);
 
