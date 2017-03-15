@@ -172,7 +172,7 @@ class PostService
             function ($q) {
                 $q->where('section', 'news');
             }
-        )->orderBy('created_by', 'desc')->paginate();
+        )->orderBy('updated_by', 'desc')->paginate();
         $postArray = [];
         foreach ($posts as $post) {
             $postArray[] = $this->formatPost($post);

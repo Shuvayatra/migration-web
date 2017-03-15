@@ -256,7 +256,7 @@ class ScreenService
     {
         $screen     = $this->screen->find($id);
         $categories = $screen->categories->groupBy('pivot.category_type');
-        $query      = $this->post->select("*")->orderBy('created_by', 'desc');
+        $query      = $this->post->select("*")->orderBy('posts.updated_by', 'desc');
         if (isset($categories['category'])) {
             $query->category($categories['category']->lists('id')->toArray());
         }
