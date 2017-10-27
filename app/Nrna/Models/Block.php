@@ -301,7 +301,7 @@ class Block extends Model
 
         if ($this->post_limit > $this->custom_posts->count()) {
             $query = $this->getPostsBuilder();
-            $query->whereNotIn('id', $this->custom_posts->lists('id')->toArray());
+            $query->whereNotIn('posts.id', $this->custom_posts->lists('id')->toArray());
             $query->limit($this->post_limit - $this->custom_posts->count());
             foreach ($query->get() as $post) {
                 $posts->push($post);
