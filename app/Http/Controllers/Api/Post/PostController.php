@@ -124,6 +124,8 @@ class PostController extends ApiGuardController
         if ($post = $this->post->find($id)) {
             $data = $this->postService->formatPostWithSimilar($post);
 
+            $this->post->increaseViewCount($id, 1);
+
             return $this->response->withArray($data);
         }
 

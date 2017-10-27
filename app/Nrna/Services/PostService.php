@@ -643,6 +643,25 @@ class PostService
         return $this->post->fullTextSearch($q);
     }
 
+    /**
+     * increase view count
+     *
+     * @param $postId
+     * @param $count
+     *
+     * @return bool
+     */
+    public function increaseViewCount($postId, $count)
+    {
+        try {
+            $this->post->increaseView($postId, $count);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public function assignToAdmin($posts, $admin_id){
 
         $this->database->beginTransaction();

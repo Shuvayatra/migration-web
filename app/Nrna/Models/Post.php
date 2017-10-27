@@ -189,6 +189,7 @@ class Post extends Model
         $metadata              = json_decode(json_encode($this->metadataWithPath), true);
         $metadata['share_url'] = sprintf('https://amp.shuvayatra.org/post/%s', $this->id);
         $metadata['photo_credit'] = isset($metadata['photo_credit']) ? $metadata['photo_credit'] : '';
+        $metadata['view_count'] = isset($this->view_count) ? $this->view_count : 0;
         if ($metadata['type'] == 'text') {
             $metadata['data']         = array_only($metadata['data'], ['content', 'file']);
         }
