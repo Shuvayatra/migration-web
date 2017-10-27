@@ -642,4 +642,23 @@ class PostService
     {
         return $this->post->fullTextSearch($q);
     }
+
+    public function assignToAdmin($posts, $admin_id){
+
+        $this->database->beginTransaction();
+
+        try {
+            foreach ($posts as $post) {
+
+                $post->created_by = $admin_id;
+                $post->updated_by = $admin_id;
+                $post->update();
+            }
+        }catch (\Exception $e) {
+            $this->logger->error($e);
+            $this->database->rollback();
+
+            return false;
+        }
+    }
 }

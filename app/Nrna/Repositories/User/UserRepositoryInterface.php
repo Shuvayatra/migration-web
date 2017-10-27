@@ -23,4 +23,11 @@ interface UserRepositoryInterface
      * @return mixed
      */
     public function destroy($id);
+
+
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function findByEmail($email);
 }

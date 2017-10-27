@@ -81,6 +81,15 @@ class UserService
      */
     public function destroy($id)
     {
+        $filter['user'] = $id;
+        $admin_id = $this->user->findByEmail('admin@nrna.app')['id'];
+
+        $posts = $this->post->all($filter);
+        if(count($posts) > 0){
+
+            $this->post->assignToAdmin($posts, $admin_id);
+        }
+
         return $this->user->destroy($id);
     }
 }

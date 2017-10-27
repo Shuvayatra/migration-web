@@ -39,6 +39,15 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * @param $email
+     * @return User
+     */
+    public function findByEmail($email)
+    {
+        return $this->user->select('id')->where('email', $email)->first();
+    }
+
+    /**
      * @param $id
      * @return int
      */
