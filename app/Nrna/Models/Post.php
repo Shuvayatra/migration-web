@@ -303,7 +303,7 @@ class Post extends Model
      */
     public function scopePublished($query)
     {
-        return $query->whereRaw("metadata->>'status'=?", [Self::PUBLISHED]);
+        return $query->whereRaw("metadata->>'status'= '" . Self::PUBLISHED . "'");
     }
 
     /**
@@ -396,7 +396,7 @@ class Post extends Model
         return $query->whereHas(
             'categories',
             function ($q) use ($ids) {
-                $q->whereIn('id', $ids);
+                $q->whereRaw('id IN (' . implode(',', $ids) . ')');
             }
         );
     }

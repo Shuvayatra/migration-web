@@ -109,18 +109,22 @@ class Block extends Model
     public function getPostsBuilder()
     {
         $query = Post::select('*');
+        $sub_query = Post::select('*');
         $from  = 'posts ';
         if (isset($this->metadata->post_type) && !empty($this->metadata->post_type)) {
 
             $query_param_no = trim(str_repeat('?,', count($this->metadata->post_type)), ',');
             $query->whereRaw("posts.metadata->>'type' in ({$query_param_no})", $this->metadata->post_type);
         }
-        $this->postCategoryFilters($query);
-        $this->countryFilters($query);
-        $query->from(\DB::raw($from));
-        $query->published();
-        $query->orderBy('priority');
-        $query->orderBy('updated_at', 'desc');
+        $this->postCategoryFilters($sub_query);
+        $this->countryFilters($sub_query);
+        $sub_query->from(\DB::raw($from));
+        $sub_query->published();
+        $sub_query->orderByRaw('DATE(created_at) DESC');
+        $sub_query->orderBy('priority');
+
+        $query->join(\DB::raw('(' . $sub_query->toSql() . ') as dp'), 'dp.id', '=', 'posts.id');
+        $query->orderBy('posts.created_at', 'DESC');
 
         return $query;
     }
