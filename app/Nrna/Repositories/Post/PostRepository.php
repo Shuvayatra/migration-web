@@ -310,7 +310,8 @@ class PostRepository implements PostRepositoryInterface
     {
         $post             = $this->post->find($postId);
         $post->view_count = $post->view_count + $count;
-        $post->save();
+        $post->timestamps = false;
+        $post->save(['timestamps' => false]);
 
         return $post;
     }
@@ -325,7 +326,8 @@ class PostRepository implements PostRepositoryInterface
     {
         $post              = $this->post->find($postId);
         $post->share_count = $post->share_count + $count;
-        $post->save();
+        $post->timestamps = false;
+        $post->save(['timestamps' => false]);
 
         return $post;
     }
