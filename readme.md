@@ -11,6 +11,7 @@ Shuvayatra cms can be cloned from github repository and installed. Following the
 * give write permission to the storage folder using `chmod -R 777 storage`
 * run migration using `php artisan migrate`
 * seed dummy data using `php artisan db:seed`
+* generate cipher key using `php artisan key:generate`
 * make a directory `uploads` inside `public` and give write permission to it
 * start development server `php artisan serve`
 * run `php artisan nrna:acl-setup` for to create user
