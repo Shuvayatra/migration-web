@@ -247,6 +247,21 @@ class CategoryService
         if ($category->getRoot()->section == 'country') {
             $categoryArray['information'] = (array) $category->country_info;
             $categoryArray['timezone'] =  $category->time_zone;
+
+
+            switch (strtoupper($category->title_en)) {
+                case "NP": $categoryArray['capital'] = "Kathmandu"; break;
+                case "MY": $categoryArray['capital'] = "Kuala Lumpur"; break;
+                case "SA": $categoryArray['capital'] = "Riyadh"; break;
+                case "QA": $categoryArray['capital'] = "Doha"; break;
+                case "AE": $categoryArray['capital'] = "Riyadh"; break;
+                case "KW": $categoryArray['capital'] = "Kuwait City"; break;
+                case "KR": $categoryArray['capital'] = "Seoul"; break;
+                case "BH": $categoryArray['capital'] = "Manama"; break;
+                case "OM": $categoryArray['capital'] = "Muscat"; break;
+                case "LB": $categoryArray['capital'] = "Beirut"; break;
+                default: $categoryArray['capital'] = "";
+            }
         }
 
         return $categoryArray;
