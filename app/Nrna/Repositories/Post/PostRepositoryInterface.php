@@ -91,6 +91,14 @@ interface PostRepositoryInterface
     public function increaseShare($postId, $count);
 
     /**
+     * @param $post
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function changeAuthor($post, $userId);
+
+    /**
      * @param $postId
      *
      * @return mixed

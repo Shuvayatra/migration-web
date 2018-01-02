@@ -333,6 +333,22 @@ class PostRepository implements PostRepositoryInterface
     }
 
     /**
+     * @param $post
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function changeAuthor($post, $userId)
+    {
+        $post->created_by = $userId;
+        $post->updated_by = $userId;
+        $post->timestamps = false;
+        $post->save(['timestamps' => false]);
+
+        return $post;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getAllPosts()

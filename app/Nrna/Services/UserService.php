@@ -5,6 +5,7 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\Role;
 use App\Nrna\Repositories\User\UserRepositoryInterface;
+use Illuminate\Contracts\Logging\Log;
 
 class UserService
 {
@@ -16,17 +17,29 @@ class UserService
      * @var Role
      */
     private $role;
+    /**
+     * @var PostService
+     */
+    private $postService;
+    /**
+     * @var Log
+     */
+    protected $logger;
 
     /**
      * UserService constructor.
      *
      * @param UserRepositoryInterface $user
      * @param Role                    $role
+     * @param PostService             $postService
+     * @param Log                     $logger
      */
-    public function __construct(UserRepositoryInterface $user, Role $role)
+    public function __construct(UserRepositoryInterface $user, Role $role, PostService $postService, Log $logger)
     {
         $this->user = $user;
         $this->role = $role;
+        $this->postService = $postService;
+        $this->logger = $logger;
     }
 
     /**
@@ -81,15 +94,18 @@ class UserService
      */
     public function destroy($id)
     {
-        $filter['user'] = $id;
+        $this->logger->error("Deleting user with id " . $id);
         $admin_id = $this->user->findByEmail('admin@nrna.app')['id'];
 
-        $posts = $this->post->all($filter);
-        if(count($posts) > 0){
+        if($id == $admin_id){
 
-            $this->post->assignToAdmin($posts, $admin_id);
+            $this->logger->error("Cannot delete admin@nrna.app user.");
+        }else {
+
+            if ($this->postService->assignToAdmin($id, $admin_id))
+                return $this->user->destroy($id);
+
+            $this->logger->error("Could not delete user, post assignment to admin was not successful");
         }
-
-        return $this->user->destroy($id);
     }
 }

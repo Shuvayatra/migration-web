@@ -662,22 +662,27 @@ class PostService
         }
     }
 
-    public function assignToAdmin($posts, $admin_id){
+    public function assignToAdmin($user_id, $adminId){
 
+        $this->logger->error("Transferring posts to admin with id " . $adminId);
         $this->database->beginTransaction();
 
+        $filter['user'] = $user_id;
+        $posts = $this->post->getAll($filter);
         try {
             foreach ($posts as $post) {
 
-                $post->created_by = $admin_id;
-                $post->updated_by = $admin_id;
-                $post->update();
+                $this->post->changeAuthor($post, $adminId);
             }
+
+            $this->database->commit();
         }catch (\Exception $e) {
             $this->logger->error($e);
             $this->database->rollback();
 
             return false;
         }
+        $this->logger->error("All posts transfer complete");
+        return true;
     }
 }
