@@ -5,6 +5,7 @@ namespace App\Nrna\Models;
 use Baum\Node;
 use App\Nrna\Services\SortableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class Category extends Node
 {
@@ -142,6 +143,9 @@ class Category extends Node
     public function getTitleEnAttribute($title)
     {
         if (in_array(\Request::route()->getName(), ['category.edit', 'category.show'])) {
+            return $title;
+        }
+        if (in_array(\Request::route()->getName(), ['pushnotificationgroup.edit'])) {
             return $title;
         }
         if (\Auth::guest()) {

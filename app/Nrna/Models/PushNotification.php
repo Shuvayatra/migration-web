@@ -20,5 +20,11 @@ class PushNotification extends Model
      * @var array
      */
     protected $fillable = ['title', 'description', 'type', 'content_id', 'response','deeplink'];
-    
+    /**
+     * The groups to which notification is sent.
+     */
+    public function groups()
+    {
+        return $this->belongsToMany('App\Nrna\Models\PushNotificationGroup');
+    }
 }

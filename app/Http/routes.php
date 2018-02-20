@@ -56,6 +56,7 @@ $router->group(
         $router->resource('section.category', 'CategoryAttribute\\CategoryAttributeController');
         $router->resource('category', 'Category\\CategoryController');
         $router->resource('pushnotification', 'PushNotification\\PushNotificationController');
+        $router->resource('pushnotificationgroup', 'PushNotificationGroup\\PushNotificationGroupController');
         $router->resource('rss', 'Rss\RssController');
         $router->get(
             'rssnewsfeeds/fetch',

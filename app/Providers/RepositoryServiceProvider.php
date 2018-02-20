@@ -104,5 +104,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Nrna\Repositories\Screen\ScreenRepositoryInterface',
             'App\Nrna\Repositories\Screen\ScreenRepository'
         );
+
+        $this->app->bind(
+            'App\Nrna\Repositories\PushNotificationGroup\PushNotificationGroupRepositoryInterface',
+            'App\Nrna\Repositories\PushNotificationGroup\PushNotificationGroupRepository'
+        );
     }
 }

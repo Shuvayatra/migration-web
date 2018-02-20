@@ -6,7 +6,11 @@
 	<div class="block-list-wrap">
 		@if(request()->get('page')=='destination')
 			<?php
-			$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants();
+            $countries = array();
+            $country_section = \App\Nrna\Models\Category::find(1);
+            if(!empty($country_section)){
+                $countries = $country_section->getImmediateDescendants();
+            }
 			?>
 			<div>
 				<h3>Destination List</h3>

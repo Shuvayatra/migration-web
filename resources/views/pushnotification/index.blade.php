@@ -2,8 +2,16 @@
 
 @section('content')
 
-    <h1>Push Notifications <a href="{{ route('pushnotification.create') }}" class="btn btn-primary pull-right btn-sm">Send
-             Push Notification</a></h1>
+    <h1>Push Notifications
+        <div class=".btn-toolbar pull-right">
+            <a href="{{ route('pushnotification.create') }}" class="btn btn-primary btn-sm">
+                Send Push Notification
+            </a>
+            <a href="{{ route('pushnotificationgroup.index') }}" class="btn btn-primary btn-sm">
+                Push Notification Groups
+            </a>
+        </div>
+    </h1>
     <div class="table">
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -12,7 +20,6 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Type</th>
-                <th>Response</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -28,7 +35,6 @@
                     </td>
                     <td>{{ $item->description }}</td>
                     <td>{{ !empty($item->type)?$item->type:'General' }}</td>
-                    <td>{{ $item->response }}</td>
                     <td>
                         <a href="{{ route('pushnotification.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Resend</button>

@@ -2,11 +2,13 @@
 
 namespace App\Nrna\Services;
 
+use App\Nrna\Models\PushNotificationGroup;
 use App\Nrna\Repositories\PushNotification\PushNotificationRepositoryInterface;
+use Illuminate\Support\Facades\Log;
+use Psr\Log\InvalidArgumentException;
 
 class PushNotificationService
 {
-    public $send_notification_to = "global";
     /**
      * @var
      */
@@ -31,11 +33,19 @@ class PushNotificationService
      *
      * @return mixed
      */
-    protected function send($data)
+    protected function send($topics, $data)
     {
+        $no_of_topics = count($topics);
+        if($no_of_topics > 1)
+            $condition = "'" . join("' in topics && '", $topics) . "' in topics";
+        else if($no_of_topics == 1)
+            $condition = "'$topics[0]' in topics";
+        else
+            throw new InvalidArgumentException();
+
         $fields = [
-            "to"   => "/topics/".$this->send_notification_to,
-            'data' => $data,
+            "condition"   => $condition,
+            "data" => $data,
         ];
 
         $headers = [
@@ -62,20 +72,38 @@ class PushNotificationService
      *
      * @param $data
      *
-     * @return mixed
+     * @return bool
      */
     public function sendNotification($data)
     {
-        if (isset($data['send_notification_to'])) {
-            $this->send_notification_to = $data['send_notification_to'];
-        }
+        $group_ids = $data['groups'];
+
         $message = [
+            'hash'       => md5($data['title'] . $data['description']),
             'title'       => $data['title'],
             'description' => $data['description'],
-            'deeplink'    => $data['deeplink'],
+            'deeplink'    => $data['deeplink']
         ];
 
-        return $this->send($message);
+        foreach($group_ids as $group_id){
+
+            $group = PushNotificationGroup::find(1 * $group_id);
+            $properties = json_decode($group->properties, true);
+            Log::debug($properties['age']);
+            $topics = array();
+            if(!empty($properties['age']))
+                array_push($topics, $properties['age']);
+            if(!empty($properties['gender']))
+                array_push($topics, $properties['gender']);
+            if(!empty($properties['destination']))
+                array_push($topics, $properties['destination']);
+            if(!empty($properties['country']))
+                array_push($topics, $properties['country']);
+
+            Log::info($this->send($topics, $message));
+        }
+
+        return true;
     }
 
     /**
@@ -113,6 +141,7 @@ class PushNotificationService
      */
     public function create($data)
     {
-        return $this->pushNotification->create($data);
+        $pushNotification = $this->pushNotification->create($data);
+        $pushNotification->groups()->attach($data['groups']);
     }
 }

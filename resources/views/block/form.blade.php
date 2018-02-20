@@ -2,16 +2,24 @@
 $countryService = app('App\Nrna\Services\CountryService');
 $pages = ['home' => 'Home', 'destination' => 'Destination', 'journey' => 'Journey'];
 $categories = \App\Nrna\Models\Category::where('depth', '1')->orderBy('title')->lists('title', 'id')->toArray();
-$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists(
-		'title',
-		'id'
-)->toArray();
+$country_section = \App\Nrna\Models\Category::whereSection('country')->first();
+$countries = array();
+if(!empty($country_section)){
+	$countries = $country_section->getImmediateDescendants()->lists(
+			'title',
+			'id'
+	)->toArray();
+}
 $gender = ['all' => 'select all gender'] + ['m' => 'male', 'f' => 'female', 'o' => 'other'];
-$journeys = \App\Nrna\Models\Category::whereSection('categories')->first()->getImmediateDescendants()->lists(
-		'title',
-		'id'
-)
-									 ->toArray();
+$category = \App\Nrna\Models\Category::whereSection('categories')->first();
+$journeys = array();
+if(!empty($category)){
+	$journeys = $category->getImmediateDescendants()->lists(
+			'title',
+			'id'
+	)
+ 	->toArray();
+}
 $layouts = [
 		'list'           => 'List',
 		'slider'         => 'Slider',

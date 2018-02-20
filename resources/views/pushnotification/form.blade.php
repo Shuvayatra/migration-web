@@ -1,8 +1,19 @@
 <?php
 $screens = ['home' => 'Home'];
-$countries = \App\Nrna\Models\Category::find(1)->getImmediateDescendants()->lists('title', 'id')->toArray();
+$category = \App\Nrna\Models\Category::find(1);
+if($category != null){
+    $countries = $category->getImmediateDescendants()->lists('title', 'id')->toArray();
+}else{
+    $countries = array();
+}
 $dynamic_screens = \App\Nrna\Models\Screen::all()->lists('title', 'id')->toArray();
 $posts = \App\Nrna\Models\Post::all()->toArray();
+$push_notification_groups = \App\Nrna\Models\PushNotificationGroup::all()->toArray();
+$current_groups = $pushnotification->groups()->get();
+$current_groups_ids = array();
+foreach ($current_groups as $current_group){
+    array_push($current_groups_ids, $current_group->id);
+}
 ?>
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
 	{!! Form::label('title', 'Title:* ', ['class' => 'col-sm-3 control-label required']) !!}
@@ -16,15 +27,6 @@ $posts = \App\Nrna\Models\Post::all()->toArray();
 	<div class="col-sm-6">
 		{!! Form::textArea('description', null, ['class' => 'form-control']) !!}
 		{!! $errors->first('description', '<p class="help-block">:message</p>') !!}
-	</div>
-</div>
-<div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
-	{!! Form::label('type', 'Show Notification in : ', ['class' => 'col-sm-3 control-label']) !!}
-	<div class="col-sm-6">
-		{!! Form::select('send_notification_to',['test'=>'Test App','global'=>"Live App"],null, ['class'
-		=>'form-control',
-		'id'=>'post_type']) !!}
-		{!! $errors->first('type', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
 
@@ -55,6 +57,19 @@ $posts = \App\Nrna\Models\Post::all()->toArray();
 		<p class="help-block">Please select the screen from the dropdown or type the title of the post you want to deeplink.</p>
 	</div>
 
+</div>
+<div class="form-group {{ $errors->has('groups[]') ? 'has-error' : ''}}">
+	{!! Form::label('groups[]', 'Send to Group(s):', ['class' => 'col-sm-3 control-label', 'required' => '']) !!}
+	<div class="col-sm-6">
+		<select name="groups[]" class="form-control" multiple>
+			<option value="global">All</option>
+			@foreach($push_notification_groups as $push_notification_group)
+				<option {{(isset($current_groups_ids) && in_array($push_notification_group['id'], $current_groups_ids))?"selected":""}} value="{{$push_notification_group['id']}}">
+                    {{$push_notification_group['name']}}
+                </option>
+			@endforeach
+		</select>
+	</div>
 </div>
 
 <div style="display: none" class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
