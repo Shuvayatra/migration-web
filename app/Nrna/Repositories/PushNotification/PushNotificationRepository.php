@@ -62,7 +62,7 @@ class PushNotificationRepository implements PushNotificationRepositoryInterface
     public function getNotificationsFromNow()
     {
         $now = time();
-        $five_minutes = $now + (60 * 5);
+        $five_minutes = $now + 60;
         return \App\Nrna\Models\PushNotification::where('scheduled_date', '>=', date('m-d-Y\TH:i'))
                                              ->where('scheduled_date', '<=', date('m-d-Y\TH:i', $five_minutes))
                                              ->where('response', '=', '')

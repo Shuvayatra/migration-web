@@ -34,6 +34,6 @@ class Kernel extends ConsoleKernel
                  ->twiceDaily();
 
         $schedule->command('pushnotification:send')
-                 ->everyFiveMinutes();
+                 ->everyMinute();
     }
 }

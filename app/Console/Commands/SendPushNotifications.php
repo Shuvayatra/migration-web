@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Nrna\Services\PushNotificationService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class SendPushNotifications extends Command
@@ -51,12 +52,14 @@ class SendPushNotifications extends Command
     public function sendNotifications()
     {
         $pushnotifications = $this->pushNotificationService->getNotificationsFromNow();
-        //date("Y-m-d H:i:s")
-        Log::info($pushnotifications);
-
+        Log::info("There are " . count($pushnotifications) . " notifications to send");
         foreach ($pushnotifications as $pushnotification)
         {
-            $this->pushNotificationService->sendScheduledNotification($pushnotification, $pushnotification->groups()->get());
+            if(count($pushnotification->groups()->get()) > 0)
+                $pushnotification->response = $this->pushNotificationService->sendScheduledNotificationToGroups($pushnotification, $pushnotification->groups()->get());
+            else
+                $pushnotification->response = $this->pushNotificationService->sendScheduledNotificationToSingleTopic($pushnotification, Config::get('constants.topic.all'));
+            $pushnotification->save();
         }
     }
 }

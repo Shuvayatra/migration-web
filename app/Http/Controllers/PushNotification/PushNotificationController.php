@@ -68,7 +68,12 @@ class PushNotificationController extends Controller
     {
         $result = $this->pushNotificationService->sendNotification($request->all());
 
-        $this->pushNotificationService->create(array_merge($request->all(), ['response' => $result]));
+        if($request->request->has('scheduled_date') && empty($request->input('scheduled_date'))) {
+            $requestParameters = $request->except('scheduled_date');
+        }else{
+            $requestParameters = $request->all();
+        }
+        $this->pushNotificationService->create(array_merge($requestParameters, ['response' => $result]));
 
         return redirect('pushnotification')->with('success', 'Push notification successfully sent!');
     }

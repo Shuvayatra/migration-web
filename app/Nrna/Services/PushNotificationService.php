@@ -4,6 +4,7 @@ namespace App\Nrna\Services;
 
 use App\Nrna\Models\PushNotificationGroup;
 use App\Nrna\Repositories\PushNotification\PushNotificationRepositoryInterface;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Psr\Log\InvalidArgumentException;
 
@@ -29,12 +30,14 @@ class PushNotificationService
     /**
      * Notification Service
      *
+     * @param $topics
      * @param $data
      *
      * @return mixed
      */
-    protected function send($topics, $data)
+    protected function sendToTopics($topics, $data)
     {
+        Log::info('Sending notification to multiple topics: ' . join(", ", $topics));
         $no_of_topics = count($topics);
         if($no_of_topics > 1)
             $condition = "'" . join("' in topics && '", $topics) . "' in topics";
@@ -48,11 +51,34 @@ class PushNotificationService
             "data" => $data,
         ];
 
+        return $this->send($fields);
+    }
+
+    /**
+     * Notification Service
+     *
+     * @param $topic
+     * @param $data
+     *
+     * @return mixed
+     */
+    protected function sendToTopic($topic, $data)
+    {
+        Log::info('Sending notification to single topic ' . $topic);
+        $fields = [
+            "to"   => "/topics/".$topic,
+            'data' => $data,
+        ];
+
+        return $this->send($fields);
+    }
+
+    protected function send($fields)
+    {
         $headers = [
             'Authorization: key='.env('GCM_API_ACCESS_KEY'),
             'Content-Type: application/json',
         ];
-
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::GCM_URL);
@@ -67,23 +93,39 @@ class PushNotificationService
         return $result;
     }
 
-    /**
-     * Send push notification
-     *
-     * @param $data
-     *
-     * @return bool
-     */
     public function sendNotification($data)
     {
-        $group_ids = $data['groups'];
-
         $message = [
             'hash'       => md5($data['title'] . $data['description'] . $data['deeplink']),
             'title'       => $data['title'],
             'description' => $data['description'],
             'deeplink'    => $data['deeplink']
         ];
+
+        $group_ids = $data['groups'];
+        if(in_array('test', $group_ids)){
+            return $this->sendNotificationToSingleTopic($message, 'test');
+        }else{
+            return $this->sendNotificationToGroups($message, $data['groups']);
+        }
+    }
+
+    protected function sendNotificationToSingleTopic($message, $topic)
+    {
+        return $this->sendToTopic($topic, $message);
+    }
+
+    /**
+     * Send push notification
+     *
+     * @param $message
+     * @param $group_ids
+     *
+     * @return bool
+     */
+    protected function sendNotificationToGroups($message, $group_ids)
+    {
+        $response = '';
 
         foreach($group_ids as $group_id){
 
@@ -100,20 +142,21 @@ class PushNotificationService
             if(!empty($properties['country']))
                 array_push($topics, $properties['country']);
 
-            Log::info($this->send($topics, $message));
+            $response .= $this->sendToTopics($topics, $message);
         }
 
-        return true;
+        return $response;
     }
 
     /**
      * Send push notification
      *
-     * @param $data
+     * @param $pushNotification
+     * @param $groups
      *
      * @return bool
      */
-    public function sendScheduledNotification($pushNotification, $groups)
+    public function sendScheduledNotificationToGroups($pushNotification, $groups)
     {
         $message = [
             'hash'       => md5($pushNotification->title . $pushNotification->description),
@@ -137,10 +180,30 @@ class PushNotificationService
                 array_push($topics, $properties['country']);
 
             $pushNotification->response .= $this->send($topics, $message);
-            $pushNotification->save();
         }
+        $pushNotification->save();
 
-        return true;
+        return $pushNotification->response;
+    }
+
+    /**
+     * Send push notification
+     *
+     * @param $pushNotification
+     * @param $topic
+     *
+     * @return bool
+     */
+    public function sendScheduledNotificationToSingleTopic($pushNotification, $topic)
+    {
+        $message = [
+            'hash'       => md5($pushNotification->title . $pushNotification->description),
+            'title'       => $pushNotification->title,
+            'description' => $pushNotification->description,
+            'deeplink'    => $pushNotification->deeplink
+        ];
+
+        return $this->sendToTopic($topic, $message);
     }
 
     /**
@@ -179,7 +242,8 @@ class PushNotificationService
     public function create($data)
     {
         $pushNotification = $this->pushNotification->create($data);
-        $pushNotification->groups()->attach($data['groups']);
+        if(isset($data['groups']) && !in_array(Config::get('constants.topic.all'), $data['groups']))
+            $pushNotification->groups()->attach($data['groups']);
     }
 
     /**

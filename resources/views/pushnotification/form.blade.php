@@ -61,10 +61,10 @@ if(isset($pushnotification)){
 
 </div>
 <div class="form-group {{ $errors->has('groups[]') ? 'has-error' : ''}}">
-	{!! Form::label('groups[]', 'Send to Group(s):', ['class' => 'col-sm-3 control-label', 'required' => '']) !!}
+	{!! Form::label('groups[]', 'Send to Group(s):', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-		<select name="groups[]" class="form-control" multiple>
-			<option value="global">All</option>
+		<select name="groups[]" class="form-control" multiple required="">
+			<option {{isset($push_notification_group['id']) && ($push_notification_group['id'] == 'test')?"selected":""}} value="test">Everyone</option>
 			@foreach($push_notification_groups as $push_notification_group)
 				<option {{(isset($current_groups_ids) && in_array($push_notification_group['id'], $current_groups_ids))?"selected":""}} value="{{$push_notification_group['id']}}">
                     {{$push_notification_group['name']}}
@@ -77,9 +77,9 @@ if(isset($pushnotification)){
 <div class="form-group {{ $errors->has('scheduled_date') ? 'has-error' : ''}}">
 	{!! Form::label('scheduled_date', 'Schedule:', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
-        <input class="form-control" type="datetime-local" id = "scheduled_date" name="scheduled_date" value="{{isset($pushnotification->scheduled_date) ? \Carbon\Carbon::parse($pushnotification->scheduled_date)->format('Y-m-d\TH:i') : ''}}">
+        <input class="form-control" type="datetime-local" id = "scheduled_date" min="{{date('Y-m-d\TH:i', (time() + (0 * 60)))}}" name="scheduled_date" value="{{isset($pushnotification->scheduled_date) ? \Carbon\Carbon::parse($pushnotification->scheduled_date)->format('Y-m-d\TH:i') : null}}">
         {!! $errors->first('scheduled_date', '<p class="help-block">:message</p>') !!}
-        <p class="help-block">There can be at most of 5 minutes time difference.</p>
+        <p class="help-block">There can be at most of 1 minute time difference.</p>
     </div>
 </div>
 <div style="display: none" class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
