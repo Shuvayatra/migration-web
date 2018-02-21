@@ -79,7 +79,7 @@ class PushNotificationService
         $group_ids = $data['groups'];
 
         $message = [
-            'hash'       => md5($data['title'] . $data['description']),
+            'hash'       => md5($data['title'] . $data['description'] . $data['deeplink']),
             'title'       => $data['title'],
             'description' => $data['description'],
             'deeplink'    => $data['deeplink']
