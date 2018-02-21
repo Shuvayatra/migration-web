@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\QuestionMetadataUpdate::class,
         \App\Console\Commands\AclSetup::class,
         \App\Console\Commands\FetchRssFeeds::class,
+        \App\Console\Commands\SendPushNotifications::class,
     ];
 
     /**
@@ -31,5 +32,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('nrna:fetchrss')
                  ->twiceDaily();
+
+        $schedule->command('pushnotification:send')
+                 ->everyFiveMinutes();
     }
 }

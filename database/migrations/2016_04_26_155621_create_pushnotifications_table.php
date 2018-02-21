@@ -19,6 +19,7 @@ class CreatePushnotificationsTable extends Migration
             $table->text('description')->nullable();
             $table->string('type')->nullable();
             $table->integer('content_id');
+            $table->timestamp('scheduled_date')->nullable();
             $table->json('response')->nullable();
 
             $table->timestamps();

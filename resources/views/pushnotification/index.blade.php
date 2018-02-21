@@ -19,7 +19,8 @@
                 <th>S.No</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Type</th>
+                <th>Scheduled Date</th>
+                <th>Sent</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -34,7 +35,8 @@
                         <small>Sent at: {{$item->created_at}}</small>
                     </td>
                     <td>{{ $item->description }}</td>
-                    <td>{{ !empty($item->type)?$item->type:'General' }}</td>
+                    <td>{{ !empty($item->scheduled_date)?$item->scheduled_date:'' }}</td>
+                    <td>{{ !empty($item->response)? 'Yes' : 'No' }}</td>
                     <td>
                         <a href="{{ route('pushnotification.edit', $item->id) }}">
                             <button type="submit" class="btn btn-primary btn-xs">Resend</button>

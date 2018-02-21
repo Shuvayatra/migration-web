@@ -9,10 +9,12 @@ if($category != null){
 $dynamic_screens = \App\Nrna\Models\Screen::all()->lists('title', 'id')->toArray();
 $posts = \App\Nrna\Models\Post::all()->toArray();
 $push_notification_groups = \App\Nrna\Models\PushNotificationGroup::all()->toArray();
-$current_groups = $pushnotification->groups()->get();
-$current_groups_ids = array();
-foreach ($current_groups as $current_group){
-    array_push($current_groups_ids, $current_group->id);
+if(isset($pushnotification)){
+    $current_groups = $pushnotification->groups()->get();
+    $current_groups_ids = array();
+    foreach ($current_groups as $current_group){
+        array_push($current_groups_ids, $current_group->id);
+    }
 }
 ?>
 <div class="form-group {{ $errors->has('title') ? 'has-error' : ''}}">
@@ -72,6 +74,14 @@ foreach ($current_groups as $current_group){
 	</div>
 </div>
 
+<div class="form-group {{ $errors->has('scheduled_date') ? 'has-error' : ''}}">
+	{!! Form::label('scheduled_date', 'Schedule:', ['class' => 'col-sm-3 control-label']) !!}
+	<div class="col-sm-6">
+        <input class="form-control" type="datetime-local" id = "scheduled_date" name="scheduled_date" value="{{isset($pushnotification->scheduled_date) ? \Carbon\Carbon::parse($pushnotification->scheduled_date)->format('Y-m-d\TH:i') : ''}}">
+        {!! $errors->first('scheduled_date', '<p class="help-block">:message</p>') !!}
+        <p class="help-block">There can be at most of 5 minutes time difference.</p>
+    </div>
+</div>
 <div style="display: none" class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
 	{!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">

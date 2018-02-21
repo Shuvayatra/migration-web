@@ -19,7 +19,7 @@ class PushNotification extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'type', 'content_id', 'response','deeplink'];
+    protected $fillable = ['title', 'description', 'type', 'content_id', 'response','deeplink', 'scheduled_date'];
     /**
      * The groups to which notification is sent.
      */

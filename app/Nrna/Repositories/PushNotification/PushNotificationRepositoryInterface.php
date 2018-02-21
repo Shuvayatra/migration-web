@@ -26,4 +26,9 @@ interface PushNotificationRepositoryInterface
      * @return mixed
      */
     public function create($data);
+
+    /**
+     * @return mixed
+     */
+    public function getNotificationsFromNow();
 }

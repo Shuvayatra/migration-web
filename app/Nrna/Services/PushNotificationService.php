@@ -107,6 +107,43 @@ class PushNotificationService
     }
 
     /**
+     * Send push notification
+     *
+     * @param $data
+     *
+     * @return bool
+     */
+    public function sendScheduledNotification($pushNotification, $groups)
+    {
+        $message = [
+            'hash'       => md5($pushNotification->title . $pushNotification->description),
+            'title'       => $pushNotification->title,
+            'description' => $pushNotification->description,
+            'deeplink'    => $pushNotification->deeplink
+        ];
+
+        foreach($groups as $group){
+
+            $properties = json_decode($group->properties, true);
+            Log::debug($properties['age']);
+            $topics = array();
+            if(!empty($properties['age']))
+                array_push($topics, $properties['age']);
+            if(!empty($properties['gender']))
+                array_push($topics, $properties['gender']);
+            if(!empty($properties['destination']))
+                array_push($topics, $properties['destination']);
+            if(!empty($properties['country']))
+                array_push($topics, $properties['country']);
+
+            $pushNotification->response .= $this->send($topics, $message);
+            $pushNotification->save();
+        }
+
+        return true;
+    }
+
+    /**
      * @param $id
      *
      * @return mixed
@@ -143,5 +180,13 @@ class PushNotificationService
     {
         $pushNotification = $this->pushNotification->create($data);
         $pushNotification->groups()->attach($data['groups']);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNotificationsFromNow()
+    {
+        return $this->pushNotification->getNotificationsFromNow();
     }
 }
