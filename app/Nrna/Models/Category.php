@@ -145,7 +145,7 @@ class Category extends Node
         if (in_array(\Request::route()->getName(), ['category.edit', 'category.show'])) {
             return $title;
         }
-        if (in_array(\Request::route()->getName(), ['pushnotificationgroup.edit'])) {
+        if (in_array(\Request::route()->getName(), ['pushnotificationgroup.edit', 'pushnotificationgroup.create'])) {
             return $title;
         }
         if (\Auth::guest()) {

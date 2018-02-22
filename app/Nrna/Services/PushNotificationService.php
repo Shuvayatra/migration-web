@@ -35,7 +35,7 @@ class PushNotificationService
      *
      * @return mixed
      */
-    protected function sendToTopics($topics, $data)
+    public function sendToTopics($topics, $data)
     {
         Log::info('Sending notification to multiple topics: ' . join(", ", $topics));
         $no_of_topics = count($topics);
@@ -62,7 +62,7 @@ class PushNotificationService
      *
      * @return mixed
      */
-    protected function sendToTopic($topic, $data)
+    public function sendToTopic($topic, $data)
     {
         Log::info('Sending notification to single topic ' . $topic);
         $fields = [
@@ -103,8 +103,8 @@ class PushNotificationService
         ];
 
         $group_ids = $data['groups'];
-        if(in_array('test', $group_ids)){
-            return $this->sendNotificationToSingleTopic($message, 'test');
+        if(in_array(Config::get('constants.topic.all'), $group_ids)){
+            return $this->sendNotificationToSingleTopic($message, Config::get('constants.topic.all'));
         }else{
             return $this->sendNotificationToGroups($message, $data['groups']);
         }
@@ -159,7 +159,7 @@ class PushNotificationService
     public function sendScheduledNotificationToGroups($pushNotification, $groups)
     {
         $message = [
-            'hash'       => md5($pushNotification->title . $pushNotification->description),
+            'hash'       => md5($pushNotification->title . $pushNotification->description . $pushNotification->deeplink),
             'title'       => $pushNotification->title,
             'description' => $pushNotification->description,
             'deeplink'    => $pushNotification->deeplink
@@ -168,7 +168,6 @@ class PushNotificationService
         foreach($groups as $group){
 
             $properties = json_decode($group->properties, true);
-            Log::debug($properties['age']);
             $topics = array();
             if(!empty($properties['age']))
                 array_push($topics, $properties['age']);
@@ -197,7 +196,7 @@ class PushNotificationService
     public function sendScheduledNotificationToSingleTopic($pushNotification, $topic)
     {
         $message = [
-            'hash'       => md5($pushNotification->title . $pushNotification->description),
+            'hash'       => md5($pushNotification->title . $pushNotification->description . $pushNotification->deeplink),
             'title'       => $pushNotification->title,
             'description' => $pushNotification->description,
             'deeplink'    => $pushNotification->deeplink

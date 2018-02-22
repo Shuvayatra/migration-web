@@ -45,7 +45,7 @@ $countries = array("c_AF"=>"Afghanistan","c_AX"=>"Åland Islands","c_AL"=>"Alban
 		<select name="properties[destination]" class="form-control">
 			<option value="">Select</option>
 			@foreach($destinations as $destination)
-				<option {{isset($properties->destination) && $properties->destination == $destination['title_en'] ? 'selected': ''}} value="{{$destination['title_en']}}">{{$destination['title']}} </option>
+				<option {{isset($properties->destination) && $properties->destination == "d_" . $destination['title_en'] ? 'selected': ''}} value="d_{{$destination['title_en']}}">{{$destination['title']}} </option>
 			@endforeach
 		</select>
 	</div>

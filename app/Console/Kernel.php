@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AclSetup::class,
         \App\Console\Commands\FetchRssFeeds::class,
         \App\Console\Commands\SendPushNotifications::class,
+        \App\Console\Commands\SendForexPushNotifications::class,
     ];
 
     /**
@@ -34,6 +35,9 @@ class Kernel extends ConsoleKernel
                  ->twiceDaily();
 
         $schedule->command('pushnotification:send')
+                 ->everyFiveMinutes();
+
+        $schedule->command('forexpushnotification:send')
                  ->everyMinute();
     }
 }

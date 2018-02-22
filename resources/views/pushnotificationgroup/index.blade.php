@@ -26,7 +26,7 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ json_decode($item->properties, true)['age'] }}</td>
                     <td>{{ json_decode($item->properties, true)['gender'] }}</td>
-                    <td>{{ json_decode($item->properties, true)['destination']}}</td>
+                    <td>{{ str_replace("d_", "", json_decode($item->properties, true)['destination'])}}</td>
                     <td>{{ str_replace("c_", "", json_decode($item->properties, true)['country'])}}</td>
                     <td>
                         <a href="{{ route('pushnotificationgroup.edit', $item->id) }}">
