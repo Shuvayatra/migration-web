@@ -79,7 +79,7 @@ if(isset($pushnotification)){
 	<div class="col-sm-6">
         <input class="form-control" type="datetime-local" id = "scheduled_date" name="scheduled_date" value="{{isset($pushnotification->scheduled_date) ? \Carbon\Carbon::parse($pushnotification->scheduled_date)->format('Y-m-d\TH:i') : null}}">
         {!! $errors->first('scheduled_date', '<p class="help-block">:message</p>') !!}
-        <p class="help-block">There can be at most of 1 minute time difference.</p>
+        <p class="help-block">There can be at most of 5 minutes time difference.</p>
     </div>
 </div>
 <div style="display: none" class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
