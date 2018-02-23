@@ -10,7 +10,7 @@ class SendForexPushNotifications extends Command
 {
     protected $countriesCharCodes = ['MYR'=>'d_MY', 'SAR'=>'d_SA', 'QAR'=>'d_QA', 'AED'=>'d_AE', 'KWD'=>'d_KW', 'KRW'=>'d_KR', 'BHD'=>'d_BH', 'LBN'=>'d_LB', 'OMN'=>'d_OM'];
 
-    protected $increasePercentage = -0.5;
+    protected $increasePercentage = 0.1;
 
     /**
      * The name and signature of the console command.

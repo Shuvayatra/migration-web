@@ -66,11 +66,11 @@ class PushNotificationController extends Controller
      */
     public function store(PushNotificationRequest $request)
     {
-        $result = $this->pushNotificationService->sendNotification($request->all());
-
         if($request->request->has('scheduled_date') && empty($request->input('scheduled_date'))) {
+            $result = $this->pushNotificationService->sendNotification($request->all());
             $requestParameters = $request->except('scheduled_date');
         }else{
+            $result = "";
             $requestParameters = $request->all();
         }
         $this->pushNotificationService->create(array_merge($requestParameters, ['response' => $result]));
@@ -116,9 +116,15 @@ class PushNotificationController extends Controller
     public function update($id, Request $request)
     {
         $pushnotification = $this->pushNotificationService->find($id);
-        $result           = $this->pushNotificationService->sendNotification($request->all());
+        if($request->request->has('scheduled_date') && empty($request->input('scheduled_date'))) {
+            $result = $this->pushNotificationService->sendNotification($request->all());
+            $requestParameters = $request->except('scheduled_date');
+        }else{
+            $result = "";
+            $requestParameters = $request->all();
+        }
 
-        $pushnotification->update(array_merge($request->all(), ['response' => $result]));
+        $pushnotification->update(array_merge($requestParameters, ['response' => $result]));
 
         return redirect('pushnotification')->with('success', 'Push notification resend was successful!');
     }

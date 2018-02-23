@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PushNotificationGroupRequest;
 use App\Nrna\Services\PushNotificationGroupService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PushNotificationGroupController extends Controller
 {
@@ -54,6 +55,21 @@ class PushNotificationGroupController extends Controller
      */
     public function store(PushNotificationGroupRequest $request)
     {
+        $allEmpty = true;
+        foreach($request->input('properties') as $property){
+
+            if(!empty($property)){
+
+                $allEmpty = false;
+                break;
+            }
+        }
+
+        if($allEmpty){
+
+            return redirect('pushnotificationgroup/create')->with('error', 'Please select at least one property.');
+        }
+
         $this->pushNotificationGroup->create($request->all());
 
         return redirect('pushnotificationgroup')->with('success', 'Push notification Group successfully saved!');
@@ -86,6 +102,20 @@ class PushNotificationGroupController extends Controller
      */
     public function update($id, Request $request)
     {
+        $allEmpty = true;
+        foreach($request->input('properties') as $property){
+
+            if(!empty($property)){
+
+                $allEmpty = false;
+                break;
+            }
+        }
+
+        if($allEmpty){
+
+            return redirect('pushnotificationgroup/create')->with('error', 'Please select at least one property.');
+        }
         $pushNotificationGroup = $this->pushNotificationGroup->find($id);
         if (!$pushNotificationGroup) {
             return redirect('pushnotificationgroup')->with('error', 'PushNotificationGroup not found.');
