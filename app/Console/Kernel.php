@@ -38,6 +38,6 @@ class Kernel extends ConsoleKernel
                  ->everyFiveMinutes();
 
         $schedule->command('forexpushnotification:send')
-                 ->everyMinute();
+                 ->dailyAt('8:00');
     }
 }
