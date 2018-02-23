@@ -79,6 +79,7 @@ class PushNotificationService
             'Authorization: key='.env('GCM_API_ACCESS_KEY'),
             'Content-Type: application/json',
         ];
+        Log::info(json_encode($fields));
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::GCM_URL);
@@ -178,7 +179,7 @@ class PushNotificationService
             if(!empty($properties['country']))
                 array_push($topics, $properties['country']);
 
-            $pushNotification->response .= $this->send($topics, $message);
+            $pushNotification->response .= $this->sendToTopics($topics, $message);
         }
         $pushNotification->save();
 
