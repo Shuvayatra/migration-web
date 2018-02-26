@@ -28,7 +28,7 @@ $destinations = array(""=>"", "d_KW"=>"Kuwait", "d_QA"=>"Qatar", "d_BH"=>"Bahara
                 <tr>
                     <td>{{ $x }}</td>
                     <td>{{ $item->name }}</td>
-                    <td>{{ json_decode($item->properties, true)['age'] }}</td>
+                    <td>{{ str_replace("_", " ", json_decode($item->properties, true)['age']) }}</td>
                     <td>{{ json_decode($item->properties, true)['gender'] }}</td>
                     <td>{{ $destinations[json_decode($item->properties, true)['destination']]}}</td>
                     <td>{{ $countries[json_decode($item->properties, true)['country']]}}</td>

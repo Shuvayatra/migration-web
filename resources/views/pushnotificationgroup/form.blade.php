@@ -20,10 +20,10 @@ $countries = array("c_AF"=>"Afghanistan","c_AX"=>"Åland Islands","c_AL"=>"Alban
 	<div class="col-sm-6">
 		<select name="properties[age]" class="form-control">
 			<option value="">Select</option>
-			<option {{ ( isset($properties->age) && $properties->age === "Less than 20" ) ? 'selected' : '' }} value="Less than 20">Less than 20</option>
-			<option {{ ( isset($properties->age) && $properties->age === "from 20 to 30" ) ? 'selected' : '' }} value="from 20 to 30">from 20 to 30</option>
-			<option {{ ( isset($properties->age) && $properties->age === "from 30 to 60" ) ? 'selected' : '' }} value="from 30 to 60">from 30 to 60</option>
-			<option {{ ( isset($properties->age) && $properties->age === "Greater than 60" ) ? 'selected' : '' }} value="Greater than 60">Greater than 60</option>
+			<option {{ ( isset($properties->age) && $properties->age === "under_20" ) ? 'selected' : '' }} value="under_20">Under 20</option>
+			<option {{ ( isset($properties->age) && $properties->age === "between_20_30" ) ? 'selected' : '' }} value="between_20_30">Between 20 and 30</option>
+			<option {{ ( isset($properties->age) && $properties->age === "between_30_40" ) ? 'selected' : '' }} value="between_30_40">Between 30 and 40</option>
+			<option {{ ( isset($properties->age) && $properties->age === "over_40" ) ? 'selected' : '' }} value="over_40">Over 40</option>
 		</select>
 	</div>
 </div>
