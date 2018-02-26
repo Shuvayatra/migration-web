@@ -21,8 +21,8 @@ $countries = array("c_AF"=>"Afghanistan","c_AX"=>"Åland Islands","c_AL"=>"Alban
 		<select name="properties[age]" class="form-control">
 			<option value="">Select</option>
 			<option {{ ( isset($properties->age) && $properties->age === "under_20" ) ? 'selected' : '' }} value="under_20">Under 20</option>
-			<option {{ ( isset($properties->age) && $properties->age === "between_20_30" ) ? 'selected' : '' }} value="between_20_30">Between 20 and 30</option>
-			<option {{ ( isset($properties->age) && $properties->age === "between_30_40" ) ? 'selected' : '' }} value="between_30_40">Between 30 and 40</option>
+			<option {{ ( isset($properties->age) && $properties->age === "between_20_and_30" ) ? 'selected' : '' }} value="between_20_and_30">Between 20 and 30</option>
+			<option {{ ( isset($properties->age) && $properties->age === "between_30_and_40" ) ? 'selected' : '' }} value="between_30_and_40">Between 30 and 40</option>
 			<option {{ ( isset($properties->age) && $properties->age === "over_40" ) ? 'selected' : '' }} value="over_40">Over 40</option>
 		</select>
 	</div>
