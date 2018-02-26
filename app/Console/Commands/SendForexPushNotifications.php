@@ -10,7 +10,7 @@ class SendForexPushNotifications extends Command
 {
     protected $countriesCharCodes = ['MYR'=>'d_MY', 'SAR'=>'d_SA', 'QAR'=>'d_QA', 'AED'=>'d_AE', 'KWD'=>'d_KW', 'KRW'=>'d_KR', 'BHD'=>'d_BH', 'LBN'=>'d_LB', 'OMN'=>'d_OM'];
 
-    protected $increasePercentage = 0.1;
+    protected $changePercentage = 0.1;
 
     /**
      * The name and signature of the console command.
@@ -58,8 +58,8 @@ class SendForexPushNotifications extends Command
         $forexJson = json_decode($responseJson['list'][0]['value'], true);
         $countries = $forexJson['items'];
         $message = [
-            'title'       => "Test",
-            'description' => "test"
+            'title'       => "बिदेशी विनिमय दर",
+            'description' => ""
         ];
 
         foreach($countries as $countryForex){
@@ -78,9 +78,9 @@ class SendForexPushNotifications extends Command
             $message['deeplink'] = "shuvayatra://forex";
             $message['hash'] = md5($message['title'] . $message['description'] . $message['deeplink']);
 
-            if($this->percentageIncrease($buying_yesterday_price, $buying_today_price) > $this->increasePercentage){
+            if($this->percentageIncrease($buying_yesterday_price, $buying_today_price) > $this->changePercentage){
                 Log::info($this->pushNotificationService->sendToTopic($this->countriesCharCodes[$countryForex['symbol']], $message));
-            }else if($this->percentageIncrease($selling_yesterday_price, $selling_today_price) > $this->increasePercentage){
+            }else if($this->percentageIncrease($selling_yesterday_price, $selling_today_price) > $this->changePercentage){
                 Log::info($this->pushNotificationService->sendToTopic($this->countriesCharCodes[$countryForex['symbol']], $message));
             }
         }
@@ -88,7 +88,7 @@ class SendForexPushNotifications extends Command
 
     private function percentageIncrease($fromValue, $toValue)
     {
-        return ( ( $toValue - $fromValue ) / $fromValue ) * 100;
+        return ( abs( $toValue - $fromValue ) / $fromValue ) * 100;
     }
 
     private function curl_get_contents($url)
