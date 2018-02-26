@@ -79,7 +79,6 @@ class PushNotificationService
             'Authorization: key='.env('GCM_API_ACCESS_KEY'),
             'Content-Type: application/json',
         ];
-        Log::info(json_encode($fields));
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, self::GCM_URL);
@@ -100,7 +99,8 @@ class PushNotificationService
             'hash'       => md5($data['title'] . $data['description'] . $data['deeplink']),
             'title'       => $data['title'],
             'description' => $data['description'],
-            'deeplink'    => $data['deeplink']
+            'deeplink'    => $data['deeplink'],
+            'timestamp'  => time()
         ];
 
         $group_ids = $data['groups'];
@@ -132,7 +132,6 @@ class PushNotificationService
 
             $group = PushNotificationGroup::find(1 * $group_id);
             $properties = json_decode($group->properties, true);
-            Log::debug($properties['age']);
             $topics = array();
             if(!empty($properties['age']))
                 array_push($topics, $properties['age']);
@@ -163,7 +162,8 @@ class PushNotificationService
             'hash'       => md5($pushNotification->title . $pushNotification->description . $pushNotification->deeplink),
             'title'       => $pushNotification->title,
             'description' => $pushNotification->description,
-            'deeplink'    => $pushNotification->deeplink
+            'deeplink'    => $pushNotification->deeplink,
+            'timestamp'  => time()
         ];
 
         foreach($groups as $group){
@@ -200,7 +200,8 @@ class PushNotificationService
             'hash'       => md5($pushNotification->title . $pushNotification->description . $pushNotification->deeplink),
             'title'       => $pushNotification->title,
             'description' => $pushNotification->description,
-            'deeplink'    => $pushNotification->deeplink
+            'deeplink'    => $pushNotification->deeplink,
+            'timestamp'  => time()
         ];
 
         return $this->sendToTopic($topic, $message);

@@ -58,7 +58,7 @@ class SendForexPushNotifications extends Command
         $forexJson = json_decode($responseJson['list'][0]['value'], true);
         $countries = $forexJson['items'];
         $message = [
-            'title'       => "बिदेशी विनिमय दर",
+            'title'       => "आजको बिदेशी विनिमय दर",
             'description' => ""
         ];
 
