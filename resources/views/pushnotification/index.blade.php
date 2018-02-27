@@ -32,7 +32,9 @@
                     <td>{{ $x }}</td>
                     <td><a href="{{ url('/pushnotification', $item->id) }}">{{ $item->title }}</a>
                         <br>
-                        <small>Sent at: {{$item->created_at}}</small>
+                        @if(!empty($item->response))
+                            <small>Sent at: {{$item->updated_at}}</small>
+                        @endif
                     </td>
                     <td>{{ $item->description }}</td>
                     <td>{{ !empty($item->scheduled_date)?$item->scheduled_date:'' }}</td>
