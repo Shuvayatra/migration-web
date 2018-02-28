@@ -25,16 +25,14 @@ $tagService = app('App\Nrna\Services\TagService');
 $tags = $tagService->getList();
 $sectionService = app('App\Nrna\Services\SectionService');
 $sections = $sectionService->all();
-//$categories = \App\Nrna\Models\Category::where('section', 'categories')
-//									   ->first()->getImmediateDescendants()->sortBy('title')->lists('title', 'id')
-//									   ->toArray();
-//$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists(
-//		'title',
-//		'id'
-//)
-//									  ->toArray();
-$countries = array();
-$categories = array();
+$categories = \App\Nrna\Models\Category::where('section', 'categories')
+									   ->first()->getImmediateDescendants()->sortBy('title')->lists('title', 'id')
+									   ->toArray();
+$countries = \App\Nrna\Models\Category::where('section', 'country')->first()->getImmediateDescendants()->lists(
+		'title',
+		'id'
+)
+									  ->toArray();
 $postService = app('App\Nrna\Services\PostService');
 $posts = $postService->getAllPosts()->lists('title', 'id')->toArray();
 $show_text_type = true;

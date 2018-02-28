@@ -5,7 +5,7 @@
 	$tagService = app('App\Nrna\Services\TagService');
 	$tags = $tagService->getList();
 	$users = \App\Nrna\Models\User::all()->lists('name', 'id')->toArray();
-	/*$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists(
+	$countries = \App\Nrna\Models\Category::whereSection('country')->first()->getImmediateDescendants()->lists(
 			'title',
 			'id'
 	)->toArray();
@@ -13,9 +13,7 @@
 			'title',
 			'id'
 	)
-										   ->toArray();*/
-    $countries = array();
-    $categories = array();
+										   ->toArray();
 	?>
 	<a href="{{ route('post.create') }}?{{request()->getQueryString() }}"
 	   class="btn btn-primary pull-right btn-sm button">Add New Post</a>
