@@ -48,7 +48,7 @@ $destinations = array(""=>"", "d_KW"=>"Kuwait", "d_QA"=>"Qatar", "d_BH"=>"Bahara
             @endforeach
             </tbody>
         </table>
-        <div class="pagination"> {!! $pushnotificationgroups->render() !!} </div>
+        <div class="pagination center-block text-center"> {!! $pushnotificationgroups->render() !!} </div>
     </div>
 
 @endsection

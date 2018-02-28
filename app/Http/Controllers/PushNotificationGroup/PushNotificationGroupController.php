@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PushNotificationGroupRequest;
 use App\Nrna\Services\PushNotificationGroupService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class PushNotificationGroupController extends Controller
 {
@@ -70,9 +73,11 @@ class PushNotificationGroupController extends Controller
             return redirect('pushnotificationgroup/create')->with('error', 'Please select at least one property.');
         }
 
-        $this->pushNotificationGroup->create($request->all());
-
-        return redirect('pushnotificationgroup')->with('success', 'Push notification Group successfully saved!');
+        if($this->pushNotificationGroup->create($request->all())){
+            return redirect('pushnotificationgroup')->with('success', 'Push notification Group successfully saved!');
+        }else{
+            return Redirect::back()->withInput(Input::all())->with('error', 'Push notification Group already exists!');
+        }
     }
 
     /**
@@ -121,9 +126,22 @@ class PushNotificationGroupController extends Controller
             return redirect('pushnotificationgroup')->with('error', 'PushNotificationGroup not found.');
         }
 
+        $properties = $request->input('properties');
+        $query = DB::table('push_notification_groups');
+        foreach($properties as $key=>$property){
+            if(!empty($properties[$key])) {
+                $query = $query->whereRaw("properties->>'$key' = '" . $properties[$key] . "'");
+            }
+        }
+        $existing_pushnotificationgroup = $query->first();
+
+        Log::info(var_export($existing_pushnotificationgroup));
+        if(!is_null($existing_pushnotificationgroup) && $id != $existing_pushnotificationgroup->id){
+            return Redirect::back()->withInput(Input::all())->with('error', 'Problem editing PushNotificationGroup. Already exists.');
+        }
         $request->request->set('properties', json_encode($request->request->get('properties')));
         if (!$pushNotificationGroup->update($request->all())) {
-            return redirect('pushnotificationgroup')->with('error', 'Problem editing PushNotificationGroup.');
+            return Redirect::back()->withInput(Input::all())->with('error', 'Problem editing PushNotificationGroup.');
         }
 
         return redirect('pushnotificationgroup')->with('success', 'PushNotificationGroup successfully updated!');

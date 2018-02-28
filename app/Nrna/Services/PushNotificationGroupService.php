@@ -6,6 +6,7 @@ namespace App\Nrna\Services;
 use App\Nrna\Models\PushNotificationGroup;
 use App\Nrna\Repositories\PushNotificationGroup\PushNotificationGroupRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PushNotificationGroupService
 {
@@ -29,6 +30,17 @@ class PushNotificationGroupService
      */
     public function create($data)
     {
+        $query = DB::table('push_notification_groups');
+        foreach($data['properties'] as $key=>$property){
+            if(!empty($data['properties'][$key])) {
+                $query = $query->whereRaw("properties->>'$key' = '" . $data['properties'][$key] . "'");
+            }
+        }
+        $pushnotificationgroup = $query->first();
+
+        if(!is_null($pushnotificationgroup)){
+            return null;
+        }
         $data['properties'] = json_encode($data['properties']);
         return $this->pushNotificationGroup->save($data);
     }

@@ -39,10 +39,10 @@ class PushNotificationGroupRepository implements PushNotificationGroupRepository
     public function getAll($limit = null)
     {
         if (is_null($limit)) {
-            return $this->pushNotificationGroup->all();
+            return $this->pushNotificationGroup->orderBy('id','desc');
         }
 
-        return $this->pushNotificationGroup->paginate();
+        return $this->pushNotificationGroup->orderBy('id','desc')->paginate($limit);
     }
 
     /**
