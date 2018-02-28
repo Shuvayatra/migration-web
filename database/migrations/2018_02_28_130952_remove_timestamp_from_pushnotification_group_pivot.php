@@ -13,8 +13,7 @@ class RemoveTimestampFromPushnotificationGroupPivot extends Migration
     public function up()
     {
         Schema::table('push_notification_push_notification_group', function (Blueprint $table) {
-            $table->dropColumn('created_at');
-            $table->dropColumn('updated_at');
+            $table->dropTimestamps();
         });
     }
 
