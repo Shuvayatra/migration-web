@@ -73,7 +73,7 @@ class PushNotificationGroupController extends Controller
             return redirect('pushnotificationgroup/create')->with('error', 'Please select at least one property.');
         }
 
-        if($this->pushNotificationGroup->create($request->all())){
+        if($this->pushNotificationGroup->create($request->only(['name', 'description', 'properties']))){
             return redirect('pushnotificationgroup')->with('success', 'Push notification Group successfully saved!');
         }else{
             return Redirect::back()->withInput(Input::all())->with('error', 'Push notification Group already exists!');
@@ -140,7 +140,7 @@ class PushNotificationGroupController extends Controller
             return Redirect::back()->withInput(Input::all())->with('error', 'Problem editing PushNotificationGroup. Already exists.');
         }
         $request->request->set('properties', json_encode($request->request->get('properties')));
-        if (!$pushNotificationGroup->update($request->all())) {
+        if (!$pushNotificationGroup->update($request->only(['name', 'description', 'properties']))) {
             return Redirect::back()->withInput(Input::all())->with('error', 'Problem editing PushNotificationGroup.');
         }
 
