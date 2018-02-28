@@ -1,6 +1,6 @@
 <?php
 return [
     'topic' => [
-        'all' => 'test'
+        'all' => 'global'
     ]
 ];
