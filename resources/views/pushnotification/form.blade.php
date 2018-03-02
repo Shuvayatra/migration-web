@@ -64,7 +64,7 @@ if(isset($pushnotification)){
 	{!! Form::label('groups[]', 'Send to Group(s):', ['class' => 'col-sm-3 control-label']) !!}
 	<div class="col-sm-6">
 		<select name="groups[]" class="form-control" multiple required="">
-			<option {{isset($push_notification_group['id']) && ($push_notification_group['id'] == 'test')?"selected":""}} value="test">Everyone</option>
+			<option {{isset($push_notification_group['id']) && ($push_notification_group['id'] == 'test')?"selected":""}} value="{{\Illuminate\Support\Facades\Config::get('constants.topic.all')}}">Everyone</option>
 			@foreach($push_notification_groups as $push_notification_group)
 				<option {{(isset($current_groups_ids) && in_array($push_notification_group['id'], $current_groups_ids))?"selected":""}} value="{{$push_notification_group['id']}}">
                     {{$push_notification_group['name']}}
