@@ -466,7 +466,7 @@ class PostService
      */
     protected function formatTypeTextCreate($formData)
     {
-        $formData['metadata']['description'] = str_replace("src=\"/photos", "src=\"" . env('API_BASE_URL') . "/photos", $formData['metadata']['description']);
+        $formData['metadata']['description'] = str_replace("src=\"/v1/photos", "src=\"" . env('API_BASE_URL') . "/photos", $formData['metadata']['description']);
         $this->logger->info ($formData['metadata']['description']);
         $data['content'] = $formData['metadata']['data']['content'];
         $data['file']    = [];
@@ -499,7 +499,7 @@ class PostService
      */
     protected function formatTypeTextUpdate($post, $formData)
     {
-        $formData['metadata']['description'] = str_replace("src=\"/photos", "src=\"" . env('API_BASE_URL') . "/photos", $formData['metadata']['description']);
+        $formData['metadata']['description'] = str_replace("src=\"/v1/photos", "src=\"" . env('API_BASE_URL') . "/photos", $formData['metadata']['description']);
         $this->logger->info ($formData['metadata']['description']);
         $data    = json_decode(json_encode($post->metadata->data), true);
         $fileNew = [];
