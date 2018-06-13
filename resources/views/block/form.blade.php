@@ -25,7 +25,6 @@ $layouts = [
 		'slider'         => 'Slider',
 		'country_widget' => 'Country Widget',
 		'radio_widget'   => 'Radio Widget',
-		'fsd_widget'   => 'FSD Widget',
 ];
 $page = request()->get('page', 'home');
 if (in_array($page, ['dynamic'])) {
@@ -207,7 +206,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 			if (field == 'list' || field == 'slider') {
 				field = 'post';
 			}
-			if (field == 'radio_widget' || field == 'fsd_widget') {
+			if (field == 'radio_widget') {
 				$('.block-content-type-post').show();
 				$('.post-field').hide();
 				$('.radio-field').show();
@@ -227,7 +226,7 @@ if (old() && in_array(old('metadata.layout'), ['list', 'slider'])) {
 				if (field == 'list' || field == 'slider') {
 					field = 'post';
 				}
-				if (field == 'radio_widget' || field == 'fsd_widget') {
+				if (field == 'radio_widget') {
 					$('.block-content-type-post').show();
 					$('.post-field').hide();
 					$('.radio-field').show();
