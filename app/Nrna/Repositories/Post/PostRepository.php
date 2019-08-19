@@ -353,7 +353,7 @@ class PostRepository implements PostRepositoryInterface
      */
     public function getAllPosts()
     {
-        return $this->post->orderBy('created_at','desc')->paginate(20);
+        return $this->post-all();
     }
 
 

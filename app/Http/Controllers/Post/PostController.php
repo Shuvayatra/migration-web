@@ -50,7 +50,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = $this->post->getAllPosts();
+        $posts = $this->post->all($request->all());
 
         return view('post.index', compact('posts'));
     }
