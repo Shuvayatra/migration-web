@@ -50,7 +50,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::paginate(20);
+        $posts = $this->post->getAllPosts();
 
         return view('post.index', compact('posts'));
     }
