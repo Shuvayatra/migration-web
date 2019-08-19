@@ -50,7 +50,7 @@ class PostRepository implements PostRepositoryInterface
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getAll($filters, $limit = null)
+    public function getAll($filters, $limit = 20)
     {
         $query = $this->post->select('*');
         if (!\Entrust::can('manage-all-content')) {
