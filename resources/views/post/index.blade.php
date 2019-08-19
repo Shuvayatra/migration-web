@@ -118,10 +118,7 @@
 			@endforelse
 			</tbody>
 		</table>
-		{{--@if ($posts->lastPage()>1)--}}
-		{{--<div class="pagination">{!! $posts->appends($app->request->all())->render() !!}</div>--}}
-		{{--<div class="pagination-text">Showing {{($posts->currentPage()==1)?"1":($posts->currentPage()-1)*$posts->perPage()}} to {{($posts->currentPage()== $posts->lastPage())?$posts->total():($posts->currentPage())*$posts->perPage()}} of {{$posts->total()}} posts</div>--}}
-		{{--@endif--}}
+		<div class="pagination"> {!! $posts->render() !!} </div>
 	</div>
 
 @endsection

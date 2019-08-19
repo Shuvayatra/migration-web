@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Nrna\Models\Post;
 use App\Nrna\Services\PostService;
 use App\Http\Requests\PostRequest;
 use App\Nrna\Services\RssService;
@@ -49,7 +50,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = $this->post->all($request->all());
+        $posts = Post::paginate(20);
 
         return view('post.index', compact('posts'));
     }
