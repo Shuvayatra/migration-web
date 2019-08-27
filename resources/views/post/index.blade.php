@@ -118,7 +118,7 @@
 			@endforelse
 			</tbody>
 		</table>
-		<div class="pagination"> {!! $posts->render() !!} </div>
+		<div class="pagination"> {!! $posts->appends($app->request->all())->render() !!} </div>
 	</div>
 
 @endsection
