@@ -25,11 +25,13 @@ class YoutubeService
                 $key   = end($array);
             }
 
-            $video = \Youtube::getVideoInfo($key);
-            $start = new \DateTime('@0'); // Unix epoch
-            $start->add(new \DateInterval($video->contentDetails->duration));
-            $result['duration']  = $start->format('H:i:s');
-            $result['thumbnail'] = isset($video->snippet->thumbnails->standard->url) ? $video->snippet->thumbnails->standard->url : $video->snippet->thumbnails->high->url;
+//            $video = \Youtube::getVideoInfo($key);
+//            $start = new \DateTime('@0'); // Unix epoch
+//            $start->add(new \DateInterval($video->contentDetails->duration));
+//            $result['duration']  = $start->format('H:i:s');
+//            $result['thumbnail'] = isset($video->snippet->thumbnails->standard->url) ? $video->snippet->thumbnails->standard->url : $video->snippet->thumbnails->high->url;
+            parse_str(parse_url($key, PHP_URL_QUERY), $my_array_of_vars);
+            $result['thumbnail'] = $my_array_of_vars['v'];
         } catch (\Exception $e) {
             return $result;
         }
