@@ -2,12 +2,11 @@
 namespace App\Nrna\Services;
 
 use App\Nrna\Models\Post;
-use App\Nrna\Repositories\Category\CategoryRepositoryInterface;
 use App\Nrna\Repositories\Post\PostRepositoryInterface;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Contracts\Logging\Log;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class PostService
@@ -128,6 +127,8 @@ class PostService
             }
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
+                parse_str(parse_url($formData['metadata']['data']['media_url'], PHP_URL_QUERY), $my_array_of_vars);
+                $formData['metadata']['data']['thumbnail'] = $my_array_of_vars['v'];
             }
             if (isset($formData['metadata']['featured_image'])) {
                 $formData['metadata']['featured_image'] = $this->upload($formData['metadata']['featured_image']);
