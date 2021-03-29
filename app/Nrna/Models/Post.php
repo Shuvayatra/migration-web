@@ -195,6 +195,10 @@ class Post extends Model
         }
         if ($metadata['type'] == 'video') {
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
+            if (strlen($metadata['data']['media_url']) > 0) {
+                parse_str(parse_url($metadata['data']['media_url'], PHP_URL_QUERY), $urlParts);
+                $metadata['data']['thumbnail'] = "https://i.ytimg.com/vi/" . $urlParts['v'] . "/hqdefault.jpg";
+            }
         }
 
         if ($metadata['type'] == 'audio') {
