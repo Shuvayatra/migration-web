@@ -195,11 +195,10 @@ class Post extends Model
         }
         if ($metadata['type'] == 'video') {
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
-            parse_str(parse_url($metadata['data']['media_url'], PHP_URL_QUERY), $my_array_of_vars);
-            $video_array = array();
-            $video_array['data']['media_url'] = $metadata['data']['media_url'];
-            $video_array['data']['duration'] = $metadata['data']['duration'];
-            $video_array['data']['thumbnail'] = $my_array_of_vars['v'];
+            if (strlen($metadata['data']['media_url']) > 0) {
+                parse_str(parse_url($metadata['data']['media_url'], PHP_URL_QUERY), $my_array_of_vars);
+                $metadata['data']['thumbnail'] = $my_array_of_vars['v'];
+            }
         }
 
         if ($metadata['type'] == 'audio') {
