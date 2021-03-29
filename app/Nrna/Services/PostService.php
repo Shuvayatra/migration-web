@@ -208,6 +208,8 @@ class PostService
 
             if ($formData['metadata']['type'] === 'video') {
                 $formData = $this->getVideoData($formData);
+                parse_str(parse_url($formData['metadata']['data']['media_url'], PHP_URL_QUERY), $my_array_of_vars);
+                $formData['metadata']['data']['thumbnail'] = $my_array_of_vars['v'];
             }
             if (isset($formData['metadata']['featured_image'])) {
                 $this->file->delete($this->uploadPath.'/'.$post->metadata->featured_image);

@@ -195,6 +195,8 @@ class Post extends Model
         }
         if ($metadata['type'] == 'video') {
             $metadata['data'] = array_only($metadata['data'], ['media_url', 'duration', 'thumbnail']);
+            parse_str(parse_url($metadata['data']['media_url'], PHP_URL_QUERY), $my_array_of_vars);
+            $metadata['data']['thumbnail'] = $my_array_of_vars['v'];
         }
 
         if ($metadata['type'] == 'audio') {
