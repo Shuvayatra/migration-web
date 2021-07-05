@@ -5,7 +5,8 @@
 Shuvayatra cms can be cloned from github repository and installed. Following the procedure given below:
 
 * git clone git@github.com:Shuvayatra/migration-web.git
-* cd shuvayatra
+* use https if permission denied `git clone https://github.com/Shuvayatra/migration-web.git`
+* change directory by `cd migration-web`
 * install the application dependencies using command: `composer install`
 * copy .env.example to .env and update your the database configurations
 * give write permission to the storage folder using `chmod -R 777 storage`
